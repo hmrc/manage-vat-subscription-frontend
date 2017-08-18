@@ -16,23 +16,34 @@
 
 package controllers
 
+import config.AppConfig
+import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status
+import play.api.i18n.MessagesApi
+import play.api.inject.Injector
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 
-class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication {
+class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with MockitoSugar {
 
-  val fakeRequest = FakeRequest("GET", "/")
+  lazy val injector: Injector = fakeApplication.injector
+  lazy val messages: MessagesApi = injector.instanceOf[MessagesApi]
+  lazy val mockConfig: AppConfig = injector.instanceOf[AppConfig]
+
+  implicit val fakeRequest = FakeRequest("GET", "/")
+
+  lazy val target = new HelloWorld(mockConfig, messages)
 
   "GET /" should {
+
     "return 200" in {
-      val result = HelloWorld.helloWorld(fakeRequest)
+      val result = target.helloWorld()(fakeRequest)
       status(result) shouldBe Status.OK
     }
 
     "return HTML" in {
-      val result = HelloWorld.helloWorld(fakeRequest)
+      val result = target.helloWorld()(fakeRequest)
       contentType(result) shouldBe Some("text/html")
       charset(result) shouldBe Some("utf-8")
     }
