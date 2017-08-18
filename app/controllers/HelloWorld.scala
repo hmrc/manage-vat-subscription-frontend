@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.managevatsubscriptionfrontend.controllers
+package controllers
 
-import uk.gov.hmrc.play.frontend.controller.FrontendController
 import play.api.mvc._
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._
 
-
 object HelloWorld extends HelloWorld
 
 trait HelloWorld extends FrontendController {
-  val helloWorld = Action.async { implicit request =>
-		Future.successful(Ok(uk.gov.hmrc.managevatsubscriptionfrontend.views.html.helloworld.hello_world()))
+  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
+		Future.successful(Ok(views.html.helloworld.hello_world()))
   }
 }
