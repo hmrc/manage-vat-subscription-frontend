@@ -33,7 +33,7 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
 
   implicit val fakeRequest = FakeRequest("GET", "/")
 
-  lazy val target = new HelloWorld(mockConfig, messages)
+  lazy val target = new HelloWorldController(mockConfig, messages)
 
   "GET /" should {
 
