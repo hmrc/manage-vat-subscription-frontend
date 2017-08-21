@@ -17,7 +17,7 @@
 package config
 
 import javax.inject.{Inject, Singleton}
-import play.api.Play.{configuration, current}
+import play.api.{Application, Configuration}
 import uk.gov.hmrc.play.config.ServicesConfig
 
 trait AppConfig extends ServicesConfig {
@@ -28,11 +28,11 @@ trait AppConfig extends ServicesConfig {
 }
 
 @Singleton
-class ApplicationConfig @Inject()() extends AppConfig {
+class ApplicationConfig @Inject()(configuration: Configuration, val app: Application) extends AppConfig {
   private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  private val contactHost: String = configuration.getString(s"contact-frontend.host").getOrElse("")
-  private val contactFormServiceIdentifier: String = "MyService"
+  private lazy val contactHost: String = configuration.getString(s"contact-frontend.host").getOrElse("")
+  private lazy val contactFormServiceIdentifier: String = "MyService"
 
   override lazy val analyticsToken: String = loadConfig(s"google-analytics.token")
   override lazy val analyticsHost: String = loadConfig(s"google-analytics.host")
