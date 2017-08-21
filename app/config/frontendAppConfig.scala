@@ -28,7 +28,7 @@ trait AppConfig extends ServicesConfig {
 }
 
 @Singleton
-class ApplicationConfig @Inject()(configuration: Configuration, val app: Application) extends AppConfig {
+class ApplicationConfig @Inject()(configuration: Configuration) extends AppConfig {
   private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = configuration.getString(s"contact-frontend.host").getOrElse("")
