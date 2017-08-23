@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/hmrc/manage-vat-subscription-frontend.svg)](https://travis-ci.org/hmrc/manage-vat-subscription-frontend) 
 [![Download](https://api.bintray.com/packages/hmrc/releases/manage-vat-subscription-frontend/images/download.svg)](https://bintray.com/hmrc/releases/manage-vat-subscription-frontend/_latestVersion)
 
-## Summary
+## Summary 
 This service provides end users with a mechanism to manage their VAT subscription.
 
 ## Requirements
