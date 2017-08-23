@@ -17,10 +17,14 @@
 package config
 
 import com.google.inject.AbstractModule
+import uk.gov.hmrc.play.audit.http.connector.AuditConnector
+import uk.gov.hmrc.play.frontend.auth.connectors.AuthConnector
 
 class DIModule extends AbstractModule {
   def configure(): Unit = {
-    bind(classOf[AppConfig]) to classOf[ApplicationConfig]
+    bind(classOf[AppConfig]).to(classOf[FrontendAppConfig]).asEagerSingleton()
+    bind(classOf[AuthConnector]).to(classOf[config.FrontendAuthConnector])
+    bind(classOf[AuditConnector]).to(classOf[config.FrontendAuditConnector])
   }
 }
 

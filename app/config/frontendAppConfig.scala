@@ -17,6 +17,7 @@
 package config
 
 import javax.inject.{Inject, Singleton}
+import play.api.mvc.Call
 import play.api.{Application, Configuration}
 import uk.gov.hmrc.play.config.ServicesConfig
 
@@ -25,10 +26,16 @@ trait AppConfig extends ServicesConfig {
   val analyticsHost: String
   val reportAProblemPartialUrl: String
   val reportAProblemNonJSUrl: String
+  val whitelistIps: Seq[String]
+  val ipExclusionList: Seq[Call]
+  val shutterPage: String
 }
 
 @Singleton
-class ApplicationConfig @Inject()(configuration: Configuration) extends AppConfig {
+class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
+
+  protected val configuration: Configuration = app.configuration
+
   private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = configuration.getString(s"contact-frontend.host").getOrElse("")
@@ -38,4 +45,10 @@ class ApplicationConfig @Inject()(configuration: Configuration) extends AppConfi
   override lazy val analyticsHost: String = loadConfig(s"google-analytics.host")
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
+
+  private def whitelistConfig(key: String): Seq[String] = configuration.getString(key).fold(Seq[String]())(ips => ips.split(",").toSeq)
+
+  override lazy val whitelistIps: Seq[String] = whitelistConfig("ip-whitelist.urls")
+  override lazy val ipExclusionList: Seq[Call] = whitelistConfig("ip-whitelist.excludeCalls").map(ip => Call("GET", ip))
+  override lazy val shutterPage: String = "https://www.google.co.uk"
 }

@@ -49,6 +49,9 @@
 
     <logger name="application" level="DEBUG"/>
 
+    <logger name="play.api.Play" level="DEBUG"/>
+
+
     <logger name="connector" level="INFO">
         <appender-ref ref="STDOUT"/>
     </logger>

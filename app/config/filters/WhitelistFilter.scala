@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package config.filters
 
 import javax.inject.{Inject, Singleton}
 import config.AppConfig
-import play.api.mvc._
-import uk.gov.hmrc.play.frontend.controller.FrontendController
-
-import scala.concurrent.Future
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.Application
+import play.api.mvc.Call
+import uk.gov.hmrc.play.config.RunMode
+import uk.gov.hmrc.play.filters.MicroserviceFilterSupport
+import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
 @Singleton
-class HelloWorldController @Inject()(val appConfig: AppConfig, val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
+class WhitelistFilter @Inject()(app: Application) extends AkamaiWhitelistFilter with RunMode with MicroserviceFilterSupport {
 
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(views.html.helloworld.hello_world(appConfig)))
-  }
+  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  override lazy val whitelist: Seq[String] = appConfig.whitelistIps
+
+  override lazy val destination: Call = Call("GET", appConfig.shutterPage)
+
+  override lazy val excludedPaths: Seq[Call] = appConfig.ipExclusionList
 }
+
