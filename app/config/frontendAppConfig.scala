@@ -16,7 +16,9 @@
 
 package config
 
+import java.util.Base64
 import javax.inject.{Inject, Singleton}
+
 import play.api.mvc.Call
 import play.api.{Application, Configuration}
 import uk.gov.hmrc.play.config.ServicesConfig
@@ -46,7 +48,9 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
-  private def whitelistConfig(key: String): Seq[String] = configuration.getString(key).fold(Seq[String]())(ips => ips.split(",").toSeq)
+  private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
+    .decode(configuration.getString(key).getOrElse("")), "UTF-8"))
+    .map(_.split(",")).getOrElse(Array.empty).toSeq
 
   override lazy val whitelistIps: Seq[String] = whitelistConfig("ip-whitelist.urls")
   override lazy val ipExclusionList: Seq[Call] = whitelistConfig("ip-whitelist.excludeCalls").map(ip => Call("GET", ip))
