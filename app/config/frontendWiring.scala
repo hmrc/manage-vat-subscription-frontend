@@ -35,5 +35,5 @@ class WSHttp @Inject()(val app: Application) extends uk.gov.hmrc.play.http.ws.WS
 
 @Singleton
 class FrontendAuthConnector @Inject()(appConfig: AppConfig, val http: WSHttp) extends AuthConnector with ServicesConfig {
-  val serviceUrl: String = baseUrl("auth")
+  lazy val serviceUrl: String = baseUrl("auth")
 }
