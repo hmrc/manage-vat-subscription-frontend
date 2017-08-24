@@ -14,20 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package mocks
 
-import javax.inject.{Inject, Singleton}
 import config.AppConfig
-import play.api.mvc._
-import uk.gov.hmrc.play.frontend.controller.FrontendController
+import play.api.mvc.Call
 
-import scala.concurrent.Future
-import play.api.i18n.{I18nSupport, MessagesApi}
-
-@Singleton
-class HelloWorldController @Inject()(val appConfig: AppConfig, val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
-
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(views.html.helloworld.hello_world(appConfig)))
-  }
+class MockAppConfig extends AppConfig {
+  override val analyticsToken: String = ""
+  override val analyticsHost: String = ""
+  override val reportAProblemPartialUrl: String = ""
+  override val reportAProblemNonJSUrl: String = ""
+  override val whitelistIps: Seq[String] = Seq("")
+  override val ipExclusionList: Seq[Call] = Nil
+  override val shutterPage: String = "https://www.tax.service.gov.uk/outage-manage-your-vat-account/"
 }
