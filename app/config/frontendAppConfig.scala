@@ -50,5 +50,5 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
 
   override lazy val whitelistIps: Seq[String] = whitelistConfig("ip-whitelist.urls")
   override lazy val ipExclusionList: Seq[Call] = whitelistConfig("ip-whitelist.excludeCalls").map(ip => Call("GET", ip))
-  override lazy val shutterPage: String = "https://www.google.co.uk"
+  override lazy val shutterPage: String = loadConfig("shutter-page.url")
 }
