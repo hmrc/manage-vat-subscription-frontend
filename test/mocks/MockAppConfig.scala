@@ -26,5 +26,5 @@ class MockAppConfig extends AppConfig {
   override val reportAProblemNonJSUrl: String = ""
   override val whitelistIps: Seq[String] = Seq("")
   override val ipExclusionList: Seq[Call] = Nil
-  override val shutterPage: String = "https://www.tax.service.gov.uk/outage-manage-your-vat-account/"
+  override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/manage-your-vat-account/"
 }
