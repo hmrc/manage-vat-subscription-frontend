@@ -40,7 +40,7 @@ object FrontendGlobal
 
   override protected lazy val defaultFrontendFilters: Seq[EssentialFilter] = {
     val coreFilters = super.defaultFrontendFilters.filterNot(f => f.equals(RecoveryFilter))
-    val ipWhitelistKey = "feature-switch.enable-ip-whitelisting"
+    val ipWhitelistKey = "ip-whitelist.enable-ip-whitelisting"
     Play.current.configuration.getString(ipWhitelistKey).getOrElse(throw new Exception(s"Missing configuration key: $ipWhitelistKey")).toBoolean match {
       case true => coreFilters.:+(new WhitelistFilter(Play.current))
       case _ => coreFilters
@@ -73,7 +73,7 @@ object AuditFilter extends FrontendAuditFilter with RunMode with AppName with Mi
 
   override lazy val maskedFormFields = Seq("password")
 
-  override lazy val applicationPort = None
+  override lazy val applicationPort: None.type = None
 
   override lazy val auditConnector = new FrontendAuditConnector(Play.current)
 
