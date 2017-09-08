@@ -22,28 +22,31 @@ import net.ceedubs.ficus.Ficus._
 import play.api.mvc.{EssentialFilter, Request}
 import play.api.{Application, Configuration, Play}
 import play.twirl.api.Html
+import play.api.i18n.Messages.Implicits._
+import play.api.Play.current
 import uk.gov.hmrc.crypto.ApplicationCrypto
 import uk.gov.hmrc.play.audit.filters.FrontendAuditFilter
 import uk.gov.hmrc.play.config.{AppName, ControllerConfig, RunMode}
 import uk.gov.hmrc.play.frontend.bootstrap.DefaultFrontendGlobal
 import uk.gov.hmrc.play.http.logging.filters.FrontendLoggingFilter
 import uk.gov.hmrc.play.filters.{MicroserviceFilterSupport, RecoveryFilter}
-import play.api.i18n.Messages.Implicits._
-import play.api.Play.current
 
 object FrontendGlobal
   extends DefaultFrontendGlobal {
 
   override lazy val auditConnector = new FrontendAuditConnector(Play.current)
-  override val loggingFilter = LoggingFilter
-  override val frontendAuditFilter = AuditFilter
+  override val loggingFilter: LoggingFilter.type = LoggingFilter
+  override val frontendAuditFilter: AuditFilter.type = AuditFilter
 
   override protected lazy val defaultFrontendFilters: Seq[EssentialFilter] = {
     val coreFilters = super.defaultFrontendFilters.filterNot(f => f.equals(RecoveryFilter))
-    val ipWhiteListKey = "whitelist.enabled"
-    Play.current.configuration.getString("whitelist.enabled").getOrElse(throw new Exception(s"Missing configuration key: $ipWhiteListKey")).toBoolean match {
-      case true => coreFilters.:+(new WhitelistFilter(Play.current))
-      case _ => coreFilters
+    val ipWhiteListKey = Play.current.configuration.getBoolean("whitelist.enabled").getOrElse(false)
+
+    if(ipWhiteListKey)  {
+      coreFilters.:+(new WhitelistFilter(Play.current))
+    }
+    else {
+      coreFilters
     }
   }
 
