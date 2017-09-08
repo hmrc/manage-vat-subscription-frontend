@@ -21,6 +21,7 @@ import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status
 import play.api.i18n.MessagesApi
 import play.api.inject.Injector
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
@@ -31,11 +32,11 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
   lazy val messages: MessagesApi = injector.instanceOf[MessagesApi]
   lazy val mockConfig: AppConfig = injector.instanceOf[AppConfig]
 
-  implicit val fakeRequest = FakeRequest("GET", "/")
+  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
 
   lazy val target = new HelloWorldController(mockConfig, messages)
 
-  "GET /" should {
+  "Calling the helloWorld action" should {
 
     "return 200" in {
       val result = target.helloWorld()(fakeRequest)
