@@ -40,8 +40,8 @@ object FrontendGlobal
 
   override protected lazy val defaultFrontendFilters: Seq[EssentialFilter] = {
     val coreFilters = super.defaultFrontendFilters.filterNot(f => f.equals(RecoveryFilter))
-    val ipWhitelistKey = "ip-whitelist.enable-ip-whitelisting"
-    Play.current.configuration.getString(ipWhitelistKey).getOrElse(throw new Exception(s"Missing configuration key: $ipWhitelistKey")).toBoolean match {
+    val ipWhiteListKey = "whitelist.enabled"
+    Play.current.configuration.getString("whitelist.enabled").getOrElse(throw new Exception(s"Missing configuration key: $ipWhiteListKey")).toBoolean match {
       case true => coreFilters.:+(new WhitelistFilter(Play.current))
       case _ => coreFilters
     }

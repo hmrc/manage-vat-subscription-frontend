@@ -33,7 +33,7 @@ class WhitelistFilterSpec extends PlaySpec with GuiceOneServerPerSuite {
   override implicit lazy val app: Application =
     new GuiceApplicationBuilder()
     .configure(Configuration(
-      "ip-whitelist.enable-ip-whitelisting" -> true
+      "whitelist.enabled" -> true
     ))
     .routes({
       case ("GET", "/hello-world") => Action(Ok("success"))
