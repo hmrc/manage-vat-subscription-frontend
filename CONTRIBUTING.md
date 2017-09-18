@@ -1,6 +1,6 @@
-# manage-vat-subscription-frontend Contributor Guidelines
+# manage vat subscription frontend Contributor Guidelines
 
-Hello! Thank you for taking the time to contribute to [manage-vat-subscriptio-frontend](https://github.com/hmrc/manage-vat-subscription-frontend).
+Hello! Thank you for taking the time to contribute to [manage-vat-subscription-frontend](https://github.com/hmrc/manage-vat-subscription-frontend).
 
 ## General Contributor Guidelines
 
