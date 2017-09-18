@@ -19,17 +19,15 @@ package config
 import com.typesafe.config.Config
 import config.filters.WhitelistFilter
 import net.ceedubs.ficus.Ficus._
+import play.api.Play.current
+import play.api.i18n.Messages.Implicits._
 import play.api.mvc.{EssentialFilter, Request}
 import play.api.{Application, Configuration, Play}
 import play.twirl.api.Html
-import play.api.i18n.Messages.Implicits._
-import play.api.Play.current
 import uk.gov.hmrc.crypto.ApplicationCrypto
-import uk.gov.hmrc.play.audit.filters.FrontendAuditFilter
 import uk.gov.hmrc.play.config.{AppName, ControllerConfig, RunMode}
 import uk.gov.hmrc.play.frontend.bootstrap.DefaultFrontendGlobal
-import uk.gov.hmrc.play.http.logging.filters.FrontendLoggingFilter
-import uk.gov.hmrc.play.filters.{MicroserviceFilterSupport, RecoveryFilter}
+import uk.gov.hmrc.play.frontend.filters.{FrontendAuditFilter, FrontendLoggingFilter, MicroserviceFilterSupport, RecoveryFilter}
 
 object FrontendGlobal
   extends DefaultFrontendGlobal {
@@ -42,7 +40,7 @@ object FrontendGlobal
     val coreFilters = super.defaultFrontendFilters.filterNot(f => f.equals(RecoveryFilter))
     val ipWhiteListKey = Play.current.configuration.getBoolean("whitelist.enabled").getOrElse(false)
 
-    if(ipWhiteListKey)  {
+    if (ipWhiteListKey) {
       coreFilters.:+(new WhitelistFilter(Play.current))
     }
     else {
