@@ -32,12 +32,12 @@ object FrontendBuild extends Build with MicroService {
   )
 
   def test(scope: String = "test"): Seq[ModuleID] = Seq(
-    "uk.gov.hmrc" %% "hmrctest" % "2.3.0" % scope,
-    "org.scalatest" %% "scalatest" % "3.0.0" % scope,
+    "uk.gov.hmrc" %% "hmrctest" % "2.4.0" % scope,
+    "org.scalatest" %% "scalatest" % "3.0.1" % scope,
     "org.pegdown" % "pegdown" % "1.6.0" % scope,
-    "org.jsoup" % "jsoup" % "1.10.2" % scope,
+    "org.jsoup" % "jsoup" % "1.10.3" % scope,
     "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
     "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % scope,
-    "org.mockito" % "mockito-core" % "2.8.47" % scope
+    "org.mockito" % "mockito-core" % "2.9.0" % scope
   )
 }
