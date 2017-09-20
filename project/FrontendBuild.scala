@@ -28,7 +28,8 @@ object FrontendBuild extends Build with MicroService {
     ws,
     "uk.gov.hmrc" %% "frontend-bootstrap" % "8.6.0",
     "uk.gov.hmrc" %% "play-partials" % "6.0.0",
-    "uk.gov.hmrc" %% "play-whitelist-filter" % "2.0.0"
+    "uk.gov.hmrc" %% "play-whitelist-filter" % "2.0.0",
+    "uk.gov.hmrc" %% "auth-client" % "1.0.0"
   )
 
   def test(scope: String = "test"): Seq[ModuleID] = Seq(
