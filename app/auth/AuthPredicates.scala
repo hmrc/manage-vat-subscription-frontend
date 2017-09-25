@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIED OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -28,14 +28,14 @@ object AuthPredicates extends Results {
   lazy val notEnrolled: Result = Redirect(controllers.routes.HelloWorldController.helloWorld())
   lazy val timeoutRoute: Result = Redirect(controllers.routes.HelloWorldController.helloWorld())
 
-  private val enrolledPredicate: AuthPredicate = request => user =>
-    if (user.mtdVatID.nonEmpty) {
+  protected[auth] val enrolledPredicate: AuthPredicate = request => user =>
+    if (user.mtdVatId.nonEmpty) {
       Right(Success)
     } else {
       Left(Future.successful(notEnrolled))
     }
 
-  private val timeoutPredicate: AuthPredicate = request => user =>
+  protected[auth] val timeoutPredicate: AuthPredicate = request => user =>
     if (request.session.get(lastRequestTimestamp).nonEmpty && request.session.get(authToken).isEmpty) {
       Left(Future.successful(timeoutRoute))
     }
@@ -43,7 +43,6 @@ object AuthPredicates extends Results {
       Right(Success)
     }
 
-  val enrolledPredicates: AuthPredicate = enrolledPredicate |+| timeoutPredicate
-
+  val predicates: AuthPredicate = enrolledPredicate |+| timeoutPredicate
 
 }

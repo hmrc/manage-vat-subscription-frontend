@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.AppConfig
+import mocks.MockAppConfig
 import org.scalatest.mockito.MockitoSugar
 import play.api.http.Status
 import play.api.i18n.MessagesApi
@@ -30,11 +30,11 @@ class HelloWorldControllerSpec extends UnitSpec with WithFakeApplication with Mo
 
   lazy val injector: Injector = fakeApplication.injector
   lazy val messages: MessagesApi = injector.instanceOf[MessagesApi]
-  lazy val mockConfig: AppConfig = injector.instanceOf[AppConfig]
+  lazy val mockAppConfig = new MockAppConfig
 
   implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
 
-  lazy val target = new HelloWorldController(mockConfig, messages)
+  lazy val target = new HelloWorldController(mockAppConfig, messages)
 
   "Calling the helloWorld action" should {
 

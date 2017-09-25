@@ -9,7 +9,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIED OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
@@ -17,41 +17,83 @@
 package auth
 
 import auth.AuthPredicate.Success
-import auth.AuthPredicates.{timeoutPredicate, timeoutRoute}
-import config.AppConfig
+import auth.AuthPredicates.{enrolledPredicate, timeoutPredicate}
+import mocks.MockAppConfig
+import org.scalatest.EitherValues
 import org.scalatest.mockito.MockitoSugar
 import play.api.inject.Injector
-import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import uk.gov.hmrc.http.SessionKeys.{authToken, lastRequestTimestamp}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import play.api.test.Helpers._
 
-class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSugar{
+class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSugar with EitherValues {
 
   lazy val injector: Injector = fakeApplication.injector
-  lazy val mockConfig: AppConfig = injector.instanceOf[AppConfig]
+  lazy val mockAppConfig = new MockAppConfig
 
   val userWithMtdVatEnrolment = User("enrolment")
   val blankUser = User("")
 
-  lazy val authorisedRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession(
-    authToken -> "",
-    lastRequestTimestamp -> ""
-  )
+  "Timeout predicate" when {
 
-  "timeoutPredicate" should {
-    "return a Success where the lastRequestTimestamp is not set" in {
-      timeoutPredicate(FakeRequest())(blankUser).right.value shouldBe Success
+    "lastRequestTimestamp is not set" should {
+      lazy val predicate = timeoutPredicate(FakeRequest())(blankUser)
+
+      "return Success" in {
+        predicate.right.value shouldBe Success
+      }
     }
 
-    "return a Success where the authToken is set and the lastRequestTimestamp is set" in {
-      timeoutPredicate(authorisedRequest)(blankUser).right.value shouldBe Success
+    "authToken and lastRequestTimestamp are set" should {
+      lazy val request = FakeRequest().withSession(
+        authToken -> "",
+        lastRequestTimestamp -> ""
+      )
+
+      lazy val predicate = timeoutPredicate(request)(blankUser)
+
+      "return Success" in {
+        predicate.right.value shouldBe Success
+      }
     }
 
-    "return the timeout page where the lastRequestTimestamp is set but the auth token is not" in {
+    "lastRequestTimestamp is set and authToken is not" should {
       lazy val request = FakeRequest().withSession(lastRequestTimestamp -> "")
-      await(timeoutPredicate(request)(blankUser).left.value) shouldBe timeoutRoute
+      lazy val predicate = timeoutPredicate(request)(blankUser)
+      lazy val result = predicate.left.value
+
+      "return 303" in {
+        status(result) shouldBe 303
+      }
+
+      s"redirect to ${controllers.routes.HelloWorldController.helloWorld().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.HelloWorldController.helloWorld().url)
+      }
     }
   }
 
+  "Enrolled predicate" when {
+
+    "mtdVatId is not empty" should {
+      lazy val predicate = enrolledPredicate(FakeRequest())(userWithMtdVatEnrolment)
+
+      "return Success" in {
+        predicate.right.value shouldBe Success
+      }
+    }
+
+    "mtdVatId is empty" should {
+      lazy val predicate = enrolledPredicate(FakeRequest())(blankUser)
+      lazy val result = predicate.left.value
+
+      "return 303" in {
+        status(result) shouldBe 303
+      }
+
+      s"redirect to ${controllers.routes.HelloWorldController.helloWorld().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.HelloWorldController.helloWorld().url)
+      }
+    }
+  }
 }

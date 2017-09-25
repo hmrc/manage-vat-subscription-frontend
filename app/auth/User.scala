@@ -16,4 +16,4 @@
 
 package auth
 
-case class User(mtdVatID: String)
+case class User(mtdVatId: String)
