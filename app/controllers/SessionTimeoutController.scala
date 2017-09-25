@@ -16,25 +16,20 @@
 
 package controllers
 
-import play.api.http.Status
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import javax.inject.{Inject, Singleton}
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
+import config.AppConfig
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-  lazy val target = new HelloWorldController(mockAppConfig, messages)
+import scala.concurrent.Future
 
-  "Calling the .helloWorld action" should {
+@Singleton
+class SessionTimeoutController @Inject()(val messagesApi: MessagesApi,
+                                         implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-    val result = target.helloWorld()(FakeRequest())
-
-    "return 200" in {
-      status(result) shouldBe Status.OK
-    }
-
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
-    }
+  val timeout: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(views.html.sessionTimeout()))
   }
 }

@@ -20,13 +20,13 @@ import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
+class SessionTimeoutControllerSpec extends ControllerBaseSpec {
 
   lazy val target = new HelloWorldController(mockAppConfig, messages)
 
-  "Calling the .helloWorld action" should {
+  "Calling the .timeout action" should {
 
-    val result = target.helloWorld()(FakeRequest())
+    lazy val result = target.helloWorld()(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK

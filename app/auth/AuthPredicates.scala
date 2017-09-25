@@ -26,7 +26,7 @@ import scala.concurrent.Future
 object AuthPredicates extends Results {
 
   lazy val notEnrolled: Result = Redirect(controllers.routes.HelloWorldController.helloWorld())
-  lazy val timeoutRoute: Result = Redirect(controllers.routes.HelloWorldController.helloWorld())
+  lazy val timeoutRoute: Result = Redirect(controllers.routes.SessionTimeoutController.timeout())
 
   protected[auth] val enrolledPredicate: AuthPredicate = request => user =>
     if (user.mtdVatId.nonEmpty) {

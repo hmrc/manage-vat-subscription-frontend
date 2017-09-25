@@ -50,7 +50,6 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
         authToken -> "",
         lastRequestTimestamp -> ""
       )
-
       lazy val predicate = timeoutPredicate(request)(blankUser)
 
       "return Success" in {
@@ -59,7 +58,9 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
     }
 
     "lastRequestTimestamp is set and authToken is not" should {
-      lazy val request = FakeRequest().withSession(lastRequestTimestamp -> "")
+      lazy val request = FakeRequest().withSession(
+        lastRequestTimestamp -> ""
+      )
       lazy val predicate = timeoutPredicate(request)(blankUser)
       lazy val result = predicate.left.value
 
@@ -67,8 +68,8 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.HelloWorldController.helloWorld().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.HelloWorldController.helloWorld().url)
+      s"redirect to ${controllers.routes.SessionTimeoutController.timeout().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.SessionTimeoutController.timeout().url)
       }
     }
   }
