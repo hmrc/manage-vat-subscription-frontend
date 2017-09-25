@@ -17,7 +17,7 @@
 package auth
 
 import auth.AuthPredicate.Success
-import auth.AuthPredicates.{enrolledPredicate, timeoutPredicate}
+import auth.AuthPredicates.{enrolledPredicate, timeoutPredicate, predicates}
 import mocks.MockAppConfig
 import org.scalatest.EitherValues
 import org.scalatest.mockito.MockitoSugar
@@ -37,7 +37,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
 
   "Timeout predicate" when {
 
-    "lastRequestTimestamp is not set" should {
+    "lastRequestTimestamp and authToken are not set" should {
       lazy val predicate = timeoutPredicate(FakeRequest())(blankUser)
 
       "return Success" in {
@@ -45,10 +45,10 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
       }
     }
 
-    "authToken and lastRequestTimestamp are set" should {
+    "lastRequestTimestamp and authToken are set" should {
       lazy val request = FakeRequest().withSession(
-        authToken -> "",
-        lastRequestTimestamp -> ""
+        authToken -> "authToken",
+        lastRequestTimestamp -> "lastRequestTimestamp"
       )
       lazy val predicate = timeoutPredicate(request)(blankUser)
 
@@ -59,7 +59,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
 
     "lastRequestTimestamp is set and authToken is not" should {
       lazy val request = FakeRequest().withSession(
-        lastRequestTimestamp -> ""
+        lastRequestTimestamp -> "lastRequestTimestamp"
       )
       lazy val predicate = timeoutPredicate(request)(blankUser)
       lazy val result = predicate.left.value
@@ -92,8 +92,53 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSu
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.HelloWorldController.helloWorld().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.HelloWorldController.helloWorld().url)
+      s"redirect to ${controllers.routes.NotEnrolledController.show().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.NotEnrolledController.show().url)
+      }
+    }
+  }
+
+  "Predicates" when {
+
+    "Timeout predicate and Enrolled predicate fail" should {
+
+      lazy val request = FakeRequest().withSession(
+        lastRequestTimestamp -> "lastRequestTimestamp"
+      )
+      lazy val predicate = predicates(request)(blankUser)
+      lazy val result = predicate.left.value
+
+      "return 303" in {
+        status(result) shouldBe 303
+      }
+
+      s"redirect to ${controllers.routes.SessionTimeoutController.timeout().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.SessionTimeoutController.timeout().url)
+      }
+    }
+
+    "Both predicates pass" should {
+
+      lazy val request = FakeRequest()
+      lazy val predicate = predicates(request)(userWithMtdVatEnrolment)
+
+      "return Success" in {
+        predicate.right.value shouldBe Success
+      }
+    }
+
+    "One predicate fails" should {
+
+      lazy val request = FakeRequest()
+      lazy val predicate = predicates(request)(blankUser)
+      lazy val result = predicate.left.value
+
+      "return 303" in {
+        status(result) shouldBe 303
+      }
+
+      s"redirect to ${controllers.routes.NotEnrolledController.show().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.NotEnrolledController.show().url)
       }
     }
   }

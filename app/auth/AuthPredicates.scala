@@ -25,7 +25,7 @@ import scala.concurrent.Future
 
 object AuthPredicates extends Results {
 
-  lazy val notEnrolled: Result = Redirect(controllers.routes.HelloWorldController.helloWorld())
+  lazy val notEnrolled: Result = Redirect(controllers.routes.NotEnrolledController.show())
   lazy val timeoutRoute: Result = Redirect(controllers.routes.SessionTimeoutController.timeout())
 
   protected[auth] val enrolledPredicate: AuthPredicate = request => user =>
@@ -43,6 +43,6 @@ object AuthPredicates extends Results {
       Right(Success)
     }
 
-  val predicates: AuthPredicate = enrolledPredicate |+| timeoutPredicate
+  val predicates: AuthPredicate = timeoutPredicate |+| enrolledPredicate
 
 }

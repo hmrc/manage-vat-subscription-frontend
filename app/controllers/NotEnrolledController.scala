@@ -26,15 +26,10 @@ import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class SessionTimeoutController @Inject()(val messagesApi: MessagesApi,
-                                         implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class NotEnrolledController @Inject()(val messagesApi: MessagesApi,
+                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val timeout: Action[AnyContent] = Action.async { implicit request =>
-    val signInUrl: String = appConfig.governmentGatewaySignIn +
-      "?continue=" +
-      appConfig.baseUrl +
-      controllers.routes.HelloWorldController.helloWorld()
-
-    Future.successful(Ok(views.html.sessionTimeout(signInUrl)))
+  val show: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(views.html.notEnrolled()))
   }
 }
