@@ -22,11 +22,11 @@ import play.api.test.Helpers._
 
 class SessionTimeoutControllerSpec extends ControllerBaseSpec {
 
-  lazy val target = new HelloWorldController(mockAppConfig, messages)
+  lazy val target = new SessionTimeoutController(messages, mockAppConfig)
 
   "Calling the .timeout action" should {
 
-    lazy val result = target.helloWorld()(FakeRequest())
+    lazy val result = target.timeout()(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK

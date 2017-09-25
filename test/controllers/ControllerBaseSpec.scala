@@ -26,6 +26,6 @@ trait ControllerBaseSpec extends UnitSpec with WithFakeApplication with MockitoS
 
   val injector: Injector = fakeApplication.injector
   val messages: MessagesApi = injector.instanceOf[MessagesApi]
-  val mockAppConfig: MockAppConfig = new MockAppConfig
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig
 
 }
