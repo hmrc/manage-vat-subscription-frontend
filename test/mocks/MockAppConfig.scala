@@ -31,4 +31,5 @@ class MockAppConfig extends AppConfig {
   override val governmentGateway: String = ""
   override val governmentGatewaySignIn: String = ""
   override val baseUrl: String = ""
+  override val ggSignInUrl: String = ""
 }
