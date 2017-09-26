@@ -26,7 +26,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
 
   "Calling the .helloWorld action" should {
 
-    val result = target.helloWorld()(FakeRequest())
+    lazy val result = target.helloWorld()(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK
