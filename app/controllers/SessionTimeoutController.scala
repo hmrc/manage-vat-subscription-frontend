@@ -30,11 +30,6 @@ class SessionTimeoutController @Inject()(val messagesApi: MessagesApi,
                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val timeout: Action[AnyContent] = Action.async { implicit request =>
-    val signInUrl: String = appConfig.governmentGatewaySignIn +
-      "?continue=" +
-      appConfig.baseUrl +
-      controllers.routes.HelloWorldController.helloWorld()
-
-    Future.successful(Ok(views.html.sessionTimeout(signInUrl)))
+    Future.successful(Ok(views.html.sessionTimeout(appConfig.ggSignInUrl)))
   }
 }
