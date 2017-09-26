@@ -14,27 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
+package auth
 
-import play.api.http.Status
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
+import cats.Monoid
+import play.api.mvc.{AnyContent, Request, Result}
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
+import scala.concurrent.Future
 
-  lazy val target = new HelloWorldController(messages, mockAppConfig)
+object AuthPredicate {
 
-  "Calling the .helloWorld action" should {
+  object Success
 
-    val result = target.helloWorld()(FakeRequest())
+  type Success = Success.type
 
-    "return 200" in {
-      status(result) shouldBe Status.OK
-    }
-
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
-    }
+  implicit object SuccessMonoid extends Monoid[Success] {
+    override def empty: Success = Success
+    override def combine(x: Success, y: Success): Success = Success
   }
+
+  type AuthPredicate = Request[AnyContent] => User => Either[Future[Result], Success]
 }

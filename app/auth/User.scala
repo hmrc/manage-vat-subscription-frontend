@@ -14,27 +14,6 @@
  * limitations under the License.
  */
 
-package controllers
+package auth
 
-import play.api.http.Status
-import play.api.test.FakeRequest
-import play.api.test.Helpers._
-
-class HelloWorldControllerSpec extends ControllerBaseSpec {
-
-  lazy val target = new HelloWorldController(messages, mockAppConfig)
-
-  "Calling the .helloWorld action" should {
-
-    val result = target.helloWorld()(FakeRequest())
-
-    "return 200" in {
-      status(result) shouldBe Status.OK
-    }
-
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
-    }
-  }
-}
+case class User(mtdVatId: String)

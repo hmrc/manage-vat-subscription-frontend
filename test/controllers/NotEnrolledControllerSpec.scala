@@ -20,13 +20,13 @@ import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
+class NotEnrolledControllerSpec extends ControllerBaseSpec {
 
-  lazy val target = new HelloWorldController(messages, mockAppConfig)
+  lazy val target = new NotEnrolledController(messages, mockAppConfig)
 
-  "Calling the .helloWorld action" should {
+  "Calling the .show action" should {
 
-    val result = target.helloWorld()(FakeRequest())
+    lazy val result = target.show()(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK
