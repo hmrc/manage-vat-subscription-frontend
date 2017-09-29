@@ -19,14 +19,32 @@ package controllers
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.{ConfidenceLevel, Enrolment, EnrolmentIdentifier, Enrolments}
+import uk.gov.hmrc.auth.core.authorise.Predicate
+import uk.gov.hmrc.auth.core.retrieve.Retrieval
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.{ExecutionContext, Future}
 
 class HelloWorldControllerSpec extends ControllerBaseSpec {
 
-  lazy val target = new HelloWorldController(messages, mockAppConfig)
+  "Calling the .helloWorld action with an authenticated user" should {
 
-  "Calling the .helloWorld action" should {
-
+    lazy val target = new HelloWorldController(messages, mockAuthService, mockAppConfig)
     lazy val result = target.helloWorld()(FakeRequest())
+
+    (mockAuthConnector.authorise(_: Predicate, _: Retrieval[Enrolments])(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *, *)
+      .returns(Future.successful(
+        Enrolments(
+          Set(
+            Enrolment("HMRC-MTD-VAT",
+              Seq(EnrolmentIdentifier("", "")),
+              "",
+              ConfidenceLevel.L0)
+          )
+        )
+      ))
 
     "return 200" in {
       status(result) shouldBe Status.OK

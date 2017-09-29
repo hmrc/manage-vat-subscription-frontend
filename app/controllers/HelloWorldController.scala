@@ -17,18 +17,20 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
+
 import config.AppConfig
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results._
-import scala.concurrent.Future
 import play.api.mvc._
+import services.AuthService
+
+import scala.concurrent.Future
 
 @Singleton
 class HelloWorldController @Inject()(val messagesApi: MessagesApi,
-                                     authenticatedController: AuthenticatedController,
-                                     implicit val appConfig: AppConfig) extends I18nSupport {
+                                     val authService: AuthService,
+                                    implicit val appConfig: AppConfig) extends AuthenticatedController with I18nSupport {
 
-  val helloWorld: Action[AnyContent] = authenticatedController.async {
+  val helloWorld: Action[AnyContent] = AuthenticatedAction {
     implicit request =>
       implicit user =>
         Future.successful(Ok(views.html.helloworld.hello_world()))

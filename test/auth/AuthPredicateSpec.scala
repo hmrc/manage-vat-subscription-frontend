@@ -17,7 +17,8 @@
 package auth
 
 import auth.AuthPredicate.Success
-import auth.AuthPredicates.{enrolledPredicate, timeoutPredicate, predicates}
+import auth.AuthPredicates.{enrolledPredicate, predicates, timeoutPredicate}
+import common.Constants
 import mocks.MockAppConfig
 import org.scalatest.EitherValues
 import org.scalatest.mockito.MockitoSugar
@@ -26,14 +27,28 @@ import play.api.test.FakeRequest
 import uk.gov.hmrc.http.SessionKeys.{authToken, lastRequestTimestamp}
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 import play.api.test.Helpers._
+import uk.gov.hmrc.auth.core.{ConfidenceLevel, Enrolment, EnrolmentIdentifier, Enrolments}
 
 class AuthPredicateSpec extends UnitSpec with WithFakeApplication with MockitoSugar with EitherValues {
 
   lazy val injector: Injector = fakeApplication.injector
   lazy val mockAppConfig = new MockAppConfig
 
-  val userWithMtdVatEnrolment = User("enrolment")
-  val blankUser = User("")
+  val userWithMtdVatEnrolment = User(
+    Enrolments(
+      Set(
+        Enrolment(
+          Constants.vatEnrolmentKey,
+          Seq(EnrolmentIdentifier("", "")),
+          "",
+          ConfidenceLevel.L0
+        )
+      )
+    )
+  )
+  val blankUser = User(
+    Enrolments(Set.empty)
+  )
 
   "Timeout predicate" when {
 

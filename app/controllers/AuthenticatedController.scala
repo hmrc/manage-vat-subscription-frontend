@@ -16,12 +16,10 @@
 
 package controllers
 
-import javax.inject.{Inject, Singleton}
-
 import auth.AuthPredicate.{AuthPredicate, Success}
 import auth.AuthPredicates.predicates
 import auth.User
-import play.api.mvc.{Action, AnyContent, Request, Result}
+import play.api.mvc._
 import services.AuthService
 import uk.gov.hmrc.auth.core.NoActiveSession
 import uk.gov.hmrc.auth.core.retrieve.Retrievals._
@@ -29,29 +27,35 @@ import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-@Singleton
-class AuthenticatedController @Inject()(authService: AuthService) extends FrontendController {
+trait AuthenticatedController extends FrontendController {
+
+  val authService: AuthService
 
   type ActionBody = Request[AnyContent] => User => Future[Result]
   type AuthenticatedAction = ActionBody => Action[AnyContent]
 
-  val async: AuthenticatedAction = asyncAction(predicates)
+  protected object AuthenticatedAction {
 
-  def asyncAction(predicate: AuthPredicate)(action: ActionBody): Action[AnyContent] = {
+    def apply(actionBody: ActionBody): Action[AnyContent] = async(actionBody)
 
-    Action.async { implicit request =>
+    private def internal(predicate: AuthPredicate)(action: ActionBody): Action[AnyContent] = {
 
-      authService.authorised().retrieve(allEnrolments) { enrolments =>
+      Action.async { implicit request =>
 
-        val user = User(enrolments)
+        authService.authorised().retrieve(allEnrolments) { enrolments =>
 
-        predicate.apply(request)(user) match {
-          case Right(Success) => action(request)(user)
-          case Left(failure) => failure
+          val user = User(enrolments)
+
+          predicate.apply(request)(user) match {
+            case Right(Success) => action(request)(user)
+            case Left(failure) => failure
+          }
+        }.recover {
+          case _: NoActiveSession => Redirect(controllers.routes.SessionTimeoutController.timeout())
         }
-      }.recoverWith {
-        case _: NoActiveSession => Future.successful(Redirect(controllers.routes.SessionTimeoutController.timeout()))
       }
     }
+
+    def async: AuthenticatedAction = internal(predicates)
   }
 }
