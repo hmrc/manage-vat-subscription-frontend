@@ -37,7 +37,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
     new HelloWorldController(messages, mockAuthService, mockAppConfig)
   }
 
-  "Calling the .helloWorld action with an authenticated user" should {
+  "Calling the .helloWorld action" when {
 
     "user is authenticated" should {
 
@@ -62,8 +62,8 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
       }
     }
 
-    "user is unauthorised" should {
-      
+    "user is unauthenticated" should {
+
       val enrolments = Enrolments(
         Set.empty
       )
