@@ -28,31 +28,51 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class HelloWorldControllerSpec extends ControllerBaseSpec {
 
-  "Calling the .helloWorld action with an authenticated user" should {
-
-    lazy val target = new HelloWorldController(messages, mockAuthService, mockAppConfig)
-    lazy val result = target.helloWorld()(FakeRequest())
+  def setupController(enrolments: Enrolments): HelloWorldController = {
 
     (mockAuthConnector.authorise(_: Predicate, _: Retrieval[Enrolments])(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *, *)
-      .returns(Future.successful(
-        Enrolments(
-          Set(
-            Enrolment("HMRC-MTD-VAT",
-              Seq(EnrolmentIdentifier("", "")),
-              "",
-              ConfidenceLevel.L0)
-          )
-        )
-      ))
+      .returns(Future.successful(enrolments))
 
-    "return 200" in {
-      status(result) shouldBe Status.OK
+    new HelloWorldController(messages, mockAuthService, mockAppConfig)
+  }
+
+  "Calling the .helloWorld action with an authenticated user" should {
+
+    "user is authenticated" should {
+
+      val enrolments = Enrolments(
+        Set(
+          Enrolment("HMRC-MTD-VAT",
+            Seq(EnrolmentIdentifier("", "")),
+            "",
+            ConfidenceLevel.L0)
+        )
+      )
+      lazy val target = setupController(enrolments)
+      lazy val result = target.helloWorld()(FakeRequest())
+
+      "return 200" in {
+        status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
     }
 
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
+    "user is unauthorised" should {
+      
+      val enrolments = Enrolments(
+        Set.empty
+      )
+      lazy val target = setupController(enrolments)
+      lazy val result = target.helloWorld()(FakeRequest())
+
+      "return 303" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
     }
   }
 }

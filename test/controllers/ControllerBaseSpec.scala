@@ -20,8 +20,6 @@ import mocks.MockAppConfig
 import org.scalamock.scalatest.MockFactory
 import play.api.i18n.MessagesApi
 import play.api.inject.Injector
-import play.api.mvc.AnyContentAsEmpty
-import play.api.test.FakeRequest
 import services.AuthService
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
