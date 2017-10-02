@@ -14,23 +14,14 @@
  * limitations under the License.
  */
 
-package auth
+package controllers.auth
 
-import cats.Monoid
-import play.api.mvc.{AnyContent, Request, Result}
+import common.Constants
+import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
 
-import scala.concurrent.Future
+case class User(enrolments: Enrolments) {
 
-object AuthPredicate {
-
-  object Success
-
-  type Success = Success.type
-
-  implicit object SuccessMonoid extends Monoid[Success] {
-    override def empty: Success = Success
-    override def combine(x: Success, y: Success): Success = Success
+  lazy val mtdVatId: Option[String] = enrolments.enrolments.collectFirst {
+    case Enrolment(Constants.VAT_ENROLMENT_KEY, EnrolmentIdentifier(_, value) :: _, _, _, _) => value
   }
-
-  type AuthPredicate = Request[AnyContent] => User => Either[Future[Result], Success]
 }
