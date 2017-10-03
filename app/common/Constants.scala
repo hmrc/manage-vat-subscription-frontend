@@ -14,23 +14,9 @@
  * limitations under the License.
  */
 
-package auth
+package common
 
-import cats.Monoid
-import play.api.mvc.{AnyContent, Request, Result}
+object Constants {
 
-import scala.concurrent.Future
-
-object AuthPredicate {
-
-  object Success
-
-  type Success = Success.type
-
-  implicit object SuccessMonoid extends Monoid[Success] {
-    override def empty: Success = Success
-    override def combine(x: Success, y: Success): Success = Success
-  }
-
-  type AuthPredicate = Request[AnyContent] => User => Either[Future[Result], Success]
+  val VAT_ENROLMENT_KEY: String = "HMRC-MTD-VAT"
 }
