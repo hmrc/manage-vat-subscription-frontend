@@ -20,17 +20,37 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, TestSuite}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
+import stubs.AuthStub
 
 trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite with TestSuite
-  with BeforeAndAfterEach with BeforeAndAfterAll{
+  with BeforeAndAfterEach with BeforeAndAfterAll {
 
   val mockHost: String = WireMockHelper.host
-  val mockPort: String = WireMockHelper.port.toString
-  val mockUrl: String = s"http://$mockHost:$mockPort"
+  val mockPort: String = WireMockHelper.wmPort.toString
+
+  class PreconditionBuilder {
+    implicit val builder: PreconditionBuilder = this
+
+    def user: User = new User()
+  }
+
+  def given: PreconditionBuilder = new PreconditionBuilder
+
+  class User()(implicit builder: PreconditionBuilder) {
+    def isAuthenticated: PreconditionBuilder = {
+      AuthStub.stubAuthSuccess()
+      builder
+    }
+
+    def isNotAuthenticated: PreconditionBuilder = {
+      AuthStub.stubUnauthorised()
+      builder
+    }
+  }
 
   def servicesConfig: Map[String, String] = Map(
-    "microservice.service.auth.host" -> mockHost,
-    "microservice.service.auth.port" -> mockPort
+    "microservice.services.auth.host" -> mockHost,
+    "microservice.services.auth.port" -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()

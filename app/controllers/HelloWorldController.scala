@@ -28,7 +28,7 @@ import scala.concurrent.Future
 @Singleton
 class HelloWorldController @Inject()(val messagesApi: MessagesApi,
                                      val authService: AuthService,
-                                    implicit val appConfig: AppConfig) extends AuthenticatedController with I18nSupport {
+                                     implicit val appConfig: AppConfig) extends AuthenticatedController with I18nSupport {
 
   val helloWorld: Action[AnyContent] = AuthenticatedAction {
     implicit request =>
