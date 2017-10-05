@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package stubs
+package helpers
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.matching.UrlPattern
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import helpers.WireMockHelper
 import play.api.libs.json.Writes
 
 trait WireMockMethods {
@@ -68,25 +67,11 @@ trait WireMockMethods {
     }
   }
 
-  private def verifyInternal(method: HTTPMethod, uri: String, bodyString: Option[String]): Unit = method match {
-    case GET => WireMockHelper.verifyGet(uri)
-    case POST => WireMockHelper.verifyPost(uri, bodyString)
-    case _ => ()
-  }
-
   sealed trait HTTPMethod {
     def wireMockMapping(pattern: UrlPattern): MappingBuilder
   }
-  case object GET extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = get(pattern)
-  }
+
   case object POST extends HTTPMethod {
     override def wireMockMapping(pattern: UrlPattern): MappingBuilder = post(pattern)
-  }
-  case object PUT extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = put(pattern)
-  }
-  case object DELETE extends HTTPMethod {
-    override def wireMockMapping(pattern: UrlPattern): MappingBuilder = delete(pattern)
   }
 }

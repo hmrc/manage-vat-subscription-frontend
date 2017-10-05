@@ -20,13 +20,27 @@ import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class NotEnrolledControllerSpec extends ControllerBaseSpec {
+class ErrorsControllerSpec extends ControllerBaseSpec {
 
-  lazy val target = new NotEnrolledController(messages, mockAppConfig)
+  lazy val target = new ErrorsController(messages, mockAppConfig)
 
-  "Calling the .show action" should {
+  "Calling the sessionTimeout action" should {
 
-    lazy val result = target.show()(FakeRequest())
+    lazy val result = target.sessionTimeout()(FakeRequest())
+
+    "return 200" in {
+      status(result) shouldBe Status.OK
+    }
+
+    "return HTML" in {
+      contentType(result) shouldBe Some("text/html")
+      charset(result) shouldBe Some("utf-8")
+    }
+  }
+
+  "Calling the unauthorised action" should {
+
+    lazy val result = target.sessionTimeout()(FakeRequest())
 
     "return 200" in {
       status(result) shouldBe Status.OK

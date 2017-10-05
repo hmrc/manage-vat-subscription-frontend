@@ -32,11 +32,8 @@ trait AppConfig extends ServicesConfig {
   val whitelistedIps: Seq[String]
   val whitelistExcludedPaths: Seq[Call]
   val shutterPage: String
+  val ggServiceUrl: String
   val authUrl: String
-  val governmentGateway: String
-  val governmentGatewaySignIn: String
-  val baseUrl: String
-  val ggSignInUrl: String
 }
 
 @Singleton
@@ -46,12 +43,12 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
 
   private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  private lazy val contactHost: String = configuration.getString(s"contact-frontend.host").getOrElse("")
+  private lazy val contactHost: String = configuration.getString("contact-frontend.host").getOrElse("")
   private lazy val contactFormServiceIdentifier: String = "MyService"
 
   override lazy val authUrl: String = baseUrl("auth")
-  override lazy val analyticsToken: String = loadConfig(s"google-analytics.token")
-  override lazy val analyticsHost: String = loadConfig(s"google-analytics.host")
+  override lazy val analyticsToken: String = loadConfig("google-analytics.token")
+  override lazy val analyticsHost: String = loadConfig("google-analytics.host")
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
@@ -62,11 +59,11 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
   override lazy val whitelistedIps: Seq[String] = whitelistConfig("whitelist.allowedIps")
   override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig("whitelist.excludePaths").map(path => Call("GET", path))
   override lazy val shutterPage: String = loadConfig("whitelist.shutter-page-url")
-  override lazy val governmentGateway: String = loadConfig(s"government-gateway.host")
-  override lazy val governmentGatewaySignIn: String = s"$governmentGateway/gg/sign-in"
-  override lazy val baseUrl: String = loadConfig(s"base.host")
+  private lazy val governmentGateway: String = loadConfig(s"government-gateway.host")
+  private lazy val governmentGatewaySignIn: String = s"$governmentGateway/gg/sign-in"
+  private lazy val baseUrl: String = loadConfig(s"base.host")
 
-  private lazy val continueUrl: String = ContinueUrl(baseUrl + controllers.routes.HelloWorldController.helloWorld()).encodedUrl
-  private lazy val origin: String = loadConfig("appName")
-  override lazy val ggSignInUrl: String = s"$governmentGatewaySignIn?continue=$continueUrl&origin=$origin"
+  private lazy val serviceContinueUrl: String = ContinueUrl(baseUrl + controllers.routes.HelloWorldController.helloWorld()).encodedUrl
+  private lazy val serviceOrigin: String = loadConfig("appName")
+  override lazy val ggServiceUrl: String = s"$governmentGatewaySignIn?continue=$serviceContinueUrl&origin=$serviceOrigin"
 }

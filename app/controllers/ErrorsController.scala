@@ -26,10 +26,14 @@ import uk.gov.hmrc.play.frontend.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class SessionTimeoutController @Inject()(val messagesApi: MessagesApi,
-                                         implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class ErrorsController @Inject()(val messagesApi: MessagesApi,
+                                 implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val timeout: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(views.html.sessionTimeout(appConfig.ggSignInUrl)))
+  val sessionTimeout: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(views.html.errors.sessionTimeout()))
+  }
+
+  val unauthorised: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(views.html.errors.unauthorised()))
   }
 }

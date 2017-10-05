@@ -17,7 +17,7 @@
 package controllers.auth
 
 import controllers.auth.AuthPredicate.Success
-import controllers.auth.AuthPredicates.{enrolledPredicate, predicates, timeoutPredicate}
+import controllers.auth.AuthPredicates.{authorisedPredicate, predicates, timeoutPredicate}
 import common.Constants
 import mocks.MockAppConfig
 import org.scalatest.EitherValues
@@ -82,8 +82,8 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.SessionTimeoutController.timeout().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.SessionTimeoutController.timeout().url)
+      s"redirect to ${controllers.routes.ErrorsController.sessionTimeout().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.ErrorsController.sessionTimeout().url)
       }
     }
   }
@@ -91,7 +91,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
   "Enrolled predicate" when {
 
     "mtdVatId is not empty" should {
-      lazy val predicate = enrolledPredicate(FakeRequest())(userWithMtdVatEnrolment)
+      lazy val predicate = authorisedPredicate(FakeRequest())(userWithMtdVatEnrolment)
 
       "return Success" in {
         predicate.right.value shouldBe Success
@@ -99,15 +99,15 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
     }
 
     "mtdVatId is empty" should {
-      lazy val predicate = enrolledPredicate(FakeRequest())(blankUser)
+      lazy val predicate = authorisedPredicate(FakeRequest())(blankUser)
       lazy val result = predicate.left.value
 
       "return 303" in {
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.NotEnrolledController.show().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.NotEnrolledController.show().url)
+      s"redirect to ${controllers.routes.ErrorsController.unauthorised().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.ErrorsController.unauthorised().url)
       }
     }
   }
@@ -126,8 +126,8 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.SessionTimeoutController.timeout().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.SessionTimeoutController.timeout().url)
+      s"redirect to ${controllers.routes.ErrorsController.sessionTimeout().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.ErrorsController.sessionTimeout().url)
       }
     }
 
@@ -151,8 +151,8 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
         status(result) shouldBe 303
       }
 
-      s"redirect to ${controllers.routes.NotEnrolledController.show().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.NotEnrolledController.show().url)
+      s"redirect to ${controllers.routes.ErrorsController.unauthorised().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.ErrorsController.unauthorised().url)
       }
     }
   }

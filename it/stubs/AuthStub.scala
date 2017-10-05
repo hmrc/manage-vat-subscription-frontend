@@ -20,6 +20,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.{JsObject, Json}
 import common.Constants.VAT_ENROLMENT_KEY
+import helpers.WireMockMethods
 
 object AuthStub extends WireMockMethods {
 
