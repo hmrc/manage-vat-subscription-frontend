@@ -27,7 +27,7 @@ import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
 trait ControllerBaseSpec extends UnitSpec with MockFactory with WithFakeApplication {
 
   val injector: Injector = fakeApplication.injector
-  val messages: MessagesApi = injector.instanceOf[MessagesApi]
+  val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]

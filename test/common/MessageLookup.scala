@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-package controllers
+package common
 
-import javax.inject.{Inject, Singleton}
+object MessageLookup {
 
-import config.AppConfig
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.frontend.controller.FrontendController
+  object SessionTimeout {
+    val title: String = "Your session has timed out"
+    val instructions: String = "To manage your VAT account, you'll have to sign in using your Government Gateway ID."
+  }
 
-import scala.concurrent.Future
-
-@Singleton
-class NotEnrolledController @Inject()(val messagesApi: MessagesApi,
-                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
-
-  val show: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(views.html.notEnrolled()))
+  object Unauthorised {
+    val title: String = "Unauthorised access"
+    val instructions: String = "Here are some instructions about what you should do next."
   }
 }

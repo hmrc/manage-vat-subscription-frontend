@@ -51,7 +51,7 @@ trait AuthenticatedController extends FrontendController {
             case Left(failure) => failure
           }
         }.recover {
-          case _: NoActiveSession => Redirect(controllers.routes.SessionTimeoutController.timeout())
+          case _: NoActiveSession => Redirect(controllers.routes.ErrorsController.sessionTimeout())
         }
       }
     }

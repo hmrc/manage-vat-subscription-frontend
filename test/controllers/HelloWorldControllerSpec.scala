@@ -34,7 +34,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
       .expects(*, *, *, *)
       .returns(Future.successful(enrolments))
 
-    new HelloWorldController(messages, mockAuthService, mockAppConfig)
+    new HelloWorldController(messagesApi, mockAuthService, mockAppConfig)
   }
 
   "Calling the .helloWorld action" when {

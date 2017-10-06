@@ -32,16 +32,18 @@ import uk.gov.hmrc.play.frontend.filters.{FrontendAuditFilter, FrontendLoggingFi
 object FrontendGlobal
   extends DefaultFrontendGlobal {
 
+  lazy val application: Application = Play.current
+
   override val auditConnector: FrontendAuditConnector = new FrontendAuditConnector
   override val loggingFilter: LoggingFilter.type = LoggingFilter
   override val frontendAuditFilter: AuditFilter.type = AuditFilter
 
   override protected lazy val defaultFrontendFilters: Seq[EssentialFilter] = {
     val coreFilters = super.defaultFrontendFilters.filterNot(f => f.equals(RecoveryFilter))
-    val ipWhiteListKey = Play.current.configuration.getBoolean("whitelist.enabled").getOrElse(false)
+    val whitelistEnabled = application.configuration.getBoolean("whitelist.enabled").getOrElse(false)
 
-    if (ipWhiteListKey) {
-      coreFilters.:+(new WhitelistFilter(Play.current))
+    if (whitelistEnabled) {
+      coreFilters.:+(new WhitelistFilter(application))
     }
     else {
       coreFilters
@@ -54,7 +56,7 @@ object FrontendGlobal
   }
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit rh: Request[_]): Html = {
-    val appConfig: AppConfig = Play.current.injector.instanceOf[AppConfig]
+    val appConfig: AppConfig = application.injector.instanceOf[AppConfig]
     views.html.error_template(appConfig, pageTitle, heading, message)
   }
 
