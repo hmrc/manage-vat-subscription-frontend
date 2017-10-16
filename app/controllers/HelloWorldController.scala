@@ -38,6 +38,6 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
 
   val textInput: Action[AnyContent] = Action.async {
     implicit request =>
-      Future.successful(Ok(views.html.input.textInput(TextInputForm.form)))
+      Future.successful(Ok(views.html.test.textInput(TextInputForm.form)))
   }
 }
