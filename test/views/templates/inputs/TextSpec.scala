@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package views.errors.templates.inputs
+package views.templates.inputs
 
 import controllers.ControllerBaseSpec
 import forms.test.TextInputForm
