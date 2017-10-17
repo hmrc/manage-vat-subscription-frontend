@@ -16,20 +16,14 @@
 
 package views.templates.inputs
 
-import controllers.ControllerBaseSpec
 import forms.test.TextInputForm
-import org.jsoup.Jsoup
 import play.api.data.{Field, FormError}
-import play.api.i18n.{Lang, Messages}
 import play.twirl.api.Html
+import views.templates.TemplateBaseSpec
 
-class TextSpec extends ControllerBaseSpec {
+class TextTemplateSpec extends TemplateBaseSpec {
 
   "Rendering the text input" when {
-
-    lazy implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
-
-    def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
 
     val fieldName = "fieldName"
     val labelText = "labelText"
