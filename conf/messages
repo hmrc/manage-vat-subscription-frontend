@@ -1,3 +1,7 @@
+base.day = Day
+base.month = Month
+base.year = Year
+
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to
 sessionTimeout.helpTwo = sign in

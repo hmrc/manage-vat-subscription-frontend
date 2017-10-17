@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import config.AppConfig
 import controllers.auth.actions.VatUserAction
+import forms.test.DateInputForm
 import uk.gov.hmrc.auth.core.AuthorisedFunctions
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 import forms.test.{MoneyInputForm, TextInputForm}
@@ -57,14 +58,19 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
   val submitMoney: Action[AnyContent] = Action.async {
     implicit request =>
 
-    def successAction(model: MoneyInputModel): Future[Result] = {
-      Future.successful(Redirect(routes.HelloWorldController.moneyInput()))
-    }
+      def successAction(model: MoneyInputModel): Future[Result] = {
+        Future.successful(Redirect(routes.HelloWorldController.moneyInput()))
+      }
 
-    def errorAction(form: Form[MoneyInputModel]): Future[Result] = {
-      Future.successful(BadRequest(views.html.test.moneyInput(form)))
-    }
+      def errorAction(form: Form[MoneyInputModel]): Future[Result] = {
+        Future.successful(BadRequest(views.html.test.moneyInput(form)))
+      }
 
-    form.bindFromRequest.fold(errorAction, successAction)
+      form.bindFromRequest.fold(errorAction, successAction)
+  }
+
+  val dateInput: Action[AnyContent] = Action.async {
+    implicit request =>
+      Future.successful(Ok(views.html.dateInput(DateInputForm.form)))
   }
 }

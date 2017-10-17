@@ -1,0 +1,50 @@
+@*
+* Copyright 2017 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@import uk.gov.hmrc.play.views.html.helpers
+
+@(form: Form[_], fieldName: String, hint: Option[String] = None)(implicit messages: Messages)
+
+<fieldset id="@fieldName-fieldset" class="form-group form-date">
+
+    <legend>
+
+    </legend>
+
+    @helpers.input(
+        form(s"$fieldName.day"),
+        '_label -> messages("base.day"),
+        '_labelClass -> "form-group form-group-day",
+        '_maxLength -> "2",
+        '_inputClass -> "form-control input--xsmall"
+    )
+    @helpers.input(
+        form(s"$fieldName.month"),
+        '_label -> messages("base.month"),
+        '_labelClass -> "form-group form-group-month",
+        '_maxLength -> "2",
+        '_inputClass -> "form-control input--xsmall"
+    )
+    @helpers.input(
+        form(s"$fieldName.year"),
+        '_label -> messages("base.year"),
+        '_labelClass -> "form-group form-group-year",
+        '_maxLength -> "4",
+        '_inputClass -> "form-control input--xsmall"
+    )
+
+
+</fieldset>
