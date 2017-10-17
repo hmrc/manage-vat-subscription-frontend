@@ -17,8 +17,8 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import config.AppConfig
+import forms.test.TextInputForm
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.AuthService
@@ -34,5 +34,10 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
     implicit request =>
       implicit user =>
         Future.successful(Ok(views.html.helloworld.hello_world()))
+  }
+
+  val textInput: Action[AnyContent] = Action.async {
+    implicit request =>
+      Future.successful(Ok(views.html.test.textInput(TextInputForm.form)))
   }
 }
