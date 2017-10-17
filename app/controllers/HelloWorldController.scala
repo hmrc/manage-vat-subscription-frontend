@@ -71,6 +71,6 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
 
   val dateInput: Action[AnyContent] = Action.async {
     implicit request =>
-      Future.successful(Ok(views.html.dateInput(DateInputForm.form)))
+      Future.successful(Ok(views.html.test.dateInput(DateInputForm.form)))
   }
 }
