@@ -16,25 +16,19 @@
 
 package views.templates.inputs
 
-import controllers.ControllerBaseSpec
 import forms.test.MoneyInputForm
-import org.jsoup.Jsoup
 import play.api.data.{Field, FormError}
-import play.api.i18n.{Lang, Messages}
 import play.twirl.api.Html
+import views.templates.TemplateBaseSpec
 
-class MoneyTemplateSpec extends ControllerBaseSpec {
+class MoneyTemplateSpec extends TemplateBaseSpec {
 
-  lazy implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
-
-  def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
-
-  val fieldName = "fieldName"
-  val labelText = "labelText"
-  val hintText = "hintText"
-  val errorMessage = "error message"
 
   "Rendering the money input" when {
+
+    val fieldName = "fieldName"
+    val labelText = "labelText"
+    val hintText = "hintText"
 
     "the field contains valid data and hint text is supplied" should {
 
@@ -145,26 +139,22 @@ class MoneyTemplateSpec extends ControllerBaseSpec {
 
     "the field contains invalid data" should {
 
+      val errorMessage = "error message"
+
       val field: Field = Field(MoneyInputForm.form, fieldName, Seq(), None, Seq(FormError(fieldName, errorMessage)), Some(""))
 
       val expectedMarkup = Html(
         s"""
            |<div for="$fieldName" class=" form-group form-field--error">
            |
-           |
-           |
-           |            <span class="error-notification"
-           |                role="tooltip">
-           |                $errorMessage
-           |            </span>
-           |
-           |
+           |    <span class="error-notification"
+           |      role="tooltip">
+           |      $errorMessage
+           |    </span>
            |
            |    <label for="$fieldName" class="form-label visuallyhidden">
            |        labelText
            |    </label>
-           |
-           |
            |
            |    <span class="input-currency"></span>
            |
@@ -178,8 +168,6 @@ class MoneyTemplateSpec extends ControllerBaseSpec {
            |    />
            |
            |</div>
-           |
-           |
          """.stripMargin)
 
       val markup = views.html.templates.inputs.moneyInputWrapper(field, labelText, None)
