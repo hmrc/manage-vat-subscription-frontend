@@ -18,7 +18,7 @@ package models.test
 
 import play.api.libs.json.{Json, OFormat}
 
-case class DateInputModel(day: String, month: String, year: String)
+case class DateInputModel(day: Int, month: Int, year: Int)
 
 object DateInputModel {
   implicit val format: OFormat[DateInputModel] = Json.format[DateInputModel]

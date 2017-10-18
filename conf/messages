@@ -1,6 +1,6 @@
-base.day = Day
-base.month = Month
-base.year = Year
+common.day = Day
+common.month = Month
+common.year = Year
 
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to

@@ -14,21 +14,12 @@
 * limitations under the License.
 *@
 
-@import templates.inputs._
-@import views.html.main_template
-@import models.test.DateInputModel
-@import play.api.data.Form
+@(field: play.api.data.Field, label: String, formClass: String, inputClass: String)(implicit messages: Messages)
 
-@(form: Form[DateInputModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+<label for="@field.name" class="form-group form-group-@formClass">
 
-@main_template(title = "Date Input", appConfig = appConfig) {
+    <span>@label</span>
 
-    <h1>Date Input</h1>
+    <input type="number" class="form-control input--xsmall input--no-spinner @inputClass" name="@field.name" id="@field.name" value="@field.value"/>
 
-    @date(form,
-        "Enter a date",
-        "date",
-        Some("Some hint text")
-    )
-
-}
+</label>

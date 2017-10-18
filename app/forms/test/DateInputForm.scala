@@ -20,13 +20,27 @@ import models.test.DateInputModel
 import play.api.data.Form
 import play.api.data.Forms._
 
+import scala.util.{Failure, Success, Try}
+
 object DateInputForm {
 
-  val form: Form[DateInputModel] = Form(
+  lazy val form: Form[DateInputModel] = Form(
     mapping(
-      "day" -> nonEmptyText,
-      "month" -> nonEmptyText,
-      "year" -> nonEmptyText
+      "dateDay" -> text
+        .verifying("Please supply a day", day => day != "")
+        .transform[Int](stringToInteger, _.toString),
+      "dateMonth" -> text
+        .verifying("Please supply a month", month => month != "")
+        .transform[Int](stringToInteger, _.toString),
+      "dateYear" ->  text
+        .verifying("Please supply a year", year => year != "")
+        .transform[Int](stringToInteger, _.toString)
     )(DateInputModel.apply)(DateInputModel.unapply)
+      .verifying("Dates not valid", fields => true)
   )
+
+  val stringToInteger: String => Int = (input) => Try(input.trim.toInt) match {
+    case Success(value) => value
+    case Failure(_) => 0
+  }
 }

@@ -16,35 +16,45 @@
 
 @import uk.gov.hmrc.play.views.html.helpers
 
-@(form: Form[_], fieldName: String, hint: Option[String] = None)(implicit messages: Messages)
+@(form: Form[_], legend: String, fieldName: String, hint: Option[String] = None)(implicit messages: Messages)
 
-<fieldset id="@fieldName-fieldset" class="form-group form-date">
+@fieldsetClass = @{if(form.hasErrors) "form-field--error" else ""}
 
-    <legend>
+<fieldset id="@fieldName-fieldset" class="form-group form-date @fieldsetClass">
 
+    <legend class="visuallyhidden">
+        @legend
     </legend>
 
-    @helpers.input(
-        form(s"$fieldName.day"),
-        '_label -> messages("base.day"),
-        '_labelClass -> "form-group form-group-day",
-        '_maxLength -> "2",
-        '_inputClass -> "form-control input--xsmall"
-    )
-    @helpers.input(
-        form(s"$fieldName.month"),
-        '_label -> messages("base.month"),
-        '_labelClass -> "form-group form-group-month",
-        '_maxLength -> "2",
-        '_inputClass -> "form-control input--xsmall"
-    )
-    @helpers.input(
-        form(s"$fieldName.year"),
-        '_label -> messages("base.year"),
-        '_labelClass -> "form-group form-group-year",
-        '_maxLength -> "4",
-        '_inputClass -> "form-control input--xsmall"
-    )
+    @hint.map { hint =>
+        <span class="form-hint">
+            @hint
+        </span>
+    }
 
+    @if(form.hasErrors) {
+        <span class="error-notification">@form.errors.head.message</span>
+    }
 
+    @defining(if(form.hasErrors) "error-field" else "") { inputClass =>
+
+        @simpleTextNoError(
+            form(s"${fieldName}Day"),
+            messages("common.day"),
+            "day",
+            inputClass
+        )
+        @simpleTextNoError(
+            form(s"${fieldName}Month"),
+            messages("common.month"),
+            "month",
+            inputClass
+        )
+        @simpleTextNoError(
+            form(s"${fieldName}Year"),
+            messages("common.year"),
+            "year",
+            inputClass
+        )
+    }
 </fieldset>
