@@ -14,12 +14,12 @@
 * limitations under the License.
 *@
 
-@(field: Field, question: String, choices: Seq[String])(implicit messages: Messages)
+@(field: Field, question: String, choices: Seq[String], preSelected: Boolean = false)(implicit messages: Messages)
 
 @checker(choice: String) = @{
   field.value match {
     case Some(_) => if(choice == field.value.get) Html(s"""checked="true"""") else Html("")
-    case None => Html("")
+    case None => if(preSelected) Html(s"""checked="true"""") else Html("")
   }
 }
 
