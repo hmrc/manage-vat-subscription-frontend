@@ -25,11 +25,14 @@
 
 @views.html.main_template(title = "Hello from manage-vat-subscription-frontend", bodyClasses = None, appConfig = appConfig) {
 
+    <h1>Money input</h1>
+
     @form(action = controllers.routes.HelloWorldController.submitMoney()) {
 
-        @moneyInputWrapper(field = forms("moneyInput"),
-                    label = "moneyInput",
-                    hint = Some("hint-text"))
+        @money(form = forms,
+                fieldName = "moneyInput",
+                label = "moneyInput",
+                hint = Some("hint-text"))
 
         <button class="button" type="submit" id="continue-button">Continue</button>
     }

@@ -20,7 +20,6 @@ import models.test.MoneyInputModel
 import play.api.data.Form
 import play.api.data.Forms._
 
-
 import scala.util.{Failure, Success, Try}
 
 object MoneyInputForm {
@@ -35,12 +34,19 @@ object MoneyInputForm {
     case _ => input.toString
   }
 
+  val bigDecimalCheck: String => Boolean = input => Try(BigDecimal(input)) match {
+    case Success(_) => true
+    case Failure(_) if input.trim == "" => true
+    case Failure(_) => false
+  }
+
   val mandatoryCheck: String => Boolean = input => input.trim != ""
 
   val form: Form[MoneyInputModel] = Form(
     mapping(
       "moneyInput" -> text
         .verifying("Not there", mandatoryCheck)
+        .verifying("Not a bigDecimal", bigDecimalCheck)
         .transform(stringToBigDecimal, bigDecimalToString)
     )(MoneyInputModel.apply)(MoneyInputModel.unapply)
   )

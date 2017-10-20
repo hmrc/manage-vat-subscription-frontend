@@ -13,51 +13,44 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
-@(field: play.api.data.Field, args: (Symbol,Any)*)(implicit messages: Messages)
 
 @import play.api.i18n._
 @import views.html.helper._
 
 
-@elements = @{ new FieldElements(field.id, field, null, args.toMap, messages) }
-@parentField = @{args.toMap.get('parentField).asInstanceOf[Option[Field]]}
-@parentElements = @{parentField.map(pf => new FieldElements(pf.id, pf, null, Map(), messages) )}
-@value = @{ field.value match { case Some(x) => x case None => "" case x => x }}
-@labelAfter = @{ elements.args.get('_labelAfter).getOrElse(false).asInstanceOf[Boolean] }
-@labelHighlight = @{ elements.args.get('_labelHighlight).getOrElse(false).asInstanceOf[Boolean] }
-@additionalHTMLContent = @{ elements.args.contains('_additionalContent) }
+@(form: Form[_],
+    fieldName: String,
+    label: String,
+    hint: Option[String] = None)(implicit messages: Messages)
 
+<div class="form-group @if(form.hasErrors) {form-field--error}">
 
-<div for="@elements.field.name" class=" form-group @if(elements.hasErrors || (parentElements.isDefined && parentElements.get.hasErrors)) {form-field--error}">
-
-    @if(!elements.args.contains('_hideErrors)) {
-        @elements.errors.map { error =>
-            <span class="error-notification"
-                role="tooltip">
-                @Messages(error)
-            </span>
-        }
+    @if(form.hasErrors) {
+        <span class="error-notification"
+            role="tooltip">
+            @form.errors.head.message
+        </span>
     }
 
-    <label for="@elements.field.name" class="form-label visuallyhidden">
-        @elements.label
+    <label for=@fieldName class="form-label visuallyhidden">
+        @label
     </label>
 
-    @if(elements.args.contains('_inputHint) ){
-        <span class="form-hint">
-            @elements.args.get('_inputHint)
-        </span>
+    @hint.map { hint =>
+    <span class="form-hint">
+        @hint
+    </span>
     }
 
     <span class="input-currency"></span>
 
     <input
         type="number"
-        class="input--no-spinner input--left-padding"
-        name="@elements.field.name"
-        id="@elements.field.name"
-        value="@value"
-        step="@elements.args.get('_step)"
+        class="input--no-spinner input--left-padding @if(form.hasErrors) {error-field}"
+        name="@fieldName"
+        id="@fieldName"
+        value="@form(fieldName).value"
+        step="0.01"
     />
 
 </div>

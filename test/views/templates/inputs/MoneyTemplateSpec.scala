@@ -17,16 +17,14 @@
 package views.templates.inputs
 
 import forms.test.MoneyInputForm
-import play.api.data.{Field, FormError}
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
 
 class MoneyTemplateSpec extends TemplateBaseSpec {
 
-
   "Rendering the money input" when {
 
-    val fieldName = "fieldName"
+    val fieldName = "moneyInput"
     val labelText = "labelText"
     val hintText = "hintText"
 
@@ -34,11 +32,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
 
       val validData: String = "100.00"
 
-      val field: Field = Field(MoneyInputForm.form, fieldName, Seq(), None, Seq(), Some(validData))
-
       val expectedMarkup = Html(
         s"""
-           |<div for=$fieldName class=" form-group ">
+           |<div class="form-group ">
            |
            |    <label for=$fieldName class="form-label visuallyhidden">
            |        $labelText
@@ -52,7 +48,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |
            |    <input
            |        type="number"
-           |        class="input--no-spinner input--left-padding"
+           |        class="input--no-spinner input--left-padding "
            |        name="$fieldName"
            |        id="$fieldName"
            |        value=$validData
@@ -62,7 +58,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.moneyInputWrapper(field, labelText, Some(hintText))
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -73,11 +69,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
 
       val validData: String = "100.00"
 
-      val field: Field = Field(MoneyInputForm.form, fieldName, Seq(), None, Seq(), Some(validData))
-
       val expectedMarkup = Html(
         s"""
-           |<div for=$fieldName class=" form-group ">
+           |<div class="form-group ">
            |
            |    <label for=$fieldName class="form-label visuallyhidden">
            |        $labelText
@@ -87,7 +81,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |
            |    <input
            |        type="number"
-           |        class="input--no-spinner input--left-padding"
+           |        class="input--no-spinner input--left-padding "
            |        name="$fieldName"
            |        id="$fieldName"
            |        value="$validData"
@@ -97,7 +91,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.moneyInputWrapper(field, labelText, None)
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -106,11 +100,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
 
     "the field contains no data and no hint text is supplied" should {
 
-      val field: Field = Field(MoneyInputForm.form, fieldName, Seq(), None, Seq(), None)
-
       val expectedMarkup = Html(
         s"""
-           |<div for=$fieldName class=" form-group ">
+           |<div class="form-group ">
            |
            |    <label for=$fieldName class="form-label visuallyhidden">
            |        $labelText
@@ -120,7 +112,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |
            |    <input
            |        type="number"
-           |        class="input--no-spinner input--left-padding"
+           |        class="input--no-spinner input--left-padding "
            |        name="$fieldName"
            |        id="$fieldName"
            |        value=""
@@ -130,7 +122,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.moneyInputWrapper(field, labelText, None)
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form, fieldName, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -139,17 +131,15 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
 
     "the field contains invalid data" should {
 
-      val errorMessage = "error message"
-
-      val field: Field = Field(MoneyInputForm.form, fieldName, Seq(), None, Seq(FormError(fieldName, errorMessage)), Some(""))
+      val errorMessage = "Not a bigDecimal"
 
       val expectedMarkup = Html(
         s"""
-           |<div for="$fieldName" class=" form-group form-field--error">
+           |<div class="form-group form-field--error">
            |
            |    <span class="error-notification"
-           |      role="tooltip">
-           |      $errorMessage
+           |        role="tooltip">
+           |        $errorMessage
            |    </span>
            |
            |    <label for="$fieldName" class="form-label visuallyhidden">
@@ -160,17 +150,17 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |
            |    <input
            |        type="number"
-           |        class="input--no-spinner input--left-padding"
+           |        class="input--no-spinner input--left-padding error-field"
            |        name="$fieldName"
            |        id="$fieldName"
-           |        value=""
+           |        value="invalid data"
            |        step="0.01"
            |    />
            |
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.moneyInputWrapper(field, labelText, None)
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data")), fieldName, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
