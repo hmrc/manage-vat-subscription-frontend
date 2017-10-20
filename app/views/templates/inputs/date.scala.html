@@ -14,8 +14,6 @@
 * limitations under the License.
 *@
 
-@import uk.gov.hmrc.play.views.html.helpers
-
 @(form: Form[_], legend: String, fieldName: String, hint: Option[String] = None)(implicit messages: Messages)
 
 @fieldsetClass = @{if(form.hasErrors) "form-field--error" else ""}
@@ -33,24 +31,24 @@
     }
 
     @if(form.hasErrors) {
-        <span class="error-notification">@form.errors.head.message</span>
+        <span class="error-notification" role="tooltip">@messages("common.dateError")</span>
     }
 
     @defining(if(form.hasErrors) "error-field" else "") { inputClass =>
 
-        @simpleTextNoError(
+        @numberNoError(
             form(s"${fieldName}Day"),
             messages("common.day"),
             "day",
             inputClass
         )
-        @simpleTextNoError(
+        @numberNoError(
             form(s"${fieldName}Month"),
             messages("common.month"),
             "month",
             inputClass
         )
-        @simpleTextNoError(
+        @numberNoError(
             form(s"${fieldName}Year"),
             messages("common.year"),
             "year",

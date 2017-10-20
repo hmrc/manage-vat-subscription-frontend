@@ -16,19 +16,13 @@
 
 package views.templates.inputs
 
-import controllers.ControllerBaseSpec
 import forms.test.DateInputForm
-import org.jsoup.Jsoup
-import play.api.i18n.{Lang, Messages}
 import play.twirl.api.Html
+import views.templates.TemplateBaseSpec
 
-class DateSpec extends ControllerBaseSpec {
+class DateTemplateSpec extends TemplateBaseSpec {
 
   "Rendering the date input" when {
-
-    lazy implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
-
-    def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
 
     val fieldName = "date"
     val hintText = "hintText"
@@ -150,6 +144,106 @@ class DateSpec extends ControllerBaseSpec {
            |  <label for="${fieldName}Year" class="form-group form-group-year" >
            |    <span>Year</span>
            |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Year" id="${fieldName}Year" value="3"/>
+           |  </label>
+           |
+           |</fieldset>
+           |
+        """.stripMargin
+      )
+
+      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "one field is invalid" should {
+
+      val form = DateInputForm.form.bind(
+        Map(
+          "dateDay" -> "",
+          "dateMonth" -> "2",
+          "dateYear" -> "3"
+        )
+      )
+
+      val dateError = "Enter a valid date"
+
+      val expectedMarkup = Html(
+        s"""
+           |
+           |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
+           |
+           |  <legend class="visuallyhidden">
+           |    $legend
+           |  </legend>
+           |
+           |  <span class="error-notification" role="tooltip">$dateError</span>
+           |
+           |  <label for="${fieldName}Day" class="form-group form-group-day" >
+           |    <span>Day</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Day" id="${fieldName}Day" value=""/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Month" class="form-group form-group-month" >
+           |    <span>Month</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Month" id="${fieldName}Month" value="2"/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Year" class="form-group form-group-year" >
+           |    <span>Year</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Year" id="${fieldName}Year" value="3"/>
+           |  </label>
+           |
+           |</fieldset>
+           |
+        """.stripMargin
+      )
+
+      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "more than one fields are invalid" should {
+
+      val form = DateInputForm.form.bind(
+        Map(
+          "dateDay" -> "1",
+          "dateMonth" -> "",
+          "dateYear" -> ""
+        )
+      )
+
+      val dateError = "Enter a valid date"
+
+      val expectedMarkup = Html(
+        s"""
+           |
+           |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
+           |
+           |  <legend class="visuallyhidden">
+           |    $legend
+           |  </legend>
+           |
+           |  <span class="error-notification" role="tooltip">$dateError</span>
+           |
+           |  <label for="${fieldName}Day" class="form-group form-group-day" >
+           |    <span>Day</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Day" id="${fieldName}Day" value="1"/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Month" class="form-group form-group-month" >
+           |    <span>Month</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Month" id="${fieldName}Month" value=""/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Year" class="form-group form-group-year" >
+           |    <span>Year</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="${fieldName}Year" id="${fieldName}Year" value=""/>
            |  </label>
            |
            |</fieldset>
