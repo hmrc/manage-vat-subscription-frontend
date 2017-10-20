@@ -16,10 +16,10 @@
 
 @(field: Field, question: String, choices: Seq[String])(implicit messages: Messages)
 
-@isChecked = @{
-  field.value.map {
-    case "true" => Html(s"""checked="checked"""")
-    case _ => Html("")
+@checker(choice: String) = @{
+  field.value match {
+    case Some(_) => if(choice == field.value.get) Html(s"""checked="true"""") else Html("")
+    case None => Html("")
   }
 }
 
@@ -27,11 +27,10 @@
   <fieldset>
     <legend>
       <h1 class="heading-medium">@question</h1>
-      <span class="error-message">ERROR ERROR</span>
     </legend>
     @for((choice, i) <- choices.zipWithIndex) {
       <div class="multiple-choice">
-        <input id="@{field.name}-@i" name="@{field.name}[@i]" type="checkbox" value="@choice" @isChecked>
+        <input id="@{field.name}-@i" name="@{field.name}[@i]" type="checkbox" value="@choice" @checker(choice)>
         <label for="@{field.name}-@i">@choice</label>
       </div>
     }
