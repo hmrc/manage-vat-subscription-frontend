@@ -16,12 +16,21 @@
 
 @import uk.gov.hmrc.play.views.html.helpers
 
-@(field: Field, choices: Seq[(String, String)], label: String)(implicit messages: Messages)
+@(field: Field,
+        choices: Seq[(String, String)],
+        label: String,
+        stacked: Boolean = false)(implicit messages: Messages)
 
 @question = {
   <h1 class="heading-medium"> @label </h1>
 }
 
-<div class="form-group">
-  @helpers.inputRadioGroup(field, choices, '_legend -> question, '_groupClass -> "inline")
-</div>
+@defining({
+  val defaultArgs: Map[Symbol, Any] = Map('_legend -> question)
+  if (stacked) defaultArgs else defaultArgs + ('_groupClass -> "inline")
+}) { args =>
+
+  <div class="form-group">
+    @helpers.inputRadioGroup(field, choices, args.toSeq: _*)
+  </div>
+}
