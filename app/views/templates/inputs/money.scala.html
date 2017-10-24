@@ -14,13 +14,13 @@
 * limitations under the License.
 *@
 
-@import play.api.i18n._
 @import views.html.helper._
 
 
 @(form: Form[_],
     fieldName: String,
     label: String,
+    decimalPlace: Boolean,
     hint: Option[String] = None)(implicit messages: Messages)
 
 <div class="form-group @if(form.hasErrors) {form-field--error}">
@@ -32,7 +32,7 @@
         </span>
     }
 
-    <label for=@fieldName class="form-label visuallyhidden">
+    <label for="@fieldName" class="form-label visuallyhidden">
         @label
     </label>
 
@@ -50,7 +50,7 @@
         name="@fieldName"
         id="@fieldName"
         value="@form(fieldName).value"
-        step="0.01"
+        step="@if(decimalPlace) {0.01} else {1}"
     />
 
 </div>
