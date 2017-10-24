@@ -14,12 +14,12 @@
 * limitations under the License.
 *@
 
-@(field: Field, question: String, choices: Seq[String], preSelected: Boolean = false)(implicit messages: Messages)
+@(field: Field, question: String, choices: Seq[(String, String)], preSelected: Boolean = false)(implicit messages: Messages)
 
 @checker(choice: String) = @{
   field.value match {
-    case Some(_) => if(choice == field.value.get) Html(s"""checked="true"""") else Html("")
-    case None => if(preSelected) Html(s"""checked="true"""") else Html("")
+    case Some(_) => if(choice == field.value.get) Html("checked") else Html("")
+    case None => if(preSelected) Html("checked") else Html("")
   }
 }
 
@@ -28,9 +28,9 @@
     <legend>
       <h1 class="heading-medium">@question</h1>
     </legend>
-    @for((choice, i) <- choices.zipWithIndex) {
+    @for(((choice, value), i) <- choices.zipWithIndex) {
       <div class="multiple-choice">
-        <input id="@{field.name}-@i" name="@{field.name}[@i]" type="checkbox" value="@choice" @checker(choice)>
+        <input id="@{field.name}-@i" name="@{field.name}[@i]" type="checkbox" value="@value" @checker(choice)>
         <label for="@{field.name}-@i">@choice</label>
       </div>
     }

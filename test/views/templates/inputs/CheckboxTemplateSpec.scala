@@ -25,14 +25,14 @@ import views.html.templates.inputs.checkbox
 class CheckboxTemplateSpec extends TemplateBaseSpec {
   val fieldName: String = "fieldName"
   val question: String = "question"
-  val choices: Seq[String] = Seq("choice1", "choice2", "choice3", "choice4")
+  val choices: Seq[(String, String)] = Seq(("choice1", "value1"), ("choice2", "value2"), ("choice3", "value3"), ("choice4", "value4"))
 
-  def generateExpectedCheckboxMarkup(choice: String, checked: Boolean = false): String =
+  def generateExpectedCheckboxMarkup(choice: (String, String), checked: Boolean = false): String =
     s"""
        |
        |<div class="multiple-choice">
-       |  <input id="${fieldName}-${choices.indexOf(choice)}" name="${fieldName}[${choices.indexOf(choice)}]" type="checkbox" value="$choice" ${if (checked) s"""checked="true"""" else ""}>
-       |  <label for="${fieldName}-${choices.indexOf(choice)}">$choice</label>
+       |  <input id="${fieldName}-${choices.indexOf((choice._1, choice._2))}" name="${fieldName}[${choices.indexOf((choice._1, choice._2))}]" type="checkbox" value="${choice._2}" ${if (checked) "checked" else ""}>
+       |  <label for="${fieldName}-${choices.indexOf((choice._1, choice._2))}">${choice._1}</label>
        |</div>
        |
      """.stripMargin
@@ -51,10 +51,10 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
            |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
-           |      ${generateExpectedCheckboxMarkup("choice1")}
-           |      ${generateExpectedCheckboxMarkup("choice2")}
-           |      ${generateExpectedCheckboxMarkup("choice3")}
-           |      ${generateExpectedCheckboxMarkup("choice4")}
+           |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
+           |      ${generateExpectedCheckboxMarkup(("choice2", "value2"))}
+           |      ${generateExpectedCheckboxMarkup(("choice3", "value3"))}
+           |      ${generateExpectedCheckboxMarkup(("choice4", "value4"))}
            |
            |  </fieldset>
            |</div>
@@ -82,10 +82,10 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
            |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
-           |      ${generateExpectedCheckboxMarkup("choice1")}
-           |      ${generateExpectedCheckboxMarkup("choice2")}
-           |      ${generateExpectedCheckboxMarkup("choice3")}
-           |      ${generateExpectedCheckboxMarkup("choice4", checked = true)}
+           |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
+           |      ${generateExpectedCheckboxMarkup(("choice2", "value2"))}
+           |      ${generateExpectedCheckboxMarkup(("choice3", "value3"))}
+           |      ${generateExpectedCheckboxMarkup(("choice4", "value4"), checked = true)}
            |
            |  </fieldset>
            |</div>
@@ -113,10 +113,10 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
            |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
-           |      ${generateExpectedCheckboxMarkup("choice1", checked = true)}
-           |      ${generateExpectedCheckboxMarkup("choice2", checked = true)}
-           |      ${generateExpectedCheckboxMarkup("choice3", checked = true)}
-           |      ${generateExpectedCheckboxMarkup("choice4", checked = true)}
+           |      ${generateExpectedCheckboxMarkup(("choice1", "value1"), checked = true)}
+           |      ${generateExpectedCheckboxMarkup(("choice2", "value2"), checked = true)}
+           |      ${generateExpectedCheckboxMarkup(("choice3", "value3"), checked = true)}
+           |      ${generateExpectedCheckboxMarkup(("choice4", "value4"), checked = true)}
            |
            |  </fieldset>
            |</div>
