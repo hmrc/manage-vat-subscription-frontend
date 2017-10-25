@@ -18,15 +18,16 @@ package controllers
 
 import mocks.MockAppConfig
 import org.scalamock.scalatest.MockFactory
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.MessagesApi
 import play.api.inject.Injector
 import services.AuthService
 import uk.gov.hmrc.auth.core.AuthConnector
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.play.test.UnitSpec
 
-trait ControllerBaseSpec extends UnitSpec with MockFactory with WithFakeApplication {
+trait ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
 
-  val injector: Injector = fakeApplication.injector
+  val injector: Injector = app.injector
   val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig
 

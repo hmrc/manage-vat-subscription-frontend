@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package controllers.auth
+package controllers.auth.actions
 
-import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
+import controllers.auth.{AuthPredicates, AuthorisedActions}
+import play.api.mvc.{Action, AnyContent}
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
-case class User(enrolments: Enrolments) {
+import scala.concurrent.Future
 
-  private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
+trait VatUserAction extends AuthorisedActions {
+  self: FrontendController =>
 
-  lazy val Vrn: Option[String] = enrolments.enrolments.collectFirst {
-    case Enrolment(SERVICE_ENROLMENT_KEY, EnrolmentIdentifier(_, value) :: _, _, _, _) => value
+  object VatUserAction {
+    def apply(action: ActionBody): Action[AnyContent] = async(action andThen (_ andThen Future.successful))
+    def async: AuthenticatedAction = action(AuthPredicates.enrolledUserPredicate)
   }
 }
