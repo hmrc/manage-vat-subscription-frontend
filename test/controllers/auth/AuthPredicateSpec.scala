@@ -18,7 +18,6 @@ package controllers.auth
 
 import controllers.auth.AuthPredicate.Success
 import controllers.auth.AuthPredicates.{authorisedPredicate, predicates, timeoutPredicate}
-import common.Constants
 import mocks.MockAppConfig
 import org.scalatest.EitherValues
 import play.api.inject.Injector
@@ -33,11 +32,13 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
   lazy val injector: Injector = fakeApplication.injector
   lazy val mockAppConfig = new MockAppConfig
 
+  private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
+
   val userWithMtdVatEnrolment = User(
     Enrolments(
       Set(
         Enrolment(
-          Constants.VAT_ENROLMENT_KEY,
+          SERVICE_ENROLMENT_KEY,
           Seq(EnrolmentIdentifier("", "")),
           "",
           ConfidenceLevel.L0
