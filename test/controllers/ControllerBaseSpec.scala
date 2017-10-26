@@ -21,17 +21,16 @@ import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.MessagesApi
 import play.api.inject.Injector
-import services.AuthService
-import uk.gov.hmrc.auth.core.AuthConnector
+import play.api.mvc.AnyContentAsEmpty
+import play.api.test.FakeRequest
 import uk.gov.hmrc.play.test.UnitSpec
 
-trait ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
+class ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
 
   val injector: Injector = app.injector
   val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig
 
-  val mockAuthConnector: AuthConnector = mock[AuthConnector]
-  val mockAuthService: AuthService = new AuthService(mockAuthConnector)
+  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
 
 }
