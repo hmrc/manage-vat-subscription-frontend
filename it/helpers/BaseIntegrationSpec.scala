@@ -16,10 +16,13 @@
 
 package helpers
 
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, TestSuite}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.AuthStub
 
 trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite with TestSuite
@@ -27,6 +30,7 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
 
   val mockHost: String = WireMockHelper.host
   val mockPort: String = WireMockHelper.wmPort.toString
+  val appContextRoute: String = "/manage-your-vat-account"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this
@@ -67,4 +71,9 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
     stopWireMock()
     super.afterAll()
   }
+
+  def buildRequest(path: String): WSRequest = client.url(s"http://localhost:$port$appContextRoute$path").withFollowRedirects(false)
+
+  def document(response: WSResponse): Document = Jsoup.parse(response.body)
+
 }

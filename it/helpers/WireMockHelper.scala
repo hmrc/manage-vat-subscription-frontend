@@ -51,7 +51,7 @@ trait WireMockHelper {
 
   import WireMockHelper._
 
-  lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
+  lazy val client: WSClient = app.injector.instanceOf[WSClient]
   lazy val wmConfig: WireMockConfiguration = wireMockConfig.port(wmPort)
   lazy val wmServer: WireMockServer = new WireMockServer(wmConfig)
 

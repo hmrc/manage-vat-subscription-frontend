@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package controllers
+package pages
 
 import helpers.BaseIntegrationSpec
-import play.api.test.FakeRequest
+import play.api.http.HeaderNames
 import play.api.http.Status._
 import uk.gov.hmrc.play.test.UnitSpec
 
-class HelloWorldControllerISpec extends UnitSpec with BaseIntegrationSpec {
+class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
   "Calling the helloWorld action" when {
 
@@ -31,10 +31,9 @@ class HelloWorldControllerISpec extends UnitSpec with BaseIntegrationSpec {
 
         given.user.isAuthenticated
 
-        val controller = app.injector.instanceOf[HelloWorldController]
-        val result = controller.helloWorld(FakeRequest())
+        val result = await(buildRequest("/hello-world").get())
 
-        await(result).header.status shouldBe OK
+        result.status shouldBe OK
       }
     }
 
@@ -44,11 +43,20 @@ class HelloWorldControllerISpec extends UnitSpec with BaseIntegrationSpec {
 
         given.user.isNotAuthenticated
 
-        val controller = app.injector.instanceOf[HelloWorldController]
-        val result = controller.helloWorld(FakeRequest())
+        val result = await(buildRequest("/hello-world").get())
 
-        await(result).header.status shouldBe SEE_OTHER
+        result.status shouldBe SEE_OTHER
       }
+
+      "redirect to the session timeout page" in {
+
+        given.user.isNotAuthenticated
+
+        val result = await(buildRequest("/hello-world").get())
+
+        result.header(HeaderNames.LOCATION) shouldBe Some(s"$appContextRoute/session-timeout")
+      }
+
     }
   }
 }
