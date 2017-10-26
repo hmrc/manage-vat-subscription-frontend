@@ -20,9 +20,9 @@ import forms.test.TextInputForm
 import play.api.data.Field
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
-import views.html.templates.inputs.checkbox
+import views.html.templates.inputs.checkboxList
 
-class CheckboxTemplateSpec extends TemplateBaseSpec {
+class CheckboxListTemplateSpec extends TemplateBaseSpec {
   val fieldName: String = "fieldName"
   val question: String = "question"
   val choices: Seq[(String, String)] = Seq(("choice1", "value1"), ("choice2", "value2"), ("choice3", "value3"), ("choice4", "value4"))
@@ -62,15 +62,15 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkbox(field, question, choices)
+      val markup = checkboxList(field, question, choices)
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
 
-  "Calling the checkbox helper with a choice pre-selected" should {
+  "Calling the checkbox helper with a few options checked" should {
 
-    "render a list of checkbox options with one pre-selected" in {
+    "render a list of checkbox options with a few options checked" in {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("choice4"))
       val expectedMarkup = Html(
         s"""
@@ -83,7 +83,7 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
-           |      ${generateExpectedCheckboxMarkup(("choice2", "value2"))}
+           |      ${generateExpectedCheckboxMarkup(("choice2", "value2"), checked = true)}
            |      ${generateExpectedCheckboxMarkup(("choice3", "value3"))}
            |      ${generateExpectedCheckboxMarkup(("choice4", "value4"), checked = true)}
            |
@@ -93,15 +93,15 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkbox(field, question, choices)
+      val markup = checkboxList(field, question, choices, Seq("value2", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
 
-  "Calling the checkbox helper with all choices pre-selected" should {
+  "Calling the checkbox helper with all options checked" should {
 
-    "render a list of checkbox options with all of them pre-selected" in {
+    "render a list of checkbox options with all of them checked" in {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
@@ -124,7 +124,7 @@ class CheckboxTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkbox(field, question, choices, preSelected = true)
+      val markup = checkboxList(field, question, choices, Seq("value1", "value2", "value3", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
