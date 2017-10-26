@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package common
+package connectors
 
-object Constants {
+import javax.inject.{Inject, Singleton}
 
-  val VAT_ENROLMENT_KEY: String = "HMRC-MTD-VAT"
+import config.AppConfig
+import uk.gov.hmrc.auth.core.PlayAuthConnector
+import uk.gov.hmrc.http.HttpPost
+
+@Singleton
+class FrontendAuthConnector @Inject()(appConfig: AppConfig, val http: HttpPost) extends PlayAuthConnector {
+  override lazy val serviceUrl: String = appConfig.authUrl
 }

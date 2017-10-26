@@ -19,12 +19,13 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.{JsObject, Json}
-import common.Constants.VAT_ENROLMENT_KEY
 import helpers.WireMockMethods
 
 object AuthStub extends WireMockMethods {
 
   private val authoriseUri = "/auth/authorise"
+
+  private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
 
   def stubAuthSuccess(): StubMapping = {
     when(method = POST, uri = authoriseUri)
@@ -37,7 +38,7 @@ object AuthStub extends WireMockMethods {
   }
 
   private val mtdVatEnrolment = Json.obj(
-    "key" -> VAT_ENROLMENT_KEY,
+    "key" -> SERVICE_ENROLMENT_KEY,
     "identifiers" -> Json.arr(
       Json.obj(
         "key" -> "MtdVatId",

@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package controllers.auth
+package config
 
-import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments}
+import javax.inject.{Inject, Singleton}
+import uk.gov.hmrc.http._
+import uk.gov.hmrc.http.hooks.HttpHook
 
-case class User(enrolments: Enrolments) {
-
-  private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
-
-  lazy val Vrn: Option[String] = enrolments.enrolments.collectFirst {
-    case Enrolment(SERVICE_ENROLMENT_KEY, EnrolmentIdentifier(_, value) :: _, _, _, _) => value
-  }
+@Singleton
+class WSHttp @Inject()() extends uk.gov.hmrc.play.http.ws.WSHttp
+  with HttpGet with HttpPost with HttpPut with HttpDelete with HttpPatch {
+  override val hooks: Seq[AnyRef with HttpHook] = NoneRequired
 }

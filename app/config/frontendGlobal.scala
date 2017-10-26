@@ -18,6 +18,7 @@ package config
 
 import com.typesafe.config.Config
 import config.filters.WhitelistFilter
+import connectors.FrontendAuditConnector
 import net.ceedubs.ficus.Ficus._
 import play.api.Play.current
 import play.api.i18n.Messages.Implicits._

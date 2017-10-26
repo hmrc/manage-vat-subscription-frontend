@@ -17,27 +17,29 @@
 package controllers.auth
 
 import controllers.auth.AuthPredicate.Success
-import controllers.auth.AuthPredicates.{authorisedPredicate, predicates, timeoutPredicate}
-import common.Constants
+import controllers.auth.AuthPredicates._
 import mocks.MockAppConfig
 import org.scalatest.EitherValues
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.inject.Injector
 import play.api.test.FakeRequest
 import uk.gov.hmrc.http.SessionKeys.{authToken, lastRequestTimestamp}
-import uk.gov.hmrc.play.test.{UnitSpec, WithFakeApplication}
+import uk.gov.hmrc.play.test.UnitSpec
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.{ConfidenceLevel, Enrolment, EnrolmentIdentifier, Enrolments}
 
-class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherValues {
+class AuthPredicatesSpec extends UnitSpec with GuiceOneAppPerSuite with EitherValues {
 
-  lazy val injector: Injector = fakeApplication.injector
+  lazy val injector: Injector = app.injector
   lazy val mockAppConfig = new MockAppConfig
+
+  private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
 
   val userWithMtdVatEnrolment = User(
     Enrolments(
       Set(
         Enrolment(
-          Constants.VAT_ENROLMENT_KEY,
+          SERVICE_ENROLMENT_KEY,
           Seq(EnrolmentIdentifier("", "")),
           "",
           ConfidenceLevel.L0
@@ -91,7 +93,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
   "Enrolled predicate" when {
 
     "mtdVatId is not empty" should {
-      lazy val predicate = authorisedPredicate(FakeRequest())(userWithMtdVatEnrolment)
+      lazy val predicate = enrolledPredicate(FakeRequest())(userWithMtdVatEnrolment)
 
       "return Success" in {
         predicate.right.value shouldBe Success
@@ -99,7 +101,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
     }
 
     "mtdVatId is empty" should {
-      lazy val predicate = authorisedPredicate(FakeRequest())(blankUser)
+      lazy val predicate = enrolledPredicate(FakeRequest())(blankUser)
       lazy val result = predicate.left.value
 
       "return 303" in {
@@ -119,7 +121,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
       lazy val request = FakeRequest().withSession(
         lastRequestTimestamp -> "lastRequestTimestamp"
       )
-      lazy val predicate = predicates(request)(blankUser)
+      lazy val predicate = enrolledUserPredicate(request)(blankUser)
       lazy val result = predicate.left.value
 
       "return 303" in {
@@ -134,7 +136,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
     "Both predicates pass" should {
 
       lazy val request = FakeRequest()
-      lazy val predicate = predicates(request)(userWithMtdVatEnrolment)
+      lazy val predicate = enrolledUserPredicate(request)(userWithMtdVatEnrolment)
 
       "return Success" in {
         predicate.right.value shouldBe Success
@@ -144,7 +146,7 @@ class AuthPredicateSpec extends UnitSpec with WithFakeApplication with EitherVal
     "One predicate fails" should {
 
       lazy val request = FakeRequest()
-      lazy val predicate = predicates(request)(blankUser)
+      lazy val predicate = enrolledUserPredicate(request)(blankUser)
       lazy val result = predicate.left.value
 
       "return 303" in {
