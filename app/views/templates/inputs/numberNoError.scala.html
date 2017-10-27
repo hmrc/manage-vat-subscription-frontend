@@ -14,12 +14,12 @@
 * limitations under the License.
 *@
 
-@(field: play.api.data.Field, label: String, formClass: String, inputClass: String)(implicit messages: Messages)
+@(field: play.api.data.Field, label: String, formClass: String, hasErrors: Boolean)(implicit messages: Messages)
 
 <label for="@field.name" class="form-group form-group-@formClass">
 
     <span>@label</span>
 
-    <input type="number" class="form-control input--xsmall input--no-spinner @inputClass" name="@field.name" id="@field.name" value="@field.value"/>
+    <input type="number" class="form-control input--xsmall input--no-spinner @if(hasErrors){error-field}" name="@field.name" id="@field.name" value="@field.value"/>
 
 </label>

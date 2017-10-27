@@ -14,15 +14,17 @@
 * limitations under the License.
 *@
 
-@(form: Form[_], legend: String, fieldName: String, hint: Option[String] = None)(implicit messages: Messages)
+@(form: Form[_], question: String, fieldName: String, hint: Option[String] = None, oneItemOnPage: Boolean = true)(implicit messages: Messages)
 
-@fieldsetClass = @{if(form.hasErrors) "form-field--error" else ""}
+<fieldset id="@fieldName-fieldset" class="form-group form-date @if(form.hasErrors) {form-field--error}">
 
-<fieldset id="@fieldName-fieldset" class="form-group form-date @fieldsetClass">
-
-    <legend class="visuallyhidden">
-        @legend
-    </legend>
+    @if(oneItemOnPage){
+        <legend class="visuallyhidden">
+            <h1>@question</h1>
+        </legend>
+    } else {
+        <legend>@question</legend>
+    }
 
     @hint.map { hint =>
         <span class="form-hint">

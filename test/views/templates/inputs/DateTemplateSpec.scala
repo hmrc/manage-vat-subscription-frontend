@@ -26,7 +26,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
 
     val fieldName = "date"
     val hintText = "hintText"
-    val legend = "Enter a date"
+    val question = "Enter a date"
 
     "the fields are not populated and hint text is supplied" should {
 
@@ -38,7 +38,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
            |  <legend class="visuallyhidden">
-           |    $legend
+           |    <h1>$question</h1>
            |  </legend>
            |
            |  <span class="form-hint">
@@ -65,7 +65,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, legend, fieldName, Some(hintText))
+      val markup = views.html.templates.inputs.date(form, question, fieldName, Some(hintText), true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -82,7 +82,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
            |  <legend class="visuallyhidden">
-           |    $legend
+           |    <h1>$question</h1>
            |  </legend>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
@@ -105,7 +105,51 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "there are multiple data items on the page" should {
+
+      val form = DateInputForm.form.bind(
+        Map(
+          "dateDay" -> "1",
+          "dateMonth" -> "2",
+          "dateYear" -> "3"
+        )
+      )
+
+      val expectedMarkup = Html(
+        s"""
+           |
+           |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
+           |
+           |  <legend>$question</legend>
+           |
+           |  <label for="${fieldName}Day" class="form-group form-group-day" >
+           |    <span>$day</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Day" id="${fieldName}Day" value="1"/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Month" class="form-group form-group-month" >
+           |    <span>$month</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Month" id="${fieldName}Month" value="2"/>
+           |  </label>
+           |
+           |  <label for="${fieldName}Year" class="form-group form-group-year" >
+           |    <span>$year</span>
+           |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Year" id="${fieldName}Year" value="3"/>
+           |  </label>
+           |
+           |</fieldset>
+           |
+        """.stripMargin
+      )
+
+      val markup = views.html.templates.inputs.date(form, question, fieldName, None, false)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -128,7 +172,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
            |  <legend class="visuallyhidden">
-           |    $legend
+           |    <h1>$question</h1>
            |  </legend>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
@@ -151,7 +195,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -176,7 +220,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
            |
            |  <legend class="visuallyhidden">
-           |    $legend
+           |    <h1>$question</h1>
            |  </legend>
            |
            |  <span class="error-notification" role="tooltip">$dateError</span>
@@ -201,7 +245,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -226,7 +270,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
            |
            |  <legend class="visuallyhidden">
-           |    $legend
+           |    <h1>$question</h1>
            |  </legend>
            |
            |  <span class="error-notification" role="tooltip">$dateError</span>
@@ -251,7 +295,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, legend, fieldName)
+      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

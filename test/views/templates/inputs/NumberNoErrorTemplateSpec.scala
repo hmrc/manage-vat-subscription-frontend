@@ -28,7 +28,7 @@ class NumberNoErrorTemplateSpec extends TemplateBaseSpec {
     val fieldName = "dateDay"
     val label = "Day"
     val formClass = "day"
-    val inputClass = "error-field"
+    val hasErrors = true
     val value = "12"
     val field = Field(DateInputForm.form, fieldName, Seq(), None, Seq(), Some(value))
 
@@ -36,13 +36,13 @@ class NumberNoErrorTemplateSpec extends TemplateBaseSpec {
       s"""
          |  <label for="$fieldName" class="form-group form-group-$formClass" >
          |    <span>$label</span>
-         |    <input type="number" class="form-control input--xsmall input--no-spinner $inputClass" name="$fieldName" id="$fieldName" value="$value"/>
+         |    <input type="number" class="form-control input--xsmall input--no-spinner error-field" name="$fieldName" id="$fieldName" value="$value"/>
          |  </label>
          |
         """.stripMargin
     )
 
-    val markup = views.html.templates.inputs.numberNoError(field, label, formClass, inputClass)
+    val markup = views.html.templates.inputs.numberNoError(field, label, formClass, hasErrors)
 
     "generate the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
