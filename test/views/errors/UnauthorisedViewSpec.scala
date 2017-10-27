@@ -16,31 +16,33 @@
 
 package views.errors
 
-import common.MessageLookup.Unauthorised._
-import controllers.ControllerBaseSpec
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.{Lang, Messages}
-import play.api.test.FakeRequest
+import views.ViewBaseSpec
 
-class UnauthorisedViewSpec extends ControllerBaseSpec {
+class UnauthorisedViewSpec extends ViewBaseSpec {
 
-  "Rendering the unauthorised view" should {
+  "Rendering the unauthorised page" should {
 
-    lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
-    lazy val view = views.html.errors.unauthorised()(FakeRequest(), messages, mockAppConfig)
-    lazy val document: Document = Jsoup.parse(view.body)
-
-    "have the correct title" in {
-      document.title shouldBe title
+    object Selectors {
+      val pageHeading = "#content h1"
+      val instructions = "#content p"
     }
 
-    "have the correct page heading" in {
-      document.select("#content h1").text() shouldBe title
+    lazy val view = views.html.errors.unauthorised()(request, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct document title" in {
+      document.title shouldBe "Unauthorised access"
     }
 
-    "have the correct instructions on the page" in {
-      document.select("#content p").text() shouldBe instructions
+    s"have a the correct page heading" in {
+      elementText(Selectors.pageHeading) shouldBe "Unauthorised access"
     }
+
+    s"have the correct instructions on the page" in {
+      elementText(Selectors.instructions) shouldBe "Here are some instructions about what you should do next."
+    }
+
   }
 }

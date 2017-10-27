@@ -16,40 +16,33 @@
 
 package views.errors
 
-import controllers.ControllerBaseSpec
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.{Lang, Messages}
-import play.api.test.FakeRequest
-import common.MessageLookup.SessionTimeout._
-import mocks.MockAppConfig
+import views.ViewBaseSpec
 
-class SessionTimeoutViewSpec extends ControllerBaseSpec {
+class SessionTimeoutViewSpec extends ViewBaseSpec {
 
-  "Rendering the sessionTimeout view" should {
+  "Rendering the session timeout page" should {
 
-    lazy val mockConfig: MockAppConfig = new MockAppConfig {
-      override val ggServiceUrl: String = "sign-in"
+    object Selectors {
+      val pageHeading = "#content h1"
+      val instructions = "#content p"
     }
 
-    lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
-    lazy val view = views.html.errors.sessionTimeout()(FakeRequest(), messages, mockConfig)
-    lazy val document: Document = Jsoup.parse(view.body)
+    lazy val view = views.html.errors.sessionTimeout()(request, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "have the correct title" in {
-      document.title shouldBe title
+    s"have the correct document title" in {
+      document.title shouldBe "Your session has timed out"
     }
 
-    "have the correct page heading" in {
-      document.select("#content h1").text() shouldBe title
+    s"have a the correct page heading" in {
+      elementText(Selectors.pageHeading) shouldBe "Your session has timed out"
     }
 
-    "have the correct instructions on the page" in {
-      document.select("#content p").text() shouldBe instructions
+    s"have the correct instructions on the page" in {
+      elementText(Selectors.instructions) shouldBe "To manage your VAT account, you'll have to sign in using your Government Gateway ID."
     }
 
-    "contain a link to sign in" in {
-      document.select("#content p a").attr("href") shouldBe "sign-in"
-    }
   }
 }
