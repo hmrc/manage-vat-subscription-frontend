@@ -21,7 +21,8 @@
     fieldName: String,
     label: String,
     decimalPlace: Boolean,
-    hint: Option[String] = None)(implicit messages: Messages)
+    hint: Option[String] = None,
+    oneItemOnPage: Boolean = true)(implicit messages: Messages)
 
 <div class="form-group @if(form.hasErrors) {form-field--error}">
 
@@ -32,9 +33,16 @@
         </span>
     }
 
-    <label for="@fieldName" class="form-label visuallyhidden">
-        @label
-    </label>
+    @if(oneItemOnPage) {
+        <label for="@fieldName" class="form-label visuallyhidden">
+            <h1>@label</h1>
+        </label>
+    } else {
+        <label for="@fieldName" class="form-label">
+            @label
+        </label>
+    }
+
 
     @hint.map { hint =>
     <span class="form-hint">

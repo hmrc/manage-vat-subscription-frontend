@@ -37,6 +37,139 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |<div class="form-group ">
            |
            |    <label for="$fieldName" class="form-label visuallyhidden">
+           |        <h1>$labelText</h1>
+           |    </label>
+           |
+           |    <span class="form-hint">
+           |        $hintText
+           |    </span>
+           |
+           |    <span class="input-currency"></span>
+           |
+           |    <input
+           |        type="number"
+           |        class="input--no-spinner input--left-padding "
+           |        name="$fieldName"
+           |        id="$fieldName"
+           |        value=$validData
+           |        step="0.01"
+           |    />
+           |
+           |</div>
+         """.stripMargin)
+
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, Some(hintText), true)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "the field contains valid data and no hint text is supplied" should {
+
+      val validData: String = "100.00"
+
+      val expectedMarkup = Html(
+        s"""
+           |<div class="form-group ">
+           |
+           |    <label for="$fieldName" class="form-label visuallyhidden">
+           |        <h1>$labelText</h1>
+           |    </label>
+           |
+           |    <span class="input-currency"></span>
+           |
+           |    <input
+           |        type="number"
+           |        class="input--no-spinner input--left-padding "
+           |        name="$fieldName"
+           |        id="$fieldName"
+           |        value="$validData"
+           |        step="0.01"
+           |    />
+           |
+           |</div>
+         """.stripMargin)
+
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, None, true)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "the field contains valid data, no hint text is supplied and there no decimal places" should {
+
+      val validData: String = "100.00"
+
+      val expectedMarkup = Html(
+        s"""
+           |<div class="form-group ">
+           |
+           |    <label for="$fieldName" class="form-label visuallyhidden">
+           |        <h1>$labelText</h1>
+           |    </label>
+           |
+           |    <span class="input-currency"></span>
+           |
+           |    <input
+           |        type="number"
+           |        class="input--no-spinner input--left-padding "
+           |        name="$fieldName"
+           |        id="$fieldName"
+           |        value="$validData"
+           |        step="1"
+           |    />
+           |
+           |</div>
+         """.stripMargin)
+
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, false, None, true)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "the field contains no data and no hint text is supplied" should {
+
+      val expectedMarkup = Html(
+        s"""
+           |<div class="form-group ">
+           |
+           |    <label for="$fieldName" class="form-label visuallyhidden">
+           |        <h1>$labelText</h1>
+           |    </label>
+           |
+           |    <span class="input-currency"></span>
+           |
+           |    <input
+           |        type="number"
+           |        class="input--no-spinner input--left-padding "
+           |        name="$fieldName"
+           |        id="$fieldName"
+           |        value=""
+           |        step="0.01"
+           |    />
+           |
+           |</div>
+         """.stripMargin)
+
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form, fieldName, labelText, true, None, true)
+
+      "generate the correct markup" in {
+        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+      }
+    }
+
+    "there is more than one item on the page" should {
+      val validData: String = "100.00"
+
+      val expectedMarkup = Html(
+        s"""
+           |<div class="form-group ">
+           |
+           |    <label for="$fieldName" class="form-label">
            |        $labelText
            |    </label>
            |
@@ -58,107 +191,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, Some(hintText))
-
-      "generate the correct markup" in {
-        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
-      }
-    }
-
-    "the field contains valid data and no hint text is supplied" should {
-
-      val validData: String = "100.00"
-
-      val expectedMarkup = Html(
-        s"""
-           |<div class="form-group ">
-           |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        $labelText
-           |    </label>
-           |
-           |    <span class="input-currency"></span>
-           |
-           |    <input
-           |        type="number"
-           |        class="input--no-spinner input--left-padding "
-           |        name="$fieldName"
-           |        id="$fieldName"
-           |        value="$validData"
-           |        step="0.01"
-           |    />
-           |
-           |</div>
-         """.stripMargin)
-
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, None)
-
-      "generate the correct markup" in {
-        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
-      }
-    }
-
-    "the field contains valid data, no hint text is supplied and there no decimal places" should {
-
-      val validData: String = "100.00"
-
-      val expectedMarkup = Html(
-        s"""
-           |<div class="form-group ">
-           |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        $labelText
-           |    </label>
-           |
-           |    <span class="input-currency"></span>
-           |
-           |    <input
-           |        type="number"
-           |        class="input--no-spinner input--left-padding "
-           |        name="$fieldName"
-           |        id="$fieldName"
-           |        value="$validData"
-           |        step="1"
-           |    />
-           |
-           |</div>
-         """.stripMargin)
-
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, false, None)
-
-      "generate the correct markup" in {
-
-        println(expectedMarkup)
-        println(markup)
-        formatHtml(markup) shouldBe formatHtml(expectedMarkup)
-      }
-    }
-
-    "the field contains no data and no hint text is supplied" should {
-
-      val expectedMarkup = Html(
-        s"""
-           |<div class="form-group ">
-           |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        $labelText
-           |    </label>
-           |
-           |    <span class="input-currency"></span>
-           |
-           |    <input
-           |        type="number"
-           |        class="input--no-spinner input--left-padding "
-           |        name="$fieldName"
-           |        id="$fieldName"
-           |        value=""
-           |        step="0.01"
-           |    />
-           |
-           |</div>
-         """.stripMargin)
-
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form, fieldName, labelText, true, None)
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, Some(hintText), false)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -179,7 +212,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |    </span>
            |
            |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        labelText
+           |        <h1>$labelText</h1>
            |    </label>
            |
            |    <span class="input-currency"></span>
@@ -196,7 +229,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data")), fieldName, labelText, true, None)
+      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data")), fieldName, labelText, true, None, true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
