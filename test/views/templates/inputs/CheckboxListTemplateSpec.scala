@@ -17,7 +17,7 @@
 package views.templates.inputs
 
 import forms.test.TextInputForm
-import play.api.data.Field
+import play.api.data.{Field, FormError}
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
 import views.html.templates.inputs.checkboxList
@@ -48,7 +48,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <h1 class="heading-medium">$question</h1>
+           |      <span class="form-label-bold">$question</span>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
@@ -79,7 +79,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <h1 class="heading-medium">$question</h1>
+           |      <span class="form-label-bold">$question</span>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
@@ -110,7 +110,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <h1 class="heading-medium">$question</h1>
+           |      <span class="form-label-bold">$question</span>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"), checked = true)}
@@ -125,6 +125,40 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
       )
 
       val markup = checkboxList(field, question, choices, Seq("value1", "value2", "value3", "value4"))
+
+      formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+    }
+  }
+
+  "Calling the checkbox helper with an error" should {
+
+    "render an error message" in {
+      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None,
+        Seq(FormError("example", Seq("Please select at least one option"))), None)
+      val expectedMarkup = Html(
+        s"""
+           |
+           |<div class="form-group form-field--error">
+           |  <fieldset>
+           |
+           |    <legend>
+           |      <span class="form-label-bold">$question</span>
+           |    </legend>
+           |
+           |    <span class="error-notification" role="tooltip">${field.errors.head.message}</span>
+           |
+           |    ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
+           |    ${generateExpectedCheckboxMarkup(("choice2", "value2"))}
+           |    ${generateExpectedCheckboxMarkup(("choice3", "value3"))}
+           |    ${generateExpectedCheckboxMarkup(("choice4", "value4"))}
+           |
+           |  </fieldset>
+           |</div>
+           |
+         """.stripMargin
+      )
+
+      val markup = checkboxList(field, question, choices)
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
