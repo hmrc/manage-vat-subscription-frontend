@@ -60,7 +60,7 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
   override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig("whitelist.excludePaths").map(path => Call("GET", path))
   override lazy val shutterPage: String = loadConfig("whitelist.shutter-page-url")
 
-  private lazy val signInBaseUrl: String = loadConfig("singIn.url")
+  private lazy val signInBaseUrl: String = loadConfig("signIn.url")
 
   private lazy val signInContinueBaseUrl: String = configuration.getString("signIn.continueUrl").getOrElse("")
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
