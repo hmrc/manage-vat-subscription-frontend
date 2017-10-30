@@ -59,11 +59,12 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
   override lazy val whitelistedIps: Seq[String] = whitelistConfig("whitelist.allowedIps")
   override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig("whitelist.excludePaths").map(path => Call("GET", path))
   override lazy val shutterPage: String = loadConfig("whitelist.shutter-page-url")
-  private lazy val governmentGateway: String = loadConfig(s"government-gateway.host")
-  private lazy val governmentGatewaySignIn: String = s"$governmentGateway/gg/sign-in"
-  private lazy val baseUrl: String = loadConfig(s"base.host")
 
-  private lazy val serviceContinueUrl: String = ContinueUrl(baseUrl + controllers.routes.HelloWorldController.helloWorld()).encodedUrl
-  private lazy val serviceOrigin: String = loadConfig("appName")
-  override lazy val ggServiceUrl: String = s"$governmentGatewaySignIn?continue=$serviceContinueUrl&origin=$serviceOrigin"
+  private lazy val signInBaseUrl: String = loadConfig("singIn.url")
+
+  private lazy val signInContinueBaseUrl: String = configuration.getString("signIn.continueUrl").getOrElse("")
+  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
+  private lazy val signInOrigin = loadConfig("appName")
+  override lazy val ggServiceUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
+
 }
