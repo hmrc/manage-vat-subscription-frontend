@@ -39,11 +39,12 @@ trait AppConfig extends ServicesConfig {
 @Singleton
 class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
 
-  protected val configuration: Configuration = app.configuration
+  override protected val runModeConfiguration: Configuration = app.configuration
+  override protected val mode = app.mode
 
-  private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
+  private def loadConfig(key: String): String = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  private lazy val contactHost: String = configuration.getString("contact-frontend.host").getOrElse("")
+  private lazy val contactHost: String = runModeConfiguration.getString("contact-frontend.host").getOrElse("")
   private lazy val contactFormServiceIdentifier: String = "MyService"
 
   override lazy val authUrl: String = baseUrl("auth")
@@ -53,7 +54,7 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
   private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
-    .decode(configuration.getString(key).getOrElse("")), "UTF-8"))
+    .decode(runModeConfiguration.getString(key).getOrElse("")), "UTF-8"))
     .map(_.split(",")).getOrElse(Array.empty).toSeq
 
   override lazy val whitelistedIps: Seq[String] = whitelistConfig("whitelist.allowedIps")
@@ -62,7 +63,7 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
 
   private lazy val signInBaseUrl: String = loadConfig("signIn.url")
 
-  private lazy val signInContinueBaseUrl: String = configuration.getString("signIn.continueBaseUrl").getOrElse("")
+  private lazy val signInContinueBaseUrl: String = runModeConfiguration.getString("signIn.continueBaseUrl").getOrElse("")
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
   private lazy val signInOrigin = loadConfig("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"

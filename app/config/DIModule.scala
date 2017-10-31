@@ -25,8 +25,7 @@ import uk.gov.hmrc.http.HttpPost
 class DIModule extends AbstractModule {
   def configure(): Unit = {
     bind(classOf[AppConfig]).to(classOf[FrontendAppConfig]).asEagerSingleton()
-    bind(classOf[AuthConnector]).to(classOf[connectors.FrontendAuthConnector])
-    bind(classOf[AuditConnector]).to(classOf[connectors.FrontendAuditConnector])
+
     bind(classOf[HttpPost]).to(classOf[config.WSHttp])
     bind(classOf[AuthorisedFunctions]).to(classOf[AuthService])
   }
