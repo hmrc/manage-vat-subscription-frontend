@@ -17,9 +17,10 @@
 package mocks
 
 import config.AppConfig
+import play.api.Application
 import play.api.mvc.Call
 
-class MockAppConfig extends AppConfig {
+class MockAppConfig(app: Application) extends AppConfig {
   override val analyticsToken: String = ""
   override val analyticsHost: String = ""
   override val reportAProblemPartialUrl: String = ""
@@ -27,6 +28,5 @@ class MockAppConfig extends AppConfig {
   override val whitelistedIps: Seq[String] = Seq("")
   override val whitelistExcludedPaths: Seq[Call] = Nil
   override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/manage-vat-subscription"
-  override val authUrl: String = ""
   override val signInUrl: String = "sign-in"
 }

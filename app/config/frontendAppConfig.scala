@@ -24,7 +24,7 @@ import play.api.{Application, Configuration}
 import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
 
-trait AppConfig extends ServicesConfig {
+trait AppConfig {
   val analyticsToken: String
   val analyticsHost: String
   val reportAProblemPartialUrl: String
@@ -33,28 +33,23 @@ trait AppConfig extends ServicesConfig {
   val whitelistExcludedPaths: Seq[Call]
   val shutterPage: String
   val signInUrl: String
-  val authUrl: String
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
+class FrontendAppConfig @Inject()(config: Configuration) extends AppConfig {
 
-  override protected val runModeConfiguration: Configuration = app.configuration
-  override protected val mode = app.mode
+  private def loadConfig(key: String): String = config.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  private def loadConfig(key: String): String = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
-
-  private lazy val contactHost: String = runModeConfiguration.getString("contact-frontend.host").getOrElse("")
+  private lazy val contactHost: String = config.getString("contact-frontend.host").getOrElse("")
   private lazy val contactFormServiceIdentifier: String = "MyService"
 
-  override lazy val authUrl: String = baseUrl("auth")
   override lazy val analyticsToken: String = loadConfig("google-analytics.token")
   override lazy val analyticsHost: String = loadConfig("google-analytics.host")
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
   private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
-    .decode(runModeConfiguration.getString(key).getOrElse("")), "UTF-8"))
+    .decode(config.getString(key).getOrElse("")), "UTF-8"))
     .map(_.split(",")).getOrElse(Array.empty).toSeq
 
   override lazy val whitelistedIps: Seq[String] = whitelistConfig("whitelist.allowedIps")
@@ -63,7 +58,7 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
 
   private lazy val signInBaseUrl: String = loadConfig("signIn.url")
 
-  private lazy val signInContinueBaseUrl: String = runModeConfiguration.getString("signIn.continueBaseUrl").getOrElse("")
+  private lazy val signInContinueBaseUrl: String = config.getString("signIn.continueBaseUrl").getOrElse("")
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
   private lazy val signInOrigin = loadConfig("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"

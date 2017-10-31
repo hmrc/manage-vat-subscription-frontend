@@ -30,9 +30,6 @@ import uk.gov.hmrc.auth.core.{ConfidenceLevel, Enrolment, EnrolmentIdentifier, E
 
 class AuthPredicatesSpec extends UnitSpec with GuiceOneAppPerSuite with EitherValues {
 
-  lazy val injector: Injector = app.injector
-  lazy val mockAppConfig = new MockAppConfig
-
   private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
 
   val userWithMtdVatEnrolment = User(
@@ -42,7 +39,7 @@ class AuthPredicatesSpec extends UnitSpec with GuiceOneAppPerSuite with EitherVa
           SERVICE_ENROLMENT_KEY,
           Seq(EnrolmentIdentifier("", "")),
           "",
-          ConfidenceLevel.L0
+          None
         )
       )
     )

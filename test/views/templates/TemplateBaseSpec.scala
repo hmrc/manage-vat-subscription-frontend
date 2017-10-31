@@ -29,7 +29,7 @@ class TemplateBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuit
 
   val injector: Injector = app.injector
   val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig
+  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app)
   lazy implicit val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
   def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
