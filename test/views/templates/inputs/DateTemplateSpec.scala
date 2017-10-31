@@ -130,17 +130,17 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |  <legend>$question</legend>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
-           |    <span>$day</span>
+           |    <span>Day</span>
            |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Day" id="${fieldName}Day" value="1"/>
            |  </label>
            |
            |  <label for="${fieldName}Month" class="form-group form-group-month" >
-           |    <span>$month</span>
+           |    <span>Month</span>
            |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Month" id="${fieldName}Month" value="2"/>
            |  </label>
            |
            |  <label for="${fieldName}Year" class="form-group form-group-year" >
-           |    <span>$year</span>
+           |    <span>Year</span>
            |    <input type="number" class="form-control input--xsmall input--no-spinner " name="${fieldName}Year" id="${fieldName}Year" value="3"/>
            |  </label>
            |
