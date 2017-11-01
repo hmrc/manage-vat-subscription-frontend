@@ -33,7 +33,13 @@
     }
 
     @if(form.hasErrors) {
-        <span class="error-notification" role="tooltip">@messages("common.dateError")</span>
+        <span class="error-notification" role="tooltip">
+            @if(form.errors.length.equals(1)) {
+                @form.errors.map(_.message)
+            } else {
+                @messages("common.dateError")
+            }
+        </span>
     }
 
     @defining(if(form.hasErrors) "error-field" else "") { inputClass =>

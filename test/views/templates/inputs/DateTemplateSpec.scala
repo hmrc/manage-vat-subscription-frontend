@@ -212,7 +212,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         )
       )
 
-      val dateError = "Enter a valid date"
+      val dateError = "Enter a day"
 
       val expectedMarkup = Html(
         s"""
@@ -223,7 +223,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |    <h1>$question</h1>
            |  </legend>
            |
-           |  <span class="error-notification" role="tooltip">$dateError</span>
+           |  <span class="error-notification" role="tooltip"> $dateError </span>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
            |    <span>Day</span>
@@ -273,7 +273,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |    <h1>$question</h1>
            |  </legend>
            |
-           |  <span class="error-notification" role="tooltip">$dateError</span>
+           |  <span class="error-notification" role="tooltip"> $dateError </span>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
            |    <span>Day</span>

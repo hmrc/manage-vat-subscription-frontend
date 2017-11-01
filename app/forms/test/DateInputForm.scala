@@ -27,13 +27,13 @@ object DateInputForm {
   lazy val form: Form[DateInputModel] = Form(
     mapping(
       "dateDay" -> text
-        .verifying(day => day != "")
+        .verifying("Enter a day", day => day != "")
         .transform[Int](stringToInteger, _.toString),
       "dateMonth" -> text
-        .verifying(month => month != "")
+        .verifying("Enter a month",month => month != "")
         .transform[Int](stringToInteger, _.toString),
       "dateYear" ->  text
-        .verifying(year => year != "")
+        .verifying("Enter a year",year => year != "")
         .transform[Int](stringToInteger, _.toString)
     )(DateInputModel.apply)(DateInputModel.unapply)
   )
