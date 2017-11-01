@@ -26,6 +26,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
   val fieldName: String = "fieldName"
   val question: String = "question"
   val choices: Seq[(String, String)] = Seq(("choice1", "value1"), ("choice2", "value2"), ("choice3", "value3"), ("choice4", "value4"))
+  val subtext: String = "Select all that apply"
 
   def generateExpectedCheckboxMarkup(choice: (String, String), checked: Boolean = false): String = {
     val (displayText, value) = choice
@@ -52,7 +53,8 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <span class="form-label-bold">$question</span>
+           |      <h1 class="heading-medium">$question</h1>
+           |      <span class="body-text">$subtext</span>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
@@ -66,7 +68,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices)
+      val markup = checkboxList(field, question, choices, subtext)
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -83,7 +85,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <span class="form-label-bold">$question</span>
+           |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"))}
@@ -97,7 +99,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices, Seq("value2", "value4"))
+      val markup = checkboxList(field, question, choices, "", Seq("value2", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -114,7 +116,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <span class="form-label-bold">$question</span>
+           |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
            |      ${generateExpectedCheckboxMarkup(("choice1", "value1"), checked = true)}
@@ -128,7 +130,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices, Seq("value1", "value2", "value3", "value4"))
+      val markup = checkboxList(field, question, choices, "", Seq("value1", "value2", "value3", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -146,7 +148,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
            |  <fieldset>
            |
            |    <legend>
-           |      <span class="form-label-bold">$question</span>
+           |      <h1 class="heading-medium">$question</h1>
            |    </legend>
            |
            |    <span class="error-notification" role="tooltip">${field.errors.head.message}</span>

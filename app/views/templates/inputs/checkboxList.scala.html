@@ -14,7 +14,7 @@
 * limitations under the License.
 *@
 
-@(field: Field, question: String, choices: Seq[(String, String)], selectedChoices: Seq[String] = Seq())(implicit messages: Messages)
+@(field: Field, question: String, choices: Seq[(String, String)], subtext: String = "", selectedChoices: Seq[String] = Seq())(implicit messages: Messages)
 
 @items = @{
   choices.map {
@@ -25,7 +25,10 @@
 <div class="form-group@if(field.hasErrors) { form-field--error}">
   <fieldset>
     <legend>
-      <span class="form-label-bold">@question</span>
+      <h1 class="heading-medium">@question</h1>
+      @if(!subtext.equals("")) {
+        <span class="body-text">@subtext</span>
+      }
     </legend>
     @if(field.hasErrors) {
       <span class="error-notification" role="tooltip">@field.errors.head.message</span>
