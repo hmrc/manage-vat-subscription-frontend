@@ -27,15 +27,19 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
   val question: String = "question"
   val choices: Seq[(String, String)] = Seq(("choice1", "value1"), ("choice2", "value2"), ("choice3", "value3"), ("choice4", "value4"))
 
-  def generateExpectedCheckboxMarkup(choice: (String, String), checked: Boolean = false): String =
+  def generateExpectedCheckboxMarkup(choice: (String, String), checked: Boolean = false): String = {
+    val (displayText, value) = choice
+    val index = choices.indexOf(choice)
+
     s"""
        |
        |<div class="multiple-choice">
-       |  <input id="${fieldName}-${choices.indexOf((choice._1, choice._2))}" name="${fieldName}[${choices.indexOf((choice._1, choice._2))}]" type="checkbox" value="${choice._2}" ${if (checked) "checked" else ""}>
-       |  <label for="${fieldName}-${choices.indexOf((choice._1, choice._2))}">${choice._1}</label>
+       |  <input id="$fieldName-$index" name="$fieldName[$index]" type="checkbox" value="$value" ${if (checked) "checked" else ""}>
+       |  <label for="$fieldName-$index">$displayText</label>
        |</div>
        |
      """.stripMargin
+  }
 
   "Calling the checkbox helper" should {
 
