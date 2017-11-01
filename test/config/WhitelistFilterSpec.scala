@@ -28,7 +28,7 @@ import play.api.test.FakeRequest
 
 class WhitelistFilterSpec extends PlaySpec with GuiceOneServerPerSuite {
 
-  lazy val mockAppConfig = new MockAppConfig(app)
+  lazy val mockAppConfig = new MockAppConfig(app.configuration)
 
   override implicit lazy val app: Application =
     new GuiceApplicationBuilder()

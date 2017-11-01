@@ -20,17 +20,28 @@ import javax.inject.{Inject, Singleton}
 
 import akka.stream.Materializer
 import config.AppConfig
-import play.api.mvc.Call
+import org.asynchttpclient.util.HttpConstants.Methods
+import play.api.mvc.{Call, RequestHeader, Result}
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
+
+import scala.concurrent.Future
 
 @Singleton
 class WhitelistFilter @Inject()(val appConfig: AppConfig, implicit val mat: Materializer) extends AkamaiWhitelistFilter {
 
   override lazy val whitelist: Seq[String] = appConfig.whitelistedIps
 
-  override lazy val destination: Call = Call("GET", appConfig.shutterPage)
+  override lazy val destination: Call = Call(Methods.GET, appConfig.shutterPage)
 
   override lazy val excludedPaths: Seq[Call] = appConfig.whitelistExcludedPaths
+
+  override def apply(f: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
+    if(appConfig.whitelistEnabled) {
+      super.apply(f)(rh)
+    } else {
+      f(rh)
+    }
+  }
 
 }
 
