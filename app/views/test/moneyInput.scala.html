@@ -14,8 +14,7 @@
 * limitations under the License.
 *@
 
-@import templates.inputs._
-@import views.html.main_template
+@import templates.inputs.money
 @import models.test.MoneyInputModel
 @import play.api.data.Form
 
@@ -33,7 +32,8 @@
                 fieldName = "moneyInput",
                 label = "moneyInput",
                 decimalPlace = false,
-                hint = Some("hint-text"))
+                hint = Some("hint-text"),
+                oneItemOnPage = false)
 
         <button class="button" type="submit" id="continue-button">Continue</button>
     }

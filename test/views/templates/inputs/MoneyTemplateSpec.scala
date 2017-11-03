@@ -36,9 +36,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        <h1>$labelText</h1>
-           |    </label>
+           |    <h1 class="form-label">
+           |        $labelText
+           |    </h1>
            |
            |    <span class="form-hint">
            |        $hintText
@@ -73,9 +73,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        <h1>$labelText</h1>
-           |    </label>
+           |    <h1 class="form-label">
+           |        $labelText
+           |    </h1>
            |
            |    <span class="input-currency"></span>
            |
@@ -106,9 +106,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        <h1>$labelText</h1>
-           |    </label>
+           |    <h1 class="form-label">
+           |        $labelText
+           |    </h1>
            |
            |    <span class="input-currency"></span>
            |
@@ -137,9 +137,9 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        <h1>$labelText</h1>
-           |    </label>
+           |    <h1 class="form-label">
+           |        $labelText
+           |    </h1>
            |
            |    <span class="input-currency"></span>
            |
@@ -206,14 +206,14 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group form-field--error">
            |
+           |    <h1 class="form-label">
+           |        $labelText
+           |    </h1>
+           |
            |    <span class="error-notification"
            |        role="tooltip">
            |        $errorMessage
            |    </span>
-           |
-           |    <label for="$fieldName" class="form-label visuallyhidden">
-           |        <h1>$labelText</h1>
-           |    </label>
            |
            |    <span class="input-currency"></span>
            |

@@ -14,8 +14,6 @@
 * limitations under the License.
 *@
 
-@import views.html.helper._
-
 
 @(form: Form[_],
     fieldName: String,
@@ -26,28 +24,27 @@
 
 <div class="form-group @if(form.hasErrors) {form-field--error}">
 
-    @if(form.hasErrors) {
-        <span class="error-notification"
-            role="tooltip">
-            @form.errors.head.message
-        </span>
-    }
-
     @if(oneItemOnPage) {
-        <label for="@fieldName" class="form-label visuallyhidden">
-            <h1>@label</h1>
-        </label>
+        <h1 class="form-label">
+           @label
+        </h1>
     } else {
         <label for="@fieldName" class="form-label">
             @label
         </label>
     }
 
-
     @hint.map { hint =>
-    <span class="form-hint">
-        @hint
-    </span>
+        <span class="form-hint">
+            @hint
+        </span>
+    }
+
+    @if(form.hasErrors) {
+        <span class="error-notification"
+            role="tooltip">
+            @form.errors.head.message
+        </span>
     }
 
     <span class="input-currency"></span>
