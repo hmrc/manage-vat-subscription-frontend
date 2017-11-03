@@ -19,11 +19,11 @@
 <fieldset id="@fieldName-fieldset" class="form-group form-date @if(form.hasErrors) {form-field--error}">
 
     @if(oneItemOnPage){
-        <legend class="visuallyhidden">
+        <legend>
             <h1>@question</h1>
         </legend>
     } else {
-        <legend>@question</legend>
+        <legend class="form-label">@question</legend>
     }
 
     @hint.map { hint =>

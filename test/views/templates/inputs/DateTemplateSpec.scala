@@ -37,7 +37,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
-           |  <legend class="visuallyhidden">
+           |  <legend>
            |    <h1>$question</h1>
            |  </legend>
            |
@@ -81,7 +81,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
-           |  <legend class="visuallyhidden">
+           |  <legend>
            |    <h1>$question</h1>
            |  </legend>
            |
@@ -127,7 +127,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
-           |  <legend>$question</legend>
+           |  <legend class="form-label">$question</legend>
            |
            |  <label for="${fieldName}Day" class="form-group form-group-day" >
            |    <span>Day</span>
@@ -171,7 +171,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date ">
            |
-           |  <legend class="visuallyhidden">
+           |  <legend>
            |    <h1>$question</h1>
            |  </legend>
            |
@@ -219,7 +219,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
            |
-           |  <legend class="visuallyhidden">
+           |  <legend>
            |    <h1>$question</h1>
            |  </legend>
            |
@@ -269,7 +269,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
            |
            |<fieldset id="$fieldName-fieldset" class="form-group form-date form-field--error">
            |
-           |  <legend class="visuallyhidden">
+           |  <legend>
            |    <h1>$question</h1>
            |  </legend>
            |
