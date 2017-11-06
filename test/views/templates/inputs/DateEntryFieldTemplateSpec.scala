@@ -21,7 +21,7 @@ import play.api.data.Field
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
 
-class NumberNoErrorTemplateSpec extends TemplateBaseSpec {
+class DateEntryFieldTemplateSpec extends TemplateBaseSpec {
 
   "Rendering the numberNoError input" should {
 
@@ -42,7 +42,7 @@ class NumberNoErrorTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
     )
 
-    val markup = views.html.templates.inputs.numberNoError(field, label, formClass, hasErrors)
+    val markup = views.html.templates.inputs.dateEntryField(field, label, formClass, hasErrors)
 
     "generate the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)

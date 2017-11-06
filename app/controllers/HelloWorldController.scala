@@ -29,6 +29,8 @@ import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthorisedFunctions
 import uk.gov.hmrc.play.frontend.controller.FrontendController
 
+import scala.concurrent.Future
+
 @Singleton
 class HelloWorldController @Inject()(val messagesApi: MessagesApi,
                                      val authFunctions: AuthorisedFunctions,

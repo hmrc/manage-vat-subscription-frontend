@@ -14,11 +14,11 @@
 * limitations under the License.
 *@
 
-@(form: Form[_], question: String, fieldName: String, hint: Option[String] = None, oneItemOnPage: Boolean = true)(implicit messages: Messages)
+@(form: Form[_], question: String, fieldName: String, hint: Option[String] = None, renderQuestionAsHeading: Boolean = true)(implicit messages: Messages)
 
 <fieldset id="@fieldName-fieldset" class="form-group form-date @if(form.hasErrors) {form-field--error}">
 
-    @if(oneItemOnPage){
+    @if(renderQuestionAsHeading){
         <legend>
             <h1>@question</h1>
         </legend>
@@ -34,33 +34,33 @@
 
     @if(form.hasErrors) {
         <span class="error-notification" role="tooltip">
-            @if(form.errors.length.equals(1)) {
-                @form.errors.map(_.message)
+            @if(form.errors.length > 1) {
+              @messages("common.dateError")
             } else {
-                @messages("common.dateError")
+              @form.errors.head.message
             }
         </span>
     }
 
-    @defining(if(form.hasErrors) "error-field" else "") { inputClass =>
+    @dateEntryField(
+        form(fieldName + "Day"),
+        messages("common.day"),
+        "day",
+        form.hasErrors
+    )
 
-        @numberNoError(
-            form(s"${fieldName}Day"),
-            messages("common.day"),
-            "day",
-            inputClass
-        )
-        @numberNoError(
-            form(s"${fieldName}Month"),
-            messages("common.month"),
-            "month",
-            inputClass
-        )
-        @numberNoError(
-            form(s"${fieldName}Year"),
-            messages("common.year"),
-            "year",
-            inputClass
-        )
-    }
+    @dateEntryField(
+        form(fieldName + "Month"),
+        messages("common.month"),
+        "month",
+        form.hasErrors
+    )
+
+    @dateEntryField(
+        form(fieldName + "Year"),
+        messages("common.year"),
+        "year",
+        form.hasErrors
+    )
+
 </fieldset>
