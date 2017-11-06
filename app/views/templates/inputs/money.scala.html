@@ -15,21 +15,22 @@
 *@
 
 
-@(form: Form[_],
-    fieldName: String,
+@(field: Field,
     label: String,
     decimalPlace: Boolean,
     hint: Option[String] = None,
-    oneItemOnPage: Boolean = true)(implicit messages: Messages)
+    renderLabelAsHeading: Boolean = true)(implicit messages: Messages)
 
-<div class="form-group @if(form.hasErrors) {form-field--error}">
+<div class="form-group @if(field.hasErrors) {form-field--error}">
 
-    @if(oneItemOnPage) {
-        <h1 class="form-label">
+    @if(renderLabelAsHeading) {
+        <h1>
+          <label for="@field.id" class="heading-large">
            @label
+          </label>
         </h1>
     } else {
-        <label for="@fieldName" class="form-label">
+        <label for="@field.id" class="form-label">
             @label
         </label>
     }
@@ -40,21 +41,20 @@
         </span>
     }
 
-    @if(form.hasErrors) {
-        <span class="error-notification"
-            role="tooltip">
-            @form.errors.head.message
-        </span>
+    @field.errors.headOption.map { error =>
+      <span class="error-notification" role="tooltip">
+        @error.message
+      </span>
     }
 
     <span class="input-currency"></span>
 
     <input
         type="number"
-        class="input--no-spinner input--left-padding @if(form.hasErrors) {error-field}"
-        name="@fieldName"
-        id="@fieldName"
-        value="@form(fieldName).value"
+        class="input--no-spinner input--left-padding @if(field.hasErrors) {error-field}"
+        name="@field.name"
+        id="@field.id"
+        value="@field.value"
         step="@if(decimalPlace) {0.01} else {1}"
     />
 

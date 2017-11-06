@@ -19,9 +19,14 @@ package views.templates.inputs
 import forms.test.MoneyInputForm
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
+import views.html.templates.inputs.money
 
 class MoneyTemplateSpec extends TemplateBaseSpec {
 
+  private val validForm = MoneyInputForm.form.bind(Map("moneyInput" -> "100.00"))
+  private val invalidForm = MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data"))
+  private val blankForm = MoneyInputForm.form
+  
   "Rendering the money input" when {
 
     val fieldName = "moneyInput"
@@ -36,8 +41,10 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <h1 class="form-label">
-           |        $labelText
+           |    <h1>
+           |        <label for="$fieldName" class="heading-large">
+           |          $labelText
+           |        </label>
            |    </h1>
            |
            |    <span class="form-hint">
@@ -58,7 +65,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, Some(hintText), true)
+      val markup = money(validForm(fieldName), labelText, decimalPlace = true, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -73,8 +80,10 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <h1 class="form-label">
-           |        $labelText
+           |    <h1>
+           |        <label for="$fieldName" class="heading-large">
+           |          $labelText
+           |        </label>
            |    </h1>
            |
            |    <span class="input-currency"></span>
@@ -91,7 +100,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, None, true)
+      val markup = money(validForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -106,8 +115,10 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <h1 class="form-label">
-           |        $labelText
+           |    <h1>
+           |        <label for="$fieldName" class="heading-large">
+           |          $labelText
+           |        </label>
            |    </h1>
            |
            |    <span class="input-currency"></span>
@@ -124,7 +135,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, false, None, true)
+      val markup = money(validForm(fieldName), labelText, decimalPlace = false, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -137,8 +148,10 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group ">
            |
-           |    <h1 class="form-label">
-           |        $labelText
+           |    <h1>
+           |        <label for="$fieldName" class="heading-large">
+           |          $labelText
+           |        </label>
            |    </h1>
            |
            |    <span class="input-currency"></span>
@@ -155,7 +168,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form, fieldName, labelText, true, None, true)
+      val markup = money(blankForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -191,7 +204,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "100.00")), fieldName, labelText, true, Some(hintText), false)
+      val markup = money(validForm(fieldName), labelText, decimalPlace = true, Some(hintText), renderLabelAsHeading = false)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -206,8 +219,10 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div class="form-group form-field--error">
            |
-           |    <h1 class="form-label">
-           |        $labelText
+           |    <h1>
+           |        <label for="$fieldName" class="heading-large">
+           |          $labelText
+           |        </label>
            |    </h1>
            |
            |    <span class="error-notification"
@@ -229,7 +244,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = views.html.templates.inputs.money(MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data")), fieldName, labelText, true, None, true)
+      val markup = money(invalidForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
