@@ -35,11 +35,11 @@ class WhitelistFilter @Inject()(val appConfig: AppConfig, implicit val mat: Mate
 
   override lazy val excludedPaths: Seq[Call] = appConfig.whitelistExcludedPaths
 
-  override def apply(f: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
+  override def apply(requestFunc: RequestHeader => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
     if(appConfig.whitelistEnabled) {
-      super.apply(f)(rh)
+      super.apply(requestFunc)(requestHeader) // Calls the actual filtering code from the superclass (AkamaiWhitelistFilter)
     } else {
-      f(rh)
+      requestFunc(requestHeader) // Just let the request through
     }
   }
 
