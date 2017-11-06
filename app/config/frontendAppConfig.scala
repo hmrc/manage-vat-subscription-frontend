@@ -20,33 +20,30 @@ import java.util.Base64
 import javax.inject.{Inject, Singleton}
 
 import play.api.mvc.Call
-import play.api.{Application, Configuration}
+import play.api.Configuration
 import uk.gov.hmrc.play.binders.ContinueUrl
-import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.play.bootstrap.config.BaseUrl
 
-trait AppConfig extends ServicesConfig {
+trait AppConfig extends BaseUrl {
   val analyticsToken: String
   val analyticsHost: String
   val reportAProblemPartialUrl: String
   val reportAProblemNonJSUrl: String
+  val whitelistEnabled: Boolean
   val whitelistedIps: Seq[String]
   val whitelistExcludedPaths: Seq[Call]
   val shutterPage: String
   val signInUrl: String
-  val authUrl: String
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
-
-  protected val configuration: Configuration = app.configuration
+class FrontendAppConfig @Inject()(val configuration: Configuration) extends AppConfig {
 
   private def loadConfig(key: String): String = configuration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  private lazy val contactHost: String = configuration.getString("contact-frontend.host").getOrElse("")
+  private lazy val contactHost: String = baseUrl("contact-frontend")
   private lazy val contactFormServiceIdentifier: String = "MyService"
 
-  override lazy val authUrl: String = baseUrl("auth")
   override lazy val analyticsToken: String = loadConfig("google-analytics.token")
   override lazy val analyticsHost: String = loadConfig("google-analytics.host")
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
@@ -56,6 +53,7 @@ class FrontendAppConfig @Inject()(val app: Application) extends AppConfig {
     .decode(configuration.getString(key).getOrElse("")), "UTF-8"))
     .map(_.split(",")).getOrElse(Array.empty).toSeq
 
+  override lazy val whitelistEnabled: Boolean = configuration.getBoolean("whitelist.enabled").getOrElse(true)
   override lazy val whitelistedIps: Seq[String] = whitelistConfig("whitelist.allowedIps")
   override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig("whitelist.excludePaths").map(path => Call("GET", path))
   override lazy val shutterPage: String = loadConfig("whitelist.shutter-page-url")

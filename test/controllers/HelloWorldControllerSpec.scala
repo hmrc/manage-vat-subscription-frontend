@@ -55,7 +55,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
           Enrolment("HMRC-MTD-VAT",
             Seq(EnrolmentIdentifier("", "")),
             "",
-            ConfidenceLevel.L0)
+            None)
         )
       )
 

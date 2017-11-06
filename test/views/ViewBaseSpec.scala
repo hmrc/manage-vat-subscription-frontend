@@ -31,7 +31,7 @@ import scala.collection.JavaConverters._
 
 trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
 
-  lazy val mockConfig = new MockAppConfig()
+  lazy val mockConfig = new MockAppConfig(app.configuration)
   lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]

@@ -17,22 +17,31 @@
 package config.filters
 
 import javax.inject.{Inject, Singleton}
+
+import akka.stream.Materializer
 import config.AppConfig
-import play.api.Application
-import play.api.mvc.Call
-import uk.gov.hmrc.play.config.RunMode
+import org.asynchttpclient.util.HttpConstants.Methods
+import play.api.mvc.{Call, RequestHeader, Result}
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
-import uk.gov.hmrc.play.frontend.filters.MicroserviceFilterSupport
+
+import scala.concurrent.Future
 
 @Singleton
-class WhitelistFilter @Inject()(app: Application) extends AkamaiWhitelistFilter with RunMode with MicroserviceFilterSupport {
-
-  private lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+class WhitelistFilter @Inject()(val appConfig: AppConfig, implicit val mat: Materializer) extends AkamaiWhitelistFilter {
 
   override lazy val whitelist: Seq[String] = appConfig.whitelistedIps
 
-  override lazy val destination: Call = Call("GET", appConfig.shutterPage)
+  override lazy val destination: Call = Call(Methods.GET, appConfig.shutterPage)
 
   override lazy val excludedPaths: Seq[Call] = appConfig.whitelistExcludedPaths
+
+  override def apply(requestFunc: RequestHeader => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
+    if(appConfig.whitelistEnabled) {
+      super.apply(requestFunc)(requestHeader) // Calls the actual filtering code from the superclass (AkamaiWhitelistFilter)
+    } else {
+      requestFunc(requestHeader) // Just let the request through
+    }
+  }
+
 }
 
