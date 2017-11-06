@@ -1,3 +1,8 @@
+common.day = Day
+common.month = Month
+common.year = Year
+common.dateError = Enter a valid date
+
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to
 sessionTimeout.helpTwo = sign in

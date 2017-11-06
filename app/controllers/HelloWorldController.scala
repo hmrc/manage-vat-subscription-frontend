@@ -20,17 +20,16 @@ import javax.inject.{Inject, Singleton}
 
 import config.AppConfig
 import controllers.auth.actions.VatUserAction
-import uk.gov.hmrc.auth.core.AuthorisedFunctions
-import uk.gov.hmrc.play.frontend.controller.FrontendController
-import forms.test.{MoneyInputForm, TextInputForm}
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
 import forms.test.MoneyInputForm._
+import forms.test.{DateInputForm, MoneyInputForm, TextInputForm}
 import models.test.MoneyInputModel
 import play.api.data.Form
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc._
+import uk.gov.hmrc.auth.core.AuthorisedFunctions
+import uk.gov.hmrc.play.frontend.controller.FrontendController
 
 import scala.concurrent.Future
-
 
 @Singleton
 class HelloWorldController @Inject()(val messagesApi: MessagesApi,
@@ -57,14 +56,19 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
   val submitMoney: Action[AnyContent] = Action.async {
     implicit request =>
 
-    def successAction(model: MoneyInputModel): Future[Result] = {
-      Future.successful(Redirect(routes.HelloWorldController.moneyInput()))
-    }
+      def successAction(model: MoneyInputModel): Future[Result] = {
+        Future.successful(Redirect(routes.HelloWorldController.moneyInput()))
+      }
 
-    def errorAction(form: Form[MoneyInputModel]): Future[Result] = {
-      Future.successful(BadRequest(views.html.test.moneyInput(form)))
-    }
+      def errorAction(form: Form[MoneyInputModel]): Future[Result] = {
+        Future.successful(BadRequest(views.html.test.moneyInput(form)))
+      }
 
-    form.bindFromRequest.fold(errorAction, successAction)
+      form.bindFromRequest.fold(errorAction, successAction)
+  }
+
+  val dateInput: Action[AnyContent] = Action.async {
+    implicit request =>
+      Future.successful(Ok(views.html.test.dateInput(DateInputForm.form)))
   }
 }
