@@ -20,11 +20,16 @@ import javax.inject.{Inject, Singleton}
 
 import config.AppConfig
 import controllers.auth.actions.VatUserAction
-import forms.test.TextInputForm
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc._
 import uk.gov.hmrc.auth.core.AuthorisedFunctions
 import uk.gov.hmrc.play.frontend.controller.FrontendController
+import forms.test.{MoneyInputForm, TextInputForm}
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc._
+import forms.test.MoneyInputForm._
+import models.test.MoneyInputModel
+import play.api.data.Form
+
+import scala.concurrent.Future
 
 
 @Singleton
@@ -42,5 +47,24 @@ class HelloWorldController @Inject()(val messagesApi: MessagesApi,
   val textInput: Action[AnyContent] = Action {
     implicit request =>
       Ok(views.html.test.textInput(TextInputForm.form))
+  }
+
+  val moneyInput: Action[AnyContent] = Action.async {
+    implicit request =>
+      Future.successful(Ok(views.html.test.moneyInput(MoneyInputForm.form)))
+  }
+
+  val submitMoney: Action[AnyContent] = Action.async {
+    implicit request =>
+
+    def successAction(model: MoneyInputModel): Future[Result] = {
+      Future.successful(Redirect(routes.HelloWorldController.moneyInput()))
+    }
+
+    def errorAction(form: Form[MoneyInputModel]): Future[Result] = {
+      Future.successful(BadRequest(views.html.test.moneyInput(form)))
+    }
+
+    form.bindFromRequest.fold(errorAction, successAction)
   }
 }
