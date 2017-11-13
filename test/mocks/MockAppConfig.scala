@@ -17,10 +17,11 @@
 package mocks
 
 import config.AppConfig
-import play.api.Configuration
+import play.api.{Configuration, Mode}
+import play.api.Mode.Mode
 import play.api.mvc.Call
 
-class MockAppConfig(val configuration: Configuration) extends AppConfig {
+class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
   override val analyticsToken: String = ""
   override val analyticsHost: String = ""
   override val reportAProblemPartialUrl: String = ""
