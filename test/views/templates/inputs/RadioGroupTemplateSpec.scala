@@ -51,18 +51,20 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val expectedMarkup = Html(
         s"""
            |  <div class="form-group">
-           |    <fieldset class="inline">
-           |      <legend>
-           |        <h1 class="heading-medium">
-           |          $labelText
-           |        </h1>
-           |      </legend>
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2", true)}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
-           |    </fieldset>
+           |    <div class="">
+           |      <fieldset class="inline">
+           |        <legend>
+           |          <h1 class="heading-medium">
+           |            $labelText
+           |          </h1>
+           |        </legend>
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2", true)}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
+           |      </fieldset>
+           |    </div>
            |  </div>
         """.stripMargin
       )
@@ -79,21 +81,23 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val expectedMarkup = Html(
         s"""
            |  <div class="form-group">
-           |    <fieldset class="inline">
+           |    <div class="">
+           |     <fieldset class="inline">
            |
-           |      <legend>
-           |        <h1 class="heading-medium">
-           |          $labelText
-           |        </h1>
-           |      </legend>
+           |       <legend>
+           |          <h1 class="heading-medium">
+           |            $labelText
+           |          </h1>
+           |        </legend>
            |
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2")}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2")}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
            |
-           |    </fieldset>
+           |      </fieldset>
+           |    </div>
            |  </div>
         """.stripMargin
       )
@@ -110,21 +114,23 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val expectedMarkup = Html(
         s"""
            |  <div class="form-group">
-           |    <fieldset class="">
+           |    <div class="">
+           |      <fieldset class="">
            |
-           |      <legend>
-           |        <h1 class="heading-medium">
-           |          $labelText
-           |        </h1>
-           |      </legend>
+           |        <legend>
+           |          <h1 class="heading-medium">
+           |            $labelText
+           |          </h1>
+           |        </legend>
            |
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2")}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2")}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
            |
-           |    </fieldset>
+           |      </fieldset>
+           |    </div>
            |  </div>
         """.stripMargin
       )

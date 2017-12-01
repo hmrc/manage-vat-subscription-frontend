@@ -56,7 +56,7 @@ val compile: Seq[ModuleID] = Seq(
   "uk.gov.hmrc" %% "play-partials" % "6.1.0",
   "uk.gov.hmrc" %% "play-whitelist-filter" % "2.0.0",
   "uk.gov.hmrc" %% "govuk-template" % "5.15.0",
-  "uk.gov.hmrc" %% "play-ui" % "7.8.0",
+  "uk.gov.hmrc" %% "play-ui" % "7.9.0",
   "org.typelevel" %% "cats" % "0.9.0"
 )
 
