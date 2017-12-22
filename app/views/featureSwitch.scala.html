@@ -21,20 +21,19 @@
 
 @views.html.main_template(title = messages("featureSwitch.title"), bodyClasses = None, appConfig = appConfig) {
 
-    <div class="form-group">
-        <fieldset>
-            <legend>
-                <h1 class="heading-medium">@messages("featureSwitch.heading")</h1>
-            </legend>
+  @helper.form(action = routes.FeatureSwitchController.submitFeatureSwitch) {
+      @CSRF.formField
 
-            @views.html.templates.inputs.checkboxList(
-                field = form(ConfigKeys.simpleAuthFeature),
-                messages(ConfigKeys.simpleAuthFeature),
-                Seq((messages(ConfigKeys.simpleAuthFeature), messages(ConfigKeys.simpleAuthFeature))),
-                None)
-        </fieldset>
-    </div>
+      <div class="form-group">
+          <fieldset>
+              <legend>
+                  <h1 class="heading-medium">@messages("featureSwitch.heading")</h1>
+              </legend>
 
-    <button class="button" type="submit" id="continue-button">@messages("featureSwitch.submit")</button>
+              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.simpleAuthFeature), messages(ConfigKeys.simpleAuthFeature))
+          </fieldset>
+      </div>
 
+      <button class="button" type="submit" id="continue-button">@messages("featureSwitch.submit")</button>
+    }
 }

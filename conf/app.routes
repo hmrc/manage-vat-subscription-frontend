@@ -9,3 +9,6 @@ GET        /unauthorised            controllers.ErrorsController.unauthorised
 
 GET        /money-input              controllers.HelloWorldController.moneyInput
 POST       /money-input              controllers.HelloWorldController.submitMoney
+
+GET        /feature-switch          controllers.FeatureSwitchController.featureSwitch
+POST       /feature-switch          controllers.FeatureSwitchController.submitFeatureSwitch

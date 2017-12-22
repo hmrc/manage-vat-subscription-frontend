@@ -16,6 +16,7 @@
 
 package controllers.auth.actions
 
+import config.AppConfig
 import controllers.auth.{AuthPredicates, AuthorisedActions}
 import play.api.mvc.{Action, AnyContent}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -25,8 +26,13 @@ import scala.concurrent.Future
 trait VatUserAction extends AuthorisedActions {
   self: FrontendController =>
 
+  implicit val appConfig: AppConfig
+
   object VatUserAction {
     def apply(action: ActionBody): Action[AnyContent] = async(action andThen (_ andThen Future.successful))
-    def async: AuthenticatedAction = action(AuthPredicates.enrolledUserPredicate)
+    def async: AuthenticatedAction = {
+      val predicate = if (appConfig.features.simpleAuth()) AuthPredicates.timeoutPredicate else AuthPredicates.enrolledUserPredicate
+      action(predicate)
+    }
   }
 }
