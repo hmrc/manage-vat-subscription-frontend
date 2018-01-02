@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package services
+package config.features
 
-import javax.inject.{Inject, Singleton}
+import play.api.Configuration
 
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
+class Feature(val key: String, config: Configuration) {
 
-@Singleton
-class AuthService @Inject()(val authConnector: AuthConnector) extends AuthorisedFunctions
+  def apply(value: Boolean): Unit = sys.props += key -> value.toString
+
+  def apply(): Boolean = sys.props.get(key).fold(config.getBoolean(key).getOrElse(false))(_.toBoolean)
+}

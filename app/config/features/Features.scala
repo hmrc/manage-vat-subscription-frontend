@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
-package services
+package config.features
 
 import javax.inject.{Inject, Singleton}
 
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
+import config.ConfigKeys
+import play.api.Configuration
 
 @Singleton
-class AuthService @Inject()(val authConnector: AuthConnector) extends AuthorisedFunctions
+class Features @Inject()(config: Configuration) {
+  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature, config)
+
+}

@@ -14,23 +14,31 @@
  * limitations under the License.
  */
 
-package controllers
+package config.features
 
-import mocks.MockAppConfig
-import org.scalamock.scalatest.MockFactory
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.MessagesApi
-import play.api.inject.Injector
-import play.api.mvc.AnyContentAsEmpty
-import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.UnitSpec
+import play.api.Configuration
 
-class ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
+class FeaturesSpec extends PlaySpec with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val injector: Injector = app.injector
-  val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  private val features = new Features(app.injector.instanceOf[Configuration])
 
-  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    features.simpleAuth(false)
+  }
 
+  "The Auth Feature" should {
+
+    "return its current state" in {
+      features.simpleAuth() mustBe false
+    }
+
+    "switch to a new state" in {
+      features.simpleAuth(true)
+      features.simpleAuth() mustBe true
+    }
+  }
 }
