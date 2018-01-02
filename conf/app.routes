@@ -4,9 +4,6 @@ GET        /hello-world             controllers.HelloWorldController.helloWorld
 GET        /text-input              controllers.HelloWorldController.textInput
 GET        /date-input              controllers.HelloWorldController.dateInput
 
-GET        /session-timeout         controllers.ErrorsController.sessionTimeout
-GET        /unauthorised            controllers.ErrorsController.unauthorised
-
 GET        /money-input              controllers.HelloWorldController.moneyInput
 POST       /money-input              controllers.HelloWorldController.submitMoney
 

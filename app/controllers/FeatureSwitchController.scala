@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 HM Revenue & Customs
+ * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Result}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-class FeatureSwitchController @Inject()(val messagesApi: MessagesApi,
-                                        implicit val appConfig: AppConfig)
+class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
   extends FrontendController with I18nSupport {
 
   def featureSwitch: Action[AnyContent] = Action { implicit request =>

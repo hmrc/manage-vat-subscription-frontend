@@ -18,7 +18,7 @@ package controllers
 
 import play.api.http.Status
 import play.api.test.Helpers._
-import services.AuthService
+import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
@@ -29,20 +29,20 @@ import scala.concurrent.{ExecutionContext, Future}
 class HelloWorldControllerSpec extends ControllerBaseSpec {
 
   private trait Test {
-    val enrolments: Enrolments
+    val authResult: Future[Enrolments]
     val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
     def setup() {
       (mockAuthConnector.authorise(_: Predicate, _: Retrieval[Enrolments])(_: HeaderCarrier, _: ExecutionContext))
         .expects(*, *, *, *)
-        .returns(Future.successful(enrolments))
+        .returns(authResult)
     }
 
-    val mockAuthorisedFunctions: AuthorisedFunctions = new AuthService(mockAuthConnector)
+    val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
 
     def target: HelloWorldController = {
       setup()
-      new HelloWorldController(messagesApi, mockAuthorisedFunctions, mockAppConfig)
+      new HelloWorldController(messagesApi, mockEnrolmentsAuthService, mockAppConfig)
     }
   }
 
@@ -60,14 +60,14 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
       )
 
       "return 200" in new Test {
-        override val enrolments: Enrolments = goodEnrolments
+        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
         val result = target.helloWorld(fakeRequest)
 
         status(result) shouldBe Status.OK
       }
 
       "return HTML" in new Test {
-        override val enrolments: Enrolments = goodEnrolments
+        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
         val result = target.helloWorld(fakeRequest)
 
         contentType(result) shouldBe Some("text/html")
@@ -75,24 +75,24 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
       }
     }
 
-    "the user is not authorised" should {
+    "the user is not authenticated" should {
 
-      val noEnrolments: Enrolments = Enrolments(Set())
+      "return 401 (Unauthorised)" in new Test {
+        override val authResult: Future[Nothing] = Future.failed(MissingBearerToken())
+        private val result = target.helloWorld()(fakeRequest)
 
-      "return 303" in new Test {
-        override val enrolments: Enrolments = noEnrolments
-        val result = target.helloWorld(fakeRequest)
-
-        status(result) shouldBe Status.SEE_OTHER
-      }
-
-      "redirect the user to the unauthorised page" in new Test {
-        override val enrolments: Enrolments = noEnrolments
-        val result = target.helloWorld(fakeRequest)
-
-        redirectLocation(result) shouldBe Some(routes.ErrorsController.unauthorised().url)
+        status(result) shouldBe Status.UNAUTHORIZED
       }
     }
 
+    "the user is not authorised" should {
+
+      "return 403 (Forbidden)" in new Test {
+        override val authResult: Future[Nothing] = Future.failed(InsufficientEnrolments())
+        private val result = target.helloWorld()(fakeRequest)
+
+        status(result) shouldBe Status.FORBIDDEN
+      }
+    }
   }
 }

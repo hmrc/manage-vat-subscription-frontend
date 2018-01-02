@@ -14,25 +14,11 @@
  * limitations under the License.
  */
 
-package controllers
+package services
 
 import javax.inject.{Inject, Singleton}
 
-import config.AppConfig
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
 
 @Singleton
-class ErrorsController @Inject()(val messagesApi: MessagesApi,
-                                 implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
-
-  val sessionTimeout: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.errors.sessionTimeout())
-  }
-
-  val unauthorised: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.errors.unauthorised())
-  }
-}
+class EnrolmentsAuthService @Inject()(val authConnector: AuthConnector) extends AuthorisedFunctions

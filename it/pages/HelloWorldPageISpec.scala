@@ -37,26 +37,28 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
       }
     }
 
+    "the user is not authorised" should {
+
+      "return 403 (Forbidden)" in {
+
+        given.user.isNotEnrolled
+
+        val result = await(buildRequest("/hello-world").get())
+
+        result.status shouldBe FORBIDDEN
+      }
+    }
+
     "the user is not authenticated" should {
 
-      "return 303 SEE OTHER" in {
+      "return 401 (Unauthorised)" in {
 
         given.user.isNotAuthenticated
 
         val result = await(buildRequest("/hello-world").get())
 
-        result.status shouldBe SEE_OTHER
+        result.status shouldBe UNAUTHORIZED
       }
-
-      "redirect to the session timeout page" in {
-
-        given.user.isNotAuthenticated
-
-        val result = await(buildRequest("/hello-world").get())
-
-        result.header(HeaderNames.LOCATION) shouldBe Some(s"$appContextRoute/session-timeout")
-      }
-
     }
   }
 }

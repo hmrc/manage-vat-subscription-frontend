@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-package services
+package common
 
-import javax.inject.{Inject, Singleton}
-
-import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
-
-@Singleton
-class AuthService @Inject()(val authConnector: AuthConnector) extends AuthorisedFunctions
+object EnrolmentKeys {
+  val vatEnrolmentId: String = "HMRC-MTD-VAT"
+}
