@@ -27,12 +27,17 @@ object AuthStub extends WireMockMethods {
 
   private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
 
-  def stubAuthSuccess(): StubMapping = {
+  def authorised(): StubMapping = {
     when(method = POST, uri = authoriseUri)
       .thenReturn(status = OK, body = successfulAuthResponse(mtdVatEnrolment))
   }
 
-  def stubUnauthorised(): StubMapping = {
+  def unauthorisedOtherEnrolment(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = OK, body = successfulAuthResponse(otherEnrolment))
+  }
+
+  def unauthorisedNotLoggedIn(): StubMapping = {
     when(method = POST, uri = authoriseUri)
       .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="MissingBearerToken""""))
   }
@@ -47,7 +52,17 @@ object AuthStub extends WireMockMethods {
     )
   )
 
+  private val otherEnrolment: JsObject = Json.obj(
+    "key" -> "HMRC-XXX-XXX",
+    "identifiers" -> Json.arr(
+      Json.obj(
+        "key" -> "XXX",
+        "value" -> "XXX"
+      )
+    )
+  )
+
   private def successfulAuthResponse(enrolments: JsObject*): JsObject = {
-    Json.obj("allEnrolments" -> enrolments)
+    Json.obj("authorisedEnrolments" -> enrolments)
   }
 }

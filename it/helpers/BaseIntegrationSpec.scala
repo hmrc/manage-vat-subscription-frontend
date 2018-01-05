@@ -42,12 +42,17 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
 
   class User()(implicit builder: PreconditionBuilder) {
     def isAuthenticated: PreconditionBuilder = {
-      AuthStub.stubAuthSuccess()
+      AuthStub.authorised()
       builder
     }
 
     def isNotAuthenticated: PreconditionBuilder = {
-      AuthStub.stubUnauthorised()
+      AuthStub.unauthorisedNotLoggedIn()
+      builder
+    }
+
+    def isNotEnrolled: PreconditionBuilder = {
+      AuthStub.unauthorisedOtherEnrolment()
       builder
     }
   }

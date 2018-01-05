@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package controllers.auth.actions
+package services
 
-import controllers.auth.{AuthPredicates, AuthorisedActions}
-import play.api.mvc.{Action, AnyContent}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import javax.inject.{Inject, Singleton}
 
-import scala.concurrent.Future
+import uk.gov.hmrc.auth.core.{AuthConnector, AuthorisedFunctions}
 
-trait VatUserAction extends AuthorisedActions {
-  self: FrontendController =>
-
-  object VatUserAction {
-    def apply(action: ActionBody): Action[AnyContent] = async(action andThen (_ andThen Future.successful))
-    def async: AuthenticatedAction = action(AuthPredicates.enrolledUserPredicate)
-  }
-}
+@Singleton
+class EnrolmentsAuthService @Inject()(val authConnector: AuthConnector) extends AuthorisedFunctions

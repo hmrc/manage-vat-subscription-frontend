@@ -17,30 +17,15 @@
 package controllers
 
 import play.api.http.Status
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class ErrorsControllerSpec extends ControllerBaseSpec {
+class FeatureSwitchControllerSpec extends ControllerBaseSpec {
 
-  lazy val target = new ErrorsController(messagesApi, mockAppConfig)
+  private lazy val target = new FeatureSwitchController(messagesApi, mockAppConfig)
 
-  "Calling the sessionTimeout action" should {
+  "Calling the .featureSwitch action" should {
 
-    lazy val result = target.sessionTimeout()(FakeRequest())
-
-    "return 200" in {
-      status(result) shouldBe Status.OK
-    }
-
-    "return HTML" in {
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
-    }
-  }
-
-  "Calling the unauthorised action" should {
-
-    lazy val result = target.sessionTimeout()(FakeRequest())
+    lazy val result = target.featureSwitch(fakeRequest.addToken)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -48,7 +33,25 @@ class ErrorsControllerSpec extends ControllerBaseSpec {
 
     "return HTML" in {
       contentType(result) shouldBe Some("text/html")
+    }
+
+    "return charset of utf-8" in {
       charset(result) shouldBe Some("utf-8")
     }
   }
+
+  "Calling the .submitFeatureSwitch action" should {
+
+    lazy val result = target.submitFeatureSwitch(fakeRequest.addToken
+      .withFormUrlEncodedBody("features.simpleAuth.enabled" -> "true"))
+
+    "return 303" in {
+      status(result) shouldBe Status.SEE_OTHER
+    }
+
+    "redirect the user to the feature switch page" in {
+      redirectLocation(result) shouldBe Some(routes.FeatureSwitchController.featureSwitch().url)
+    }
+  }
+
 }
