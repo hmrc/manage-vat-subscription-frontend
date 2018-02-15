@@ -30,7 +30,7 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
 
   val mockHost: String = WireMockHelper.host
   val mockPort: String = WireMockHelper.wmPort.toString
-  val appContextRoute: String = "/manage-your-vat-account"
+  val appContextRoute: String = "/vat-through-software/account"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this
