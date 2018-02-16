@@ -48,7 +48,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private def loadConfig(key: String): String = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = baseUrl(Keys.contactFrontendService)
-  private lazy val contactFormServiceIdentifier: String = "MyService"
+  private lazy val contactFormServiceIdentifier: String = "VATVC"
 
   override lazy val analyticsToken: String = loadConfig(Keys.googleAnalyticsToken)
   override lazy val analyticsHost: String = loadConfig(Keys.googleAnalyticsHost)
