@@ -98,14 +98,14 @@ class TextTemplateSpec extends TemplateBaseSpec {
            |
            |<div class="form-field">
            |  <label for="$fieldName" class="  form-field--error">
-           |      <span class="error-notification" role="tooltip" data-journey="search-page:error:$fieldName">
-           |          $errorMessage
-           |      </span>
            |      <span class="form-label visuallyhidden">
            |          $labelText
            |      </span>
            |      <span class="form-hint">
            |          $hintText
+           |      </span>
+           |      <span class="error-notification" role="tooltip" data-journey="search-page:error:$fieldName">
+           |          $errorMessage
            |      </span>
            |      <input type="text" class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="">
            |  </label>
