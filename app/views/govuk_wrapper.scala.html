@@ -36,7 +36,13 @@
     <meta name="format-detection" content="telephone=no" />
 }
 
-@headerNavLinks = {}
+@headerNavLinks = {
+    <li>
+        <a id="sign-out" href="#">
+            @messages("base.sign-out")
+        </a>
+    </li>
+}
 
 @insideHeader = {
     @uiLayouts.header_nav(
