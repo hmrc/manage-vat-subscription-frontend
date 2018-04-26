@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.predicates
 
-import controllers.predicates.AuthenticationPredicate
+import controllers.ControllerBaseSpec
 import play.api.http.Status
-import play.api.test.Helpers._
+import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, AnyContent}
 import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.authorise.Predicate
@@ -27,7 +28,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
+class AuthenticationPredicateSpec extends ControllerBaseSpec {
 
   private trait Test {
     val authResult: Future[Enrolments]
@@ -40,15 +41,16 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
     }
 
     val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
-    val mockAuthPredicate: AuthenticationPredicate = new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
 
-    def target: HelloWorldController = {
+    def target: Action[AnyContent] = {
       setup()
-      new HelloWorldController(messagesApi, mockAuthPredicate, mockAppConfig)
+      new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig).async{
+        implicit request => Future.successful(Ok("test"))
+      }
     }
   }
 
-  "Calling the .helloWorld action" when {
+  "The AuthenticationPredicate" when {
 
     "the user is authorised" should {
 
@@ -63,17 +65,8 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
 
       "return 200" in new Test {
         override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
-        val result = target.helloWorld(fakeRequest)
-
+        val result = target(fakeRequest)
         status(result) shouldBe Status.OK
-      }
-
-      "return HTML" in new Test {
-        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
-        val result = target.helloWorld(fakeRequest)
-
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
       }
     }
 
@@ -81,7 +74,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
 
       "return 401 (Unauthorised)" in new Test {
         override val authResult: Future[Nothing] = Future.failed(MissingBearerToken())
-        private val result = target.helloWorld()(fakeRequest)
+        private val result = target(fakeRequest)
 
         status(result) shouldBe Status.UNAUTHORIZED
       }
@@ -91,7 +84,7 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
 
       "return 403 (Forbidden)" in new Test {
         override val authResult: Future[Nothing] = Future.failed(InsufficientEnrolments())
-        private val result = target.helloWorld()(fakeRequest)
+        private val result = target(fakeRequest)
 
         status(result) shouldBe Status.FORBIDDEN
       }
