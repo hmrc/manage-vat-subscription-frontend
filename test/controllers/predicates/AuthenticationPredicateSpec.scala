@@ -16,55 +16,28 @@
 
 package controllers.predicates
 
-import controllers.ControllerBaseSpec
+import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
-import services.EnrolmentsAuthService
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
-class AuthenticationPredicateSpec extends ControllerBaseSpec {
+class AuthenticationPredicateSpec extends MockAuth {
 
-  private trait Test {
-    val authResult: Future[Enrolments]
-    val mockAuthConnector: AuthConnector = mock[AuthConnector]
-
-    def setup() {
-      (mockAuthConnector.authorise(_: Predicate, _: Retrieval[Enrolments])(_: HeaderCarrier, _: ExecutionContext))
-        .expects(*, *, *, *)
-        .returns(authResult)
-    }
-
-    val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
-
-    def target: Action[AnyContent] = {
-      setup()
-      new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig).async{
-        implicit request => Future.successful(Ok("test"))
-      }
-    }
-  }
 
   "The AuthenticationPredicate" when {
 
+    def target: Action[AnyContent] = {
+      mockAuthPredicate.async{
+        implicit request => Future.successful(Ok("test"))
+      }
+    }
+
     "the user is authorised" should {
 
-      val goodEnrolments: Enrolments = Enrolments(
-        Set(
-          Enrolment("HMRC-MTD-VAT",
-            Seq(EnrolmentIdentifier("", "")),
-            "",
-            None)
-        )
-      )
-
-      "return 200" in new Test {
-        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
+      "return 200" in {
+        mockAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
       }
@@ -72,20 +45,18 @@ class AuthenticationPredicateSpec extends ControllerBaseSpec {
 
     "the user is not authenticated" should {
 
-      "return 401 (Unauthorised)" in new Test {
-        override val authResult: Future[Nothing] = Future.failed(MissingBearerToken())
-        private val result = target(fakeRequest)
-
+      "return 401 (Unauthorised)" in {
+        mockUnauthenticated()
+        val result = target(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
 
     "the user is not authorised" should {
 
-      "return 403 (Forbidden)" in new Test {
-        override val authResult: Future[Nothing] = Future.failed(InsufficientEnrolments())
-        private val result = target(fakeRequest)
-
+      "return 403 (Forbidden)" in {
+        mockUnauthorised()
+        val result = target(fakeRequest)
         status(result) shouldBe Status.FORBIDDEN
       }
     }

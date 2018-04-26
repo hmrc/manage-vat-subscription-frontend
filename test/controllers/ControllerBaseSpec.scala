@@ -16,35 +16,21 @@
 
 package controllers
 
-import mocks.MockAppConfig
-import org.scalamock.scalatest.MockFactory
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.MessagesApi
-import play.api.inject.Injector
-import play.api.mvc.AnyContentAsEmpty
-import play.api.test.FakeRequest
-import play.filters.csrf.CSRF.Token
-import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
-import uk.gov.hmrc.play.test.UnitSpec
+import mocks.MockAuth
+import play.api.http.Status
+import play.api.mvc.{Action, AnyContent}
 
-class ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
+trait ControllerBaseSpec extends MockAuth {
 
-  val injector: Injector = app.injector
-  val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  def unauthenticatedCheck(controllerAction: Action[AnyContent]): Unit = {
 
-  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+    "the user is not authenticated" should {
 
-  implicit class CSRFTokenAdder[T](req: FakeRequest[T]) {
-    def addToken: FakeRequest[T] = {
-      val csrfConfig = app.injector.instanceOf[CSRFConfigProvider].get
-      val csrfFilter = app.injector.instanceOf[CSRFFilter]
-      val token = csrfFilter.tokenProvider.generateToken
-
-      req.copyFakeRequest(tags = req.tags ++ Map(
-        Token.NameRequestTag -> csrfConfig.tokenName,
-        Token.RequestTag -> token
-      )).withHeaders(csrfConfig.headerName -> token)
+      "return 401 (Unauthorised)" in {
+        mockUnauthenticated()
+        val result = controllerAction(fakeRequest)
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
     }
   }
 }
