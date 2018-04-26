@@ -1,11 +1,8 @@
 # microservice specific routes
 
-GET        /hello-world             controllers.HelloWorldController.helloWorld
-GET        /text-input              controllers.HelloWorldController.textInput
-GET        /date-input              controllers.HelloWorldController.dateInput
+GET        /hello-world             @controllers.HelloWorldController.helloWorld
+GET        /text-input              @controllers.HelloWorldController.textInput
+GET        /date-input              @controllers.HelloWorldController.dateInput
 
-GET        /money-input              controllers.HelloWorldController.moneyInput
-POST       /money-input              controllers.HelloWorldController.submitMoney
-
-GET        /feature-switch          controllers.FeatureSwitchController.featureSwitch
-POST       /feature-switch          controllers.FeatureSwitchController.submitFeatureSwitch
+GET        /money-input             @controllers.HelloWorldController.moneyInput
+POST       /money-input             @controllers.HelloWorldController.submitMoney
