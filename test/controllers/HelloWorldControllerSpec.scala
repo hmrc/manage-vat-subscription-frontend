@@ -16,60 +16,25 @@
 
 package controllers
 
+import mocks.MockAuth
 import play.api.http.Status
 import play.api.test.Helpers._
-import services.EnrolmentsAuthService
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.{ExecutionContext, Future}
+class HelloWorldControllerSpec extends ControllerBaseSpec with MockAuth {
 
-class HelloWorldControllerSpec extends ControllerBaseSpec {
-
-  private trait Test {
-    val authResult: Future[Enrolments]
-    val mockAuthConnector: AuthConnector = mock[AuthConnector]
-
-    def setup() {
-      (mockAuthConnector.authorise(_: Predicate, _: Retrieval[Enrolments])(_: HeaderCarrier, _: ExecutionContext))
-        .expects(*, *, *, *)
-        .returns(authResult)
-    }
-
-    val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
-
-    def target: HelloWorldController = {
-      setup()
-      new HelloWorldController(messagesApi, mockEnrolmentsAuthService, mockAppConfig)
-    }
-  }
+  object TestHelloWorldController extends HelloWorldController(messagesApi, mockEnrolmentsAuthService, mockAppConfig)
 
   "Calling the .helloWorld action" when {
 
     "the user is authorised" should {
 
-      val goodEnrolments: Enrolments = Enrolments(
-        Set(
-          Enrolment("HMRC-MTD-VAT",
-            Seq(EnrolmentIdentifier("", "")),
-            "",
-            None)
-        )
-      )
+      lazy val result = TestHelloWorldController.helloWorld(fakeRequest)
 
-      "return 200" in new Test {
-        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
-        val result = target.helloWorld(fakeRequest)
-
+      "return 200" in {
         status(result) shouldBe Status.OK
       }
 
-      "return HTML" in new Test {
-        override val authResult: Future[Enrolments] = Future.successful(goodEnrolments)
-        val result = target.helloWorld(fakeRequest)
-
+      "return HTML" in {
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
@@ -77,20 +42,18 @@ class HelloWorldControllerSpec extends ControllerBaseSpec {
 
     "the user is not authenticated" should {
 
-      "return 401 (Unauthorised)" in new Test {
-        override val authResult: Future[Nothing] = Future.failed(MissingBearerToken())
-        private val result = target.helloWorld()(fakeRequest)
-
+      "return 401 (Unauthorised)" in {
+        mockUnauthenticated()
+        val result = TestHelloWorldController.helloWorld(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
 
     "the user is not authorised" should {
 
-      "return 403 (Forbidden)" in new Test {
-        override val authResult: Future[Nothing] = Future.failed(InsufficientEnrolments())
-        private val result = target.helloWorld()(fakeRequest)
-
+      "return 403 (Forbidden)" in {
+        mockUnauthorised()
+        val result = TestHelloWorldController.helloWorld()(fakeRequest)
         status(result) shouldBe Status.FORBIDDEN
       }
     }

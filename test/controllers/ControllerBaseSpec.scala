@@ -17,7 +17,6 @@
 package controllers
 
 import mocks.MockAppConfig
-import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.MessagesApi
 import play.api.inject.Injector
@@ -27,7 +26,7 @@ import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.play.test.UnitSpec
 
-class ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
+trait ControllerBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
 
   val injector: Injector = app.injector
   val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
