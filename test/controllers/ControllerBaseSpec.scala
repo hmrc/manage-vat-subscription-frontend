@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import mocks.MockAppConfig
 import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -25,15 +26,19 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
+import uk.gov.hmrc.http.SessionKeys
 import uk.gov.hmrc.play.test.UnitSpec
 
 class ControllerBaseSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite {
 
   val injector: Injector = app.injector
   val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  implicit val mockAppConfig: AppConfig = new MockAppConfig(app.configuration)
 
   implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+
+  lazy val fakeRequestWithSession: FakeRequest[AnyContentAsEmpty.type] = fakeRequest.withSession(
+    SessionKeys.lastRequestTimestamp -> "1498236506662", SessionKeys.authToken -> "Bearer Token")
 
   implicit class CSRFTokenAdder[T](req: FakeRequest[T]) {
     def addToken: FakeRequest[T] = {

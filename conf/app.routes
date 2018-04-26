@@ -9,3 +9,6 @@ POST       /money-input              controllers.HelloWorldController.submitMone
 
 GET        /feature-switch          controllers.FeatureSwitchController.featureSwitch
 POST       /feature-switch          controllers.FeatureSwitchController.submitFeatureSwitch
+
+#Sign Out Routes
+GET         /sign-out                               controllers.SignOutController.signOut(authorised: Boolean)
