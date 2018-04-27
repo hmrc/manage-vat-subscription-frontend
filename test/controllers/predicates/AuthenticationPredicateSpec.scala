@@ -14,22 +14,50 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.predicates
 
 import mocks.MockAuth
 import play.api.http.Status
+import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
 
-trait ControllerBaseSpec extends MockAuth {
+import scala.concurrent.Future
 
-  def unauthenticatedCheck(controllerAction: Action[AnyContent]): Unit = {
+class AuthenticationPredicateSpec extends MockAuth {
+
+
+  "The AuthenticationPredicate" when {
+
+    def target: Action[AnyContent] = {
+      mockAuthPredicate.async{
+        implicit request => Future.successful(Ok("test"))
+      }
+    }
+
+    "the user is authorised" should {
+
+      "return 200" in {
+        mockAuthorised()
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.OK
+      }
+    }
 
     "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
         mockUnauthenticated()
-        val result = controllerAction(fakeRequest)
+        val result = target(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+
+    "the user is not authorised" should {
+
+      "return 403 (Forbidden)" in {
+        mockUnauthorised()
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.FORBIDDEN
       }
     }
   }
