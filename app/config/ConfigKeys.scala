@@ -34,4 +34,10 @@ object ConfigKeys {
 
   val simpleAuthFeature: String = "features.simpleAuth.enabled"
 
+
+  val governmentGatewayHost: String = "government-gateway.host"
+
+  val surveyHost: String = "feedback-survey-frontend.host"
+  val surveyUrl: String = "feedback-survey-frontend.url"
+
 }
