@@ -19,23 +19,22 @@ package controllers
 import javax.inject.{Inject, Singleton}
 
 import config.AppConfig
+import controllers.predicates.AuthenticationPredicate
 import forms.test.MoneyInputForm._
 import forms.test.{DateInputForm, MoneyInputForm, TextInputForm}
 import models.test.MoneyInputModel
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.EnrolmentsAuthService
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
-class HelloWorldController @Inject()(val messagesApi: MessagesApi, val enrolmentsAuthService: EnrolmentsAuthService,
-                                     implicit val appConfig: AppConfig)
-  extends AuthorisedController with I18nSupport {
+class HelloWorldController @Inject()(val messagesApi: MessagesApi, val authenticate: AuthenticationPredicate,
+                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val helloWorld: Action[AnyContent] = authorisedAction {
-    implicit request =>
+  val helloWorld: Action[AnyContent] = authenticate.async {
       implicit user =>
         Future.successful(Ok(views.html.helloworld.hello_world()))
   }

@@ -53,7 +53,7 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
       "return 401 (Unauthorised)" in {
 
-        given.user.isNotAuthenticated
+        given.user.isNotAugmpr thenticated
 
         val result = await(buildRequest("/hello-world").get())
 
