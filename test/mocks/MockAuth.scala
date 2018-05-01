@@ -16,7 +16,7 @@
 
 package mocks
 
-import controllers.predicates.AuthenticationPredicate
+import controllers.predicates.{AuthenticationPredicate, AuthoriseAgentPredicate}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
@@ -47,11 +47,21 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
 
   val mockAuthPredicate: AuthenticationPredicate = new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
 
+  val mockAuthAgentPredicate: AuthoriseAgentPredicate = new AuthoriseAgentPredicate(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
+
   def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
     Set(
       Enrolment("HMRC-MTD-VAT",
         Seq(EnrolmentIdentifier("", "")),
         "",
+        None)
+    )
+  )))
+  def mockAgentAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
+    Set(
+      Enrolment("HMRC-MTD-VAT",
+        Seq(EnrolmentIdentifier("AgentReferenceNumber","someARN")),
+        "Activated",
         None)
     )
   )))
