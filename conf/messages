@@ -15,3 +15,16 @@ featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
+
+customer_details.title = Change the business details
+customer_details.h1 = Change the business details
+customer_details.p1 = Tell HMRC about changes to the VAT details for:
+customer_details.bullet1 = your own business
+customer_details.bullet2 = a business that you represent
+customer_details.p2 = We will send a confirmation message when the details have been changed.
+customer_details.h2 = About the business
+customer_details.change = Change
+customer_details.businessName.heading = Business name
+customer_details.businessName.change.hidden = your Business name
+customer_details.individualName.heading = Individual name
+customer_details.individualName.change.hidden = your name
