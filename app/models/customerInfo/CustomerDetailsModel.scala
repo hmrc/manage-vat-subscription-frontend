@@ -24,12 +24,10 @@ case class CustomerDetailsModel(firstName: Option[String],
                                 tradingName: Option[String]) {
 
   val isOrg: Boolean = organisationName.isDefined
-  val isInd: Boolean = firstName.isDefined || firstName.isDefined
-  val userName: Option[String] = (firstName, lastName) match {
-    case (Some(fName), Some(sName)) => Some(fName + " " + sName)
-    case (Some(fName), _) => Some(fName)
-    case (_, Some(sName)) => Some(sName)
-    case (_,_) => None
+  val isInd: Boolean = firstName.isDefined || lastName.isDefined
+  val userName: Option[String] = {
+    val name = s"${firstName.getOrElse("")} ${lastName.getOrElse("")}".trim
+    if (name.isEmpty) None else Some(name)
   }
 }
 
