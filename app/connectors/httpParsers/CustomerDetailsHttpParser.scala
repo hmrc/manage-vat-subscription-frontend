@@ -17,7 +17,7 @@
 package connectors.httpParsers
 
 import models.core.ErrorModel
-import models.customerInfo.CustomerInformationModel
+import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import play.api.Logger
@@ -25,14 +25,14 @@ import play.api.Logger
 
 object CustomerDetailsHttpParser extends ResponseHttpParser {
 
-  implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerInformationModel]] {
+  implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerInformationModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerDetailsModel] = {
 
       response.status match {
         case Status.OK => {
           Logger.debug("[CustomerDetailsHttpParser][read]: Status OK")
-          response.json.validate[CustomerInformationModel].fold(
+          response.json.validate[CustomerDetailsModel].fold(
             invalid => {
               Logger.warn(s"[CustomerDetailsHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))

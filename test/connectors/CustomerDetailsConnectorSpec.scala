@@ -17,10 +17,10 @@
 package connectors
 
 import assets.BaseTestConstants._
-import assets.CustomerInformationTestConstants._
+import assets.CustomerDetailsTestConstants._
 import connectors.httpParsers.CustomerDetailsHttpParser.HttpGetResult
 import mocks.MockHttp
-import models.customerInfo.CustomerInformationModel
+import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
@@ -35,7 +35,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
 
   "CustomerDetailsConnector" should {
 
-    def result: Future[HttpGetResult[CustomerInformationModel]] = TestCustomerDetailsConnector.getCustomerDetails(vatNumber)
+    def result: Future[HttpGetResult[CustomerDetailsModel]] = TestCustomerDetailsConnector.getCustomerDetails(vatNumber)
 
     "format the url correctly for" when {
       "calling getCustomerDetailsUrl" in {
@@ -49,10 +49,9 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber))(Right(mtdfbMandatedIndividual))
-          await(result) shouldBe Right(mtdfbMandatedIndividual)
+          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber))(Right(individual))
+          await(result) shouldBe Right(individual)
         }
-
       }
 
       "given an error should" should {
@@ -61,11 +60,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
           setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber))(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
-
       }
-
     }
-
   }
-
 }
