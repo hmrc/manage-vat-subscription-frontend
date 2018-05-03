@@ -16,24 +16,26 @@
 
 package models.customerInfo
 
-import play.api.libs.json.{JsValue, Json}
+import assets.BaseTestConstants._
+import models.customerInfo.CustomerInformationModel._
+import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
 
 class CustomerInformationModelSpec extends UnitSpec {
 
   private val testJson = Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
+    "mandationStatus" -> MTDfBMandated.status,
     "customerDetails" -> Json.obj(
-      "organisationName" -> "Ancient Antiques",
-      "firstName" -> "Fred",
-      "lastName" -> "Flintstone",
-      "tradingName" -> "a"
+      "organisationName" -> organisationName,
+      "firstName" -> firstName,
+      "lastName" -> lastName,
+      "tradingName" -> tradingName
     )
   )
 
   private val testJsonMin = Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
+    "mandationStatus" -> MTDfBMandated.status,
     "customerDetails" -> Json.obj()
   )
 
@@ -42,7 +44,7 @@ class CustomerInformationModelSpec extends UnitSpec {
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        val expected = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
+        val expected = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some(firstName), Some(lastName), Some(organisationName), Some(tradingName)))
         testJson.as[CustomerInformationModel] shouldBe expected
       }
 
@@ -55,7 +57,7 @@ class CustomerInformationModelSpec extends UnitSpec {
     "Serialize to JSON" when {
 
       "all optional fields are populated" in {
-        val model = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
+        val model = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some(firstName), Some(lastName), Some(organisationName), Some(tradingName)))
         Json.toJson(model) shouldBe testJson
       }
 
