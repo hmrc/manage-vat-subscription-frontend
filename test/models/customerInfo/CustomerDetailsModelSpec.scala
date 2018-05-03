@@ -16,46 +16,75 @@
 
 package models.customerInfo
 
+import assets.BaseTestConstants._
+import assets.CustomerDetailsTestConstants._
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
-
 class CustomerDetailsModelSpec extends UnitSpec {
 
-  private val testJson = Json.obj(
-    "organisationName" -> "Ancient Antiques",
-    "firstName" -> "Fred",
-    "lastName" -> "Flintstone",
-    "tradingName" -> "a"
-  )
+  "CustomerDetailsModel" when {
 
-  private val testJsonMin = Json.obj()
+    ".isInd" should {
+      "Return True when the user is an Individual" in {
+        individual.isInd shouldBe true
+      }
+      "Return False when the user is NOT an Individual" in {
+        organisation.isInd shouldBe false
+      }
+    }
 
-  "CustomerDetailsModel" should {
+    "calling .isOrg" should {
+      "Return True when the user is an Organisation" in {
+        organisation.isOrg shouldBe true
+      }
+      "Return False when the user is NOT an Organisation" in {
+        individual.isOrg shouldBe false
+      }
+    }
+
+    "calling .username" when {
+      "FirstName and Lastname are present" should {
+        "return 'Firstname Lastname'" in {
+          individual.userName shouldBe Some(s"$firstName $lastName")
+        }
+      }
+      "FirstName is present" should {
+        "return 'Firstname'" in {
+          CustomerDetailsModel(Some(firstName), None, None, None).userName shouldBe Some(s"$firstName")
+        }
+      }
+      "LastName is present" should {
+        "return 'Lastname'" in {
+          CustomerDetailsModel(None, Some(lastName), None, None).userName shouldBe Some(s"$lastName")
+        }
+      }
+      "No names are present" should {
+        "return None" in {
+          customerDetailsMin.userName shouldBe None
+        }
+      }
+    }
 
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        val expected = CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a"))
-        testJson.as[CustomerDetailsModel] shouldBe expected
+        customerDetailsJsonMax.as[CustomerDetailsModel] shouldBe customerDetailsMax
       }
 
       "no optional fields are returned" in {
-        val expected = CustomerDetailsModel(None, None, None, None)
-        testJsonMin.as[CustomerDetailsModel] shouldBe expected
+        customerDetailsJsonMin.as[CustomerDetailsModel] shouldBe customerDetailsMin
       }
     }
 
     "Serialize to JSON" when {
 
       "all optional fields are populated" in {
-        val model = CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a"))
-        Json.toJson(model) shouldBe testJson
+        Json.toJson(customerDetailsMax) shouldBe customerDetailsJsonMax
       }
 
       "no optional fields are returned" in {
-        val model = CustomerDetailsModel(None, None, None, None)
-        Json.toJson(model) shouldBe testJsonMin
+        Json.toJson(customerDetailsMin) shouldBe customerDetailsJsonMin
       }
     }
   }

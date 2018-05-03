@@ -16,11 +16,12 @@
 
 package connectors
 
+import assets.BaseTestConstants._
+import assets.CustomerInformationTestConstants._
 import connectors.httpParsers.CustomerDetailsHttpParser.HttpGetResult
 import mocks.MockHttp
-import models.customerInfo.{CustomerDetailsModel, CustomerInformationModel, MTDfBMandated}
+import models.customerInfo.CustomerInformationModel
 import play.api.http.Status
-import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 
@@ -28,19 +29,6 @@ import scala.concurrent.Future
 
 class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
 
-  val vatNumber = "321321"
-  val successJson = HttpResponse(Status.OK, Some(Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
-    "customerDetails" -> Json.obj(
-      "organisationName" -> "Ancient Antiques",
-      "firstName" -> "Fred",
-      "lastName" -> "Flintstone",
-      "tradingName" -> "a"
-    )
-  )))
-
-  val successModel = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
-  val successResponseBadJson = HttpResponse(Status.OK, Some(Json.parse("{}")))
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
   object TestCustomerDetailsConnector extends CustomerDetailsConnector(mockHttpGet,frontendAppConfig)
@@ -61,8 +49,8 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber))(Right(successModel))
-          await(result) shouldBe Right(successModel)
+          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber))(Right(mtdfbMandatedIndividual))
+          await(result) shouldBe Right(mtdfbMandatedIndividual)
         }
 
       }

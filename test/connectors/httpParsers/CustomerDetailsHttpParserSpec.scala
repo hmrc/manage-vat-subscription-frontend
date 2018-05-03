@@ -16,27 +16,15 @@
 
 package connectors.httpParsers
 
+import assets.CustomerInformationTestConstants._
 import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import models.core.ErrorModel
-import models.customerInfo.{CustomerDetailsModel, CustomerInformationModel, MTDfBMandated}
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 
 class CustomerDetailsHttpParserSpec extends TestUtil {
-
-
-  val successJson = Some(Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
-    "customerDetails" -> Json.obj(
-      "organisationName" -> "Ancient Antiques",
-      "firstName" -> "Fred",
-      "lastName" -> "Flintstone",
-      "tradingName" -> "a"
-    )
-  ))
-  val successModel = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
 
   val successBadJson = Some(Json.parse("{}"))
   val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
@@ -46,7 +34,7 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
     "the http response status is OK with valid Json" should {
 
       "return a CustomerInformationModel" in {
-        CustomerDetailsReads.read("", "", HttpResponse(Status.OK, successJson)) shouldBe Right(successModel)
+        CustomerDetailsReads.read("", "", HttpResponse(Status.OK, Some(mtdfbMandatedIndividualJson))) shouldBe Right(mtdfbMandatedIndividual)
       }
 
     }

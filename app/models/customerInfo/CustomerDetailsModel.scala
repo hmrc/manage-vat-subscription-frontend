@@ -21,7 +21,15 @@ import play.api.libs.json.{Json, Format}
 case class CustomerDetailsModel(firstName: Option[String],
                                 lastName: Option[String],
                                 organisationName: Option[String],
-                                tradingName: Option[String])
+                                tradingName: Option[String]) {
+
+  val isOrg: Boolean = organisationName.isDefined
+  val isInd: Boolean = firstName.isDefined || lastName.isDefined
+  val userName: Option[String] = {
+    val name = s"${firstName.getOrElse("")} ${lastName.getOrElse("")}".trim
+    if (name.isEmpty) None else Some(name)
+  }
+}
 
 object CustomerDetailsModel {
   implicit val format: Format[CustomerDetailsModel] = Json.format[CustomerDetailsModel]

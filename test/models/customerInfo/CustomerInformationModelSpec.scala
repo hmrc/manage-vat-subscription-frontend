@@ -16,52 +16,36 @@
 
 package models.customerInfo
 
-import play.api.libs.json.{JsValue, Json}
+import assets.BaseTestConstants._
+import assets.CustomerInformationTestConstants._
+import models.customerInfo.CustomerInformationModel._
+import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
 
 class CustomerInformationModelSpec extends UnitSpec {
-
-  private val testJson = Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
-    "customerDetails" -> Json.obj(
-      "organisationName" -> "Ancient Antiques",
-      "firstName" -> "Fred",
-      "lastName" -> "Flintstone",
-      "tradingName" -> "a"
-    )
-  )
-
-  private val testJsonMin = Json.obj(
-    "mandationStatus" -> "MTDfB Mandated",
-    "customerDetails" -> Json.obj()
-  )
 
   "CustomerInformationModel" should {
 
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        val expected = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
-        testJson.as[CustomerInformationModel] shouldBe expected
+        customerInformationJsonMax.as[CustomerInformationModel] shouldBe customerInformationMax
       }
 
       "no optional fields are returned" in {
-        val expected = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(None, None, None, None))
-        testJsonMin.as[CustomerInformationModel] shouldBe expected
+        customerInformationJsonMin.as[CustomerInformationModel] shouldBe customerInformationMin
       }
     }
 
     "Serialize to JSON" when {
 
       "all optional fields are populated" in {
-        val model = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(Some("Fred"), Some("Flintstone"), Some("Ancient Antiques"), Some("a")))
-        Json.toJson(model) shouldBe testJson
+        Json.toJson(customerInformationMax) shouldBe customerInformationJsonMax
       }
 
       "no optional fields are returned" in {
-        val model = CustomerInformationModel(MTDfBMandated, CustomerDetailsModel(None, None, None, None))
-        Json.toJson(model) shouldBe testJsonMin
+        Json.toJson(customerInformationMin) shouldBe customerInformationJsonMin
       }
     }
   }
