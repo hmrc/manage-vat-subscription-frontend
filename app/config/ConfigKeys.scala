@@ -34,4 +34,6 @@ object ConfigKeys {
 
   val simpleAuthFeature: String = "features.simpleAuth.enabled"
 
+  val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
+
 }
