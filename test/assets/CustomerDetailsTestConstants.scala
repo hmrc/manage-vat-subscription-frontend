@@ -18,8 +18,28 @@ package assets
 
 import models.customerInfo.CustomerDetailsModel
 import BaseTestConstants._
+import play.api.libs.json.Json
 
 object CustomerDetailsTestConstants {
+
+  val individualJson = Json.obj(
+    "firstName" -> firstName,
+    "lastName" -> lastName
+  )
+
+  val organisationJson = Json.obj(
+    "organisationName" -> organisationName,
+    "tradingName" -> tradingName
+  )
+
+  val customerDetailsJsonMax = Json.obj(
+    "organisationName" -> organisationName,
+    "firstName" -> firstName,
+    "lastName" -> lastName,
+    "tradingName" -> tradingName
+  )
+
+  val customerDetailsJsonMin = Json.obj()
 
   val individual = CustomerDetailsModel(
     firstName = Some(firstName),
@@ -34,5 +54,21 @@ object CustomerDetailsTestConstants {
     organisationName = Some(organisationName),
     tradingName = Some(tradingName)
   )
+
+  val customerDetailsMax = CustomerDetailsModel(
+    Some(firstName),
+    Some(lastName),
+    Some(organisationName),
+    Some(tradingName)
+  )
+
+  val customerDetailsMin = CustomerDetailsModel(
+    None,
+    None,
+    None,
+    None
+  )
+
+
 
 }

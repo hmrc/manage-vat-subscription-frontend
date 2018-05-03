@@ -22,5 +22,6 @@ object BaseTestConstants {
   val lastName = "Einstein"
   val organisationName = "Ancient Antiques LTD"
   val tradingName = "Ancient Antiques"
+  val vatNumber = "321321"
 
 }

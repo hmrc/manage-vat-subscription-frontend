@@ -16,13 +16,11 @@
 
 package views.customerInfo
 
-import models.customerInfo.{CustomerDetailsModel, CustomerInformationModel, MTDfBMandated}
+import assets.CustomerDetailsTestConstants._
+import assets.messages.{CustomerDetailsPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-import assets.BaseTestConstants._
-import assets.messages.{CustomerDetailsPageMessages => viewMessages}
-import assets.CustomerInformationTestConstants._
 
 class CustomerDetailsViewSpec extends ViewBaseSpec {
 
@@ -30,7 +28,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for any user" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(mtdfbMandatedIndividual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customerDetailsView(individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -60,7 +58,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Self-Employed Individual" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(mtdfbMandatedIndividual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customerDetailsView(individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -69,8 +67,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#individualNameHeading") shouldBe viewMessages.individualNameHeading
         }
 
-        s"has the value '${mtdfbMandatedIndividual.customerDetails.userName.get}'" in {
-          elementText("#individualName") shouldBe mtdfbMandatedIndividual.customerDetails.userName.get
+        s"has the value '${individual.userName.get}'" in {
+          elementText("#individualName") shouldBe individual.userName.get
         }
 
         "has a change link" which {
@@ -85,12 +83,11 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
-
     }
 
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(mtdfbMandatedOrganisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customerDetailsView(organisation)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -99,8 +96,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessNameHeading") shouldBe viewMessages.organisationNameHeading
         }
 
-        s"has the value '${mtdfbMandatedOrganisation.customerDetails.organisationName.get}'" in {
-          elementText("#businessName") shouldBe mtdfbMandatedOrganisation.customerDetails.organisationName.get
+        s"has the value '${organisation.organisationName.get}'" in {
+          elementText("#businessName") shouldBe organisation.organisationName.get
         }
 
         "has a change link" which {
@@ -115,8 +112,6 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
-
     }
-
   }
 }

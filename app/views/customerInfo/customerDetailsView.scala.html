@@ -14,9 +14,9 @@
 * limitations under the License.
 *@
 
-@import models.customerInfo.CustomerInformationModel
+@import models.customerInfo.CustomerDetailsModel
 
-@(customerInfo: CustomerInformationModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(customerDetails: CustomerDetailsModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("customer_details.title"),
@@ -40,7 +40,7 @@
 
     <dl class="govuk-check-your-answers cya-questions-short">
 
-        @customerInfo.customerDetails.organisationName.map { orgName =>
+        @customerDetails.organisationName.map { orgName =>
             <div>
                 <dt id="businessNameHeading" class="cya-question">
                     @messages("customer_details.businessName.heading")
@@ -57,7 +57,7 @@
             </div>
         }
 
-        @customerInfo.customerDetails.userName.map { indName =>
+        @customerDetails.userName.map { indName =>
             <div>
                 <dt id="individualNameHeading" class="cya-question">
                     @messages("customer_details.individualName.heading")
