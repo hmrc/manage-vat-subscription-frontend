@@ -34,19 +34,15 @@ object CustomerDetailsHttpParser extends ResponseHttpParser {
           Logger.debug("[CustomerDetailsHttpParser][read]: Status OK")
           response.json.validate[CustomerInformationModel].fold(
             invalid => {
-              Logger.debug("[CustomerDetailsHttpParser][read]: Invalid Json")
+              Logger.warn(s"[CustomerDetailsHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
           )
         }
-        case Status.BAD_REQUEST =>
-          Logger.debug("[CustomerDetailsHttpParser][read]: Bad Request Returned")
-          handleErrorResponse(response)
-        case _ =>
-          Logger.debug("[CustomerDetailsHttpParser][read]: Unexpected Response")
-          handleErrorResponse(response)
-
+        case status =>
+          Logger.warn(s"[CustomerDetailsHttpParser][read]: Unexpected Response, Status $status returned")
+          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
       }
 
     }

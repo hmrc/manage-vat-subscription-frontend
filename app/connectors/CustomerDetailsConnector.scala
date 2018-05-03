@@ -37,17 +37,7 @@ class CustomerDetailsConnector @Inject()(val http: HttpClient,
   def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerInformationModel]] = {
 
     val url = getCustomerDetailsUrl(id)
-
-    http.GET(url)(CustomerDetailsReads, headerCarrier, ec).map {
-      case customerDetails@Right(_) => {
-        Logger.debug("[CustomerDetailsConnector][getCustomerDetails]: Right")
-        customerDetails
-      }
-      case error@Left(_) => {
-        Logger.debug("[CustomerDetailsConnector][getCustomerDetails]: Left")
-        error
-      }
-    }
-
+    Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
+    http.GET(url)(CustomerDetailsReads, headerCarrier, ec)
   }
 }

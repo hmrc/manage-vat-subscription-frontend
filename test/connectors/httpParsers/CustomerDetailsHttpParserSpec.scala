@@ -52,7 +52,7 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
 
       "return an ErrorModel" in {
         CustomerDetailsReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
+          Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerDetails"))
       }
 
     }
@@ -61,7 +61,7 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
 
       "return an ErrorModel" in {
         CustomerDetailsReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
+          Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerDetails"))
       }
 
     }

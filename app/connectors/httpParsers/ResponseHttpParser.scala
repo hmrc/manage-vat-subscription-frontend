@@ -25,23 +25,5 @@ import uk.gov.hmrc.http.HttpResponse
 import scala.util.{Failure, Success, Try}
 
 trait ResponseHttpParser {
-
   type HttpGetResult[T] = Either[ErrorModel, T]
-
-  protected def handleErrorResponse(httpResponse: HttpResponse): Either[ErrorModel, Nothing] = {
-
-    Left(Try(Json.parse(httpResponse.body)) match {
-      case Success(json) => {
-        Logger.debug("[ResponseHttpParser][handleErrorResponse]: Success")
-        json.as[ErrorModel]
-      }
-      case Failure(_) => {
-        Logger.debug("[ResponseHttpParser][handleErrorResponse]: Failure")
-        ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json")
-      }
-    })
-
-
-  }
-
 }
