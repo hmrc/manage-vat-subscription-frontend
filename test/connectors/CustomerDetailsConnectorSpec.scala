@@ -40,7 +40,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
     "format the url correctly for" when {
       "calling getCustomerDetailsUrl" in {
         val testUrl = TestCustomerDetailsConnector.getCustomerDetailsUrl(vatNumber)
-        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/$vatNumber/customer-details"
+        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vatNumber/customer-details"
       }
     }
 
