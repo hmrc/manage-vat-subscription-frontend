@@ -16,6 +16,7 @@
 
 package utils
 
+import config.FrontendAppConfig
 import mocks.MockAppConfig
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.MessagesApi
@@ -24,7 +25,10 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
+
+import scala.concurrent.ExecutionContext
 
 trait TestUtil extends UnitSpec with GuiceOneAppPerSuite {
 
@@ -33,6 +37,10 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite {
 
   implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
   implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
   implicit class CSRFTokenAdder[T](req: FakeRequest[T]) {
     def addToken: FakeRequest[T] = {
