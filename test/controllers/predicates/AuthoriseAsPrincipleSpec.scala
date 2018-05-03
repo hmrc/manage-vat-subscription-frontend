@@ -18,31 +18,32 @@ package controllers.predicates
 
 import mocks.MockAuth
 import play.api.http.Status
-import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, AnyContent}
 
 import scala.concurrent.Future
 
-class AuthoriseAgentPredicateSpec extends MockAuth {
+class AuthoriseAsPrincipleSpec extends MockAuth {
 
-  "The AuthoriseAgentPredicate" when {
+
+  "The AuthenticationPredicate" when {
 
     def target: Action[AnyContent] = {
-      mockAuthAgentPredicate.async{
+      mockAuthPredicate.async{
         implicit request => Future.successful(Ok("test"))
       }
     }
 
-    "the agent is authorised" should {
+    "the user is authorised" should {
 
       "return 200" in {
-        mockAgentAuthorised()
+        mockAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
       }
     }
 
-    "the agent is not authenticated" should {
+    "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
         mockUnauthenticated()
@@ -51,7 +52,7 @@ class AuthoriseAgentPredicateSpec extends MockAuth {
       }
     }
 
-    "the agent is not authorised" should {
+    "the user is not authorised" should {
 
       "return 403 (Forbidden)" in {
         mockUnauthorised()
@@ -60,5 +61,4 @@ class AuthoriseAgentPredicateSpec extends MockAuth {
       }
     }
   }
-
 }

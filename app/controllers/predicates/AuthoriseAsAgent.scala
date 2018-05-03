@@ -17,10 +17,10 @@
 package controllers.predicates
 
 import javax.inject.{Inject, Singleton}
-
 import common.EnrolmentKeys
 import config.AppConfig
 import models.User
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.retrieve.Retrievals
@@ -31,23 +31,30 @@ import services.EnrolmentsAuthService
 import scala.concurrent.Future
 
 @Singleton
-class AuthoriseAgentPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService, implicit val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport with ActionBuilder[Request] with ActionFunction[Request,User] {
+class AuthoriseAsAgent @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
+                                 implicit val messagesApi: MessagesApi,
+                                 implicit val appConfig: AppConfig) extends FrontendController with I18nSupport  {
 
-  def enrolments(vrn: String): Enrolment =
+  private val dummyVrn = "123456789"
+
+  private def enrolments(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
       .withIdentifier("VRN", vrn)
       .withDelegatedAuthRule("mtd-vat-auth")
 
-  override def invokeBlock[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
+  def authorise[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
 
     implicit val req = request
 
-    enrolmentsAuthService.authorised(enrolments("123456789")).retrieve(Retrievals.authorisedEnrolments) {
-      enrolments => f(User(enrolments))
-    } recoverWith {
-      case _: NoActiveSession => Future.successful(Unauthorized(views.html.errors.sessionTimeout()))
-      case _: AuthorisationException => Future.successful(Forbidden(views.html.errors.unauthorised()))
+    enrolmentsAuthService.authorised(enrolments(dummyVrn)).retrieve(Retrievals.authorisedEnrolments) {
+      _ => f(User(dummyVrn,true,Some("2122")))
+    } recover {
+      case _: NoActiveSession =>{
+        Logger.warn("[AuthoriseAsAgent][authorise] - recovered with Unauthorised")
+        Unauthorized(views.html.errors.sessionTimeout())}
+      case _: AuthorisationException =>{
+        Logger.warn("[AuthoriseAsAgent][authorise] - recovered with Forbidden")
+        Forbidden(views.html.errors.unauthorised())}
     }
   }
 }

@@ -16,7 +16,7 @@
 
 package mocks
 
-import controllers.predicates.{AuthenticationPredicate, AuthoriseAgentPredicate}
+import controllers.predicates.{AuthoriseAsPrinciple, AuthoriseAsAgent}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
@@ -45,9 +45,9 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
 
   val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
 
-  val mockAuthPredicate: AuthenticationPredicate = new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
+  val mockAuthPredicate: AuthoriseAsPrinciple = new AuthoriseAsPrinciple(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
 
-  val mockAuthAgentPredicate: AuthoriseAgentPredicate = new AuthoriseAgentPredicate(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
+  val mockAuthAgentPredicate: AuthoriseAsAgent = new AuthoriseAsAgent(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
 
   def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
     Set(

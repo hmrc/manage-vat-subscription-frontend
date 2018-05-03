@@ -17,13 +17,11 @@
 package controllers.predicates
 
 import javax.inject.{Inject, Singleton}
-
 import common.EnrolmentKeys
 import config.AppConfig
 import models.User
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
 import uk.gov.hmrc.auth.core.retrieve.Retrievals
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -32,24 +30,21 @@ import services.EnrolmentsAuthService
 import scala.concurrent.Future
 
 @Singleton
-class AuthenticationPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService, implicit val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport with ActionBuilder[Request] with ActionFunction[Request,User] {
+class AuthoriseAsPrinciple @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
+                                     implicit val messagesApi: MessagesApi,
+                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-
-  override def invokeBlock[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
+  def authorise[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
 
     implicit val req = request
 
-    val predicate = if (appConfig.features.simpleAuth()) EmptyPredicate else Enrolment(EnrolmentKeys.vatEnrolmentId)
-
-    enrolmentsAuthService.authorised(predicate).retrieve(Retrievals.authorisedEnrolments) {
+    enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.authorisedEnrolments) {
       enrolments => {
-        val user = if (appConfig.features.simpleAuth()) User("123456789") else User(enrolments)
-        f(user)
+        f(User(enrolments))
       }
-    } recoverWith {
-      case _: NoActiveSession => Future.successful(Unauthorized(views.html.errors.sessionTimeout()))
-      case _: AuthorisationException => Future.successful(Forbidden(views.html.errors.unauthorised()))
+    } recover {
+      case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
+      case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
     }
   }
 
