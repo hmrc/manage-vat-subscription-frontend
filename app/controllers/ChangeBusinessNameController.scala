@@ -16,30 +16,28 @@
 
 package controllers
 
-import config.AppConfig
+import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthenticationPredicate
-import forms.test.MoneyInputForm._
-import forms.test.{DateInputForm, MoneyInputForm, TextInputForm}
 import javax.inject.{Inject, Singleton}
-import models.test.MoneyInputModel
-import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-
-import scala.concurrent.Future
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
                                              val authenticate: AuthenticationPredicate,
+                                             val customerDetailsService: CustomerDetailsService,
+                                             val serviceErrorHandler: ServiceErrorHandler,
                                              implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
 
-  //TODO: Inject CustomerDetailsService to retrieve Business Name
-  private val dummyBusinessName: String = "Ancient Antiques LTD"
-
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      Future.successful(Ok(views.html.businessName.change_business_name(dummyBusinessName)))
+      customerDetailsService.getCustomerDetails(user.vrn) map {
+        case Right(customerDetails) if customerDetails.organisationName.isDefined =>
+          Ok(views.html.businessName.change_business_name(customerDetails.organisationName.get))
+        case _ => serviceErrorHandler.showInternalServerError
+      }
   }
 }

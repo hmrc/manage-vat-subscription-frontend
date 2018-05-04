@@ -17,21 +17,25 @@
 package controllers
 
 import assets.messages.ChangeBusinessNamePageMessages
+import assets.CustomerDetailsTestConstants._
+import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
+class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestChangeBusinessNameController extends ChangeBusinessNameController(messagesApi, MockAuthPredicate, mockAppConfig)
+  object TestChangeBusinessNameController extends ChangeBusinessNameController(
+    messagesApi, MockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
 
   "Calling the .show action" when {
 
-    "the user is authorised" should {
+    "the user is authorised and an Organisation Name exists" should {
 
       lazy val result = TestChangeBusinessNameController.show(fakeRequest)
 
       "return OK (200)" in {
+        mockCustomerDetailsSuccess(organisation)
         status(result) shouldBe Status.OK
       }
 
@@ -42,6 +46,26 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
       s"have the heading '${ChangeBusinessNamePageMessages.h1}'" in {
         Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.h1
+      }
+    }
+
+    "the user is authorised and an Individual Name exists" should {
+
+      lazy val result = TestChangeBusinessNameController.show(fakeRequest)
+
+      "return ISE (500)" in {
+        mockCustomerDetailsSuccess(individual)
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "the user is authorised and an Error is returned from Customer Details" should {
+
+      lazy val result = TestChangeBusinessNameController.show(fakeRequest)
+
+      "return ISE (500)" in {
+        mockCustomerDetailsError()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 
