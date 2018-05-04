@@ -31,7 +31,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class CustomerDetailsConnector @Inject()(val http: HttpClient,
                                          val config: FrontendAppConfig) {
 
-  private[connectors] def getCustomerDetailsUrl(vatNumber: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vatNumber/customer-details"
+  private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
 
   def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerDetailsModel]] = {
 

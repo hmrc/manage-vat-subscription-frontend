@@ -32,12 +32,12 @@ import scala.concurrent.ExecutionContext
 
 trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSupport {
 
-  val injector: Injector = app.injector
-  val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  lazy val injector: Injector = app.injector
+  lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-  implicit val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+  implicit lazy val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit lazy val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
