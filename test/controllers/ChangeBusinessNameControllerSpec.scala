@@ -23,7 +23,7 @@ import play.api.test.Helpers._
 
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
-  object TestChangeBusinessNameController extends ChangeBusinessNameController(messagesApi, mockAuthPredicate, mockAppConfig)
+  object TestChangeBusinessNameController extends ChangeBusinessNameController(messagesApi, MockAuthPredicate, mockAppConfig)
 
   "Calling the .show action" when {
 
