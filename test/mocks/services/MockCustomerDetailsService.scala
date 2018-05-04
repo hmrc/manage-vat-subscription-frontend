@@ -17,14 +17,14 @@
 package mocks.services
 
 import assets.BaseTestConstants._
-import assets.CustomerDetailsTestConstants._
-import services.CustomerDetailsService
 import models.core.ErrorModel
 import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
+import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
+import services.CustomerDetailsService
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
@@ -34,17 +34,19 @@ trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeA
 
   val mockCustomerDetailsService: CustomerDetailsService = mock[CustomerDetailsService]
 
+  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetailsModel]
+
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockCustomerDetailsService)
   }
 
-  def setupMockCustomerDetails(vrn: String)(response: Either[ErrorModel, CustomerDetailsModel]): Unit = {
+  def setupMockCustomerDetails(vrn: String)(response: CustomerDetailsResponse): OngoingStubbing[Future[CustomerDetailsResponse]] = {
     when(mockCustomerDetailsService.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 
-  def mockCustomerDetailsSourceMax(): Unit = setupMockCustomerDetails(vrn)(Right(customerDetailsMax))
-  def mockCustomerDetailsSourceError(): Unit = setupMockCustomerDetails(vrn)(Left(errorModel))
+  def mockCustomerDetailsSuccess(customerDetails: CustomerDetailsModel): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
+  def mockCustomerDetailsError(): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Left(errorModel))
 }
 

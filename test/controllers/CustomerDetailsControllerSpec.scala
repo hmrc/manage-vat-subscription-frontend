@@ -17,6 +17,7 @@
 package controllers
 
 import assets.messages.{CustomerDetailsPageMessages => messages}
+import assets.CustomerDetailsTestConstants.customerDetailsMax
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
@@ -27,7 +28,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
 
   object TestCustomerDetailsController extends CustomerDetailsController(
     messagesApi,
-    mockAuthPredicate,
+    MockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig
@@ -41,7 +42,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSourceMax()
+        mockCustomerDetailsSuccess(customerDetailsMax)
         status(result) shouldBe Status.OK
       }
 
@@ -60,7 +61,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
       lazy val result = TestCustomerDetailsController.show(fakeRequest)
 
       "return 500" in {
-        mockCustomerDetailsSourceError()
+        mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
 

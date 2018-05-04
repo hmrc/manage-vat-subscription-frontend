@@ -21,6 +21,7 @@ import javax.inject.{Inject, Singleton}
 import common.EnrolmentKeys
 import config.AppConfig
 import models.User
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
@@ -45,6 +46,7 @@ class AuthenticationPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthSer
     enrolmentsAuthService.authorised(predicate).retrieve(Retrievals.authorisedEnrolments) {
       enrolments => {
         val user = if (appConfig.features.simpleAuth()) User("123456789") else User(enrolments)
+        Logger.debug(s"[AuthenticationPredicate][invokeBlock] User: $user")
         f(user)
       }
     } recoverWith {

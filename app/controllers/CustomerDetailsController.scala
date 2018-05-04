@@ -19,6 +19,8 @@ package controllers
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthenticationPredicate
 import javax.inject.{Inject, Singleton}
+
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
@@ -33,6 +35,7 @@ class CustomerDetailsController @Inject()(val messagesApi: MessagesApi,
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
+      Logger.debug(s"[CustomerDetailsController][show] User: \n\n\n\n$user\n\n\n\n")
       customerDetailsService.getCustomerDetails(user.vrn) map {
         case Right(customerDetails) => Ok(views.html.customerInfo.customerDetailsView(customerDetails))
         case _ => serviceErrorHandler.showInternalServerError

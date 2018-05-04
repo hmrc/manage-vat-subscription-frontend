@@ -37,16 +37,15 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     mockAuthorised()
   }
 
-  val mockAuthConnector: AuthConnector = mock[AuthConnector]
+  lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
   def setupAuthResponse(authResult: Future[Enrolments]): OngoingStubbing[Future[Enrolments]] = {
     when(mockAuthConnector.authorise[Enrolments](ArgumentMatchers.any(), ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(authResult)
   }
 
-  val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
-
-  val mockAuthPredicate: AuthenticationPredicate = new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
+  object MockEnrolmentsAuthService extends EnrolmentsAuthService(mockAuthConnector)
+  object MockAuthPredicate extends AuthenticationPredicate(MockEnrolmentsAuthService, messagesApi, mockAppConfig)
 
   def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
     Set(
