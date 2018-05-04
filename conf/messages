@@ -15,3 +15,5 @@ featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
+
+base.sign-out = Sign out
