@@ -33,10 +33,10 @@ import scala.concurrent.Future
 
 @Singleton
 class AuthenticationPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService, implicit val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport with ActionBuilder[Request] with ActionFunction[Request,User] {
+  extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request,User] {
 
 
-  override def invokeBlock[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
+  override def invokeBlock[A](request: Request[A], f: User[A] => Future[Result]): Future[Result] = {
 
     implicit val req = request
 
