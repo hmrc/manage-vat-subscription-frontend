@@ -16,22 +16,52 @@
 
 package controllers
 
+import assets.messages.{CustomerDetailsPageMessages => messages}
+import config.ServiceErrorHandler
 import mocks.services.MockCustomerDetailsService
+import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
 class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestCustomerDetailsController extends CustomerDetailsController(messagesApi, mockAuthPredicate, mockCustomerDetailsService, mockAppConfig)
+  object TestCustomerDetailsController extends CustomerDetailsController(
+    messagesApi,
+    mockAuthPredicate,
+    mockCustomerDetailsService,
+    app.injector.instanceOf[ServiceErrorHandler],
+    mockAppConfig
+  )
 
   "Calling the .show action" when {
 
-    "the user is authorised" should {
+    "the user is authorised and a CustomerDetailsModel" should {
+
+      lazy val result = TestCustomerDetailsController.show(fakeRequest)
+      lazy val document = Jsoup.parse(bodyOf(result))
+
+      "return 200" in {
+        mockCustomerDetailsSourceMax()
+        status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+
+      "render the CustomerDetails Page" in {
+        document.title shouldBe messages.title
+      }
+    }
+
+    "the user is authorised and an Error is returned" should {
 
       lazy val result = TestCustomerDetailsController.show(fakeRequest)
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 500" in {
+        mockCustomerDetailsSourceError()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return HTML" in {

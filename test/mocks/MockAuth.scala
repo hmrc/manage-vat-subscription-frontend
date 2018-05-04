@@ -16,13 +16,14 @@
 
 package mocks
 
+import assets.BaseTestConstants.vrn
 import controllers.predicates.AuthenticationPredicate
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.EnrolmentsAuthService
+import _root_.services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import utils.TestUtil
 
@@ -50,8 +51,8 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
   def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
     Set(
       Enrolment("HMRC-MTD-VAT",
-        Seq(EnrolmentIdentifier("", "")),
-        "",
+        Seq(EnrolmentIdentifier("VRN", vrn)),
+        "Activated",
         None)
     )
   )))

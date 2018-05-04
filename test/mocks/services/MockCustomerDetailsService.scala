@@ -16,6 +16,8 @@
 
 package mocks.services
 
+import assets.BaseTestConstants._
+import assets.CustomerDetailsTestConstants._
 import services.CustomerDetailsService
 import models.core.ErrorModel
 import models.customerInfo.CustomerDetailsModel
@@ -42,5 +44,7 @@ trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeA
       .thenReturn(Future.successful(response))
   }
 
+  def mockCustomerDetailsSourceMax(): Unit = setupMockCustomerDetails(vrn)(Right(customerDetailsMax))
+  def mockCustomerDetailsSourceError(): Unit = setupMockCustomerDetails(vrn)(Left(errorModel))
 }
 
