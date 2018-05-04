@@ -27,31 +27,29 @@ import scala.concurrent.Future
 
 class SignOutControllerSpec extends ControllerBaseSpec {
 
-  private trait SignOutControllerTest {
-    def target: SignOutController = {
-      new SignOutController(messagesApi, mockAppConfig)
-    }
-  }
 
-  "navigating to signout page" when {
+  object TestSignOutController extends SignOutController(messagesApi, mockAppConfig) {
 
-    "authorised" should {
-      "return 303 and navigate to the survey url" in new SignOutControllerTest {
-        lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
-        lazy val result: Future[Result] = target.signOut(authorised = true)(request)
+    "navigating to signout page" when {
 
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(mockAppConfig.signOutUrl)
+      "authorised" should {
+        "return 303 and navigate to the survey url" in {
+//          lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
+          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = true)(fakeRequest)
+
+          status(result) shouldBe Status(SEE_OTHER)
+          redirectLocation(result) shouldBe Some(mockAppConfig.signOutUrl)
+        }
       }
-    }
 
-    "unauthorised" should {
-      "return 303 and navigate to sign out url" in new SignOutControllerTest {
-        lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
-        lazy val result: Future[Result] = target.signOut(authorised = false)(request)
+      "unauthorised" should {
+        "return 303 and navigate to sign out url" in {
+//          lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
+          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = false)(fakeRequest)
 
-        status(result) shouldBe Status.SEE_OTHER
-        redirectLocation(result) shouldBe Some(mockAppConfig.unauthorisedSignOutUrl)
+          status(result) shouldBe Status(SEE_OTHER)
+          redirectLocation(result) shouldBe Some(mockAppConfig.unauthorisedSignOutUrl)
+        }
       }
     }
   }
