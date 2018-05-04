@@ -1,5 +1,7 @@
 # microservice specific routes
 
+GET        /                        @controllers.CustomerDetailsController.show
+
 GET        /hello-world             @controllers.HelloWorldController.helloWorld
 
 GET        /change-business-name    @controllers.ChangeBusinessNameController.show

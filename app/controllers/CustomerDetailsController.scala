@@ -19,25 +19,28 @@ package controllers
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthenticationPredicate
 import javax.inject.{Inject, Singleton}
+
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
-class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
-                                             val authenticate: AuthenticationPredicate,
-                                             val customerDetailsService: CustomerDetailsService,
-                                             val serviceErrorHandler: ServiceErrorHandler,
-                                             implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
-
+class CustomerDetailsController @Inject()(val messagesApi: MessagesApi,
+                                          val authenticate: AuthenticationPredicate,
+                                          val customerDetailsService: CustomerDetailsService,
+                                          val serviceErrorHandler: ServiceErrorHandler,
+                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
+      Logger.debug(s"[CustomerDetailsController][show] User: ${user.vrn}")
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) if customerDetails.organisationName.isDefined =>
-          Ok(views.html.businessName.change_business_name(customerDetails.organisationName.get))
-        case _ => serviceErrorHandler.showInternalServerError
+        case Right(customerDetails) => Ok(views.html.customerInfo.customerDetailsView(customerDetails))
+        case _ =>
+          Logger.debug(s"[CustomerDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
+          serviceErrorHandler.showInternalServerError
       }
   }
 }
