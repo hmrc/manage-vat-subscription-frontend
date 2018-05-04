@@ -34,7 +34,6 @@ class SignOutControllerSpec extends ControllerBaseSpec {
 
       "authorised" should {
         "return 303 and navigate to the survey url" in {
-//          lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
           lazy val result: Future[Result] = TestSignOutController.signOut(authorised = true)(fakeRequest)
 
           status(result) shouldBe Status(SEE_OTHER)
@@ -44,7 +43,6 @@ class SignOutControllerSpec extends ControllerBaseSpec {
 
       "unauthorised" should {
         "return 303 and navigate to sign out url" in {
-//          lazy val request: FakeRequest[AnyContentAsEmpty.type] = fakeRequestWithSession
           lazy val result: Future[Result] = TestSignOutController.signOut(authorised = false)(fakeRequest)
 
           status(result) shouldBe Status(SEE_OTHER)
