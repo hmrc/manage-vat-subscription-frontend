@@ -38,22 +38,14 @@ class AuthenticationPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthSer
 
 
   override def invokeBlock[A](request: Request[A], f: User[A] => Future[Result]): Future[Result] = {
-
-    implicit val req = request
-
-    val predicate = if (appConfig.features.simpleAuth()) EmptyPredicate else Enrolment(EnrolmentKeys.vatEnrolmentId)
-
-    enrolmentsAuthService.authorised(predicate).retrieve(Retrievals.authorisedEnrolments) {
-      enrolments => {
-        val user = if (appConfig.features.simpleAuth()) User("123456789") else User(enrolments)
-        Logger.debug(s"[AuthenticationPredicate][invokeBlock] User: $user")
-        f(user)
-      }
+    implicit val req: Request[A] = request
+    enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.authorisedEnrolments) {
+      enrolments =>
+        Logger.debug(s"[AuthenticationPredicate][invokeBlock] Authorised User, Enrolments: $enrolments")
+        f(User(enrolments))
     } recoverWith {
       case _: NoActiveSession => Future.successful(Unauthorized(views.html.errors.sessionTimeout()))
       case _: AuthorisationException => Future.successful(Forbidden(views.html.errors.unauthorised()))
     }
   }
-
-
 }

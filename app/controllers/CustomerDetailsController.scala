@@ -35,10 +35,12 @@ class CustomerDetailsController @Inject()(val messagesApi: MessagesApi,
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      Logger.debug(s"[CustomerDetailsController][show] User: \n\n\n\n$user\n\n\n\n")
+      Logger.debug(s"[CustomerDetailsController][show] User: ${user.vrn}")
       customerDetailsService.getCustomerDetails(user.vrn) map {
         case Right(customerDetails) => Ok(views.html.customerInfo.customerDetailsView(customerDetails))
-        case _ => serviceErrorHandler.showInternalServerError
+        case _ =>
+          Logger.debug(s"[CustomerDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
+          serviceErrorHandler.showInternalServerError
       }
   }
 }
