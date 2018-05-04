@@ -1,6 +1,9 @@
 # microservice specific routes
 
 GET        /hello-world             @controllers.HelloWorldController.helloWorld
+
+GET        /change-business-name    @controllers.ChangeBusinessNameController.show
+
 GET        /text-input              @controllers.HelloWorldController.textInput
 GET        /date-input              @controllers.HelloWorldController.dateInput
 
