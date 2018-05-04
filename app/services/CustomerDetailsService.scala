@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package assets
+package services
 
+import connectors.CustomerDetailsConnector
+import javax.inject.{Inject, Singleton}
 import models.core.ErrorModel
-import play.api.http.Status
+import models.customerInfo.CustomerDetailsModel
+import uk.gov.hmrc.http.HeaderCarrier
 
-object BaseTestConstants {
+import scala.concurrent.{ExecutionContext, Future}
 
-  val firstName = "Albert"
-  val lastName = "Einstein"
-  val organisationName = "Ancient Antiques LTD"
-  val tradingName = "Ancient Antiques"
-  val vrn = "321321"
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
+@Singleton
+class CustomerDetailsService @Inject()(val customerDetailsConnector: CustomerDetailsConnector) {
 
+  def getCustomerDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, CustomerDetailsModel]] =
+    customerDetailsConnector.getCustomerDetails(vrn)
 }
