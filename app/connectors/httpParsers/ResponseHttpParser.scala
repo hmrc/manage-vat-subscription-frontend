@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package assets
+package connectors.httpParsers
 
 import models.core.ErrorModel
+import play.api.Logger
 import play.api.http.Status
+import play.api.libs.json.Json
+import uk.gov.hmrc.http.HttpResponse
 
-object BaseTestConstants {
+import scala.util.{Failure, Success, Try}
 
-  val firstName = "Albert"
-  val lastName = "Einstein"
-  val organisationName = "Ancient Antiques LTD"
-  val tradingName = "Ancient Antiques"
-  val vrn = "321321"
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
-
+trait ResponseHttpParser {
+  type HttpGetResult[T] = Either[ErrorModel, T]
 }

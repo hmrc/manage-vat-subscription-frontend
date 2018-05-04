@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-package models.customerInfo
+package services
 
-import play.api.libs.json.{Format, Json}
+import connectors.CustomerDetailsConnector
+import javax.inject.{Inject, Singleton}
+import models.core.ErrorModel
+import models.customerInfo.CustomerDetailsModel
+import uk.gov.hmrc.http.HeaderCarrier
 
-case class CustomerInformationModel(mandationStatus: MandationStatus,
-                                    customerDetails: CustomerDetailsModel)
+import scala.concurrent.{ExecutionContext, Future}
 
-object CustomerInformationModel {
-  implicit val format: Format[CustomerInformationModel] = Json.format[CustomerInformationModel]
+@Singleton
+class CustomerDetailsService @Inject()(val customerDetailsConnector: CustomerDetailsConnector) {
+
+  def getCustomerDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, CustomerDetailsModel]] =
+    customerDetailsConnector.getCustomerDetails(vrn)
 }
-
-
-

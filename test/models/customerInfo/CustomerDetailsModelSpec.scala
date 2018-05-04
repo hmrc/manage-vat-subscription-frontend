@@ -23,15 +23,6 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 class CustomerDetailsModelSpec extends UnitSpec {
 
-  private val testJson = Json.obj(
-    "organisationName" -> organisationName,
-    "firstName" -> firstName,
-    "lastName" -> lastName,
-    "tradingName" -> tradingName
-  )
-
-  private val testJsonMin = Json.obj()
-
   "CustomerDetailsModel" when {
 
     ".isInd" should {
@@ -55,7 +46,7 @@ class CustomerDetailsModelSpec extends UnitSpec {
     "calling .username" when {
       "FirstName and Lastname are present" should {
         "return 'Firstname Lastname'" in {
-          CustomerDetailsModel(Some(firstName), Some(lastName), None, None).userName shouldBe Some(s"$firstName $lastName")
+          individual.userName shouldBe Some(s"$firstName $lastName")
         }
       }
       "FirstName is present" should {
@@ -70,7 +61,7 @@ class CustomerDetailsModelSpec extends UnitSpec {
       }
       "No names are present" should {
         "return None" in {
-          CustomerDetailsModel(None, None, None, None).userName shouldBe None
+          customerDetailsMin.userName shouldBe None
         }
       }
     }
@@ -78,26 +69,22 @@ class CustomerDetailsModelSpec extends UnitSpec {
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        val expected = CustomerDetailsModel(Some(firstName), Some(lastName), Some(organisationName), Some(tradingName))
-        testJson.as[CustomerDetailsModel] shouldBe expected
+        customerDetailsJsonMax.as[CustomerDetailsModel] shouldBe customerDetailsMax
       }
 
       "no optional fields are returned" in {
-        val expected = CustomerDetailsModel(None, None, None, None)
-        testJsonMin.as[CustomerDetailsModel] shouldBe expected
+        customerDetailsJsonMin.as[CustomerDetailsModel] shouldBe customerDetailsMin
       }
     }
 
     "Serialize to JSON" when {
 
       "all optional fields are populated" in {
-        val model = CustomerDetailsModel(Some(firstName), Some(lastName), Some(organisationName), Some(tradingName))
-        Json.toJson(model) shouldBe testJson
+        Json.toJson(customerDetailsMax) shouldBe customerDetailsJsonMax
       }
 
       "no optional fields are returned" in {
-        val model = CustomerDetailsModel(None, None, None, None)
-        Json.toJson(model) shouldBe testJsonMin
+        Json.toJson(customerDetailsMin) shouldBe customerDetailsJsonMin
       }
     }
   }
