@@ -16,13 +16,14 @@
 
 package mocks
 
+import assets.BaseTestConstants.vrn
 import controllers.predicates.AuthenticationPredicate
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.EnrolmentsAuthService
+import _root_.services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import utils.TestUtil
 
@@ -36,22 +37,21 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     mockAuthorised()
   }
 
-  val mockAuthConnector: AuthConnector = mock[AuthConnector]
+  lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
   def setupAuthResponse(authResult: Future[Enrolments]): OngoingStubbing[Future[Enrolments]] = {
     when(mockAuthConnector.authorise[Enrolments](ArgumentMatchers.any(), ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(authResult)
   }
 
-  val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
-
-  val mockAuthPredicate: AuthenticationPredicate = new AuthenticationPredicate(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
+  object MockEnrolmentsAuthService extends EnrolmentsAuthService(mockAuthConnector)
+  object MockAuthPredicate extends AuthenticationPredicate(MockEnrolmentsAuthService, messagesApi, mockAppConfig)
 
   def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
     Set(
       Enrolment("HMRC-MTD-VAT",
-        Seq(EnrolmentIdentifier("", "")),
-        "",
+        Seq(EnrolmentIdentifier("VRN", vrn)),
+        "Activated",
         None)
     )
   )))

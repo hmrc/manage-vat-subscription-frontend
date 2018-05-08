@@ -27,6 +27,7 @@ import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
 import config.{ConfigKeys => Keys}
 
+
 trait AppConfig extends ServicesConfig {
   val analyticsToken: String
   val analyticsHost: String
@@ -73,6 +74,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
   private lazy val signInOrigin = loadConfig("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
+
+  lazy val vatSubscriptionUrl:String = baseUrl("vat-subscription")
 
   override val features = new Features(runModeConfiguration)
 
