@@ -32,6 +32,9 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val whitelistExcludedPaths: Seq[Call] = Nil
   override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/vat-through-software"
   override val signInUrl: String = "sign-in"
+  override val signOutUrl: String = "/some-gg-signout-url"
+  override val unauthorisedSignOutUrl: String = ""
+  override val surveyUrl: String = "/some-survey-url"
   override val features: Features = new Features(runModeConfiguration)
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"
 }

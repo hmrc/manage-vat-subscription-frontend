@@ -36,4 +36,9 @@ object ConfigKeys {
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
 
+  val governmentGatewayHost: String = "government-gateway.host"
+
+  val surveyHost: String = "feedback-survey-frontend.host"
+  val surveyUrl: String = "feedback-survey-frontend.url"
+  
 }
