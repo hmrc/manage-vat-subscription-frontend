@@ -28,7 +28,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for any user" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -58,7 +58,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Self-Employed Individual" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -87,7 +87,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customerDetailsView(organisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(organisation)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -106,9 +106,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
             elementText("#changeBusinessName") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden
           }
 
-          //TODO: Update this when URL developed and known
-          "has a link to '#'" in {
-            element("#changeBusinessName").attr("href") shouldBe "#"
+          s"has a link to '${controllers.routes.ChangeBusinessNameController.show().url}'" in {
+            element("#changeBusinessName").attr("href") shouldBe controllers.routes.ChangeBusinessNameController.show().url
           }
         }
       }
