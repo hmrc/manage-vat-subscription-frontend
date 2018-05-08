@@ -16,4 +16,10 @@
 
 package models.core
 
-class ErrorModel(status: Int, message: String)
+import play.api.libs.json.{Format, Json}
+
+case class ErrorModel(status: Int, message: String)
+
+object ErrorModel {
+  implicit val format: Format[ErrorModel] = Json.format[ErrorModel]
+}

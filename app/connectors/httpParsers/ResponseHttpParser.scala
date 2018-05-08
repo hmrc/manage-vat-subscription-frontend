@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package models.customerInfo
+package connectors.httpParsers
 
-import play.api.libs.json.{Format, Json}
+import models.core.ErrorModel
+import play.api.Logger
+import play.api.http.Status
+import play.api.libs.json.Json
+import uk.gov.hmrc.http.HttpResponse
 
-case class CustomerInformationModel(mandationStatus: MandationStatus,
-                                    customerDetails: CustomerDetailsModel)
+import scala.util.{Failure, Success, Try}
 
-object CustomerInformationModel {
-  implicit val format: Format[CustomerInformationModel] = Json.format[CustomerInformationModel]
+trait ResponseHttpParser {
+  type HttpGetResult[T] = Either[ErrorModel, T]
 }
-
-
-
