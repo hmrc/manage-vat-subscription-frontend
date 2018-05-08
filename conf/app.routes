@@ -9,3 +9,7 @@ GET        /date-input              @controllers.HelloWorldController.dateInput
 
 GET        /money-input             @controllers.HelloWorldController.moneyInput
 POST       /money-input             @controllers.HelloWorldController.submitMoney
+
+#Sign Out Routes
+GET         /sign-out               @controllers.SignOutController.signOut(authorised: Boolean)
+

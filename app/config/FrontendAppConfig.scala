@@ -39,6 +39,9 @@ trait AppConfig extends ServicesConfig {
   val shutterPage: String
   val signInUrl: String
   val features: Features
+  val surveyUrl: String
+  val signOutUrl: String
+  val unauthorisedSignOutUrl: String
 }
 
 @Singleton
@@ -75,4 +78,15 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   lazy val vatSubscriptionUrl:String = baseUrl("vat-subscription")
 
   override val features = new Features(runModeConfiguration)
+
+
+  private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
+  override lazy val surveyUrl = s"$surveyBaseUrl/?origin=$contactFormServiceIdentifier"
+
+  private lazy val governmentGatewayHost: String = getString(Keys.governmentGatewayHost)
+
+  override lazy val signOutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$surveyUrl"
+  override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
+
+
 }
