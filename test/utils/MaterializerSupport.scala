@@ -14,18 +14,12 @@
  * limitations under the License.
  */
 
-package assets
+package utils
 
-import models.core.ErrorModel
-import play.api.http.Status
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
 
-object BaseTestConstants {
-
-  val firstName = "Albert"
-  val lastName = "Einstein"
-  val organisationName = "Ancient Antiques LTD"
-  val tradingName = "Ancient Antiques"
-  val vrn = "321321321"
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
-
+trait MaterializerSupport {
+  implicit val system = ActorSystem("Sys")
+  implicit val materializer = ActorMaterializer()
 }
