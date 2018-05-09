@@ -16,14 +16,16 @@
 
 package mocks
 
-import controllers.predicates.{AuthoriseAsPrinciple, AuthoriseAsAgent}
+import controllers.predicates.{AuthPredicate, AuthoriseAsAgent, AuthoriseAsPrinciple}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import services.EnrolmentsAuthService
+import uk.gov.hmrc.auth.core.AffinityGroup.Agent
 import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
 
 import scala.concurrent.Future
@@ -33,39 +35,103 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockAuthConnector)
-    mockAuthorised()
+    mockIndividualAuthorised()
   }
 
   val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
-  def setupAuthResponse(authResult: Future[Enrolments]): OngoingStubbing[Future[Enrolments]] = {
-    when(mockAuthConnector.authorise[Enrolments](ArgumentMatchers.any(), ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
-      .thenReturn(authResult)
+  def setupAuthResponse(authResult: Future[~[Option[AffinityGroup], Enrolments]]): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] = {
+    when(mockAuthConnector.authorise(
+      ArgumentMatchers.any(), ArgumentMatchers.any[Retrieval[~[Option[AffinityGroup], Enrolments]]]())(
+      ArgumentMatchers.any(), ArgumentMatchers.any())
+    ).thenReturn(authResult)
   }
 
   val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
 
-  val mockAuthPredicate: AuthoriseAsPrinciple = new AuthoriseAsPrinciple(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
+  val mockAuthIndividualPredicate: AuthoriseAsPrinciple = new AuthoriseAsPrinciple(mockEnrolmentsAuthService,messagesApi,mockAppConfig)
 
   val mockAuthAgentPredicate: AuthoriseAsAgent = new AuthoriseAsAgent(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
 
-  def mockAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
-    Set(
-      Enrolment("HMRC-MTD-VAT",
-        Seq(EnrolmentIdentifier("", "")),
-        "",
-        None)
+  val mockAuthStuff: AuthPredicate =
+    new AuthPredicate(
+      mockEnrolmentsAuthService,
+      messagesApi,
+      mockAuthIndividualPredicate,
+      mockAuthAgentPredicate,
+      mockAppConfig
     )
-  )))
-  def mockAgentAuthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.successful(Enrolments(
-    Set(
-      Enrolment("HMRC-MTD-VAT",
-        Seq(EnrolmentIdentifier("AgentReferenceNumber","someARN")),
-        "Activated",
-        None)
-    )
-  )))
-  def mockUnauthenticated(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.failed(MissingBearerToken()))
-  def mockUnauthorised(): OngoingStubbing[Future[Enrolments]] = setupAuthResponse(Future.failed(InsufficientEnrolments()))
+
+  def mockIndividualAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(Some(AffinityGroup.Individual),
+        Enrolments(Set(Enrolment("HMRC-MTD-VAT",
+          Seq(EnrolmentIdentifier("", "")),
+          "",
+          None
+        )))
+      )
+    ))
+
+  def mockAgentAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(Some(AffinityGroup.Agent),
+        Enrolments(Set(Enrolment("HMRC-AS-AGENT",
+          Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
+          "",
+          Some("mtd-vat-auth")
+        )))
+      )
+    ))
+
+  def mockAgentWithoutEnrolment(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(Some(AffinityGroup.Agent),
+        Enrolments(Set(Enrolment("OTHER_ENROLMENT",
+          Seq(EnrolmentIdentifier("", "")),
+          "",
+          Some("mtd-vat-auth")
+        )))
+      )
+    ))
+
+  def mockUserWithoutEnrolment(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(Some(AffinityGroup.Individual),
+        Enrolments(Set(Enrolment("OTHER_ENROLMENT",
+          Seq(EnrolmentIdentifier("", "")),
+          "",
+          None
+        )))
+      )
+    ))
+
+  def mockUserWithoutAffinity(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(None,
+        Enrolments(Set(Enrolment("HMRC-MTD-VAT",
+          Seq(EnrolmentIdentifier("", "")),
+          "",
+          None
+        )))
+      )
+    ))
+
+  def mockAgentWithoutAffinity(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.successful(
+      new ~(None,
+        Enrolments(Set(Enrolment("HMRC-AS-AGENT",
+          Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
+          "",
+          Some("mtd-vat-auth")
+        )))
+      )
+    ))
+
+  lazy val mockUnauthenticated: OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.failed(MissingBearerToken()))
+
+  lazy val mockUnauthorised: OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+    setupAuthResponse(Future.failed(InsufficientEnrolments()))
 
 }

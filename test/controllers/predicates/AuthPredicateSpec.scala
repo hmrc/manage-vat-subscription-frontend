@@ -18,14 +18,14 @@ package controllers.predicates
 
 import mocks.MockAuth
 import play.api.http.Status
-import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, AnyContent}
 
 import scala.concurrent.Future
 
-class AuthoriseAsAgentSpec extends MockAuth {
+class AuthPredicateSpec extends MockAuth {
 
-  "The AuthoriseAgentPredicate" when {
+  "The AuthPredicate" when {
 
     def target: Action[AnyContent] = {
       mockAuthStuff.async{
@@ -33,50 +33,30 @@ class AuthoriseAsAgentSpec extends MockAuth {
       }
     }
 
-    "the agent is authorised" should {
-
-      "return 200" in {
-        mockAgentAuthorised()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.OK
-      }
-    }
-
     "an agent attempts to sign in without 'HMRC_AS_AGENT' enrolment" should {
 
       "throw an ISE (500)" in {
+
         mockAgentWithoutEnrolment()
         val result = target(fakeRequest)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+
       }
+
     }
 
     "a user attempts to sign in without an affinity group" should {
 
       "throw an ISE (500)" in {
-        mockAgentWithoutAffinity()
+
+        mockUserWithoutAffinity()
         val result = target(fakeRequest)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+
       }
+
     }
 
-    "the agent is not authenticated" should {
-
-      "return 401 (Unauthorised)" in {
-        mockUnauthenticated
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
-
-    "the agent is not authorised" should {
-
-      "return 403 (Forbidden)" in {
-        mockUnauthorised
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.FORBIDDEN
-      }
-    }
   }
 
 }

@@ -29,7 +29,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
   "The AuthenticationPredicate" when {
 
     def target: Action[AnyContent] = {
-      mockAuthPredicate.async{
+      mockAuthStuff.async{
         implicit request => Future.successful(Ok("test"))
       }
     }
@@ -37,16 +37,34 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
     "the user is authorised" should {
 
       "return 200" in {
-        mockAuthorised()
+        mockIndividualAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
+      }
+    }
+
+    "a user attempts to sign in without 'HMRC_MTD_VAT' enrolment" should {
+
+      "throw an ISE (500)" in {
+        mockUserWithoutEnrolment()
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "a user attempts to sign in without an affinity group" should {
+
+      "throw an ISE (500)" in {
+        mockUserWithoutAffinity()
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.FORBIDDEN
       }
     }
 
     "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
-        mockUnauthenticated()
+        mockUnauthenticated
         val result = target(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }
@@ -55,7 +73,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
     "the user is not authorised" should {
 
       "return 403 (Forbidden)" in {
-        mockUnauthorised()
+        mockUnauthorised
         val result = target(fakeRequest)
         status(result) shouldBe Status.FORBIDDEN
       }

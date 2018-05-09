@@ -43,10 +43,11 @@ object AuthStub extends WireMockMethods {
   }
 
   private val mtdVatEnrolment = Json.obj(
-    "key" -> SERVICE_ENROLMENT_KEY,
+    "affinityGroup" -> "Individual",
+    "enrolment" -> SERVICE_ENROLMENT_KEY,
     "identifiers" -> Json.arr(
       Json.obj(
-        "key" -> "MtdVatId",
+        "key" -> "VRN",
         "value" -> "1234567890"
       )
     )

@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 import common.EnrolmentKeys
 import config.AppConfig
 import models.User
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.retrieve.Retrievals
@@ -37,10 +38,9 @@ class AuthoriseAsPrinciple @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
   def authorise[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
 
     implicit val req = request
-
-    enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.authorisedEnrolments) {
+    enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       enrolments => {
-        f(User(enrolments))
+        f(User(enrolments.b))
       }
     } recover {
       case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())

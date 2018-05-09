@@ -46,15 +46,8 @@ class AuthoriseAsAgent @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
 
     implicit val req = request
 
-    enrolmentsAuthService.authorised(enrolments(dummyVrn)).retrieve(Retrievals.authorisedEnrolments) {
+    enrolmentsAuthService.authorised(enrolments(dummyVrn)).retrieve(Retrievals.affinityGroup and Retrievals.authorisedEnrolments) {
       _ => f(User(dummyVrn,true,Some("2122")))
-    } recover {
-      case _: NoActiveSession =>{
-        Logger.warn("[AuthoriseAsAgent][authorise] - recovered with Unauthorised")
-        Unauthorized(views.html.errors.sessionTimeout())}
-      case _: AuthorisationException =>{
-        Logger.warn("[AuthoriseAsAgent][authorise] - recovered with Forbidden")
-        Forbidden(views.html.errors.unauthorised())}
     }
   }
 }
