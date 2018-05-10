@@ -46,8 +46,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
       elementText("article > p:nth-of-type(2)") shouldBe viewMessages.p2
     }
 
-    "has the correct link to ''" in {
-      element("article > p:nth-of-type(2) a").attr("href") shouldBe "#"
+    s"has the correct link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
+      element("article > p:nth-of-type(2) a").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
     }
   }
 }
