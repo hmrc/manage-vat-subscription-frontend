@@ -44,8 +44,8 @@ object CustomerAddressModel {
         Right(CustomerAddressModel(l1,l2,Some(l3),Some(l4),postcode,countryCode))
       case _ => Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
     }
-
   }
+
   val customerAddressReads: Reads[Either[ErrorModel,CustomerAddressModel]] = (
     (__ \\ "lines").read[List[String]] and
       (__ \\ "postcode").readNullable[String] and

@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package models.customerInfo
+package models.customerAddress
 
 import assets.CustomerAddressTestConstants._
 import models.core.ErrorModel
-import models.customerAddress.CustomerAddressModel
 import play.api.http.Status
 import play.api.libs.json.{JsSuccess, Json}
 import uk.gov.hmrc.play.test.UnitSpec

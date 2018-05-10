@@ -42,11 +42,8 @@ object AddressLookupHttpParser extends ResponseHttpParser {
         }
         case status =>
           Logger.warn(s"[AddressLookupHttpParser][read]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel"))
+          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
-
     }
-
   }
-
 }
