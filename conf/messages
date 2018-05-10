@@ -37,3 +37,10 @@ change_business_name.h1 = Change of business name
 change_business_name.p1 = You can change the business name from <span class="bold-small">{0}</span>.
 change_business_name.tradingName = You do not need to tell us if the business will use a different trading name.
 change_business_name.p2 = We will update the business name with HMRC and Companies House. This can take up to xx working days.
+
+change_address_confirmation.title = We''ve received your details
+change_address_confirmation.h2 = What happens next
+change_address_confirmation.p1 = If this change is accepted, we will usually update the principal place of business within 2 working days.
+change_address_confirmation.p2 = You can
+change_address_confirmation.p2.link = view your requested change
+change_address_confirmation.p2.end = .
