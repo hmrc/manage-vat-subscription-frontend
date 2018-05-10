@@ -20,21 +20,23 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.{JsObject, Json}
 import helpers.WireMockMethods
+import uk.gov.hmrc.auth.core.AffinityGroup
 
 object AuthStub extends WireMockMethods {
 
   private val authoriseUri = "/auth/authorise"
 
   private val SERVICE_ENROLMENT_KEY = "HMRC-MTD-VAT"
+  private val AGENT_ENROLMENT_KEY = "HMRC-AS-AGENT"
 
   def authorised(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(mtdVatEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Individual, mtdVatEnrolment))
   }
 
   def unauthorisedOtherEnrolment(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(otherEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Individual, otherEnrolment))
   }
 
   def unauthorisedNotLoggedIn(): StubMapping = {
@@ -42,12 +44,31 @@ object AuthStub extends WireMockMethods {
       .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="MissingBearerToken""""))
   }
 
+  def agentAuthorised(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Agent, agentEnrolment))
+  }
+
+  def agentUnauthorisedOtherEnrolment(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Agent, otherEnrolment))
+  }
+
   private val mtdVatEnrolment = Json.obj(
-    "affinityGroup" -> "Individual",
-    "enrolment" -> SERVICE_ENROLMENT_KEY,
+    "key" -> SERVICE_ENROLMENT_KEY,
     "identifiers" -> Json.arr(
       Json.obj(
         "key" -> "VRN",
+        "value" -> "1234567890"
+      )
+    )
+  )
+
+  private val agentEnrolment = Json.obj(
+    "key" -> AGENT_ENROLMENT_KEY,
+    "identifiers" -> Json.arr(
+      Json.obj(
+        "key" -> "AgentReferenceNumber",
         "value" -> "1234567890"
       )
     )
@@ -63,7 +84,10 @@ object AuthStub extends WireMockMethods {
     )
   )
 
-  private def successfulAuthResponse(enrolments: JsObject*): JsObject = {
-    Json.obj("authorisedEnrolments" -> enrolments)
+  private def successfulAuthResponse(affinityGroup: AffinityGroup, enrolments: JsObject*): JsObject = {
+    Json.obj(
+      "affinityGroup" -> affinityGroup,
+      "allEnrolments" -> enrolments
+    )
   }
 }

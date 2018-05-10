@@ -42,9 +42,6 @@ class AuthoriseAsPrinciple @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
       enrolments => {
         f(User(enrolments.b))
       }
-    } recover {
-      case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
-      case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
     }
   }
 

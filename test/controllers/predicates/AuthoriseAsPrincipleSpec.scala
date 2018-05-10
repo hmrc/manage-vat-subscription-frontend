@@ -57,7 +57,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
       "throw an ISE (500)" in {
         mockUserWithoutAffinity()
         val result = target(fakeRequest)
-        status(result) shouldBe Status.FORBIDDEN
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 
