@@ -16,6 +16,7 @@
 
 package utils
 
+import config.{FrontendAppConfig, ServiceErrorHandler}
 import mocks.MockAppConfig
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.MessagesApi
@@ -24,15 +25,23 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 
-trait TestUtil extends UnitSpec with GuiceOneAppPerSuite {
+import scala.concurrent.ExecutionContext
 
-  val injector: Injector = app.injector
-  val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSupport {
 
-  implicit val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  lazy val injector: Injector = app.injector
+  lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+
+  implicit lazy val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit lazy val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
+  implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
+
+  implicit lazy val hc: HeaderCarrier = HeaderCarrier()
+  implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
   implicit class CSRFTokenAdder[T](req: FakeRequest[T]) {
     def addToken: FakeRequest[T] = {

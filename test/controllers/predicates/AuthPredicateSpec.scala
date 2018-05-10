@@ -28,7 +28,7 @@ class AuthPredicateSpec extends MockAuth {
   "The AuthPredicate" when {
 
     def target: Action[AnyContent] = {
-      mockAuthStuff.async{
+      mockAuthPredicate.async{
         implicit request => Future.successful(Ok("test"))
       }
     }

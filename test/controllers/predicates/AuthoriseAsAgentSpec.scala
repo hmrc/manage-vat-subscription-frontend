@@ -28,7 +28,7 @@ class AuthoriseAsAgentSpec extends MockAuth {
   "The AuthoriseAgentPredicate" when {
 
     def target: Action[AnyContent] = {
-      mockAuthStuff.async{
+      mockAuthPredicate.async{
         implicit request => Future.successful(Ok("test"))
       }
     }

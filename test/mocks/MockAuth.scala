@@ -22,8 +22,7 @@ import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.EnrolmentsAuthService
-import uk.gov.hmrc.auth.core.AffinityGroup.Agent
+import _root_.services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
@@ -38,7 +37,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     mockIndividualAuthorised()
   }
 
-  val mockAuthConnector: AuthConnector = mock[AuthConnector]
+  lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
   def setupAuthResponse(authResult: Future[~[Option[AffinityGroup], Enrolments]]): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] = {
     when(mockAuthConnector.authorise(
@@ -53,7 +52,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
 
   val mockAuthAgentPredicate: AuthoriseAsAgent = new AuthoriseAsAgent(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
 
-  val mockAuthStuff: AuthPredicate =
+  val mockAuthPredicate: AuthPredicate =
     new AuthPredicate(
       mockEnrolmentsAuthService,
       messagesApi,

@@ -27,6 +27,7 @@ import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
 import config.{ConfigKeys => Keys}
 
+
 trait AppConfig extends ServicesConfig {
   val analyticsToken: String
   val analyticsHost: String
@@ -38,38 +39,55 @@ trait AppConfig extends ServicesConfig {
   val shutterPage: String
   val signInUrl: String
   val features: Features
+  val govUkCohoNameChangeUrl: String
+  val surveyUrl: String
+  val signOutUrl: String
+  val unauthorisedSignOutUrl: String
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends AppConfig {
+class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig with AppConfig {
 
   override protected def mode: Mode = environment.mode
-
-  private def loadConfig(key: String): String = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = getString(Keys.contactFrontendService)
   private lazy val contactFormServiceIdentifier: String = "VATVC"
 
-  override lazy val analyticsToken: String = loadConfig(Keys.googleAnalyticsToken)
-  override lazy val analyticsHost: String = loadConfig(Keys.googleAnalyticsHost)
+  override lazy val analyticsToken: String = getString(Keys.googleAnalyticsToken)
+  override lazy val analyticsHost: String = getString(Keys.googleAnalyticsHost)
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
   private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
-    .decode(runModeConfiguration.getString(key).getOrElse("")), "UTF-8"))
+    .decode(getString(key)), "UTF-8"))
     .map(_.split(",")).getOrElse(Array.empty).toSeq
 
-  override lazy val whitelistEnabled: Boolean = runModeConfiguration.getBoolean(Keys.whitelistEnabled).getOrElse(true)
+  override lazy val whitelistEnabled: Boolean = getBoolean(Keys.whitelistEnabled)
   override lazy val whitelistedIps: Seq[String] = whitelistConfig(Keys.whitelistedIps)
   override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig(Keys.whitelistExcludedPaths).map(path => Call("GET", path))
-  override lazy val shutterPage: String = loadConfig(Keys.whitelistShutterPage)
+  override lazy val shutterPage: String = getString(Keys.whitelistShutterPage)
 
-  private lazy val signInBaseUrl: String = loadConfig(Keys.signInBaseUrl)
+  private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
-  private lazy val signInContinueBaseUrl: String = runModeConfiguration.getString(Keys.signInContinueBaseUrl).getOrElse("")
+  private lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
-  private lazy val signInOrigin = loadConfig("appName")
+  private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
+  lazy val vatSubscriptionUrl:String = baseUrl("vat-subscription")
+
+  override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
+
   override val features = new Features(runModeConfiguration)
+
+
+  private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
+  override lazy val surveyUrl = s"$surveyBaseUrl/?origin=$contactFormServiceIdentifier"
+
+  private lazy val governmentGatewayHost: String = getString(Keys.governmentGatewayHost)
+
+  override lazy val signOutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$surveyUrl"
+  override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
+
+
 }

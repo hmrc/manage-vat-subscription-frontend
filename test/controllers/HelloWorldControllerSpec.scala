@@ -21,7 +21,7 @@ import play.api.test.Helpers._
 
 class HelloWorldControllerSpec extends ControllerBaseSpec {
 
-  object TestHelloWorldController extends HelloWorldController(messagesApi, mockAuthStuff, mockAppConfig)
+  object TestHelloWorldController extends HelloWorldController(messagesApi, mockAuthPredicate, mockAppConfig)
 
   "Calling the .helloWorld action" when {
 

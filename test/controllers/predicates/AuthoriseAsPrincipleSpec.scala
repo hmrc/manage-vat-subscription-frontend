@@ -20,6 +20,7 @@ import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
+import assets.BaseTestConstants.vrn
 
 import scala.concurrent.Future
 
@@ -29,7 +30,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
   "The AuthenticationPredicate" when {
 
     def target: Action[AnyContent] = {
-      mockAuthStuff.async{
+      mockAuthPredicate.async{
         implicit request => Future.successful(Ok("test"))
       }
     }
@@ -40,6 +41,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
         mockIndividualAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
+        await(bodyOf(result)) shouldBe vrn
       }
     }
 
