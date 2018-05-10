@@ -28,7 +28,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
 
   object TestCustomerDetailsController extends CustomerDetailsController(
     messagesApi,
-    MockAuthPredicate,
+    mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig

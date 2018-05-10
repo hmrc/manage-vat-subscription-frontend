@@ -41,7 +41,7 @@ class AuthoriseAsPrincipleSpec extends MockAuth {
         mockIndividualAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
-        await(bodyOf(result)) shouldBe vrn
+        await(bodyOf(result)) shouldBe "test"
       }
     }
 

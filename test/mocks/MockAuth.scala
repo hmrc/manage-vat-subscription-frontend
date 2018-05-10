@@ -65,8 +65,8 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(Some(AffinityGroup.Individual),
         Enrolments(Set(Enrolment("HMRC-MTD-VAT",
-          Seq(EnrolmentIdentifier("", "")),
-          "",
+          Seq(EnrolmentIdentifier("VRN", "999999999")),
+          "Activated",
           None
         )))
       )
@@ -77,7 +77,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       new ~(Some(AffinityGroup.Agent),
         Enrolments(Set(Enrolment("HMRC-AS-AGENT",
           Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
-          "",
+          "Activated",
           Some("mtd-vat-auth")
         )))
       )
@@ -88,7 +88,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       new ~(Some(AffinityGroup.Agent),
         Enrolments(Set(Enrolment("OTHER_ENROLMENT",
           Seq(EnrolmentIdentifier("", "")),
-          "",
+          "Activated",
           Some("mtd-vat-auth")
         )))
       )
@@ -109,8 +109,8 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(None,
         Enrolments(Set(Enrolment("HMRC-MTD-VAT",
-          Seq(EnrolmentIdentifier("", "")),
-          "",
+          Seq(EnrolmentIdentifier("VRN", "999999999")),
+          "Activated",
           None
         )))
       )
@@ -121,7 +121,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       new ~(None,
         Enrolments(Set(Enrolment("HMRC-AS-AGENT",
           Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
-          "",
+          "Activated",
           Some("mtd-vat-auth")
         )))
       )

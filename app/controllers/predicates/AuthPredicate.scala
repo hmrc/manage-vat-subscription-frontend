@@ -36,7 +36,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                               val authenticateAsPrinciple: AuthoriseAsPrinciple,
                               val authenticateAsAgent: AuthoriseAsAgent,
                               implicit val appConfig: AppConfig
-                             ) extends FrontendController with I18nSupport with ActionBuilder[Request] with ActionFunction[Request,User] {
+                             ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request,User] {
 
   private def isAgent(group: AffinityGroup): Boolean = group.toString.contains("Agent")
   private def hasAgentEnrolment(allEnrols: Enrolments): Boolean = allEnrols.enrolments.exists(_.key == "HMRC-AS-AGENT")
