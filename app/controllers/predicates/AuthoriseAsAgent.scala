@@ -35,7 +35,7 @@ class AuthoriseAsAgent @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                                  implicit val messagesApi: MessagesApi,
                                  implicit val appConfig: AppConfig) extends FrontendController with I18nSupport  {
 
-  private val dummyVrn = "123456789"
+  private val dummyVrn = "999999999"
 
   private def enrolments(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
