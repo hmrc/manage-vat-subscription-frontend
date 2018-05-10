@@ -75,6 +75,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
   lazy val vatSubscriptionUrl:String = baseUrl("vat-subscription")
+  lazy val addressLookupUrl:String = baseUrl("address-lookup-frontend")
 
   override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
 
