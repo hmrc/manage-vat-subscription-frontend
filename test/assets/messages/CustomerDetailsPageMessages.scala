@@ -20,6 +20,7 @@ object CustomerDetailsPageMessages {
 
   val title = "Change the business details"
   val h1 = title
+  val subheading = "VAT"
 
   val p1 = "Tell HMRC about changes to the VAT details for:"
   val bullet1 = "your own business"
