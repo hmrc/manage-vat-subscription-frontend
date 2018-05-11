@@ -20,7 +20,7 @@ import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments, InternalError}
 
 case class User[A](vrn: String, active: Boolean = true, arn: Option[String] = None) (implicit request: Request[A]) extends WrappedRequest[A](request) {
-  val isAgent = arn.isDefined
+  val isAgent: Boolean = arn.isDefined
 }
 
 object User {

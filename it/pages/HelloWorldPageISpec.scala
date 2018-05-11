@@ -66,7 +66,7 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
       "return 200 OK" in {
 
-        given.user.isAuthenticated
+        given.user.isAgentAuthenticated
 
         val result = await(buildRequest("/hello-world").get())
 
@@ -78,7 +78,7 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
       "return 500 (ISE)" in {
 
-        given.user.isNotEnrolled
+        given.user.isAgentNotEnrolled
 
         val result = await(buildRequest("/hello-world").get())
 

@@ -68,7 +68,7 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
     }
 
     def isAgentNotEnrolled: PreconditionBuilder = {
-      AuthStub.unauthorisedOtherEnrolment()
+      AuthStub.agentUnauthorisedOtherEnrolment()
       builder
     }
   }

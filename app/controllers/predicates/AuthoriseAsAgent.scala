@@ -42,12 +42,10 @@ class AuthoriseAsAgent @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
       .withIdentifier("VRN", vrn)
       .withDelegatedAuthRule("mtd-vat-auth")
 
-  def authorise[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
-
-    implicit val req = request
+  def authorise[A](implicit request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
 
     enrolmentsAuthService.authorised(enrolments(dummyVrn)).retrieve(Retrievals.affinityGroup and Retrievals.authorisedEnrolments) {
-      _ => f(User(dummyVrn,true,Some("2122")))
+      _ => f(User(dummyVrn, active = true, Some("2122")))
     }
   }
 }

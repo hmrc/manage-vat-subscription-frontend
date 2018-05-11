@@ -34,9 +34,8 @@ class AuthoriseAsPrinciple @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
                                      implicit val messagesApi: MessagesApi,
                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  def authorise[A](request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
+  def authorise[A](implicit request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
 
-    implicit val req = request
     enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       enrolments => {
         f(User(enrolments.b))
