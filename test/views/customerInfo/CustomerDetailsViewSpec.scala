@@ -39,6 +39,10 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         elementText("h1") shouldBe viewMessages.h1
       }
 
+      s"have a the correct page subheading '${viewMessages.subheading}'" in {
+        elementText("#sub-heading") shouldBe viewMessages.subheading
+      }
+
       s"have a paragraph p1 with '${viewMessages.p1}'" in {
         elementText("#p1") shouldBe viewMessages.p1
       }
