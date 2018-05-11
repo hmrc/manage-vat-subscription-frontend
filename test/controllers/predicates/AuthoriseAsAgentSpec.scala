@@ -51,7 +51,7 @@ class AuthoriseAsAgentSpec extends MockAuth {
       }
     }
 
-    "a user attempts to sign in without an affinity group" should {
+    "an agent attempts to sign in without an affinity group" should {
 
       "throw an ISE (500)" in {
         mockAgentWithoutAffinity()

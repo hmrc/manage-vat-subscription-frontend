@@ -39,8 +39,6 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                              ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request,User] {
 
   private def isAgent(group: AffinityGroup): Boolean = group.toString.contains("Agent")
-  private def hasAgentEnrolment(allEnrols: Enrolments): Boolean = allEnrols.enrolments.exists(_.key == "HMRC-AS-AGENT")
-  private def hasVatEnrolment(allEnrols: Enrolments): Boolean = allEnrols.enrolments.exists(_.key == "HMRC-MTD-VAT")
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
@@ -49,22 +47,8 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
-          case (true, enrolments) if hasAgentEnrolment(enrolments) => {
-            Logger.info("[AuthPredicate][invokeBlock] - Authenticating as agent")
-            authenticateAsAgent.authorise(request, block)
-          }
-          case (true, _) => {
-            Logger.info(s"[AuthPredicate][invokeBlock] - Agent without HMRC-AS-AGENT enrolment\n\n $allEnrolments")
-            Future(InternalServerError)
-          }
-          case (_, enrolments) if hasVatEnrolment(enrolments) => {
-            Logger.info("[AuthPredicate][invokeBlock] - Authenticating as principle")
-            authenticateAsPrinciple.authorise(request, block)
-          }
-          case _ => {
-            Logger.info("[AuthPredicate][invokeBlock] - Individual without HMRC-MTD-VAT enrolment")
-            Future(InternalServerError)
-          }
+          case (true, enrolments) => checkAgentEnrolment(enrolments, request, block)
+          case (_, enrolments) => checkVatEnrolment(enrolments, request, block)
         }
       case _ => {
         Logger.info("[AuthPredicate][invokeBlock] - Missing affinity group")
@@ -74,5 +58,27 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
       case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
       case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
     }
+
   }
+
+  private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
+    if(enrolments.enrolments.exists(_.key == "HMRC-AS-AGENT")) {
+      Logger.info("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
+      authenticateAsAgent.authorise(request, block)
+    }
+    else {
+      Logger.info(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment\n\n $enrolments")
+      Future(InternalServerError)
+    }
+
+  private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
+    if(enrolments.enrolments.exists(_.key == "HMRC-MTD-VAT")) {
+      Logger.info("[AuthPredicate][checkVatEnrolment] - Authenticating as principle")
+      authenticateAsPrinciple.authorise(request, block)
+    }
+    else {
+      Logger.info("[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment")
+      Future(InternalServerError)
+    }
+
 }
