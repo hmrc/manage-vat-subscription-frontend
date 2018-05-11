@@ -17,9 +17,8 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import config.AppConfig
-import controllers.predicates.AuthenticationPredicate
+import controllers.predicates.{AuthPredicate, AuthoriseAsPrinciple}
 import forms.test.MoneyInputForm._
 import forms.test.{DateInputForm, MoneyInputForm, TextInputForm}
 import models.test.MoneyInputModel
@@ -31,12 +30,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class HelloWorldController @Inject()(val messagesApi: MessagesApi, val authenticate: AuthenticationPredicate,
+class HelloWorldController @Inject()(val messagesApi: MessagesApi, val authenticate: AuthPredicate,
                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val helloWorld: Action[AnyContent] = authenticate.async {
-      implicit user =>
-        Future.successful(Ok(views.html.helloworld.hello_world()))
+    implicit user =>
+      Future.successful(Ok(views.html.helloworld.hello_world()))
   }
 
   val textInput: Action[AnyContent] = Action {
