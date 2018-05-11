@@ -67,7 +67,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
       authenticateAsAgent.authorise(request, block)
     }
     else {
-      Logger.info(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment\n\n $enrolments")
+      Logger.info(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
       Future(InternalServerError)
     }
 
