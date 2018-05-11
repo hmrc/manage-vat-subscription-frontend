@@ -18,7 +18,7 @@ package connectors
 
 import config.FrontendAppConfig
 import connectors.httpParsers.ResponseHttpParser._
-import connectors.httpParsers.SubscriptionReadHttpParser.CustomerDetailsReads
+import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
 import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel

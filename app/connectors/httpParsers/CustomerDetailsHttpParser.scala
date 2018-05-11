@@ -24,7 +24,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import play.api.Logger
 
 
-object SubscriptionReadHttpParser {
+object CustomerDetailsHttpParser {
 
   implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
 
