@@ -32,26 +32,26 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestSubscriptionConnector$ extends SubscriptionConnector(mockHttpGet,frontendAppConfig)
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttpGet,frontendAppConfig)
 
   "SubscriptionConnector" when {
 
     "calling .getCustomerDetailsUrl" should {
 
       "format the url correctly" in {
-        val testUrl = TestSubscriptionConnector$.getCustomerDetailsUrl(vrn)
+        val testUrl = TestSubscriptionConnector.getCustomerDetailsUrl(vrn)
         testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
       }
     }
 
     "calling .getCustomerDetails" when {
 
-      def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector$.getCustomerDetails(vrn)
+      def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector.getCustomerDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestSubscriptionConnector$.getCustomerDetailsUrl(vrn))(Right(individual))
+          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Right(individual))
           await(result) shouldBe Right(individual)
         }
       }
@@ -59,7 +59,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       "given an error should" should {
 
         "return a Left with an ErrorModel" in {
-          setupMockHttpGet(TestSubscriptionConnector$.getCustomerDetailsUrl(vrn))(Left(errorModel))
+          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
       }
@@ -67,7 +67,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .updateBusinessAddress" should {
 
-      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector$.updateBusinessAddress()
+      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector.updateBusinessAddress()
 
       "return a SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))

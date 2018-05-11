@@ -25,8 +25,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CustomerDetailsService @Inject()(val customerDetailsConnector: SubscriptionConnector) {
+class CustomerDetailsService @Inject()(val subscriptionConnector: SubscriptionConnector) {
 
   def getCustomerDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, CustomerDetailsModel]] =
-    customerDetailsConnector.getCustomerDetails(vrn)
+    subscriptionConnector.getCustomerDetails(vrn)
 }
