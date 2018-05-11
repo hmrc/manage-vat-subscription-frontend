@@ -42,6 +42,6 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   def updateBusinessAddress()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     // TODO: call vat-subscription
-    Future.successful(Right(SubscriptionUpdateResponseModel("")))
+    Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
   }
 }

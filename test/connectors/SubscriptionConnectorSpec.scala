@@ -20,6 +20,7 @@ import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
+import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
@@ -33,18 +34,19 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   object TestSubscriptionConnector$ extends SubscriptionConnector(mockHttpGet,frontendAppConfig)
 
-  "CustomerDetailsConnector" should {
+  "SubscriptionConnector" when {
 
-    def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector$.getCustomerDetails(vrn)
+    "calling .getCustomerDetailsUrl" should {
 
-    "format the url correctly for" when {
-      "calling getCustomerDetailsUrl" in {
+      "format the url correctly" in {
         val testUrl = TestSubscriptionConnector$.getCustomerDetailsUrl(vrn)
         testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
       }
     }
 
-    "for getCustomerDetails method" when {
+    "calling .getCustomerDetails" when {
+
+      def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector$.getCustomerDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 
@@ -56,10 +58,19 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
       "given an error should" should {
 
-        "return an Left with an ErrorModel" in {
+        "return a Left with an ErrorModel" in {
           setupMockHttpGet(TestSubscriptionConnector$.getCustomerDetailsUrl(vrn))(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
+      }
+    }
+
+    "calling .updateBusinessAddress" should {
+
+      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector$.updateBusinessAddress()
+
+      "return a SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
       }
     }
   }
