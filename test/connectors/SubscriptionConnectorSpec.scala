@@ -18,7 +18,7 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
-import connectors.httpParsers.CustomerDetailsHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
 import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
@@ -27,19 +27,19 @@ import utils.TestUtil
 
 import scala.concurrent.Future
 
-class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
+class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestCustomerDetailsConnector extends CustomerDetailsConnector(mockHttpGet,frontendAppConfig)
+  object TestSubscriptionConnector$ extends SubscriptionConnector(mockHttpGet,frontendAppConfig)
 
   "CustomerDetailsConnector" should {
 
-    def result: Future[HttpGetResult[CustomerDetailsModel]] = TestCustomerDetailsConnector.getCustomerDetails(vrn)
+    def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector$.getCustomerDetails(vrn)
 
     "format the url correctly for" when {
       "calling getCustomerDetailsUrl" in {
-        val testUrl = TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn)
+        val testUrl = TestSubscriptionConnector$.getCustomerDetailsUrl(vrn)
         testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
       }
     }
@@ -49,7 +49,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn))(Right(individual))
+          setupMockHttpGet(TestSubscriptionConnector$.getCustomerDetailsUrl(vrn))(Right(individual))
           await(result) shouldBe Right(individual)
         }
       }
@@ -57,7 +57,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
       "given an error should" should {
 
         "return an Left with an ErrorModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn))(Left(errorModel))
+          setupMockHttpGet(TestSubscriptionConnector$.getCustomerDetailsUrl(vrn))(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
       }

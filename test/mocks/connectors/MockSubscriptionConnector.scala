@@ -16,7 +16,7 @@
 
 package mocks.connectors
 
-import connectors.CustomerDetailsConnector
+import connectors.SubscriptionConnector
 import models.core.ErrorModel
 import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
@@ -28,9 +28,9 @@ import uk.gov.hmrc.play.test.UnitSpec
 import scala.concurrent.Future
 
 
-trait MockCustomerDetailsConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockCustomerDetailsConnector: CustomerDetailsConnector = mock[CustomerDetailsConnector]
+  val mockCustomerDetailsConnector: SubscriptionConnector = mock[SubscriptionConnector]
 
   override def beforeEach(): Unit = {
     super.beforeEach()

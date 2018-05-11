@@ -16,6 +16,7 @@
 
 package connectors.httpParsers
 
+import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.core.ErrorModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
@@ -23,7 +24,7 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import play.api.Logger
 
 
-object CustomerDetailsHttpParser extends ResponseHttpParser {
+object SubscriptionReadHttpParser {
 
   implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
 

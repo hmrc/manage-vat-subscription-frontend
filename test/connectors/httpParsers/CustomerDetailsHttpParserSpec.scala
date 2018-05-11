@@ -17,7 +17,7 @@
 package connectors.httpParsers
 
 import assets.CustomerDetailsTestConstants._
-import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
+import connectors.httpParsers.SubscriptionReadHttpParser.CustomerDetailsReads
 import models.core.ErrorModel
 import play.api.http.Status
 import play.api.libs.json.Json
