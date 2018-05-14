@@ -18,7 +18,7 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
-import assets.BusinessAddressTestConstants._
+import assets.CustomerAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
 import models.core.SubscriptionUpdateResponseModel
@@ -69,7 +69,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
     "calling .updateBusinessAddress" should {
 
       def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
-        TestSubscriptionConnector.updateBusinessAddress("", addressModel)
+        TestSubscriptionConnector.updateBusinessAddress("", customerAddressMax)
 
       "return a SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))

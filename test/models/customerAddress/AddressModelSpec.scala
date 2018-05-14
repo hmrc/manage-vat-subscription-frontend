@@ -22,24 +22,24 @@ import play.api.http.Status
 import play.api.libs.json.{JsSuccess, Json}
 import uk.gov.hmrc.play.test.UnitSpec
 
-class CustomerAddressModelSpec extends UnitSpec {
+class AddressModelSpec extends UnitSpec {
 
   "CustomerAddressModel" should {
 
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        Json.fromJson(customerAddressJsonMax)(CustomerAddressModel.customerAddressReads) shouldBe
+        Json.fromJson(customerAddressJsonMax)(AddressModel.customerAddressReads) shouldBe
           JsSuccess(customerAddressMax)
       }
 
       "some optional fields are populated" in {
-        Json.fromJson(customerAddressJsonSome)(CustomerAddressModel.customerAddressReads) shouldBe
+        Json.fromJson(customerAddressJsonSome)(AddressModel.customerAddressReads) shouldBe
           JsSuccess(customerAddressSome)
       }
 
       "no optional fields are returned" in {
-        Json.fromJson(customerAddressJsonMin)(CustomerAddressModel.customerAddressReads) shouldBe
+        Json.fromJson(customerAddressJsonMin)(AddressModel.customerAddressReads) shouldBe
           JsSuccess(customerAddressMin)
       }
 

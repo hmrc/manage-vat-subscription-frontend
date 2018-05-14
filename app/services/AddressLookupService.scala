@@ -17,15 +17,16 @@
 package services
 
 import javax.inject.{Inject, Singleton}
-import models.businessAddress.addressLookup.{AddressModel, ReturnModel}
+import models.customerAddress.AddressModel
 import models.core.ErrorModel
+
 import scala.concurrent.Future
 
 @Singleton
 class AddressLookupService @Inject()() {
 
-  def retrieveAddress(id: String): Future[Either[ErrorModel, ReturnModel]] = {
+  def retrieveAddress(id: String): Future[Either[ErrorModel, AddressModel]] = {
     // TODO: call address lookup /confirmed?id=12345
-    Future.successful(Right(ReturnModel("", Some(""), AddressModel())))
+    Future.successful(Right(AddressModel("", "", None, None, None, None)))
   }
 }

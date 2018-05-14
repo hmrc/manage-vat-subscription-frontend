@@ -16,8 +16,8 @@
 
 package mocks.services
 
-import models.businessAddress.addressLookup.ReturnModel
 import models.core.ErrorModel
+import models.customerAddress.AddressModel
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.reset
 import org.mockito.stubbing.OngoingStubbing
@@ -26,13 +26,14 @@ import org.scalatest.mockito.MockitoSugar
 import services.AddressLookupService
 import uk.gov.hmrc.play.test.UnitSpec
 import org.mockito.Mockito._
+
 import scala.concurrent.Future
 
 trait MockAddressLookupService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
   val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
 
-  type AddressLookupResponse = Either[ErrorModel, ReturnModel]
+  type AddressLookupResponse = Either[ErrorModel, AddressModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()

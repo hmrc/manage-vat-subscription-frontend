@@ -37,7 +37,7 @@ import assets.CustomerAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.core.ErrorModel
-import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, CustomerAddressModel}
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
@@ -53,7 +53,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
   "AddressLookupConnector" should {
 
-    def getAddressResult: Future[HttpGetResult[CustomerAddressModel]] = TestAddressLookupConnector.getAddress(vrn)
+    def getAddressResult: Future[HttpGetResult[AddressModel]] = TestAddressLookupConnector.getAddress(vrn)
 
     "format the getAddressUrl correctly for" when {
       "calling getCustomerDetailsUrl" in {

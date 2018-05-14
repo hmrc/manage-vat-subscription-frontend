@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
-import models.businessAddress.addressLookup.AddressModel
+import models.customerAddress.AddressModel
 import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.Logger

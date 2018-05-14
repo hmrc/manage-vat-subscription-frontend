@@ -18,8 +18,8 @@ package services
 
 import mocks.connectors.MockSubscriptionConnector
 import models.core.SubscriptionUpdateResponseModel
+import assets.CustomerAddressTestConstants._
 import utils.TestUtil
-import assets.BusinessAddressTestConstants._
 
 class BusinessAddressServiceSpec extends TestUtil with MockSubscriptionConnector {
 
@@ -34,7 +34,7 @@ class BusinessAddressServiceSpec extends TestUtil with MockSubscriptionConnector
     val subscriptionResult = SubscriptionUpdateResponseModel("formBundle")
 
     lazy val service = setup(Right(subscriptionResult))
-    lazy val result = service.updateBusinessAddress("", addressModel)
+    lazy val result = service.updateBusinessAddress("", customerAddressMax)
 
     "return successful SubscriptionUpdateResponseModel" in {
       await(result) shouldBe Right(subscriptionResult)

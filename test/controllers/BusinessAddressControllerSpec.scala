@@ -17,9 +17,9 @@
 package controllers
 
 import assets.messages.ChangeAddressConfirmationPageMessages
+import assets.CustomerAddressTestConstants._
 import mocks.services.MockAddressLookupService
 import mocks.services.MockBusinessAddressService
-import assets.BusinessAddressTestConstants._
 import org.jsoup.Jsoup
 import play.api.http.Status
 import assets.BaseTestConstants._
@@ -49,7 +49,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "and business address service returns success" should {
 
         lazy val controller = setup(
-          addressLookupResponse = Right(returnModel),
+          addressLookupResponse = Right(customerAddressMax),
           businessAddressResponse = Right(SubscriptionUpdateResponseModel("")))
         lazy val result = controller.callback("12345")(fakeRequest)
 
@@ -68,7 +68,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "and business address service returns an error" should {
 
         lazy val controller = setup(
-          addressLookupResponse = Right(returnModel),
+          addressLookupResponse = Right(customerAddressMax),
           businessAddressResponse = Left(errorModel))
         lazy val result = controller.callback("12345")(fakeRequest)
 

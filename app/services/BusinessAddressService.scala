@@ -18,9 +18,10 @@ package services
 
 import connectors.SubscriptionConnector
 import javax.inject.{Inject, Singleton}
-import models.businessAddress.addressLookup.AddressModel
+import models.customerAddress.AddressModel
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

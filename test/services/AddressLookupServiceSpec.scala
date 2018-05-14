@@ -16,7 +16,7 @@
 
 package services
 
-import models.businessAddress.addressLookup.{AddressModel, ReturnModel}
+import models.customerAddress.AddressModel
 import utils.TestUtil
 
 class AddressLookupServiceSpec extends TestUtil {
@@ -27,7 +27,7 @@ class AddressLookupServiceSpec extends TestUtil {
     lazy val result = service.retrieveAddress("12345")
 
     "return successful SubscriptionUpdateResponseModel" in {
-      await(result) shouldBe Right(ReturnModel("", Some(""), AddressModel()))
+      await(result) shouldBe Right(AddressModel("", "", None, None, None, None))
     }
   }
 }
