@@ -17,10 +17,9 @@
 package models.customerAddress
 
 
-import models.core.ErrorModel
-import play.api.http.Status
-import play.api.libs.json.{Format, Json, Reads, __}
 import play.api.libs.functional.syntax._
+import play.api.libs.json._
+import play.api.libs.json.ConstraintReads
 
 case class CustomerAddressModel(line1: String,
                                 line2: String,
@@ -31,26 +30,14 @@ case class CustomerAddressModel(line1: String,
 
 object CustomerAddressModel {
 
-  def applyWithFields(address: List[String],
-                      postcode: Option[String],
-                      countryCode: Option[String]): Either[ErrorModel,CustomerAddressModel] = {
-
-    address match {
-      case List(l1,l2) =>
-        Right(CustomerAddressModel(l1,l2,None,None,postcode,countryCode))
-      case List(l1,l2,l3) =>
-        Right(CustomerAddressModel(l1,l2,Some(l3),None,postcode,countryCode))
-      case List(l1,l2,l3,l4) =>
-        Right(CustomerAddressModel(l1,l2,Some(l3),Some(l4),postcode,countryCode))
-      case _ => Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
-    }
-  }
-
-  val customerAddressReads: Reads[Either[ErrorModel,CustomerAddressModel]] = (
-    (__ \\ "lines").read[List[String]] and
+  val customerAddressReads: Reads[CustomerAddressModel] = (
+    (__ \\ "lines")(0).read[String] and
+    (__ \\ "lines")(1).read[String] and
+    (__ \\ "lines")(2).readNullable[String] and
+    (__ \\ "lines")(3).readNullable[String] and
       (__ \\ "postcode").readNullable[String] and
       (__ \\ "code").readNullable[String]
-    )(CustomerAddressModel.applyWithFields _)
+    )(CustomerAddressModel.apply _)
 
   implicit val format: Format[CustomerAddressModel] = Json.format[CustomerAddressModel]
 }

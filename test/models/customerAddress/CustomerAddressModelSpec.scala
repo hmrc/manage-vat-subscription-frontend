@@ -30,23 +30,19 @@ class CustomerAddressModelSpec extends UnitSpec {
 
       "all optional fields are populated" in {
         Json.fromJson(customerAddressJsonMax)(CustomerAddressModel.customerAddressReads) shouldBe
-          JsSuccess(Right(customerAddressMax))
+          JsSuccess(customerAddressMax)
       }
 
       "some optional fields are populated" in {
         Json.fromJson(customerAddressJsonSome)(CustomerAddressModel.customerAddressReads) shouldBe
-          JsSuccess(Right(customerAddressSome))
+          JsSuccess(customerAddressSome)
       }
 
       "no optional fields are returned" in {
         Json.fromJson(customerAddressJsonMin)(CustomerAddressModel.customerAddressReads) shouldBe
-          JsSuccess(Right(customerAddressMin))
+          JsSuccess(customerAddressMin)
       }
 
-      "invalid combination of optional fields" in {
-        Json.fromJson(customerAddressJsonError)(CustomerAddressModel.customerAddressReads) shouldBe
-          JsSuccess(Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup")))
-      }
     }
 
     "Serialize to JSON" when {
