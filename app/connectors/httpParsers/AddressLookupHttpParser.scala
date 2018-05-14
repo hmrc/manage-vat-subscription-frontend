@@ -32,12 +32,12 @@ object AddressLookupHttpParser extends ResponseHttpParser {
       response.status match {
         case Status.OK => {
           Logger.debug("[AddressLookupHttpParser][read]: Status OK")
-          response.json.validate[CustomerAddressModel].fold(
+          response.json.validate[HttpGetResult[CustomerAddressModel]](CustomerAddressModel.customerAddressReads).fold(
             invalid => {
               Logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
+              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
             },
-            valid => Right(valid)
+            valid => valid
           )
         }
         case status =>

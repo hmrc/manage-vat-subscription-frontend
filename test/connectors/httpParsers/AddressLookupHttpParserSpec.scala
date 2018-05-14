@@ -40,7 +40,7 @@ class AddressLookupHttpParserSpec extends TestUtil {
 
       "return an ErrorModel" in {
         AddressLookupReads.read("", "", HttpResponse(Status.OK, Some(customerAddressJsonError))) shouldBe
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json returned from Address Lookup"))
       }
     }
 
