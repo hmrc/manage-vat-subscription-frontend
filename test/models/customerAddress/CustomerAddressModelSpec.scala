@@ -36,10 +36,6 @@ class CustomerAddressModelSpec extends UnitSpec {
       "some optional fields are populated" in {
         Json.fromJson(customerAddressJsonSome)(CustomerAddressModel.customerAddressReads) shouldBe
           JsSuccess(Right(customerAddressSome))
-
-
-//        JsSuccess(Right(CustomerAddressModel(line 1,line 2,Some(line 3),None,Some(aa1 1aa),Some(UK))),)
-//        JsSuccess(Right(CustomerAddressModel(line 1,line 2,Some(line 3),Some(aa1 1aa),Some(UK),None)),)
       }
 
       "no optional fields are returned" in {
