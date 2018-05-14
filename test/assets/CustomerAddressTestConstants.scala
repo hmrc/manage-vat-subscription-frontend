@@ -39,6 +39,15 @@ object CustomerAddressTestConstants {
     Some(countryCode)
   )
 
+  val customerAddressSome = CustomerAddressModel(
+    addressLine1,
+    addressLine2,
+    Some(addressLine3),
+    None,
+    Some(postcode),
+    Some(countryCode)
+  )
+
 
   val customerAddressMin = CustomerAddressModel(
     addressLine1,
@@ -63,6 +72,17 @@ object CustomerAddressTestConstants {
   val customerAddressJsonMax = Json.obj(
     "address" -> Json.obj(
       "lines" -> Json.arr(addressLine1,addressLine2,addressLine3,addressLine4),
+      "postcode" -> postcode,
+      "country" -> Json.obj(
+        "name" -> countryName,
+        "code" -> countryCode
+      )
+    )
+  )
+
+  val customerAddressJsonSome = Json.obj(
+    "address" -> Json.obj(
+      "lines" -> Json.arr(addressLine1,addressLine2,addressLine3),
       "postcode" -> postcode,
       "country" -> Json.obj(
         "name" -> countryName,
