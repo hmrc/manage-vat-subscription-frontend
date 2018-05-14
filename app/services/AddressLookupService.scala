@@ -16,17 +16,17 @@
 
 package services
 
+import connectors.AddressLookupConnector
 import javax.inject.{Inject, Singleton}
 import models.customerAddress.AddressModel
 import models.core.ErrorModel
-
-import scala.concurrent.Future
+import uk.gov.hmrc.http.HeaderCarrier
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupService @Inject()() {
+class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector) {
 
-  def retrieveAddress(id: String): Future[Either[ErrorModel, AddressModel]] = {
-    // TODO: call address lookup /confirmed?id=12345
-    Future.successful(Right(AddressModel("", "", None, None, None, None)))
+  def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
+    addressLookupConnector.getAddress(id)
   }
 }

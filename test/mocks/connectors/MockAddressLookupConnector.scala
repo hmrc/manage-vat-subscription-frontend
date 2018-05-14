@@ -14,33 +14,33 @@
  * limitations under the License.
  */
 
-package mocks.services
+package mocks.connectors
 
+import connectors.AddressLookupConnector
 import models.core.ErrorModel
 import models.customerAddress.AddressModel
 import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito.reset
-import org.mockito.stubbing.OngoingStubbing
+import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.AddressLookupService
 import uk.gov.hmrc.play.test.UnitSpec
-import org.mockito.Mockito._
+
 import scala.concurrent.Future
 
-trait MockAddressLookupService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockAddressLookupConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
+  val mockAddressLookupConnector: AddressLookupConnector = mock[AddressLookupConnector]
 
-  type AddressLookupResponse = Either[ErrorModel, AddressModel]
+  type AddressLookupGetAddressResponse = Either[ErrorModel, AddressModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockAddressLookupService)
+    reset(mockAddressLookupConnector)
   }
 
-  def setupMockAddressLookup(response: AddressLookupResponse): OngoingStubbing[Future[AddressLookupResponse]]  = {
-    when(mockAddressLookupService.retrieveAddress(anyString())(any(), any()))
+  def setupMockGetAddress(response: Either[ErrorModel, AddressModel]): Unit = {
+    when(mockAddressLookupConnector.getAddress(any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
 }
+

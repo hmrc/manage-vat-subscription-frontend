@@ -16,18 +16,26 @@
 
 package services
 
-import models.customerAddress.AddressModel
+import mocks.connectors.MockAddressLookupConnector
 import utils.TestUtil
+import assets.CustomerAddressTestConstants._
 
-class AddressLookupServiceSpec extends TestUtil {
+class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector {
 
-  "Calling .updateBusinessAddress" should {
+  def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
+    setupMockGetAddress(addressLookupGetResponse)
+    new AddressLookupService(mockAddressLookupConnector)
+  }
 
-    lazy val service = new AddressLookupService
-    lazy val result = service.retrieveAddress("12345")
+  "Calling .retrieveAddress" when {
 
-    "return successful SubscriptionUpdateResponseModel" in {
-      await(result) shouldBe Right(AddressModel("", "", None, None, None, None))
+    "connector call is successful" should {
+      lazy val service = setup(Right(customerAddressMax))
+      lazy val result = service.retrieveAddress("12345")
+
+      "return successful SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(customerAddressMax)
+      }
     }
   }
 }
