@@ -64,22 +64,22 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       "have a change details section for the Business Name" which {
 
         s"has the heading '${viewMessages.organisationNameHeading}'" in {
-          elementText("#individualNameHeading") shouldBe viewMessages.individualNameHeading
+          elementText("#individual-name-text") shouldBe viewMessages.individualNameHeading
         }
 
         s"has the value '${individual.userName.get}'" in {
-          elementText("#individualName") shouldBe individual.userName.get
+          elementText("#individual-name") shouldBe individual.userName.get
         }
 
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#changeIndividualName") shouldBe viewMessages.change + " " + viewMessages.changeIndividualHidden
+            elementText("#individual-name-status") shouldBe viewMessages.change + " " + viewMessages.changeIndividualHidden
           }
 
           //TODO: Update this when URL developed and known
           "has a link to '#'" in {
-            element("#changeIndividualName").attr("href") shouldBe "#"
+            element("#individual-name-status").attr("href") shouldBe "#"
           }
         }
       }
@@ -93,21 +93,21 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       "have a change details section for the Business Name" which {
 
         s"has the heading '${viewMessages.organisationNameHeading}'" in {
-          elementText("#businessNameHeading") shouldBe viewMessages.organisationNameHeading
+          elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
         }
 
         s"has the value '${organisation.organisationName.get}'" in {
-          elementText("#businessName") shouldBe organisation.organisationName.get
+          elementText("#business-name") shouldBe organisation.organisationName.get
         }
 
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#changeBusinessName") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden
+            elementText("#business-name-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden
           }
 
           s"has a link to '${controllers.routes.ChangeBusinessNameController.show().url}'" in {
-            element("#changeBusinessName").attr("href") shouldBe controllers.routes.ChangeBusinessNameController.show().url
+            element("#business-name-status").attr("href") shouldBe controllers.routes.ChangeBusinessNameController.show().url
           }
         }
       }
