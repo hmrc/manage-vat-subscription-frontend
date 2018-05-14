@@ -27,7 +27,7 @@ import scala.concurrent.Future
 
 class CustomerDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
 
-  object TestCustomerDetailsService extends CustomerDetailsService(mockCustomerDetailsConnector)
+  object TestCustomerDetailsService extends CustomerDetailsService(mockSubscriptionConnector)
 
   "CustomerDetailsService" should {
 
