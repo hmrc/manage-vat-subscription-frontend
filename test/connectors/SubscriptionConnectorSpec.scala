@@ -18,8 +18,9 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
-import connectors.httpParsers.CustomerDetailsHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
+import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
@@ -27,39 +28,49 @@ import utils.TestUtil
 
 import scala.concurrent.Future
 
-class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
+class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestCustomerDetailsConnector extends CustomerDetailsConnector(mockHttp,frontendAppConfig)
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp,frontendAppConfig)
 
-  "CustomerDetailsConnector" should {
+  "SubscriptionConnector" when {
 
-    def result: Future[HttpGetResult[CustomerDetailsModel]] = TestCustomerDetailsConnector.getCustomerDetails(vrn)
+    "calling .getCustomerDetailsUrl" should {
 
-    "format the url correctly for" when {
-      "calling getCustomerDetailsUrl" in {
-        val testUrl = TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn)
+      "format the url correctly" in {
+        val testUrl = TestSubscriptionConnector.getCustomerDetailsUrl(vrn)
         testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
       }
     }
 
-    "for getCustomerDetails method" when {
+    "calling .getCustomerDetails" when {
+
+      def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector.getCustomerDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn))(Right(individual))
+          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Right(individual))
           await(result) shouldBe Right(individual)
         }
       }
 
       "given an error should" should {
 
-        "return an Left with an ErrorModel" in {
-          setupMockHttpGet(TestCustomerDetailsConnector.getCustomerDetailsUrl(vrn))(Left(errorModel))
+        "return a Left with an ErrorModel" in {
+          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
+      }
+    }
+
+    "calling .updateBusinessAddress" should {
+
+      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector.updateBusinessAddress()
+
+      "return a SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
       }
     }
   }

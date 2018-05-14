@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.core
 
-import models.core.ErrorModel
+import play.api.libs.json.{Format, Json}
 
-object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
+case class SubscriptionUpdateResponseModel(formBundle: String)
+
+object SubscriptionUpdateResponseModel {
+  implicit val format: Format[SubscriptionUpdateResponseModel] = Json.format[SubscriptionUpdateResponseModel]
 }

@@ -18,14 +18,14 @@ package services
 
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
-import mocks.connectors.MockCustomerDetailsConnector
+import mocks.connectors.MockSubscriptionConnector
 import models.core.ErrorModel
 import models.customerInfo.CustomerDetailsModel
 import utils.TestUtil
 
 import scala.concurrent.Future
 
-class CustomerDetailsServiceSpec extends TestUtil with MockCustomerDetailsConnector {
+class CustomerDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
 
   object TestCustomerDetailsService extends CustomerDetailsService(mockCustomerDetailsConnector)
 

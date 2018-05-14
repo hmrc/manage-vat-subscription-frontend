@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package assets.messages
 
-import models.core.ErrorModel
-
-object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
+object ChangeAddressConfirmationPageMessages {
+  val title: String = "We've received your details"
+  val h2: String = "What happens next"
+  val p1: String = "If this change is accepted, we will usually update the principal place of business within 2 working days."
+  val p2: String = "You can view your requested change."
 }

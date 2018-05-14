@@ -34,7 +34,7 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CustomerAddressTestConstants._
-import connectors.httpParsers.CustomerDetailsHttpParser.{HttpGetResult, HttpPostResult}
+import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.core.ErrorModel
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, CustomerAddressModel}

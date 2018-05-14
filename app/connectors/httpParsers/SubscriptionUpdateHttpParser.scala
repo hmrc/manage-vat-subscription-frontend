@@ -16,38 +16,32 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
-import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
+import connectors.httpParsers.ResponseHttpParser.HttpPutResult
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
+import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.Logger
 
+object SubscriptionUpdateHttpParser {
 
-object CustomerDetailsHttpParser {
+  implicit object SubscriptionUpdateReads extends HttpReads[HttpPutResult[SubscriptionUpdateResponseModel]] {
 
-  implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
-
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerDetailsModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpPutResult[SubscriptionUpdateResponseModel] = {
 
       response.status match {
-        case Status.OK => {
-          Logger.debug("[CustomerDetailsHttpParser][read]: Status OK")
-          response.json.validate[CustomerDetailsModel].fold(
+        case Status.OK =>
+          Logger.debug("[SubscriptionUpdateHttpParser][read]: Status OK")
+          response.json.validate[SubscriptionUpdateResponseModel].fold(
             invalid => {
-              Logger.warn(s"[CustomerDetailsHttpParser][read]: Invalid Json - $invalid")
+              Logger.warn(s"[SubscriptionUpdateHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
           )
-        }
         case status =>
-          Logger.warn(s"[CustomerDetailsHttpParser][read]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
+          Logger.warn(s"[SubscriptionUpdateHttpParser][read]: Unexpected Response, Status $status returned")
+          Left(ErrorModel(status, "Downstream error returned when updating Subscription Details"))
       }
-
     }
-
   }
-
 }

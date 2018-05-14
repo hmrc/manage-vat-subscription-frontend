@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import config.FrontendAppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
+import connectors.httpParsers.ResponseHttpParser.{HttpGetResult,HttpPostResult}
 import models.core.ErrorModel
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, CustomerAddressModel}
 import play.api.Logger
