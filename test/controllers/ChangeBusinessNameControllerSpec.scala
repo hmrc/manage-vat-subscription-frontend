@@ -21,7 +21,10 @@ import assets.CustomerDetailsTestConstants._
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.mvc.Result
 import play.api.test.Helpers._
+
+import scala.concurrent.Future
 
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
@@ -32,7 +35,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCusto
 
     "the user is authorised and an Organisation Name exists" should {
 
-      lazy val result = TestChangeBusinessNameController.show(fakeRequest)
+      lazy val result: Future[Result] = TestChangeBusinessNameController.show(fakeRequest)
 
       "return OK (200)" in {
         mockCustomerDetailsSuccess(organisation)

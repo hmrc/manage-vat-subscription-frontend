@@ -6,6 +6,9 @@ GET        /hello-world             @controllers.HelloWorldController.helloWorld
 
 GET        /change-business-name    @controllers.ChangeBusinessNameController.show
 
+# TODO: get proper url from design
+GET        /change-business-address/confirmed @controllers.BusinessAddressController.callback(id: String)
+
 GET        /text-input              @controllers.HelloWorldController.textInput
 GET        /date-input              @controllers.HelloWorldController.dateInput
 
