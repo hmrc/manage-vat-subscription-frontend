@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.customerAddress
 
-import models.core.ErrorModel
+import play.api.libs.json._
 
-object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
+case class AddressLookupJsonBuilder(continueUrl: String)
+
+object AddressLookupJsonBuilder {
+  implicit val writes: Writes[AddressLookupJsonBuilder] = Json.writes[AddressLookupJsonBuilder]
 }

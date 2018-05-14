@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.customerAddress
 
-import models.core.ErrorModel
+case class AddressLookupOnRampModel(redirectUrl: String)
 
-object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
-}

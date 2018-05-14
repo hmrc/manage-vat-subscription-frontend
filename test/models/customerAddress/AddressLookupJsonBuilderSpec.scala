@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.customerAddress
 
+import assets.CustomerAddressTestConstants._
 import models.core.ErrorModel
+import play.api.http.Status
+import play.api.libs.json.{JsSuccess, Json}
+import uk.gov.hmrc.play.test.UnitSpec
 
-object ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-  type HttpPutResult[T] = Either[ErrorModel, T]
+class AddressLookupJsonBuilderSpec extends UnitSpec {
+
+  "AddressLookupJsonBuilder" should {
+
+    "Serialize to JSON" when {
+
+      "the continueUrl is given" in {
+        Json.toJson(addressLookupBuilder) shouldBe addressLookupJson
+      }
+
+    }
+  }
+
 }
+

@@ -32,7 +32,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestSubscriptionConnector extends SubscriptionConnector(mockHttpGet,frontendAppConfig)
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp,frontendAppConfig)
 
   "SubscriptionConnector" when {
 
