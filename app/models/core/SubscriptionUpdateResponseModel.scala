@@ -14,19 +14,12 @@
  * limitations under the License.
  */
 
-package services
+package models.core
 
-import connectors.SubscriptionConnector
-import javax.inject.{Inject, Singleton}
-import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
-import uk.gov.hmrc.http.HeaderCarrier
+import play.api.libs.json.{Format, Json}
 
-import scala.concurrent.{ExecutionContext, Future}
+case class SubscriptionUpdateResponseModel(formBundle: String)
 
-@Singleton
-class CustomerDetailsService @Inject()(val subscriptionConnector: SubscriptionConnector) {
-
-  def getCustomerDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, CustomerDetailsModel]] =
-    subscriptionConnector.getCustomerDetails(vrn)
+object SubscriptionUpdateResponseModel {
+  implicit val format: Format[SubscriptionUpdateResponseModel] = Json.format[SubscriptionUpdateResponseModel]
 }
