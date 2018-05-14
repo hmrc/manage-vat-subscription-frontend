@@ -16,8 +16,7 @@
 
 package mocks.services
 
-import models.businessAddress.addressLookup.ReturnModel
-import models.core.ErrorModel
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
@@ -32,7 +31,7 @@ trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeA
 
   val mockBusinessAddressService: BusinessAddressService = mock[BusinessAddressService]
 
-  type BusinessAddressResponse = Either[ErrorModel, _]
+  type BusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -40,7 +39,7 @@ trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeA
   }
 
   def setupMockBusinessAddress(response: BusinessAddressResponse): OngoingStubbing[Future[BusinessAddressResponse]]  = {
-    when(mockBusinessAddressService.updateBusinessAddress(any(), anyString())(any(), any()))
+    when(mockBusinessAddressService.updateBusinessAddress(anyString(), any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

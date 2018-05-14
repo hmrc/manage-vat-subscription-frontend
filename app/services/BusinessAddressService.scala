@@ -16,18 +16,18 @@
 
 package services
 
+import connectors.SubscriptionConnector
 import javax.inject.{Inject, Singleton}
 import models.businessAddress.addressLookup.AddressModel
-import models.core.ErrorModel
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BusinessAddressService @Inject()() {
+class BusinessAddressService @Inject()(subscriptionConnector: SubscriptionConnector) {
 
-  def updateBusinessAddress(address: AddressModel, vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, _]] = {
-    // TODO: call subscription connector
-    // TODO: update response model
-    Future.successful(Right(""))
+  def updateBusinessAddress(vrn: String, address: AddressModel)
+                           (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
+    subscriptionConnector.updateBusinessAddress(vrn, address)
   }
 }

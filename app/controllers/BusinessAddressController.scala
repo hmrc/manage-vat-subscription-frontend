@@ -38,7 +38,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   def callback(id: String): Action[AnyContent] = authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(returnModel) =>
-        businessAddressService.updateBusinessAddress(returnModel.address, user.vrn) map {
+        businessAddressService.updateBusinessAddress(user.vrn, returnModel.address) map {
           case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
           case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Business Address Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError

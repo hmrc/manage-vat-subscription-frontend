@@ -19,13 +19,11 @@ package controllers
 import assets.messages.ChangeAddressConfirmationPageMessages
 import mocks.services.MockAddressLookupService
 import mocks.services.MockBusinessAddressService
-import models.businessAddress.addressLookup.{AddressModel, ReturnModel}
+import assets.BusinessAddressTestConstants._
 import org.jsoup.Jsoup
 import play.api.http.Status
 import assets.BaseTestConstants._
-import org.mockito.stubbing.OngoingStubbing
-import uk.gov.hmrc.auth.core.Enrolments
-import scala.concurrent.Future
+import models.core.SubscriptionUpdateResponseModel
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService {
 
@@ -46,25 +44,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
   "Calling .callback" when {
 
-    val addressModel: AddressModel = AddressModel(
-      Some(List("address")),
-      Some("postcode"),
-      None
-    )
-
-    val returnModel: ReturnModel = ReturnModel(
-      "reference",
-      None,
-      addressModel
-    )
-
     "address lookup service returns success" when {
 
       "and business address service returns success" should {
 
         lazy val controller = setup(
           addressLookupResponse = Right(returnModel),
-          businessAddressResponse = Right(""))
+          businessAddressResponse = Right(SubscriptionUpdateResponseModel("")))
         lazy val result = controller.callback("12345")(fakeRequest)
 
         "return ok" in {
@@ -96,7 +82,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       lazy val controller = setup(
         addressLookupResponse = Left(errorModel),
-        businessAddressResponse = Right(""))
+        businessAddressResponse = Left(errorModel))
       lazy val result = controller.callback("12345")(fakeRequest)
 
       "return InternalServerError" in {

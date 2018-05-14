@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package services
+package assets
 
-import javax.inject.{Inject, Singleton}
 import models.businessAddress.addressLookup.{AddressModel, ReturnModel}
-import models.core.ErrorModel
-import scala.concurrent.Future
 
-@Singleton
-class AddressLookupService @Inject()() {
+object BusinessAddressTestConstants {
 
-  def retrieveAddress(id: String): Future[Either[ErrorModel, ReturnModel]] = {
-    // TODO: call address lookup /confirmed?id=12345
-    Future.successful(Right(ReturnModel("", Some(""), AddressModel())))
-  }
+  val addressModel: AddressModel = AddressModel(
+    Some(List("address")),
+    Some("postcode"),
+    None
+  )
+
+  val returnModel: ReturnModel = ReturnModel(
+    "reference",
+    None,
+    addressModel
+  )
 }

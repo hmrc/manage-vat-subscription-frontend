@@ -20,11 +20,13 @@ import config.FrontendAppConfig
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
+import models.businessAddress.addressLookup.AddressModel
 import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -40,7 +42,8 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
     http.GET(url)(CustomerDetailsReads, headerCarrier, ec)
   }
 
-  def updateBusinessAddress()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+  def updateBusinessAddress(vrn: String, address: AddressModel)
+                           (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     // TODO: call vat-subscription
     Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
   }
