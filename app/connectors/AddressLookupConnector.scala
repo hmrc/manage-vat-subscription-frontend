@@ -21,11 +21,10 @@ import javax.inject.{Inject, Singleton}
 import config.FrontendAppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
 import models.core.ErrorModel
-import models.customerAddress.{AddressLookupJsonBuilder, CustomerAddressModel}
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, CustomerAddressModel}
+import play.api.Logger
 import play.api.http.HeaderNames._
-import play.api.http.HttpVerbs._
 import play.api.http.Status
-import play.api.mvc.Call
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -35,20 +34,30 @@ import scala.concurrent.{ExecutionContext, Future}
 class AddressLookupConnector @Inject()(val http: HttpClient,
                                        val config: FrontendAppConfig) {
 
-  def initaliseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
-                      (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[Either[ErrorModel, Call]] = {
+  def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
+                      (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
     val url = s"${config.addressLookupUrl}/api/init"
 
     http.POST[AddressLookupJsonBuilder,HttpResponse](url,addressLookupJsonBuilder) map { resp =>
-      resp.header(LOCATION).map(Call(GET, _)) match {
-        case Some(call) => Right(call)
-        case _ => Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain redirect call"))
+      resp.status match {
+        case Status.ACCEPTED =>
+          resp.header(LOCATION) match {
+            case Some(redirectUrl) => Right(AddressLookupOnRampModel(redirectUrl))
+            case _ =>
+              Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Response Header did not contain location redirect")
+              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
+          }
+        case status =>
+          Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Unexpected Response, Status $status returned")
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }
   }
 
+  private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupUrl}/api/confirmed?id=$id"
+
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerAddressModel]] ={
-    http.GET[HttpGetResult[CustomerAddressModel]](s"${config.addressLookupUrl}/api/confirmed?id=$id")(AddressLookupReads,hc,ec)
+    http.GET[HttpGetResult[CustomerAddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
   }
 }

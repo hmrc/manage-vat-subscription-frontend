@@ -31,7 +31,7 @@ class CustomerDetailsConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestCustomerDetailsConnector extends CustomerDetailsConnector(mockHttpGet,frontendAppConfig)
+  object TestCustomerDetailsConnector extends CustomerDetailsConnector(mockHttp,frontendAppConfig)
 
   "CustomerDetailsConnector" should {
 

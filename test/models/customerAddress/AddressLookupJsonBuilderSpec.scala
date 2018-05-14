@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.customerAddress
 
+import assets.CustomerAddressTestConstants._
 import models.core.ErrorModel
-import play.api.Logger
 import play.api.http.Status
-import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpResponse
+import play.api.libs.json.{JsSuccess, Json}
+import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.util.{Failure, Success, Try}
+class AddressLookupJsonBuilderSpec extends UnitSpec {
 
-trait ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
+  "AddressLookupJsonBuilder" should {
+
+    "Serialize to JSON" when {
+
+      "the continueUrl is given" in {
+        Json.toJson(addressLookupBuilder) shouldBe addressLookupJson
+      }
+
+    }
+  }
+
 }
+

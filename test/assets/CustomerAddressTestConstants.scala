@@ -16,7 +16,7 @@
 
 package assets
 
-import models.customerAddress.CustomerAddressModel
+import models.customerAddress.{AddressLookupJsonBuilder, CustomerAddressModel}
 import play.api.libs.json.Json
 
 
@@ -83,5 +83,10 @@ object CustomerAddressTestConstants {
     )
   )
 
+  val addressLookupBuilder = AddressLookupJsonBuilder("/lookup-address/confirmed")
+
+  val addressLookupJson = Json.obj(
+    "continueUrl" -> "/lookup-address/confirmed"
+  )
 
 }

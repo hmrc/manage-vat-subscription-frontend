@@ -14,17 +14,7 @@
  * limitations under the License.
  */
 
-package connectors.httpParsers
+package models.customerAddress
 
-import models.core.ErrorModel
-import play.api.Logger
-import play.api.http.Status
-import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpResponse
+case class AddressLookupOnRampModel(redirectUrl: String)
 
-import scala.util.{Failure, Success, Try}
-
-trait ResponseHttpParser {
-  type HttpGetResult[T] = Either[ErrorModel, T]
-  type HttpPostResult[T] = Either[ErrorModel, T]
-}
