@@ -18,9 +18,10 @@ package services
 
 import connectors.AddressLookupConnector
 import javax.inject.{Inject, Singleton}
-import models.customerAddress.AddressModel
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import models.core.ErrorModel
 import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -28,5 +29,10 @@ class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnec
 
   def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
     addressLookupConnector.getAddress(id)
+  }
+
+  def initialiseJourney()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
+    val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder("url")
+    addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
   }
 }

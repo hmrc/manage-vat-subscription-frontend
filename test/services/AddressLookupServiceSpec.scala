@@ -19,15 +19,16 @@ package services
 import mocks.connectors.MockAddressLookupConnector
 import utils.TestUtil
 import assets.CustomerAddressTestConstants._
+import models.customerAddress.AddressLookupOnRampModel
 
 class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector {
 
-  def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
-    setupMockGetAddress(addressLookupGetResponse)
-    new AddressLookupService(mockAddressLookupConnector)
-  }
-
   "Calling .retrieveAddress" when {
+
+    def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
+      setupMockGetAddress(addressLookupGetResponse)
+      new AddressLookupService(mockAddressLookupConnector)
+    }
 
     "connector call is successful" should {
       lazy val service = setup(Right(customerAddressMax))
@@ -35,6 +36,24 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(customerAddressMax)
+      }
+    }
+  }
+
+  "Calling initialiseJourney" when {
+
+    def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
+      setupMockInitialiseJourney(addressLookupInitialiseResponse)
+      new AddressLookupService(mockAddressLookupConnector)
+    }
+
+    "connector call is successful" should {
+
+      lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
+      lazy val result = service.initialiseJourney()
+
+      "return successful SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(AddressLookupOnRampModel("redirect-url"))
       }
     }
   }
