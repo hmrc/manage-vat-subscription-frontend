@@ -35,7 +35,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  def callback(id: String): Action[AnyContent] = authenticate.async { implicit user =>
+  val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(returnModel) =>
         businessAddressService.updateBusinessAddress(user.vrn, returnModel) map {
