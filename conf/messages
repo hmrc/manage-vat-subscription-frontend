@@ -31,6 +31,8 @@ customer_details.businessName.heading = Business name
 customer_details.businessName.change.hidden = your Business name
 customer_details.individualName.heading = Individual name
 customer_details.individualName.change.hidden = your name
+customer_details.businessAddress.heading = Business address
+customer_details.businessAddress.change.hidden = your Business address
 
 change_business_name.title = Change of business name
 change_business_name.h1 = Change of business name

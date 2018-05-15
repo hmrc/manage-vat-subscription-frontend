@@ -35,6 +35,14 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
+  val initialiseJourney: Action[AnyContent] = authenticate.async { implicit user =>
+    //TODO: call AddressLookupService .initialiseJourney
+    //TODO: retrieve redirect url
+    //TODO: if successful, redirect to url
+    Future.successful(Redirect("http://google.co.uk"))
+
+  }
+
   val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(returnModel) =>

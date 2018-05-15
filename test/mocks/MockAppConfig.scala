@@ -37,4 +37,7 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val surveyUrl: String = "/some-survey-url"
   override val features: Features = new Features(runModeConfiguration)
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"
+  override val addressLookupCallbackUrl: String = ""
+  override val addressLookupService: String = ""
+  override val addressLookupUrlHost: String = ""
 }
