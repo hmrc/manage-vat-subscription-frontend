@@ -18,7 +18,7 @@ package connectors.httpParsers
 
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.core.ErrorModel
-import models.customerAddress.CustomerAddressModel
+import models.customerAddress.AddressModel
 import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -26,14 +26,14 @@ import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object AddressLookupHttpParser {
 
-  implicit object AddressLookupReads extends HttpReads[HttpGetResult[CustomerAddressModel]] {
+  implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerAddressModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[AddressModel] = {
 
       response.status match {
         case Status.OK => {
           Logger.debug("[AddressLookupHttpParser][read]: Status OK")
-          response.json.validate[CustomerAddressModel](CustomerAddressModel.customerAddressReads).fold(
+          response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
               Logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))

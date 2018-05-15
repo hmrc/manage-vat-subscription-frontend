@@ -17,30 +17,36 @@
 package mocks.connectors
 
 import connectors.SubscriptionConnector
-import models.core.ErrorModel
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.play.test.UnitSpec
-
+import org.mockito.ArgumentMatchers._
 import scala.concurrent.Future
-
 
 trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockCustomerDetailsConnector: SubscriptionConnector = mock[SubscriptionConnector]
+  val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
+
+  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetailsModel]
+  type UpdateBusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockCustomerDetailsConnector)
+    reset(mockSubscriptionConnector)
   }
 
   def setupMockUserDetails(vrn: String)(response: Either[ErrorModel, CustomerDetailsModel]): Unit = {
-    when(mockCustomerDetailsConnector.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+    when(mockSubscriptionConnector.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 
+  def setupMockUpdateBusinessAddress(response: Either[ErrorModel, SubscriptionUpdateResponseModel]): Unit = {
+    when(mockSubscriptionConnector.updateBusinessAddress(anyString(), any())(any(), any()))
+      .thenReturn(Future.successful(response))
+  }
 }
 

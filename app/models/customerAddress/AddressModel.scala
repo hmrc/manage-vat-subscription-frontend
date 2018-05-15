@@ -21,24 +21,24 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.libs.json.ConstraintReads
 
-case class CustomerAddressModel(line1: String,
-                                line2: String,
-                                line3: Option[String] = None,
-                                line4: Option[String] = None,
-                                postcode: Option[String] = None,
-                                countryCode: Option[String] = None)
+case class AddressModel(line1: String,
+                        line2: String,
+                        line3: Option[String] = None,
+                        line4: Option[String] = None,
+                        postcode: Option[String] = None,
+                        countryCode: Option[String] = None)
 
-object CustomerAddressModel {
+object AddressModel {
 
-  val customerAddressReads: Reads[CustomerAddressModel] = (
+  val customerAddressReads: Reads[AddressModel] = (
     (__ \\ "lines")(0).read[String] and
     (__ \\ "lines")(1).read[String] and
     (__ \\ "lines")(2).readNullable[String] and
     (__ \\ "lines")(3).readNullable[String] and
-      (__ \\ "postcode").readNullable[String] and
-      (__ \\ "code").readNullable[String]
-    )(CustomerAddressModel.apply _)
+    (__ \\ "postcode").readNullable[String] and
+    (__ \\ "code").readNullable[String]
+  )(AddressModel.apply _)
 
-  implicit val format: Format[CustomerAddressModel] = Json.format[CustomerAddressModel]
+  implicit val format: Format[AddressModel] = Json.format[AddressModel]
 }
 

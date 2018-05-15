@@ -1,17 +1,19 @@
 # microservice specific routes
 
-GET        /                        @controllers.CustomerDetailsController.show
+GET        /                                     @controllers.CustomerDetailsController.show
 
-GET        /hello-world             @controllers.HelloWorldController.helloWorld
+GET        /hello-world                          @controllers.HelloWorldController.helloWorld
 
-GET        /change-business-name    @controllers.ChangeBusinessNameController.show
+GET        /change-business-name                 @controllers.ChangeBusinessNameController.show
 
-GET        /text-input              @controllers.HelloWorldController.textInput
-GET        /date-input              @controllers.HelloWorldController.dateInput
+GET        /change-business-address/confirmation @controllers.BusinessAddressController.callback(id: String)
 
-GET        /money-input             @controllers.HelloWorldController.moneyInput
-POST       /money-input             @controllers.HelloWorldController.submitMoney
+GET        /text-input                           @controllers.HelloWorldController.textInput
+GET        /date-input                           @controllers.HelloWorldController.dateInput
+
+GET        /money-input                          @controllers.HelloWorldController.moneyInput
+POST       /money-input                          @controllers.HelloWorldController.submitMoney
 
 #Sign Out Routes
-GET         /sign-out               @controllers.SignOutController.signOut(authorised: Boolean)
+GET         /sign-out                            @controllers.SignOutController.signOut(authorised: Boolean)
 

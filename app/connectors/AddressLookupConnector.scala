@@ -22,7 +22,7 @@ import config.FrontendAppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult,HttpPostResult}
 import models.core.ErrorModel
-import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, CustomerAddressModel}
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.Logger
 import play.api.http.HeaderNames._
 import play.api.http.Status
@@ -58,7 +58,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupUrl}/api/confirmed?id=$id"
 
-  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerAddressModel]] ={
-    http.GET[HttpGetResult[CustomerAddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
+  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] ={
+    http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
   }
 }

@@ -16,7 +16,7 @@
 
 package assets
 
-import models.customerAddress.{AddressLookupJsonBuilder, CustomerAddressModel}
+import models.customerAddress.{AddressLookupJsonBuilder, AddressModel}
 import play.api.libs.json.Json
 
 
@@ -30,7 +30,7 @@ object CustomerAddressTestConstants {
   val countryName = "United Kingdom"
   val countryCode = "UK"
 
-  val customerAddressMax = CustomerAddressModel(
+  val customerAddressMax = AddressModel(
     addressLine1,
     addressLine2,
     Some(addressLine3),
@@ -39,7 +39,7 @@ object CustomerAddressTestConstants {
     Some(countryCode)
   )
 
-  val customerAddressSome = CustomerAddressModel(
+  val customerAddressSome = AddressModel(
     addressLine1,
     addressLine2,
     Some(addressLine3),
@@ -49,7 +49,7 @@ object CustomerAddressTestConstants {
   )
 
 
-  val customerAddressMin = CustomerAddressModel(
+  val customerAddressMin = AddressModel(
     addressLine1,
     addressLine2,
     None,None,None,None
