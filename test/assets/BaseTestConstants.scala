@@ -25,7 +25,7 @@ object BaseTestConstants {
   val lastName = "Einstein"
   val organisationName = "Ancient Antiques LTD"
   val tradingName = "Ancient Antiques"
-  val vrn = "321321321"
+  val vrn = "999999999"
   val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
 
 }

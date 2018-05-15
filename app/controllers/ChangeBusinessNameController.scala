@@ -17,7 +17,7 @@
 package controllers
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthenticationPredicate
+import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -26,7 +26,7 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
-                                             val authenticate: AuthenticationPredicate,
+                                             val authenticate: AuthPredicate,
                                              val customerDetailsService: CustomerDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
                                              implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
