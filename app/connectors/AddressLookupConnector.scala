@@ -38,7 +38,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
-    val url = s"${config.addressLookupUrl}/api/init"
+    val url = s"${config.addressLookupService}/api/init"
 
     http.POST[AddressLookupJsonBuilder,HttpResponse](url,addressLookupJsonBuilder) map { resp =>
       resp.status match {
