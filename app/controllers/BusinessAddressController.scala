@@ -36,11 +36,11 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val initialiseJourney: Action[AnyContent] = authenticate.async { implicit user =>
-    //TODO: call AddressLookupService .initialiseJourney
-    //TODO: retrieve redirect url
-    //TODO: if successful, redirect to url
-    Future.successful(Redirect("http://google.co.uk"))
-
+    addressLookupService.initialiseJourney map {
+      case Right(response) => Redirect(response.redirectUrl)
+      case Left(_) => Logger.debug(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
+        serviceErrorHandler.showInternalServerError
+    }
   }
 
   val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>

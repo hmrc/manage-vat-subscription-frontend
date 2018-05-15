@@ -27,7 +27,7 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
       setupMockGetAddress(addressLookupGetResponse)
-      new AddressLookupService(mockAddressLookupConnector)
+      new AddressLookupService(mockAddressLookupConnector, mockAppConfig)
     }
 
     "connector call is successful" should {
@@ -44,13 +44,13 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
       setupMockInitialiseJourney(addressLookupInitialiseResponse)
-      new AddressLookupService(mockAddressLookupConnector)
+      new AddressLookupService(mockAddressLookupConnector, mockAppConfig)
     }
 
     "connector call is successful" should {
 
       lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = service.initialiseJourney()
+      lazy val result = service.initialiseJourney
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(AddressLookupOnRampModel("redirect-url"))

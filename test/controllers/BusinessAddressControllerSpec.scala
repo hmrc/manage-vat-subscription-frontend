@@ -24,25 +24,28 @@ import org.jsoup.Jsoup
 import play.api.http.Status
 import assets.BaseTestConstants._
 import models.core.SubscriptionUpdateResponseModel
+import models.customerAddress.AddressLookupOnRampModel
+import play.api.test.Helpers.redirectLocation
+import play.api.test.Helpers._
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService {
 
-  def setup(addressLookupResponse: AddressLookupResponse,
-            businessAddressResponse: BusinessAddressResponse): BusinessAddressController = {
-
-    setupMockAddressLookup(addressLookupResponse)
-    setupMockBusinessAddress(businessAddressResponse)
-
-    new BusinessAddressController(
-      messagesApi,
-      MockAuthPredicate,
-      mockAddressLookupService,
-      mockBusinessAddressService,
-      serviceErrorHandler,
-      mockAppConfig)
-  }
-
   "Calling .callback" when {
+
+    def setup(addressLookupResponse: RetrieveAddressResponse,
+              businessAddressResponse: BusinessAddressResponse): BusinessAddressController = {
+
+      setupMockRetrieveAddress(addressLookupResponse)
+      setupMockBusinessAddress(businessAddressResponse)
+
+      new BusinessAddressController(
+        messagesApi,
+        MockAuthPredicate,
+        mockAddressLookupService,
+        mockBusinessAddressService,
+        serviceErrorHandler,
+        mockAppConfig)
+    }
 
     "address lookup service returns success" when {
 
@@ -102,7 +105,47 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
   "Calling .initialiseJourney" when {
 
+    def setup(addressLookupResponse: InitialiseJourneyResponse): BusinessAddressController = {
 
+      setupMockInitialiseJourney(addressLookupResponse)
 
+      new BusinessAddressController(
+        messagesApi,
+        MockAuthPredicate,
+        mockAddressLookupService,
+        mockBusinessAddressService,
+        serviceErrorHandler,
+        mockAppConfig)
+    }
+
+    "address lookup service returns success" should {
+
+      lazy val controller = setup(addressLookupResponse = Right(AddressLookupOnRampModel("redirect-url")))
+      lazy val result = controller.initialiseJourney(fakeRequest)
+
+      "return redirect to the url returned" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "redirect to url returned" in {
+        redirectLocation(result) shouldBe Some("redirect-url")
+      }
+    }
+
+    "address lookup service returns an error" should {
+
+      lazy val controller = setup(addressLookupResponse = Left(errorModel))
+      lazy val result = controller.initialiseJourney(fakeRequest)
+
+      "return InternalServerError" in {
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "user is not authenticated" should {
+      lazy val controller = setup(addressLookupResponse = Left(errorModel))
+
+      unauthenticatedCheck(controller.initialiseJourney)
+    }
   }
 }

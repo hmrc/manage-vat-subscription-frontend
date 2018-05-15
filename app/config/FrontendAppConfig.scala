@@ -92,6 +92,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val addressLookupUrlHost: String = getString("address-lookup-frontend.host")
   override lazy val addressLookupService: String = baseUrl("address-lookup-frontend")
-  override lazy val addressLookupCallbackUrl: String = signInBaseUrl + "/change-business-address/confirmation"
+  override lazy val addressLookupCallbackUrl: String =
+    signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
 }
