@@ -37,3 +37,11 @@ change_business_name.h1 = Change of business name
 change_business_name.p1 = You can change the business name from <span class="bold-small">{0}</span>.
 change_business_name.tradingName = You do not need to tell us if the business will use a different trading name.
 change_business_name.p2 = We will update the business name with HMRC and Companies House. This can take up to xx working days.
+
+choose_dates.title = Changes in circumstances
+choose_dates.heading = Choose the new VAT Return dates
+choose_dates.current = <span class="bold-small">Currently set to</span>{0}
+choose_dates.option1 = January, April, July and October
+choose_dates.option2 = February, May, August and November
+choose_dates.option3 = March, June, September and December
+choose_dates.option4 = Every month

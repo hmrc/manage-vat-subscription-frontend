@@ -23,6 +23,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import forms.chooseDatesForm.datesForm
+import models.returnFrequency.Jan
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
@@ -36,7 +38,8 @@ class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
         case Right(customerDetails) if customerDetails.organisationName.isDefined =>
-          Ok(views.html.businessName.change_business_name(customerDetails.organisationName.get))
+//          Ok(views.html.businessName.change_business_name(customerDetails.organisationName.get))
+          Ok(views.html.returnFrequency.chooseDates(datesForm, Jan()))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
