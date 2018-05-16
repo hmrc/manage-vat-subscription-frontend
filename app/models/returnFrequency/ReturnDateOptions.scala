@@ -23,14 +23,14 @@ sealed trait ReturnDateOptions {
 }
 
 case class Jan() extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("choose_dates.option1")
+  def label(implicit messages: Messages): String = messages("return_frequency.option1")
 }
 case class Feb() extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("choose_dates.option2")
+  def label(implicit messages: Messages): String = messages("return_frequency.option2")
 }
 case class Mar() extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("choose_dates.option3")
+  def label(implicit messages: Messages): String = messages("return_frequency.option3")
 }
 case class All() extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("choose_dates.option4")
+  def label(implicit messages: Messages): String = messages("return_frequency.option4")
 }

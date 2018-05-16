@@ -21,12 +21,12 @@
 @(fieldform: Form[ReturnDatesModel], current: ReturnDateOptions)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
-title = messages("choose_dates.title"),
+title = messages("return_frequency.title"),
 bodyClasses = None,
 appConfig = appConfig) {
 
 <h1 id="page-heading" class="heading-large">
-    @messages("choose_dates.heading")
+    @messages("return_frequency.heading")
 </h1>
 
 <div class="form-group">
@@ -35,7 +35,7 @@ appConfig = appConfig) {
         Seq(Jan(), Feb(), Mar(), All()).filterNot(_.equals(current)).zipWithIndex.map{
             case (choices, index) => ((index + 1).toString, choices.label)
         },
-        Html(messages("choose_dates.current", current.label)),
+        Html(messages("return_frequency.current", current.label)),
         true
     )
 </div>
