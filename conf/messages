@@ -40,7 +40,7 @@ change_business_name.p2 = We will update the business name with HMRC and Compani
 
 choose_dates.title = Changes in circumstances
 choose_dates.heading = Choose the new VAT Return dates
-choose_dates.current = <span class="bold-small">Currently set to</span>{0}
+choose_dates.current = <strong class="bold" id="currently-set-text">The VAT Return dates are currently</strong> <span id="currently-set-period">{0}</span>
 choose_dates.option1 = January, April, July and October
 choose_dates.option2 = February, May, August and November
 choose_dates.option3 = March, June, September and December
