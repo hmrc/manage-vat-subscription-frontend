@@ -16,9 +16,15 @@
 
 package assets.messages
 
-object BaseMessages {
+object ConfirmDatesPageMessages {
 
-  val continue = "Continue"
-  val confirm = "Confirm"
+  val title = "Changes in circumstances"
+  val heading = "Confirm the new VAT Return dates"
+  val changeLink = "Change the VAT Return dates"
+  val jan = "January, April, July and October"
+  val feb = "February, May, August and November"
+  val mar = "March, June, September and December"
+  val all = "Every month"
+  val p2 = "By confirming this change, you agree that the information you have given is complete and correct."
 
 }
