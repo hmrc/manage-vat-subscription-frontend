@@ -32,7 +32,7 @@ appConfig = appConfig) {
 <div class="form-group">
     @radioGroup(
         fieldform("period-option"),
-        Seq(Jan(), Feb(), Mar(), All()).filterNot(_.equals(current)).zipWithIndex.map{
+        Seq(Jan, Feb, Mar, All).filterNot(_.equals(current)).zipWithIndex.map{
             case (choices, index) => ((index + 1).toString, choices.label)
         },
         Html(messages("return_frequency.current", current.label)),
