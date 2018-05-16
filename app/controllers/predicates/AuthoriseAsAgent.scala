@@ -17,14 +17,12 @@
 package controllers.predicates
 
 import javax.inject.{Inject, Singleton}
-
 import common.EnrolmentKeys
 import config.AppConfig
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import uk.gov.hmrc.auth.core.authorise.EmptyPredicate
 import uk.gov.hmrc.auth.core.retrieve.Retrievals
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -33,19 +31,21 @@ import services.EnrolmentsAuthService
 import scala.concurrent.Future
 
 @Singleton
-class AuthenticationPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService, implicit val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request,User] {
+class AuthoriseAsAgent @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
+                                 implicit val messagesApi: MessagesApi,
+                                 implicit val appConfig: AppConfig) extends FrontendController with I18nSupport  {
 
+  private val dummyVrn = "999999999"
 
-  override def invokeBlock[A](request: Request[A], f: User[A] => Future[Result]): Future[Result] = {
-    implicit val req: Request[A] = request
-    enrolmentsAuthService.authorised(Enrolment(EnrolmentKeys.vatEnrolmentId)).retrieve(Retrievals.authorisedEnrolments) {
-      enrolments =>
-        Logger.debug(s"[AuthenticationPredicate][invokeBlock] Authorised User, Enrolments: $enrolments")
-        f(User(enrolments))
-    } recoverWith {
-      case _: NoActiveSession => Future.successful(Unauthorized(views.html.errors.sessionTimeout()))
-      case _: AuthorisationException => Future.successful(Forbidden(views.html.errors.unauthorised()))
+  private def enrolments(vrn: String): Enrolment =
+    Enrolment(EnrolmentKeys.vatEnrolmentId)
+      .withIdentifier("VRN", vrn)
+      .withDelegatedAuthRule("mtd-vat-auth")
+
+  def authorise[A](implicit request: Request[A], f: (User[A]) => Future[Result]): Future[Result] = {
+
+    enrolmentsAuthService.authorised(enrolments(dummyVrn)).retrieve(Retrievals.affinityGroup and Retrievals.authorisedEnrolments) {
+      _ => f(User(dummyVrn, active = true, Some("2122")))
     }
   }
 }

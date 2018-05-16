@@ -55,6 +55,22 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
       AuthStub.unauthorisedOtherEnrolment()
       builder
     }
+
+
+    def isAgentAuthenticated: PreconditionBuilder = {
+      AuthStub.authorised()
+      builder
+    }
+
+    def isAgentNotAuthenticated: PreconditionBuilder = {
+      AuthStub.unauthorisedNotLoggedIn()
+      builder
+    }
+
+    def isAgentNotEnrolled: PreconditionBuilder = {
+      AuthStub.agentUnauthorisedOtherEnrolment()
+      builder
+    }
   }
 
   def servicesConfig: Map[String, String] = Map(
