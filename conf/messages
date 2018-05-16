@@ -51,3 +51,11 @@ confirm_return_frequency.title = Changes in circumstances
 confirm_return_frequency.heading = Confirm the new VAT Return dates
 confirm_return_frequency.changeLink = Change the VAT Return dates
 confirm_return_frequency.p2 = By confirming this change, you agree that the information you have given is complete and correct.
+
+received_frequency.title = Changes in circumstances
+received_frequency.heading = We have received your details
+received_frequency.subheading = What happens next
+received_frequency.p1 = We will usually update the VAT Return dates within 2 working days. We will send you an email notification and a secure message when the details have changed.
+received_frequency.p2 = If this change is accepted, the business must submit this quarter’s return before following the new VAT Return dates
+received_frequency.p3 = You can
+received_frequency.p3.link = view your requested change.
