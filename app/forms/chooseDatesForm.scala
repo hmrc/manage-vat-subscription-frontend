@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package models.core
+package forms
 
-import play.api.libs.json.{Format, Json}
+import models.returnFrequency.ReturnDatesModel
+import play.api.data.Form
+import play.api.data.Forms.{mapping, text}
 
-case class ErrorModel(status: Int, message: String)
+object chooseDatesForm {
 
-object ErrorModel {
-  implicit val format: Format[ErrorModel] = Json.format[ErrorModel]
+  lazy val datesForm: Form[ReturnDatesModel] = Form(
+    mapping(
+      "newDates" -> text
+        .verifying("Choose an option", dates => dates != "")
+    )(ReturnDatesModel.apply)(ReturnDatesModel.unapply)
+  )
+
 }
