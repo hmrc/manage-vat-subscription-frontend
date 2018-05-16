@@ -5,6 +5,7 @@ common.month = Month
 common.year = Year
 common.dateError = Enter a valid date
 common.continue = Continue
+common.confirm = Confirm
 
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to
@@ -37,3 +38,7 @@ change_business_name.h1 = Change of business name
 change_business_name.p1 = You can change the business name from <span class="bold-small">{0}</span>.
 change_business_name.tradingName = You do not need to tell us if the business will use a different trading name.
 change_business_name.p2 = We will update the business name with HMRC and Companies House. This can take up to xx working days.
+
+confirm_vat_return_freq.title = Confirm the new VAT Return dates
+confirm_vat_return_freq.changeLink = Change the VAT Return dates
+confirm_vat_return_freq.p2 = By confirming this change, you agree that the information you have given is complete and correct.
