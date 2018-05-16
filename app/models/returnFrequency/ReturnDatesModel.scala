@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package models.core
+package models.returnFrequency
 
 import play.api.libs.json.{Format, Json}
 
-case class ErrorModel(status: Int, message: String)
+case class ReturnDatesModel(current: String)
 
-object ErrorModel {
-  implicit val format: Format[ErrorModel] = Json.format[ErrorModel]
+object ReturnDatesModel {
+  implicit val format: Format[ReturnDatesModel] = Json.format[ReturnDatesModel]
 }

@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
+import models.returnFrequency.Jan
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
@@ -35,7 +36,7 @@ class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.confirm_vat_return_dates(""))
+        case Right(customerDetails) => Ok(views.html.returnFrequency.confirm_dates(Jan))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

@@ -18,11 +18,11 @@
 
 @(field: Field,
         choices: Seq[(String, String)],
-        label: String,
+        label: Html,
         stacked: Boolean = false)(implicit messages: Messages)
 
 @question = {
-  <h1 class="heading-medium"> @label </h1>
+  <p> @label </p>
 }
 
 @defining({

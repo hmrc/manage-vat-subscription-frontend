@@ -54,9 +54,9 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |    <div class="">
            |      <fieldset class="inline">
            |        <legend>
-           |          <h1 class="heading-medium">
+           |          <p>
            |            $labelText
-           |          </h1>
+           |          </p>
            |        </legend>
            |        ${generateExpectedRadioMarkup("value1", "display1")}
            |        ${generateExpectedRadioMarkup("value2", "display2", true)}
@@ -69,7 +69,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText)
+      val markup = radioGroup(field, choices, Html(labelText))
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
@@ -85,9 +85,9 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |     <fieldset class="inline">
            |
            |       <legend>
-           |          <h1 class="heading-medium">
+           |          <p>
            |            $labelText
-           |          </h1>
+           |          </p>
            |        </legend>
            |
            |        ${generateExpectedRadioMarkup("value1", "display1")}
@@ -102,7 +102,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText)
+      val markup = radioGroup(field, choices, Html(labelText))
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
@@ -118,9 +118,9 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |      <fieldset class="">
            |
            |        <legend>
-           |          <h1 class="heading-medium">
+           |          <p>
            |            $labelText
-           |          </h1>
+           |          </p>
            |        </legend>
            |
            |        ${generateExpectedRadioMarkup("value1", "display1")}
@@ -135,7 +135,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText, stacked = true)
+      val markup = radioGroup(field, choices, Html(labelText), stacked = true)
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
