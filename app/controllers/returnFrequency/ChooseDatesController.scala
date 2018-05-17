@@ -17,7 +17,6 @@
 package controllers.returnFrequency
 
 import javax.inject.{Inject, Singleton}
-
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.chooseDatesForm.datesForm
@@ -26,6 +25,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import play.api.Logger
+
+import scala.concurrent.Future
 
 @Singleton
 class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
@@ -40,6 +42,22 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
         case Right(_) => Ok(views.html.returnFrequency.chooseDates(datesForm, Jan))
         case _ => serviceErrorHandler.showInternalServerError
       }
+  }
+
+  val submitStuff: Action[AnyContent] = authenticate.async {
+    implicit user =>
+      datesForm.bindFromRequest().fold(
+        errors => {
+          //TODO - Correct this when we can store the data
+          Logger.warn("[ChooseDatesController][submitStuff] - Error, this needs updating in the future")
+          Future.successful(BadRequest(views.html.returnFrequency.chooseDates(errors, Jan)))
+        },
+        success => {
+          //TODO - Correct this when we can store the data
+          Logger.warn("[ChooseDatesController][submitStuff] - Success, this needs updating in the future\"")
+          Future.successful(Redirect(controllers.returnFrequency.routes.ConfirmVatDatesController.show()))
+        }
+      )
   }
 
 }
