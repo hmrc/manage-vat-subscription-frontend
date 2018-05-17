@@ -39,13 +39,13 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
     "the user is not authorised" should {
 
-      "return 403 (Forbidden)" in {
+      "return 500 (ISE)" in {
 
         given.user.isNotEnrolled
 
         val result = await(buildRequest("/hello-world").get())
 
-        result.status shouldBe FORBIDDEN
+        result.status shouldBe INTERNAL_SERVER_ERROR
       }
     }
 
@@ -58,6 +58,31 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
         val result = await(buildRequest("/hello-world").get())
 
         result.status shouldBe UNAUTHORIZED
+      }
+    }
+
+
+    "the agent is authenticated" should {
+
+      "return 200 OK" in {
+
+        given.user.isAgentAuthenticated
+
+        val result = await(buildRequest("/hello-world").get())
+
+        result.status shouldBe OK
+      }
+    }
+
+    "the agent is not authorised" should {
+
+      "return 500 (ISE)" in {
+
+        given.user.isAgentNotEnrolled
+
+        val result = await(buildRequest("/hello-world").get())
+
+        result.status shouldBe INTERNAL_SERVER_ERROR
       }
     }
   }
