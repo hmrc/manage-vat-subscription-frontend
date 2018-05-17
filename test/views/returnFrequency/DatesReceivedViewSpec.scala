@@ -16,10 +16,10 @@
 
 package views.returnFrequency
 
-import assets.messages.{DatesReceivedPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import assets.messages.{ReturnFrequencyMessages => viewMessages}
 
 class DatesReceivedViewSpec extends ViewBaseSpec {
 
@@ -32,26 +32,26 @@ class DatesReceivedViewSpec extends ViewBaseSpec {
       document.title shouldBe viewMessages.title
     }
 
-    s"have a correct page heading of '${viewMessages.heading}'" in {
-      elementText("#page-heading") shouldBe viewMessages.heading
+    s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
+      elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
     }
 
-    s"have the correct sub heading of '${viewMessages.subheading}'" in {
-      elementText("#sub-heading") shouldBe viewMessages.subheading
+    s"have the correct sub heading of '${viewMessages.ReceivedPage.subheading}'" in {
+      elementText("#sub-heading") shouldBe viewMessages.ReceivedPage.subheading
     }
 
-    s"have the correct p1 of '${viewMessages.p1}'" in {
-      elementText("#p1") shouldBe viewMessages.p1
+    s"have the correct p1 of '${viewMessages.ReceivedPage.p1}'" in {
+      elementText("#p1") shouldBe viewMessages.ReceivedPage.p1
     }
 
-    s"have the correct p2 of '${viewMessages.p2}'" in {
-      elementText("#p2") shouldBe viewMessages.p2
+    s"have the correct p2 of '${viewMessages.ReceivedPage.p2}'" in {
+      elementText("#p2") shouldBe viewMessages.ReceivedPage.p2
     }
 
     s"have the correct p3" which {
 
-      s"has the text '${viewMessages.p3}'" in {
-        elementText("#p3") shouldBe viewMessages.p3
+      s"has the text '${viewMessages.ReceivedPage.p3}'" in {
+        elementText("#p3") shouldBe viewMessages.ReceivedPage.p3
       }
 
       s"has link back to customer details page" in {
