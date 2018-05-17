@@ -17,7 +17,7 @@
 package controllers.returnFrequency
 
 import assets.CustomerDetailsTestConstants.customerDetailsMax
-import assets.messages.{ConfirmDatesPageMessages => messages}
+import assets.messages.{ReturnFrequencyMessages => messages}
 import config.ServiceErrorHandler
 import controllers.{ConfirmVatDatesController, ControllerBaseSpec}
 import mocks.services.MockCustomerDetailsService

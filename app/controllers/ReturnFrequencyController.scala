@@ -36,7 +36,7 @@ class ReturnFrequencyController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(_) => Ok(views.html.returnFrequency.chooseDates(datesForm, Jan()))
+        case Right(_) => Ok(views.html.returnFrequency.chooseDates(datesForm, Jan))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
