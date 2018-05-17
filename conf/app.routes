@@ -17,6 +17,8 @@ POST       /money-input             @controllers.HelloWorldController.submitMone
 
 GET        /confirm-dates           @controllers.returnFrequency.ConfirmVatDatesController.show
 
+GET        /dates-received          @controllers.DatesReceivedController.show
+
 #Sign Out Routes
 GET        /sign-out               @controllers.SignOutController.signOut(authorised: Boolean)
 
