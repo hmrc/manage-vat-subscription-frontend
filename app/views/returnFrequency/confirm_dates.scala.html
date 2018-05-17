@@ -15,6 +15,7 @@
 *@
 
 @import models.returnFrequency._
+@import templates.headings
 
 @(newDate: ReturnDateOptions)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -23,9 +24,7 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <header class="page-heading">
-        <h1 id="page-heading" class="heading-large">@messages("confirm_return_frequency.heading")</h1>
-    </header>
+    @headings(messages("confirm_return_frequency.heading"))
 
     <p id="p1" class="form-group">@newDate.label</p>
 
