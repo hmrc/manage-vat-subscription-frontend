@@ -50,14 +50,14 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       elementText("#p2") shouldBe viewMessages.p2
     }
 
-    "have a continue button" which {
+    "have a continue link" which {
 
-      s"has the text '${BaseMessages.continue}'" in {
-        elementText("#continue-button") shouldBe BaseMessages.continue
+      s"has the text '${viewMessages.link}'" in {
+        elementText("#continue") shouldBe viewMessages.link
       }
 
       "has a URL to the Gov.UK guidance page for changing name via COHO" in {
-        element("#continue-button").attr("href") shouldBe mockConfig.govUkCohoNameChangeUrl
+        element("#continue").attr("href") shouldBe mockConfig.govUkCohoNameChangeUrl
       }
 
     }
