@@ -19,5 +19,6 @@ package assets.messages
 object BaseMessages {
 
   val continue = "Continue"
+  val confirm = "Confirm"
 
 }

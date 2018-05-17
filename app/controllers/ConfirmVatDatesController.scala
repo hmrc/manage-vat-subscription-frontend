@@ -16,29 +16,28 @@
 
 package controllers
 
+import javax.inject.{Inject, Singleton}
+
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import javax.inject.{Inject, Singleton}
+import models.returnFrequency.Jan
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import forms.chooseDatesForm.datesForm
-import models.returnFrequency.Jan
 
 @Singleton
-class ReturnFrequencyController @Inject()(val messagesApi: MessagesApi,
+class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthPredicate,
                                           val customerDetailsService: CustomerDetailsService,
                                           val serviceErrorHandler: ServiceErrorHandler,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport{
+                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(_) => Ok(views.html.returnFrequency.chooseDates(datesForm, Jan))
+        case Right(customerDetails) => Ok(views.html.returnFrequency.confirm_dates(Jan))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
-
 }

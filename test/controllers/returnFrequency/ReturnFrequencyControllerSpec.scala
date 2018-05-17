@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.returnFrequency
 
-import assets.messages.ReturnFrequencyMessages
 import assets.CustomerDetailsTestConstants._
+import assets.messages.ReturnFrequencyMessages
+import controllers.{ControllerBaseSpec, ReturnFrequencyController}
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
-import play.api.test.Helpers._
+import play.api.test.Helpers.{contentType, _}
 
 class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
@@ -44,8 +45,8 @@ class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomer
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${ReturnFrequencyMessages.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.heading
+      s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
       }
 
     }

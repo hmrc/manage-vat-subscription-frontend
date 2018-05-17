@@ -22,15 +22,15 @@ sealed trait ReturnDateOptions {
   def label(implicit messages: Messages): String
 }
 
-case class Jan() extends ReturnDateOptions {
+case object Jan extends ReturnDateOptions {
   def label(implicit messages: Messages): String = messages("return_frequency.option1")
 }
-case class Feb() extends ReturnDateOptions {
+case object Feb extends ReturnDateOptions {
   def label(implicit messages: Messages): String = messages("return_frequency.option2")
 }
-case class Mar() extends ReturnDateOptions {
+case object Mar extends ReturnDateOptions {
   def label(implicit messages: Messages): String = messages("return_frequency.option3")
 }
-case class All() extends ReturnDateOptions {
+case object All extends ReturnDateOptions {
   def label(implicit messages: Messages): String = messages("return_frequency.option4")
 }

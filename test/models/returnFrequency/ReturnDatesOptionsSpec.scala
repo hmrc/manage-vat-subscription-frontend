@@ -25,28 +25,28 @@ class ReturnDatesOptionsSpec extends UnitSpec with OneAppPerSuite {
   "Jan().label" should {
 
     "return the correct message" in {
-      Jan().label shouldBe "January, April, July and October"
+      Jan.label shouldBe "January, April, July and October"
     }
   }
 
   "Feb().label" should {
 
     "return the correct message" in {
-      Feb().label shouldBe "February, May, August and November"
+      Feb.label shouldBe "February, May, August and November"
     }
   }
 
   "Mar().label" should {
 
     "return the correct message" in {
-      Mar().label shouldBe "March, June, September and December"
+      Mar.label shouldBe "March, June, September and December"
     }
   }
 
   "All().label" should {
 
     "return the correct message" in {
-      All().label shouldBe "Every month"
+      All.label shouldBe "Every month"
     }
   }
 
