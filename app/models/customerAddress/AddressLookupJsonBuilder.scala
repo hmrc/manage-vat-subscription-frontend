@@ -18,8 +18,33 @@ package models.customerAddress
 
 import play.api.libs.json._
 
-case class AddressLookupJsonBuilder(continueUrl: String)
+case class AddressLookupJsonBuilder(continueUrl: String) {
+
+  // general journey overrides
+  val navTitle = "Business tax account"
+  val showPhaseBanner = true
+  val ukMode = true
+
+  // lookup page overrides
+  val lookupPage = Map(
+    "title" -> "Changes in circumstances",
+    "heading" -> "What is the new business address?",
+    "filterLabel" -> "Property name or number"
+//    "manualAddressLinkText" -> "bob" // ignored whilst ukMode == true?
+  )
+}
 
 object AddressLookupJsonBuilder {
-  implicit val writes: Writes[AddressLookupJsonBuilder] = Json.writes[AddressLookupJsonBuilder]
-}
+
+    implicit val writes: Writes[AddressLookupJsonBuilder] = new Writes[AddressLookupJsonBuilder] {
+      def writes(data: AddressLookupJsonBuilder): JsObject = Json.obj(fields =
+
+        "continueUrl" -> data.continueUrl,
+        "showPhaseBanner" -> data.showPhaseBanner,
+        "navTitle" -> data.navTitle,
+        "ukMode" -> data.ukMode,
+
+        "lookupPage" -> data.lookupPage
+      )
+    }
+  }

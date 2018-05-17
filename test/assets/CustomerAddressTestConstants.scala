@@ -52,7 +52,7 @@ object CustomerAddressTestConstants {
   val customerAddressMin = AddressModel(
     addressLine1,
     addressLine2,
-    None,None,None,None
+    None, None, None, None
   )
 
   val customerAddressToJsonMax = Json.obj(
@@ -71,7 +71,7 @@ object CustomerAddressTestConstants {
 
   val customerAddressJsonMax = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1,addressLine2,addressLine3,addressLine4),
+      "lines" -> Json.arr(addressLine1, addressLine2, addressLine3, addressLine4),
       "postcode" -> postcode,
       "country" -> Json.obj(
         "name" -> countryName,
@@ -82,7 +82,7 @@ object CustomerAddressTestConstants {
 
   val customerAddressJsonSome = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1,addressLine2,addressLine3),
+      "lines" -> Json.arr(addressLine1, addressLine2, addressLine3),
       "postcode" -> postcode,
       "country" -> Json.obj(
         "name" -> countryName,
@@ -93,7 +93,7 @@ object CustomerAddressTestConstants {
 
   val customerAddressJsonMin = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1,addressLine2)
+      "lines" -> Json.arr(addressLine1, addressLine2)
     )
   )
 
@@ -105,8 +105,16 @@ object CustomerAddressTestConstants {
 
   val addressLookupBuilder = AddressLookupJsonBuilder("/lookup-address/confirmed")
 
-  val addressLookupJson = Json.obj(
-    "continueUrl" -> "/lookup-address/confirmed"
+  val addressLookupJson = Json.obj(fields =
+    "continueUrl" -> "/lookup-address/confirmed",
+    "navTitle" -> "Business tax account",
+    "ukMode" -> true,
+    "showPhaseBanner" -> true,
+    "lookupPage" -> Json.obj(
+      "title" -> "Changes in circumstances",
+      "heading" -> "What is the new business address?",
+      "filterLabel" -> "Property name or number"
+    )
   )
 
 }
