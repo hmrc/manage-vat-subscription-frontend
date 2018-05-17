@@ -20,8 +20,10 @@ import assets.CustomerDetailsTestConstants._
 import assets.messages.ReturnFrequencyMessages
 import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
+import models.returnFrequency.ReturnDatesModel
 import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
 
 class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
@@ -29,7 +31,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
   object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
 
-  "ReturnFrequencyController " when {
+  "ChooseDatesController 'show' method" when {
 
     "the user is authorised" should {
 
@@ -58,6 +60,30 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
       "return ISE (500)" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
+  }
+
+  "ChooseDatesController 'submitStuff' method" when {
+
+    "submitting with an option selected" should {
+
+      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", "2"))
+      lazy val result = TestChooseDatesController.submitStuff(request)
+
+      "return 303" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+    }
+
+    "submitting with no option selected" should {
+
+      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+      lazy val result = TestChooseDatesController.submitStuff(request)
+
+      "return 400" in {
+        status(result) shouldBe Status.BAD_REQUEST
       }
     }
 

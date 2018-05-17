@@ -46,11 +46,11 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
 
   val submitStuff: Action[AnyContent] = authenticate.async {
     implicit user =>
-      datesForm.bindFromRequest.fold(
+      datesForm.bindFromRequest().fold(
         errors => {
           //TODO - Correct this when we can store the data
           Logger.warn("[ChooseDatesController][submitStuff] - Error, this needs updating in the future")
-          Future.successful(InternalServerError)
+          Future.successful(BadRequest(views.html.returnFrequency.chooseDates(errors, Jan)))
         },
         success => {
           //TODO - Correct this when we can store the data

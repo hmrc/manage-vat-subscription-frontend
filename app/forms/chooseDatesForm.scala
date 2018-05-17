@@ -24,8 +24,8 @@ object chooseDatesForm {
 
   lazy val datesForm: Form[ReturnDatesModel] = Form(
     mapping(
-      "newDates" -> text
-        .verifying("Choose an option", dates => dates != "")
+      "period-option" -> text
+        .verifying("Choose an option", dates => dates.nonEmpty)
     )(ReturnDatesModel.apply)(ReturnDatesModel.unapply)
   )
 
