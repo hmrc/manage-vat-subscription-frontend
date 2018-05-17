@@ -7,6 +7,7 @@ GET        /hello-world             @controllers.HelloWorldController.helloWorld
 GET        /change-business-name    @controllers.ChangeBusinessNameController.show
 
 GET        /frequency               @controllers.returnFrequency.ChooseDatesController.show
+POST       /frequency               @controllers.returnFrequency.ChooseDatesController.submitStuff
 
 GET        /text-input              @controllers.HelloWorldController.textInput
 GET        /date-input              @controllers.HelloWorldController.dateInput

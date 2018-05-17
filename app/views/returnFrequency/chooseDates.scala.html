@@ -28,21 +28,21 @@ appConfig = appConfig) {
 
 @headings(messages("return_frequency.heading"))
 
-<div class="form-group">
-    @radioGroup(
-        fieldform("period-option"),
-        Seq(Jan, Feb, Mar, All).filterNot(_.equals(current)).zipWithIndex.map{
-            case (choices, index) => ((index + 1).toString, choices.label)
-        },
-        Html(messages("return_frequency.current", current.label)),
-        true
-    )
-</div>
+@form(action = controllers.returnFrequency.routes.ChooseDatesController.submitStuff) {
 
-
+    <div class="form-group">
+        @radioGroup(
+            fieldform("period-option"),
+            Seq(Jan, Feb, Mar, All).filterNot(_.equals(current)).zipWithIndex.map{
+                case (choices, index) => ((index + 1).toString, choices.label)
+            },
+            Html(messages("return_frequency.current", current.label)),
+            true
+        )
+    </div>
 
     <button class="button" type ="submit" id="continue">@messages("common.continue")</button>
 
-
+}
 
 }
