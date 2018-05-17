@@ -16,8 +16,7 @@
 
 package views.returnFrequency
 
-import assets.messages.{BaseMessages, DatesReceivedPageMessages => viewMessages}
-import models.returnFrequency._
+import assets.messages.{DatesReceivedPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -41,30 +40,22 @@ class DatesReceivedViewSpec extends ViewBaseSpec {
       elementText("#sub-heading") shouldBe viewMessages.subheading
     }
 
-    "have a link back to the change dates page" which {
-
-      s"has the text '${viewMessages.changeLink}'" in {
-        elementText("#change-vat-link") shouldBe viewMessages.changeLink
-      }
-
-      "has a URL back to the change dates page" in {
-        element("#change-vat-link").attr("href") shouldBe "#"
-      }
-
+    s"have the correct p1 of '${viewMessages.p1}'" in {
+      elementText("#p1") shouldBe viewMessages.p1
     }
 
-    s"have a the correct p2 of '${viewMessages.p2}'" in {
+    s"have the correct p2 of '${viewMessages.p2}'" in {
       elementText("#p2") shouldBe viewMessages.p2
     }
 
-    "have a confirm button" which {
+    s"have the correct p3" which {
 
-      s"has the text '${BaseMessages.confirm}'" in {
-        elementText("#continue-button") shouldBe BaseMessages.confirm
+      s"has the text '${viewMessages.p3}'" in {
+        elementText("#p3") shouldBe viewMessages.p3
       }
 
-      "has a URL to the change dates results page" in {
-        element("#continue-button").attr("href") shouldBe "#"
+      s"has link back to customer details page" in {
+        element("#view-change-link").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
       }
 
     }
