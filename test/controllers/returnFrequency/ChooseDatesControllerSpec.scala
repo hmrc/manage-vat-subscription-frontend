@@ -18,22 +18,22 @@ package controllers.returnFrequency
 
 import assets.CustomerDetailsTestConstants._
 import assets.messages.ReturnFrequencyMessages
-import controllers.{ControllerBaseSpec, ReturnFrequencyController}
+import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers.{contentType, _}
 
-class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestReturnFrequencyController extends ReturnFrequencyController(
+  object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
 
   "ReturnFrequencyController " when {
 
     "the user is authorised" should {
 
-      lazy val result = TestReturnFrequencyController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return OK (200)" in {
         mockCustomerDetailsSuccess(organisation)
@@ -53,7 +53,7 @@ class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomer
 
     "the user is authorised and an Error is returned from Customer Details" should {
 
-      lazy val result = TestReturnFrequencyController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return ISE (500)" in {
         mockCustomerDetailsError()

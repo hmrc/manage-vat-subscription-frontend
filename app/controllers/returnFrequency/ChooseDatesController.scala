@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.returnFrequency
+
+import javax.inject.{Inject, Singleton}
 
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import javax.inject.{Inject, Singleton}
+import forms.chooseDatesForm.datesForm
+import models.returnFrequency.Jan
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import forms.chooseDatesForm.datesForm
-import models.returnFrequency.Jan
 
 @Singleton
-class ReturnFrequencyController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthPredicate,
-                                          val customerDetailsService: CustomerDetailsService,
-                                          val serviceErrorHandler: ServiceErrorHandler,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport{
+class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
+                                      val authenticate: AuthPredicate,
+                                      val customerDetailsService: CustomerDetailsService,
+                                      val serviceErrorHandler: ServiceErrorHandler,
+                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport{
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.returnFrequency
 
 import javax.inject.{Inject, Singleton}
 
