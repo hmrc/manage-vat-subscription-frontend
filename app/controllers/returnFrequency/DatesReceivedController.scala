@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.returnFrequency
 
 import javax.inject.{Inject, Singleton}
 
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import models.returnFrequency.Jan
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService

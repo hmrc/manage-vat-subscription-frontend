@@ -19,7 +19,7 @@ package controllers.returnFrequency
 import assets.CustomerDetailsTestConstants.customerDetailsMax
 import assets.messages.{ReturnFrequencyMessages => messages}
 import config.ServiceErrorHandler
-import controllers.{ControllerBaseSpec, DatesReceivedController}
+import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
