@@ -15,6 +15,7 @@
 *@
 
 @import models.customerInfo.CustomerDetailsModel
+@import templates.headings
 
 @(customerDetails: CustomerDetailsModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -23,9 +24,7 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <header class="page-heading">
-        <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
-    </header>
+    @headings(messages("customer_details.h1"))
 
     <p id="p1">@messages("customer_details.p1")</p>
 

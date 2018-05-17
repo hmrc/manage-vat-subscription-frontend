@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.returnFrequency
 
-import assets.messages.ReturnFrequencyMessages
 import assets.CustomerDetailsTestConstants._
+import assets.messages.ReturnFrequencyMessages
+import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
-import play.api.test.Helpers._
+import play.api.test.Helpers.{contentType, _}
 
-class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestReturnFrequencyController extends ReturnFrequencyController(
+  object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
 
   "ReturnFrequencyController " when {
 
     "the user is authorised" should {
 
-      lazy val result = TestReturnFrequencyController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return OK (200)" in {
         mockCustomerDetailsSuccess(organisation)
@@ -44,15 +45,15 @@ class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomer
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${ReturnFrequencyMessages.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.heading
+      s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
       }
 
     }
 
     "the user is authorised and an Error is returned from Customer Details" should {
 
-      lazy val result = TestReturnFrequencyController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return ISE (500)" in {
         mockCustomerDetailsError()

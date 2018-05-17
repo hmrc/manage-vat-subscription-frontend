@@ -14,25 +14,24 @@
 * limitations under the License.
 *@
 
+@import models.returnFrequency._
 @import templates.headings
 
-@(organisationName: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(newDate: ReturnDateOptions)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
-    title = messages("change_business_name.title"),
+    title = messages("confirm_return_frequency.title"),
     bodyClasses = None,
     appConfig = appConfig) {
 
-    @headings(messages("change_business_name.h1"))
+    @headings(messages("confirm_return_frequency.heading"))
 
-    <p id="p1">@Html(messages("change_business_name.p1", organisationName))</p>
+    <p id="p1" class="form-group">@newDate.label</p>
 
-    <div class="panel panel-border-wide">
-        <p id="tradingNameMessage">@messages("change_business_name.tradingName")</p>
-    </div>
+    <p class="form-group"><a id="change-vat-link" href="#" type="submit">@messages("confirm_return_frequency.changeLink")</a></p>
 
-    <p id="p2">@messages("change_business_name.p2")</p>
+    <p id="p2">@messages("confirm_return_frequency.p2")</p>
 
-    <a  id="continue-button" href="@appConfig.govUkCohoNameChangeUrl" class="button" type="submit">@messages("common.continue")</a>
+    <a id="continue-button" href="#" class="button" type="submit">@messages("common.confirm")</a>
 
 }
