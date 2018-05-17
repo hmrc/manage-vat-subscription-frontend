@@ -45,8 +45,8 @@ class ReturnFrequencyControllerSpec extends ControllerBaseSpec with MockCustomer
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${ReturnFrequencyMessages.confirmPage.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.choosePage.heading
+      s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
       }
 
     }

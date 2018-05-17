@@ -24,12 +24,12 @@ object ReturnFrequencyMessages {
   val option3 = "March, June, September and December"
   val option4 = "Every month"
 
-  object choosePage {
+  object ChoosePage {
     val heading = "Choose the new VAT Return dates"
     val question = "The Vat Return dates are currently"
   }
 
-  object confirmPage {
+  object ConfirmPage {
     val title = "Changes in circumstances"
     val heading = "Confirm the new VAT Return dates"
     val changeLink = "Change the VAT Return dates"

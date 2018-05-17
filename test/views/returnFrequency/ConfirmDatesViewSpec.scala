@@ -34,8 +34,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       document.title shouldBe viewMessages.title
     }
 
-    s"have a the correct page heading of '${viewMessages.confirmPage.heading}'" in {
-      elementText("#page-heading") shouldBe viewMessages.confirmPage.heading
+    s"have a the correct page heading of '${viewMessages.ConfirmPage.heading}'" in {
+      elementText("#page-heading") shouldBe viewMessages.ConfirmPage.heading
     }
 
     s"have a the display the correct dates of" when {
@@ -67,8 +67,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     "have a link back to the change dates page" which {
 
-      s"has the text '${viewMessages.confirmPage.changeLink}'" in {
-        elementText("#change-vat-link") shouldBe viewMessages.confirmPage.changeLink
+      s"has the text '${viewMessages.ConfirmPage.changeLink}'" in {
+        elementText("#change-vat-link") shouldBe viewMessages.ConfirmPage.changeLink
       }
 
       "has a URL back to the change dates page" in {
@@ -77,8 +77,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     }
 
-    s"have a the correct p2 of '${viewMessages.confirmPage.p2}'" in {
-      elementText("#p2") shouldBe viewMessages.confirmPage.p2
+    s"have a the correct p2 of '${viewMessages.ConfirmPage.p2}'" in {
+      elementText("#p2") shouldBe viewMessages.ConfirmPage.p2
     }
 
     "have a confirm button" which {
