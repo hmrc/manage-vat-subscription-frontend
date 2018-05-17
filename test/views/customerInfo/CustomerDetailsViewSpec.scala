@@ -54,6 +54,24 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       s"have a section heading (h2) with '${viewMessages.h2}'" in {
         elementText("h2") shouldBe viewMessages.h2
       }
+
+      "have a section for business address" which {
+
+        "has the heading" in {
+          elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#changeBusinessAddress") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden
+          }
+
+          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
+            element("#changeBusinessAddress").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
+          }
+        }
+      }
     }
 
     "Viewing for an Self-Employed Individual" should {

@@ -18,7 +18,7 @@ package mocks.connectors
 
 import connectors.AddressLookupConnector
 import models.core.ErrorModel
-import models.customerAddress.AddressModel
+import models.customerAddress.{AddressLookupOnRampModel, AddressModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
@@ -33,6 +33,8 @@ trait MockAddressLookupConnector extends UnitSpec with MockitoSugar with BeforeA
 
   type AddressLookupGetAddressResponse = Either[ErrorModel, AddressModel]
 
+  type AddressLookupInitialiseResponse = Either[ErrorModel, AddressLookupOnRampModel]
+
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockAddressLookupConnector)
@@ -40,6 +42,11 @@ trait MockAddressLookupConnector extends UnitSpec with MockitoSugar with BeforeA
 
   def setupMockGetAddress(response: Either[ErrorModel, AddressModel]): Unit = {
     when(mockAddressLookupConnector.getAddress(any())(any(), any()))
+      .thenReturn(Future.successful(response))
+  }
+
+  def setupMockInitialiseJourney(response: Either[ErrorModel, AddressLookupOnRampModel]): Unit = {
+    when(mockAddressLookupConnector.initialiseJourney(any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

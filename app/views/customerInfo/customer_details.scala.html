@@ -73,6 +73,23 @@
                 </dd>
             </div>
         }
+
+        <div>
+            <dt id="businessAddressHeading" class="cya-question">
+                @messages("customer_details.businessAddress.heading")
+            </dt>
+            <dd id="businessAddress" class="cya-answer">
+
+            </dd>
+            <dd class="cya-change">
+                <a id="changeBusinessAddress" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                    @messages("customer_details.change")
+                    <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                </a>
+            </dd>
+        </div>
+
+
     </dl>
 
 }

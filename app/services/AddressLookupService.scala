@@ -16,17 +16,25 @@
 
 package services
 
+import config.AppConfig
 import connectors.AddressLookupConnector
 import javax.inject.{Inject, Singleton}
-import models.customerAddress.AddressModel
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import models.core.ErrorModel
 import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector) {
+class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector,
+                                     appConfig: AppConfig) {
 
   def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
     addressLookupConnector.getAddress(id)
+  }
+
+  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
+    val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
+    addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
   }
 }
