@@ -68,11 +68,11 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#changeBusinessAddress") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden
+            elementText("#place-of-business-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden
           }
 
           s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
-            element("#changeBusinessAddress").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
+            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
           }
         }
       }
