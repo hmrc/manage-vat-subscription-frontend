@@ -31,9 +31,11 @@ object CustomerDetailsPageMessages {
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
+  val businessAddressHeading = "Business address"
 
   val change = "Change"
   val changeBusinessHidden = "your Business name"
   val changeIndividualHidden = "your name"
+  val changeBusinessAddressHidden = "your Business address"
 
 }

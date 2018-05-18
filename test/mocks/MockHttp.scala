@@ -21,9 +21,9 @@ import org.mockito.Mockito._
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import uk.gov.hmrc.http.HttpResponse
+import play.api.libs.json.Writes
+import uk.gov.hmrc.http.HttpReads
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
@@ -31,15 +31,22 @@ import scala.concurrent.Future
 
 trait MockHttp extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockHttpGet: HttpClient = mock[HttpClient]
+  val mockHttp: HttpClient = mock[HttpClient]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockHttpGet)
+    reset(mockHttp)
   }
 
   def setupMockHttpGet[T](url: String)(response: T): OngoingStubbing[Future[T]] =
-    when(mockHttpGet.GET[T](ArgumentMatchers.eq(url))
+    when(mockHttp.GET[T](ArgumentMatchers.eq(url))
       (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(response))
+
+  def setupMockHttpPost[I,O](url: String)(response: O): OngoingStubbing[Future[O]] =
+    when(mockHttp.POST[I,O]
+      (ArgumentMatchers.eq(url), ArgumentMatchers.any[I](), ArgumentMatchers.any())
+      (ArgumentMatchers.any[Writes[I]](),ArgumentMatchers.any[HttpReads[O]](), ArgumentMatchers.any(), ArgumentMatchers.any())
+    ).thenReturn(Future.successful(response))
+
 
 }

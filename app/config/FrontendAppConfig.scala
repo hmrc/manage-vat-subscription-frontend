@@ -27,7 +27,6 @@ import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
 import config.{ConfigKeys => Keys}
 
-
 trait AppConfig extends ServicesConfig {
   val analyticsToken: String
   val analyticsHost: String
@@ -43,6 +42,9 @@ trait AppConfig extends ServicesConfig {
   val surveyUrl: String
   val signOutUrl: String
   val unauthorisedSignOutUrl: String
+  val addressLookupCallbackUrl: String
+  val addressLookupService: String
+  val addressLookupUrlHost: String
 }
 
 @Singleton
@@ -80,7 +82,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override val features = new Features(runModeConfiguration)
 
-
   private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
   override lazy val surveyUrl = s"$surveyBaseUrl/?origin=$contactFormServiceIdentifier"
 
@@ -89,5 +90,9 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val signOutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$surveyUrl"
   override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
 
+  override lazy val addressLookupUrlHost: String = getString("address-lookup-frontend.host")
+  override lazy val addressLookupService: String = baseUrl("address-lookup-frontend")
+  override lazy val addressLookupCallbackUrl: String =
+    signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
 }
