@@ -40,7 +40,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       new BusinessAddressController(
         messagesApi,
-        MockAuthPredicate,
+        mockAuthPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
@@ -111,7 +111,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       new BusinessAddressController(
         messagesApi,
-        MockAuthPredicate,
+        mockAuthPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
@@ -140,12 +140,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
-    }
-
-    "user is not authenticated" should {
-      lazy val controller = setup(addressLookupResponse = Left(errorModel))
-
-      unauthenticatedCheck(controller.initialiseJourney)
     }
   }
 }

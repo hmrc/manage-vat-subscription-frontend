@@ -17,7 +17,7 @@
 package controllers
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthenticationPredicate
+import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,7 +29,7 @@ import scala.concurrent.Future
 
 @Singleton
 class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthenticationPredicate,
+                                          val authenticate: AuthPredicate,
                                           addressLookupService: AddressLookupService,
                                           businessAddressService: BusinessAddressService,
                                           val serviceErrorHandler: ServiceErrorHandler,
@@ -48,7 +48,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
       case Right(returnModel) =>
         businessAddressService.updateBusinessAddress(user.vrn, returnModel) map {
           case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
-          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Business Address Service, Rendering ISE.")
+          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Errogit r Returned from Business Address Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
