@@ -29,7 +29,7 @@ import scala.concurrent.Future
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
-    messagesApi, MockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
+    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
 
   "Calling the .show action" when {
 
