@@ -78,3 +78,10 @@ received_frequency.p1 = We will usually update the VAT Return dates within 2 wor
 received_frequency.p2 = If this change is accepted, the business must submit this quarter’s return before following the new VAT Return dates
 received_frequency.p3 = You can
 received_frequency.p3.link = view your requested change.
+
+
+confirm_client_vrn.title = Changes in circumstances
+confirm_client_vrn.heading = Confirm your client’s VAT number
+confirm_client_vrn.name = Business name
+confirm_client_vrn.vrn = VAT number
+confirm_client_vrn.edit = Edit different client
