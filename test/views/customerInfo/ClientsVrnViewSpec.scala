@@ -34,11 +34,11 @@ class ClientsVrnViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct page heading of '${viewMessages.heading}'" in {
-      elementText("#page-heading") shouldBe viewMessages.heading
+      elementText("h1") shouldBe viewMessages.heading
     }
 
     s"have the correct p1 of '${viewMessages.p1}'" in {
-      elementText("#p1") shouldBe viewMessages.p1
+      elementText("article > p") shouldBe viewMessages.p1
     }
 
     s"have the correct form hint of '${viewMessages.hint}'" in {
@@ -46,20 +46,18 @@ class ClientsVrnViewSpec extends ViewBaseSpec {
     }
 
     s"have an input box for the VRN" in {
-      element("#vrn-input").tagName() shouldBe "input"
+      elementText("label[for = vrn] > .visuallyhidden") shouldBe viewMessages.label
     }
 
     "have a continue button" which {
 
       s"has the text '${BaseMessages.continue}'" in {
-        elementText("#continue-button") shouldBe BaseMessages.continue
+        elementText(".button") shouldBe BaseMessages.continue
       }
 
       "has the correct URL" in {
-        element("#continue-button").attr("href") shouldBe "#"
+        element(".button").attr("href") shouldBe "#"
       }
-
     }
-
   }
 }

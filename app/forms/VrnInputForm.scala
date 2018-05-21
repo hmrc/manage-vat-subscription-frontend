@@ -24,7 +24,7 @@ object VrnInputForm {
 
   val form: Form[VrnModel] = Form(
     mapping(
-      "text" -> nonEmptyText
+      "vrn" -> nonEmptyText
     )(VrnModel.apply)(VrnModel.unapply)
   )
 }

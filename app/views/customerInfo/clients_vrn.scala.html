@@ -17,6 +17,8 @@
 @import templates.inputs._
 @import models.customerInfo.VrnModel
 @import play.api.data.Form
+@import uk.gov.hmrc.play.views.html.helpers
+
 
 @(form: Form[VrnModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -26,19 +28,21 @@
     appConfig = appConfig) {
 
     <header class="page-heading">
-        <h1 id="page-heading" class="heading-large">@messages("clients_vrn.heading")</h1>
+        <h1 class="heading-large">@messages("clients_vrn.heading")</h1>
     </header>
 
-    <p id="p1">@messages("clients_vrn.p1")</p>
+    <p>@messages("clients_vrn.p1")</p>
 
+    @helpers.form(action = controllers.routes.HelloWorldController.helloWorld){
     <div class="form-group">
         @text(
-            form("vrn-input"),
-            "Text Input",
+            form("vrn"),
+            messages("clients_vrn.label"),
             Some(messages("clients_vrn.example"))
         )
     </div>
 
-    <a  id="continue-button" href="#" class="button" type="submit">@messages("common.continue")</a>
+    <a href="#" class="button" type="submit">@messages("common.continue")</a>
+    }
 
 }

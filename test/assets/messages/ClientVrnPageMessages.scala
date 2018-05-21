@@ -21,4 +21,5 @@ object ClientVrnPageMessages {
   val heading: String = "What is your client's VAT number?"
   val p1: String = "This is the 9-digit number they received when they registered for VAT."
   val hint: String = "For example, ‘123456789’"
+  val label: String = "Client's VAT Number"
 }
