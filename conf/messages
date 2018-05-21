@@ -35,6 +35,8 @@ customer_details.individualName.heading = Individual name
 customer_details.individualName.change.hidden = your name
 customer_details.businessAddress.heading = Business address
 customer_details.businessAddress.change.hidden = your Business address
+customer_details.returnFrequency.heading = VAT Return dates
+customer_details.returnFrequency.change.hidden = your VAT Return dates
 
 change_business_name.title = Change of business name
 change_business_name.h1 = Change of business name
