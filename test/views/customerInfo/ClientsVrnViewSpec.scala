@@ -49,14 +49,10 @@ class ClientsVrnViewSpec extends ViewBaseSpec {
       elementText("label[for = vrn] > .visuallyhidden") shouldBe viewMessages.label
     }
 
-    "have a continue button" which {
+    "have a submit button" which {
 
       s"has the text '${BaseMessages.continue}'" in {
-        elementText(".button") shouldBe BaseMessages.continue
-      }
-
-      "has the correct URL" in {
-        element(".button").attr("href") shouldBe "#"
+        elementText("button") shouldBe BaseMessages.continue
       }
     }
   }

@@ -16,12 +16,11 @@
 
 package models.customerInfo
 
-import models.test.TextInputModel
 import play.api.libs.json.{Json, OFormat}
 
 case class VrnModel(text: String)
 
 object VrnModel {
-  implicit val format: OFormat[TextInputModel] = Json.format[TextInputModel]
+  implicit val format: OFormat[VrnModel] = Json.format[VrnModel]
 }
 
