@@ -20,6 +20,7 @@ object CustomerDetailsPageMessages {
 
   val title = "Change the business details"
   val h1 = title
+  val subheading = "Your VAT details"
 
   val p1 = "Tell HMRC about changes to the VAT details for:"
   val bullet1 = "your own business"
@@ -30,9 +31,11 @@ object CustomerDetailsPageMessages {
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
+  val businessAddressHeading = "Business address"
 
   val change = "Change"
   val changeBusinessHidden = "your Business name"
   val changeIndividualHidden = "your name"
+  val changeBusinessAddressHidden = "your Business address"
 
 }

@@ -17,8 +17,11 @@
 package connectors
 
 import config.FrontendAppConfig
-import connectors.httpParsers.CustomerDetailsHttpParser._
+import connectors.httpParsers.ResponseHttpParser._
+import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
+import models.customerAddress.AddressModel
+import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
@@ -26,10 +29,9 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 
-
 @Singleton
-class CustomerDetailsConnector @Inject()(val http: HttpClient,
-                                         val config: FrontendAppConfig) {
+class SubscriptionConnector @Inject()(val http: HttpClient,
+                                      val config: FrontendAppConfig) {
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
 
@@ -38,5 +40,11 @@ class CustomerDetailsConnector @Inject()(val http: HttpClient,
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
     http.GET(url)(CustomerDetailsReads, headerCarrier, ec)
+  }
+
+  def updateBusinessAddress(vrn: String, address: AddressModel)
+                           (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+    // TODO: call vat-subscription
+    Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
   }
 }

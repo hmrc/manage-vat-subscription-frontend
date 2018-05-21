@@ -18,36 +18,33 @@ package connectors.httpParsers
 
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
+import models.customerAddress.AddressModel
+import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.Logger
 
 
-object CustomerDetailsHttpParser {
+object AddressLookupHttpParser {
 
-  implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
+  implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerDetailsModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[AddressModel] = {
 
       response.status match {
         case Status.OK => {
-          Logger.debug("[CustomerDetailsHttpParser][read]: Status OK")
-          response.json.validate[CustomerDetailsModel].fold(
+          Logger.debug("[AddressLookupHttpParser][read]: Status OK")
+          response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
-              Logger.warn(s"[CustomerDetailsHttpParser][read]: Invalid Json - $invalid")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
+              Logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
+              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Logger.warn(s"[CustomerDetailsHttpParser][read]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
+          Logger.warn(s"[AddressLookupHttpParser][read]: Unexpected Response, Status $status returned")
+          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
-
     }
-
   }
-
 }

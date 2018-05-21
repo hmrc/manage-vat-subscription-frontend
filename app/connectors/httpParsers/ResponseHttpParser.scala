@@ -17,13 +17,9 @@
 package connectors.httpParsers
 
 import models.core.ErrorModel
-import play.api.Logger
-import play.api.http.Status
-import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpResponse
 
-import scala.util.{Failure, Success, Try}
-
-trait ResponseHttpParser {
+object ResponseHttpParser {
   type HttpGetResult[T] = Either[ErrorModel, T]
+  type HttpPostResult[T] = Either[ErrorModel, T]
+  type HttpPutResult[T] = Either[ErrorModel, T]
 }

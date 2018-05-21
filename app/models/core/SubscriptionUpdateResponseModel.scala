@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package assets.messages
+package models.core
 
-object ChangeBusinessNamePageMessages {
+import play.api.libs.json.{Format, Json}
 
-  val title = "Change of business name"
-  val h1 = title
+case class SubscriptionUpdateResponseModel(formBundle: String)
 
-  val p1: String => String = name => s"""You can change the business name from $name."""
-  val tradingNameMessage = "You do not need to tell us if the business will use a different trading name."
-  val p2 = "We will update the business name with HMRC and Companies House. This can take up to xx working days."
-  val link = "Continue (opens in a new tab)"
-
+object SubscriptionUpdateResponseModel {
+  implicit val format: Format[SubscriptionUpdateResponseModel] = Json.format[SubscriptionUpdateResponseModel]
 }

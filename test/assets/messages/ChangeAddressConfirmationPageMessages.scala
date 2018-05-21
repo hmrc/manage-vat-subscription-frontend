@@ -16,14 +16,9 @@
 
 package assets.messages
 
-object ChangeBusinessNamePageMessages {
-
-  val title = "Change of business name"
-  val h1 = title
-
-  val p1: String => String = name => s"""You can change the business name from $name."""
-  val tradingNameMessage = "You do not need to tell us if the business will use a different trading name."
-  val p2 = "We will update the business name with HMRC and Companies House. This can take up to xx working days."
-  val link = "Continue (opens in a new tab)"
-
+object ChangeAddressConfirmationPageMessages {
+  val title: String = "We've received your details"
+  val h2: String = "What happens next"
+  val p1: String = "If this change is accepted, we will usually update the principal place of business within 2 working days."
+  val p2: String = "You can view your requested change."
 }

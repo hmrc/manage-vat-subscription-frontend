@@ -24,7 +24,10 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    @headings(messages("customer_details.h1"))
+    <header class="page-heading">
+        <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
+        <p id="sub-heading" class="heading-secondary">@messages("customer_details.subheading")</p>
+    </header>
 
     <p id="p1">@messages("customer_details.p1")</p>
 
@@ -35,20 +38,20 @@
 
     <p id="p2">@messages("customer_details.p2")</p>
 
-    <h2 class="heading-medium">@messages("customer_details.h2")</h2>
+    <h2 id="about-business" class="heading-medium">@messages("customer_details.h2")</h2>
 
     <dl class="govuk-check-your-answers cya-questions-short">
 
         @customerDetails.organisationName.map { orgName =>
             <div>
-                <dt id="businessNameHeading" class="cya-question">
+                <dt id="business-name-text" class="cya-question">
                     @messages("customer_details.businessName.heading")
                 </dt>
-                <dd id="businessName" class="cya-answer">
+                <dd id="business-name" class="cya-answer">
                     @orgName
                 </dd>
                 <dd class="cya-change">
-                    <a id="changeBusinessName" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+                    <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
                         @messages("customer_details.change")
                         <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
                     </a>
@@ -58,20 +61,37 @@
 
         @customerDetails.userName.map { indName =>
             <div>
-                <dt id="individualNameHeading" class="cya-question">
+                <dt id="individual-name-text" class="cya-question">
                     @messages("customer_details.individualName.heading")
                 </dt>
-                <dd id="individualName" class="cya-answer">
+                <dd id="individual-name" class="cya-answer">
                     @indName
                 </dd>
                 <dd class="cya-change">
-                    <a id="changeIndividualName" href="#">
+                    <a id="individual-name-status" href="#">
                         @messages("customer_details.change")
                         <span class="visually-hidden">@messages("customer_details.individualName.change.hidden")</span>
                     </a>
                 </dd>
             </div>
         }
+
+        <div>
+            <dt id="businessAddressHeading" class="cya-question">
+                @messages("customer_details.businessAddress.heading")
+            </dt>
+            <dd id="businessAddress" class="cya-answer">
+
+            </dd>
+            <dd class="cya-change">
+                <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                    @messages("customer_details.change")
+                    <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                </a>
+            </dd>
+        </div>
+
+
     </dl>
 
 }

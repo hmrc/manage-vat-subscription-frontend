@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package assets.messages
+package models.customerAddress
 
-object ChangeBusinessNamePageMessages {
+import assets.CustomerAddressTestConstants._
+import models.core.ErrorModel
+import play.api.http.Status
+import play.api.libs.json.{JsSuccess, Json}
+import uk.gov.hmrc.play.test.UnitSpec
 
-  val title = "Change of business name"
-  val h1 = title
+class AddressLookupJsonBuilderSpec extends UnitSpec {
 
-  val p1: String => String = name => s"""You can change the business name from $name."""
-  val tradingNameMessage = "You do not need to tell us if the business will use a different trading name."
-  val p2 = "We will update the business name with HMRC and Companies House. This can take up to xx working days."
-  val link = "Continue (opens in a new tab)"
+  "AddressLookupJsonBuilder" should {
+
+    "Serialize to JSON" when {
+
+      "the continueUrl is given" in {
+        Json.toJson(addressLookupBuilder) shouldBe addressLookupJson
+      }
+
+    }
+  }
 
 }
+

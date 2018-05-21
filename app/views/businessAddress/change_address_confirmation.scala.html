@@ -14,25 +14,23 @@
 * limitations under the License.
 *@
 
-@import templates.headings
-
-@(organisationName: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
-    title = messages("change_business_name.title"),
+    title = messages("change_address_confirmation.title"),
     bodyClasses = None,
     appConfig = appConfig) {
 
-    @headings(messages("change_business_name.h1"))
-
-    <p id="p1">@Html(messages("change_business_name.p1", organisationName))</p>
-
-    <div class="panel panel-border-wide">
-        <p id="tradingNameMessage">@messages("change_business_name.tradingName")</p>
+    <div class="govuk-box-highlight">
+        <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
     </div>
 
-    <p id="p2">@messages("change_business_name.p2")</p>
-
-    <a  id="continue" target="_blank" href="@appConfig.govUkCohoNameChangeUrl" type="submit">@messages("change_business_name.link")</a>
+    <h2>@messages("change_address_confirmation.h2")</h2>
+    <p>@messages("change_address_confirmation.p1")</p>
+    <p>
+        @messages("change_address_confirmation.p2")
+        <a href='@controllers.routes.CustomerDetailsController.show()'>
+            @messages("change_address_confirmation.p2.link")</a>@messages("change_address_confirmation.p2.end")
+    </p>
 
 }
