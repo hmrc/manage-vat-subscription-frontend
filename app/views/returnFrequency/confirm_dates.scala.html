@@ -14,24 +14,27 @@
 * limitations under the License.
 *@
 
-@import models.returnFrequency._
+@import models.returnFrequency.ReturnDateOption
+@import uk.gov.hmrc.play.views.html.helpers.form
 @import templates.headings
 
-@(newDate: ReturnDateOptions)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(model: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
-    title = messages("confirm_return_frequency.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+  title = messages("confirm_return_frequency.title"),
+  bodyClasses = None,
+  appConfig = appConfig) {
 
-    @headings(messages("confirm_return_frequency.heading"))
+  @headings(messages("confirm_return_frequency.heading"))
 
-    <p id="p1" class="form-group">@newDate.label</p>
+  <p id="p1" class="form-group">@messages(s"return_frequency.${model.id}")</p>
 
-    <p class="form-group"><a id="change-vat-link" href="#" type="submit">@messages("confirm_return_frequency.changeLink")</a></p>
+  <p class="form-group"><a id="change-vat-link" href="@controllers.returnFrequency.routes.ChooseDatesController.show()" type="submit">@messages("confirm_return_frequency.changeLink")</a></p>
 
-    <p id="p2">@messages("confirm_return_frequency.p2")</p>
+  <p id="p2">@messages("confirm_return_frequency.p2")</p>
 
-    <a id="continue-button" href="#" class="button" type="submit">@messages("common.confirm")</a>
+  @form(action = controllers.returnFrequency.routes.ConfirmVatDatesController.submit()) {
+    <button class="button" type ="submit" id="continue-button">@messages("common.confirm")</button>
+  }
 
 }

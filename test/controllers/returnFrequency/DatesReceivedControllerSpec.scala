@@ -57,21 +57,6 @@ class DatesReceivedControllerSpec extends ControllerBaseSpec with MockCustomerDe
       }
     }
 
-    "the user is authorised and an Error is returned" should {
-
-      lazy val result = TestDatesReceivedController.show(fakeRequest)
-
-      "return 500" in {
-        mockCustomerDetailsError()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
-    }
-
     unauthenticatedCheck(TestDatesReceivedController.show)
   }
 }

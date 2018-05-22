@@ -16,14 +16,15 @@
 
 package controllers.returnFrequency
 
-import javax.inject.{Inject, Singleton}
-
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
+import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.Future
 
 @Singleton
 class DatesReceivedController @Inject()(val messagesApi: MessagesApi,
@@ -32,11 +33,7 @@ class DatesReceivedController @Inject()(val messagesApi: MessagesApi,
                                         val serviceErrorHandler: ServiceErrorHandler,
                                         implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.returnFrequency.dates_received())
-        case _ => serviceErrorHandler.showInternalServerError
-      }
+  val show: Action[AnyContent] = authenticate.async { implicit user =>
+    Future.successful(Ok(views.html.returnFrequency.dates_received()))
   }
 }

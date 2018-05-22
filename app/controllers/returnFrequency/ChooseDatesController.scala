@@ -16,16 +16,17 @@
 
 package controllers.returnFrequency
 
-import javax.inject.{Inject, Singleton}
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.chooseDatesForm.datesForm
-import models.returnFrequency.Jan
+import javax.inject.{Inject, Singleton}
+import models.returnFrequency.{Jan, ReturnDatesModel}
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import play.api.Logger
 
 import scala.concurrent.Future
 
@@ -34,30 +35,48 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
                                       val authenticate: AuthPredicate,
                                       val customerDetailsService: CustomerDetailsService,
                                       val serviceErrorHandler: ServiceErrorHandler,
-                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport{
+                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(_) => Ok(views.html.returnFrequency.chooseDates(datesForm, Jan))
-        case _ => serviceErrorHandler.showInternalServerError
-      }
+  val show: Action[AnyContent] = authenticate.async { implicit user =>
+
+    customerDetailsService.getCustomerDetails(user.vrn) map {
+      case Right(_) =>
+        val frequency = Jan // this will eventually come from the call to getCustomerDetails
+
+        val form: Form[ReturnDatesModel] = if (user.session.data.contains(SessionKeys.RETURN_FREQUENCY)) {
+          user.session(SessionKeys.RETURN_FREQUENCY) match {
+            case value if value.nonEmpty => datesForm.fill(ReturnDatesModel(value))
+            case _ => datesForm
+          }
+        }
+        else {
+          datesForm
+        }
+
+        Ok(views.html.returnFrequency.chooseDates(form, frequency))
+
+      case _ => serviceErrorHandler.showInternalServerError
+    }
   }
 
-  val submitStuff: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      datesForm.bindFromRequest().fold(
-        errors => {
-          //TODO - Correct this when we can store the data
-          Logger.warn("[ChooseDatesController][submitStuff] - Error, this needs updating in the future")
-          Future.successful(BadRequest(views.html.returnFrequency.chooseDates(errors, Jan)))
-        },
-        success => {
-          //TODO - Correct this when we can store the data
-          Logger.warn("[ChooseDatesController][submitStuff] - Success, this needs updating in the future\"")
-          Future.successful(Redirect(controllers.returnFrequency.routes.ConfirmVatDatesController.show()))
+  val submit: Action[AnyContent] = authenticate.async { implicit user =>
+
+    datesForm.bindFromRequest().fold(
+      errors => {
+        customerDetailsService.getCustomerDetails(user.vrn) map {
+          case Right(_) =>
+            val frequency = Jan // this will eventually come from the call to getCustomerDetails
+            BadRequest(views.html.returnFrequency.chooseDates(errors, frequency))
+          case _ => serviceErrorHandler.showInternalServerError
         }
-      )
+      },
+      success => {
+        Future.successful(
+          Redirect(controllers.returnFrequency.routes.ConfirmVatDatesController.show())
+            .withSession(user.session + (SessionKeys.RETURN_FREQUENCY -> success.current))
+        )
+      }
+    )
   }
 
 }

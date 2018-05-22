@@ -18,20 +18,24 @@ package controllers.returnFrequency
 
 import assets.CustomerDetailsTestConstants.customerDetailsMax
 import assets.messages.{ReturnFrequencyMessages => messages}
+import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.MockCustomerDetailsService
+import mocks.services.{MockCustomerDetailsService, MockReturnFrequencyService}
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
+  with MockCustomerDetailsService
+  with MockReturnFrequencyService {
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
     messagesApi,
     mockAuthPredicate,
-    mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
+    mockCustomerDetailsService,
+    mockReturnFrequencyService,
     mockAppConfig
   )
 
@@ -39,7 +43,8 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockCustomer
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestConfirmVatDatesController.show(fakeRequest)
+      val session = SessionKeys.RETURN_FREQUENCY -> "January"
+      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -59,7 +64,8 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockCustomer
 
     "the user is authorised and an Error is returned" should {
 
-      lazy val result = TestConfirmVatDatesController.show(fakeRequest)
+      val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
+      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
 
       "return 500" in {
         mockCustomerDetailsError()

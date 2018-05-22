@@ -48,5 +48,10 @@ trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAn
     when(mockSubscriptionConnector.updateBusinessAddress(anyString(), any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
+
+  def setupMockUpdateReturnFrequency(response: Either[ErrorModel, SubscriptionUpdateResponseModel]): Unit = {
+    when(mockSubscriptionConnector.updateReturnFrequency(anyString(), any())(any(), any()))
+      .thenReturn(Future.successful(response))
+  }
 }
 

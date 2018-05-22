@@ -54,11 +54,11 @@ change_address_confirmation.p2.end = .
 
 return_frequency.title = Changes in circumstances
 return_frequency.heading = Choose the new VAT Return dates
-return_frequency.current = <strong class="bold" id="currently-set-text">The VAT Return dates are currently</strong> <span id="currently-set-period">{0}</span>
-return_frequency.option1 = January, April, July and October
-return_frequency.option2 = February, May, August and November
-return_frequency.option3 = March, June, September and December
-return_frequency.option4 = Every month
+return_frequency.current = The VAT Return dates are currently
+return_frequency.January = January, April, July and October
+return_frequency.February = February, May, August and November
+return_frequency.March = March, June, September and December
+return_frequency.Monthly = Every month
 
 confirm_return_frequency.title = Changes in circumstances
 confirm_return_frequency.heading = Confirm the new VAT Return dates

@@ -16,7 +16,6 @@
 
 package views.returnFrequency
 
-import assets.BaseTestConstants.organisationName
 import assets.messages.{BaseMessages, ReturnFrequencyMessages => viewMessages}
 import models.returnFrequency._
 import org.jsoup.Jsoup
@@ -59,7 +58,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       }
 
       s"the current date is '${viewMessages.option4}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(All)(request, messages, mockConfig)
+        lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe viewMessages.option4
       }
@@ -72,7 +71,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       }
 
       "has a URL back to the change dates page" in {
-        element("#change-vat-link").attr("href") shouldBe "#"
+        element("#change-vat-link").attr("href") shouldBe "/vat-through-software/account/frequency"
       }
 
     }
@@ -87,8 +86,12 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
         elementText("#continue-button") shouldBe BaseMessages.confirm
       }
 
-      "has a URL to the change dates results page" in {
-        element("#continue-button").attr("href") shouldBe "#"
+      "posts data to the server" in {
+        element("form").attr("method") shouldBe "POST"
+      }
+
+      "posts data to the correct endpoint" in {
+        element("form").attr("action") shouldBe "/vat-through-software/account/confirm-dates"
       }
 
     }

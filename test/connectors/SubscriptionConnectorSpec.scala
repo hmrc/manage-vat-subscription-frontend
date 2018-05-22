@@ -23,6 +23,7 @@ import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
 import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
+import models.returnFrequency.Jan
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
@@ -70,6 +71,16 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
       def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
         TestSubscriptionConnector.updateBusinessAddress("", customerAddressMax)
+
+      "return a SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
+      }
+    }
+
+    "calling .updateReturnFrequency" should {
+
+      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
+        TestSubscriptionConnector.updateReturnFrequency("", Jan)
 
       "return a SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))

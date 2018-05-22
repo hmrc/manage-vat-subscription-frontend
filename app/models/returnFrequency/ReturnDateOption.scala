@@ -16,21 +16,22 @@
 
 package models.returnFrequency
 
-import play.api.i18n.Messages
-
-sealed trait ReturnDateOptions {
-  def label(implicit messages: Messages): String
+sealed trait ReturnDateOption {
+  val id: String
 }
 
-case object Jan extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("return_frequency.option1")
+case object Jan extends ReturnDateOption {
+  override val id: String = "January"
 }
-case object Feb extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("return_frequency.option2")
+
+case object Feb extends ReturnDateOption {
+  override val id: String = "February"
 }
-case object Mar extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("return_frequency.option3")
+
+case object Mar extends ReturnDateOption {
+  override val id: String = "March"
 }
-case object All extends ReturnDateOptions {
-  def label(implicit messages: Messages): String = messages("return_frequency.option4")
+
+case object Monthly extends ReturnDateOption {
+  override val id: String = "Monthly"
 }

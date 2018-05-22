@@ -14,35 +14,40 @@
 * limitations under the License.
 *@
 
-@import views.html.templates.inputs.radioGroup
 @import models.returnFrequency._
 @import uk.gov.hmrc.play.views.html.helpers.form
 @import templates.headings
+@import views.html.templates.inputs.radioGroup
 
-@(fieldform: Form[ReturnDatesModel], current: ReturnDateOptions)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(model: Form[ReturnDatesModel], current: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+
+@label = {
+  <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>
+  <span id="currently-set-period">@messages(s"return_frequency.${current.id}")</span>
+}
 
 @views.html.main_template(
-title = messages("return_frequency.title"),
-bodyClasses = None,
-appConfig = appConfig) {
+  title = messages("return_frequency.title"),
+  bodyClasses = None,
+  appConfig = appConfig) {
 
-@headings(messages("return_frequency.heading"))
+  @headings(messages("return_frequency.heading"))
 
-@form(action = controllers.returnFrequency.routes.ChooseDatesController.submitStuff) {
+  @form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
 
-    <div class="form-group">
-        @radioGroup(
-            fieldform("period-option"),
-            Seq(Jan, Feb, Mar, All).filterNot(_.equals(current)).zipWithIndex.map{
-                case (choices, index) => ((index + 1).toString, choices.label)
-            },
-            Html(messages("return_frequency.current", current.label)),
-            true
-        )
-    </div>
+      <div class="form-group">
+          @radioGroup(
+              field = model("period-option"),
+              choices = Seq(Jan, Feb, Mar, Monthly).filterNot(_ == current).map { option =>
+                (option.id, messages(s"return_frequency.${option.id}"))
+              },
+              label = label,
+            stacked = true
+          )
+      </div>
 
-    <button class="button" type ="submit" id="continue">@messages("common.continue")</button>
+      <button class="button" type ="submit" id="continue">@messages("common.continue")</button>
 
-}
+  }
 
 }
