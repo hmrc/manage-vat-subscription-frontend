@@ -52,6 +52,12 @@ change_address_confirmation.p2 = You can
 change_address_confirmation.p2.link = view your requested change
 change_address_confirmation.p2.end = .
 
+clients_vrn.title = Changes in circumstances
+clients_vrn.heading = What is your client''s VAT number?
+clients_vrn.p1 = This is the 9-digit number they received when they registered for VAT.
+clients_vrn.example = For example, ‘123456789’
+clients_vrn.label = Client''s VAT Number
+
 return_frequency.title = Changes in circumstances
 return_frequency.heading = Choose the new VAT Return dates
 return_frequency.current = The VAT Return dates are currently
