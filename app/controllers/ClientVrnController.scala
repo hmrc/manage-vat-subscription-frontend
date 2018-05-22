@@ -18,26 +18,53 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 
-import config.AppConfig
+import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.VrnInputForm
-import forms.test.MoneyInputForm._
-import forms.test.{DateInputForm, MoneyInputForm}
-import models.test.MoneyInputModel
-import play.api.data.Form
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
-class ClientVrnController @Inject()(val messagesApi: MessagesApi, val authenticate: AuthPredicate,
+class ClientVrnController @Inject()(val messagesApi: MessagesApi,
+                                    val authenticate: AuthPredicate,
+                                    val customerDetailsService: CustomerDetailsService,
+                                    val serviceErrorHandler: ServiceErrorHandler,
                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  //TODO update when ClientVrnController created
-  val submit: Action[AnyContent] = authenticate.async {
+  val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      Future.successful(Ok(views.html.helloworld.hello_world()))
+      customerDetailsService.getCustomerDetails(user.vrn).map {
+        case Right(_) => Ok(views.html.customerInfo.clients_vrn(VrnInputForm.form))
+        case _ => serviceErrorHandler.showInternalServerError
+      }
+  }
+
+  val submit: Action[AnyContent] = authenticate.async {
+
+    implicit user =>
+      VrnInputForm.form.bindFromRequest().fold(
+        error => {
+          Logger.debug(s"\n\n[ClientVrnController][submit] Error")
+          customerDetailsService.getCustomerDetails(user.vrn).map {
+            case Right(_) =>
+              Logger.debug(s"\n\n[ClientVrnController][submit] Right")
+              BadRequest(views.html.customerInfo.clients_vrn(error))
+            case _ =>
+              Logger.debug(s"\n\n[ClientVrnController][submit] Left")
+              serviceErrorHandler.showInternalServerError
+          }
+        },
+        success => {
+          Logger.debug(s"\n\n[ClientVrnController][submit] Success")
+          Future.successful(
+            Redirect(controllers.routes.CustomerDetailsController.show())
+          )
+        }
+      )
   }
 }
