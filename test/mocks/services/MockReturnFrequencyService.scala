@@ -42,4 +42,12 @@ trait MockReturnFrequencyService extends UnitSpec with MockitoSugar with BeforeA
     when(mockReturnFrequencyService.updateReturnFrequency(anyString(), any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
+
+  def setupMockReturnFrequencyServiceWithSuccess(): OngoingStubbing[Future[ServiceResponse]] = {
+    setupMockReturnFrequencyService(Right(SubscriptionUpdateResponseModel("12345")))
+  }
+
+  def setupMockReturnFrequencyServiceWithFailure(): OngoingStubbing[Future[ServiceResponse]] = {
+    setupMockReturnFrequencyService(Left(ErrorModel(500, "Boo")))
+  }
 }

@@ -80,4 +80,45 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
     unauthenticatedCheck(TestConfirmVatDatesController.show)
   }
+
+  "Calling the .submit action" when {
+
+    "the user is authorised and a the session contains valid data" should {
+
+      val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
+      lazy val result = TestConfirmVatDatesController.submit(fakeRequest.withSession(session))
+
+      "return 303" in {
+        setupMockReturnFrequencyServiceWithSuccess()
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "return a location to the received dates view" in {
+        setupMockReturnFrequencyServiceWithSuccess()
+        redirectLocation(result) shouldBe Some("/vat-through-software/account/dates-received")
+      }
+    }
+
+    "the user is authorised but submitting the changes to the backend fails" should {
+
+      val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
+      lazy val result = TestConfirmVatDatesController.submit(fakeRequest.withSession(session))
+
+      "return 500" in {
+        setupMockReturnFrequencyServiceWithFailure()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "the user is authorised and a the session contains invalid data" should {
+
+      val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
+      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
+
+      "return 500" in {
+        setupMockReturnFrequencyServiceWithSuccess()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+  }
 }
