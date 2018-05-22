@@ -14,29 +14,25 @@
 * limitations under the License.
 *@
 
-@import templates.headings
-
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
-    title = messages("received_frequency.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+  title = messages("received_frequency.title"),
+  bodyClasses = None,
+  appConfig = appConfig) {
 
-    @headings(messages("received_frequency.heading"))
+  <div class="govuk-box-highlight">
+    <h1 id="page-heading" class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
+  </div>
 
-    <h2 id="sub-heading" class="heading-medium">@messages("received_frequency.subheading")</h2>
-
-    <p id="p1" class="form-group">@messages("received_frequency.p1")</p>
-
-    <p id="p2">@messages("received_frequency.p2")</p>
-
-    <p id="p3">
-        @messages("received_frequency.p3")
-        <a id="view-change-link"
-           href="@controllers.routes.CustomerDetailsController.show().url"
-           type="submit">@messages("received_frequency.p3.link")
-        </a>
-    </p>
-
+  <h2 id="sub-heading" class="heading-medium">@messages("received_frequency.subheading")</h2>
+  <p id="p1" class="form-group">@messages("received_frequency.p1")</p>
+  <p id="p2">@messages("received_frequency.p2")</p>
+  <p id="p3">
+      @messages("received_frequency.p3")
+      <a id="view-change-link"
+         href="@controllers.routes.CustomerDetailsController.show().url"
+         type="submit">@messages("received_frequency.p3.link")
+      </a>
+  </p>
 }
