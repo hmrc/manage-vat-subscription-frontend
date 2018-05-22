@@ -50,15 +50,8 @@ class ConfirmClientsVrnViewSpec extends ViewBaseSpec {
         elementText("article > p:nth-of-type(2)") shouldBe BaseTestConstants.vrn
       }
 
-      "have a continue button" which {
-
-        s"has the text '${BaseMessages.confirmAndContinue}'" in {
-          elementText(".button") shouldBe BaseMessages.confirmAndContinue
-        }
-
-        "has the correct URL" in {
-          element(".button").attr("href") shouldBe "#"
-        }
+      s"have a confirm button with the text '${BaseMessages.confirm}'" in {
+        elementText("button") shouldBe BaseMessages.confirm
       }
 
       "have an edit different client link" which {
@@ -73,28 +66,5 @@ class ConfirmClientsVrnViewSpec extends ViewBaseSpec {
       }
     }
 
-    "given an organisation" should {
-
-      lazy val view = views.html.customerInfo.confirm_clients_vrn(BaseTestConstants.vrn,
-        CustomerDetailsTestConstants.organisation)(request, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct heading and text for the business name section" in {
-        elementText("h2") shouldBe viewMessages.name
-        elementText("article > p:nth-of-type(1)") shouldBe CustomerDetailsTestConstants.organisation.organisationName.get
-      }
-    }
-
-    "given an a complete set of CustomerDetails" should {
-
-      lazy val view = views.html.customerInfo.confirm_clients_vrn(BaseTestConstants.vrn,
-        CustomerDetailsTestConstants.customerDetailsMax)(request, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct heading and text for the business name section" in {
-        elementText("h2") shouldBe viewMessages.name
-        elementText("article > p:nth-of-type(1)") shouldBe CustomerDetailsTestConstants.organisation.organisationName.get
-      }
-    }
   }
 }

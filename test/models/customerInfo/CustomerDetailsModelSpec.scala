@@ -66,6 +66,24 @@ class CustomerDetailsModelSpec extends UnitSpec {
       }
     }
 
+    "calling .businessName" when {
+      "Organisation Name is present" should {
+        "return Organisation name" in {
+          customerDetailsMax.businessName shouldBe Some(s"$organisationName")
+        }
+      }
+      "username is present and org name is missing" should {
+        "return username" in {
+          individual.businessName shouldBe Some(s"$firstName $lastName")
+        }
+      }
+      "username and organisation anme are missing" should {
+        "return username" in {
+          customerDetailsMin.businessName shouldBe None
+        }
+      }
+    }
+
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {

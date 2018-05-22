@@ -29,6 +29,7 @@ case class CustomerDetailsModel(firstName: Option[String],
     val name = s"${firstName.getOrElse("")} ${lastName.getOrElse("")}".trim
     if (name.isEmpty) None else Some(name)
   }
+  val businessName: Option[String] = if(isOrg) organisationName else userName
 }
 
 object CustomerDetailsModel {

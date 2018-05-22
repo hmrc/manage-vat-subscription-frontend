@@ -15,6 +15,8 @@
 *@
 
 @import models.customerInfo.CustomerDetailsModel
+@import uk.gov.hmrc.play.views.html.helpers.form
+
 
 @(vrn: String, customerDetails: CustomerDetailsModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -28,22 +30,14 @@
     </header>
 
     <h2 class="bold-medium">@messages("confirm_client_vrn.name")</h2>
-    <p>
-        @if(customerDetails.isOrg){
-            @customerDetails.organisationName.map{orgName =>
-                @orgName
-            }
-        } else {
-            @customerDetails.userName.map{userName =>
-                @userName
-            }
-        }
-    </p>
+    <p>@customerDetails.businessName</p>
 
     <h3 class="bold-medium">@messages("confirm_client_vrn.vrn")</h3>
     <p>@vrn</p>
 
-    <a href="#" class="button form-group" type="submit">@messages("common.confirmAndContinue")</a>
+    <form method="POST" action="#">
+        <button class="button" type="submit">@messages("common.confirm")</button>
+    </form>
 
     <p><a href="#" type="submit">@messages("confirm_client_vrn.edit")</a></p>
 
