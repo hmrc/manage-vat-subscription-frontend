@@ -14,11 +14,24 @@
  * limitations under the License.
  */
 
-package assets.messages
+package models.returnFrequency
 
-object BaseMessages {
+sealed trait ReturnDateOption {
+  val id: String
+}
 
-  val continue = "Continue"
-  val confirm = "Confirm"
+case object Jan extends ReturnDateOption {
+  override val id: String = "January"
+}
 
+case object Feb extends ReturnDateOption {
+  override val id: String = "February"
+}
+
+case object Mar extends ReturnDateOption {
+  override val id: String = "March"
+}
+
+case object Monthly extends ReturnDateOption {
+  override val id: String = "Monthly"
 }

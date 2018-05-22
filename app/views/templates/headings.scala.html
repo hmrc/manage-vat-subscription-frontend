@@ -14,23 +14,8 @@
 * limitations under the License.
 *@
 
-@import uk.gov.hmrc.play.views.html.helpers
+@(heading: String)(implicit messages: Messages)
 
-@(field: Field,
-        choices: Seq[(String, String)],
-        label: Html,
-        stacked: Boolean = false)(implicit messages: Messages)
-
-@question = {
-  <p> @label </p>
-}
-
-@defining({
-  val defaultArgs: Map[Symbol, Any] = Map('_legend -> question)
-  if (stacked) defaultArgs else defaultArgs + ('_groupClass -> "inline")
-}) { args =>
-
-  <div class="form-group">
-    @helpers.inputRadioGroup(field, choices, args.toSeq: _*)
-  </div>
-}
+<header class="page-heading">
+    <h1 id="page-heading" class="heading-large">@heading</h1>
+</header>

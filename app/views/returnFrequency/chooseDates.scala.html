@@ -1,0 +1,53 @@
+@*
+* Copyright 2018 HM Revenue & Customs
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*@
+
+@import models.returnFrequency._
+@import uk.gov.hmrc.play.views.html.helpers.form
+@import templates.headings
+@import views.html.templates.inputs.radioGroup
+
+@(model: Form[ReturnDatesModel], current: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+
+@label = {
+  <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>
+  <span id="currently-set-period">@messages(s"return_frequency.${current.id}")</span>
+}
+
+@views.html.main_template(
+  title = messages("return_frequency.title"),
+  bodyClasses = None,
+  appConfig = appConfig) {
+
+  @headings(messages("return_frequency.heading"))
+
+  @form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
+
+      <div class="form-group">
+          @radioGroup(
+              field = model("period-option"),
+              choices = Seq(Jan, Feb, Mar, Monthly).filterNot(_ == current).map { option =>
+                (option.id, messages(s"return_frequency.${option.id}"))
+              },
+              label = label,
+            stacked = true
+          )
+      </div>
+
+      <button class="button" type ="submit" id="continue">@messages("common.continue")</button>
+
+  }
+
+}

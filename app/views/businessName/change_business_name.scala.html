@@ -14,6 +14,8 @@
 * limitations under the License.
 *@
 
+@import templates.headings
+
 @(organisationName: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
@@ -21,9 +23,7 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <header class="page-heading">
-        <h1 id="page-heading" class="heading-xlarge">@messages("change_business_name.h1")</h1>
-    </header>
+    @headings(messages("change_business_name.h1"))
 
     <p id="p1">@Html(messages("change_business_name.p1", organisationName))</p>
 

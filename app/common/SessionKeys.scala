@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package assets.messages
+package common
 
-object BaseMessages {
+object SessionKeys {
 
-  val continue = "Continue"
-  val confirm = "Confirm"
+  val RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
 
 }

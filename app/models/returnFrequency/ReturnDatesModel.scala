@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package assets.messages
+package models.returnFrequency
 
-object BaseMessages {
+import play.api.libs.json.{Format, Json}
 
-  val continue = "Continue"
-  val confirm = "Confirm"
+case class ReturnDatesModel(current: String)
 
+object ReturnDatesModel {
+  implicit val format: Format[ReturnDatesModel] = Json.format[ReturnDatesModel]
 }

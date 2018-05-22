@@ -5,6 +5,7 @@ common.month = Month
 common.year = Year
 common.dateError = Enter a valid date
 common.continue = Continue
+common.confirm = Confirm
 
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to
@@ -34,6 +35,8 @@ customer_details.individualName.heading = Individual name
 customer_details.individualName.change.hidden = your name
 customer_details.businessAddress.heading = Business address
 customer_details.businessAddress.change.hidden = your Business address
+customer_details.returnFrequency.heading = VAT Return dates
+customer_details.returnFrequency.change.hidden = your VAT Return dates
 
 change_business_name.title = Change of business name
 change_business_name.h1 = Change of business name
@@ -54,3 +57,24 @@ clients_vrn.heading = What is your client''s VAT number?
 clients_vrn.p1 = This is the 9-digit number they received when they registered for VAT.
 clients_vrn.example = For example, ‘123456789’
 clients_vrn.label = Client''s VAT Number
+
+return_frequency.title = Changes in circumstances
+return_frequency.heading = Choose the new VAT Return dates
+return_frequency.current = The VAT Return dates are currently
+return_frequency.January = January, April, July and October
+return_frequency.February = February, May, August and November
+return_frequency.March = March, June, September and December
+return_frequency.Monthly = Every month
+
+confirm_return_frequency.title = Changes in circumstances
+confirm_return_frequency.heading = Confirm the new VAT Return dates
+confirm_return_frequency.changeLink = Change the VAT Return dates
+confirm_return_frequency.p2 = By confirming this change, you agree that the information you have given is complete and correct.
+
+received_frequency.title = Changes in circumstances
+received_frequency.heading = We have received your details
+received_frequency.subheading = What happens next
+received_frequency.p1 = We will usually update the VAT Return dates within 2 working days. We will send you an email notification and a secure message when the details have changed.
+received_frequency.p2 = If this change is accepted, the business must submit this quarter’s return before following the new VAT Return dates
+received_frequency.p3 = You can
+received_frequency.p3.link = view your requested change.

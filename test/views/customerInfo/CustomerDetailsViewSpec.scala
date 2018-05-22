@@ -76,6 +76,24 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
+
+      "have a section for return frequency" which {
+
+        "has the heading" in {
+          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#vat-return-dates-status") shouldBe viewMessages.change + " " + viewMessages.changeReturnFrequencyHidden
+          }
+
+          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
+            element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+          }
+        }
+      }
     }
 
     "Viewing for an Self-Employed Individual" should {

@@ -90,6 +90,20 @@
             </dd>
         </div>
 
+        <div>
+            <dt id="vat-return-dates-text" class="cya-question">
+                @messages("customer_details.returnFrequency.heading")
+            </dt>
+            <dd id="vat-return-dates" class="cya-answer">
+
+            </dd>
+            <dd class="cya-change">
+                <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
+                    @messages("customer_details.change")
+                    <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
+                </a>
+            </dd>
+        </div>
 
     </dl>
 

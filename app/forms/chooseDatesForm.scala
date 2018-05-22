@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package assets.messages
+package forms
 
-object BaseMessages {
+import models.returnFrequency.ReturnDatesModel
+import play.api.data.Form
+import play.api.data.Forms.{mapping, text}
 
-  val continue = "Continue"
-  val confirm = "Confirm"
+object chooseDatesForm {
+
+  lazy val datesForm: Form[ReturnDatesModel] = Form(
+    mapping(
+      "period-option" -> text
+        .verifying("Choose an option", dates => dates.nonEmpty)
+    )(ReturnDatesModel.apply)(ReturnDatesModel.unapply)
+  )
 
 }

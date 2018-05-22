@@ -23,6 +23,7 @@ import javax.inject.{Inject, Singleton}
 import models.customerAddress.AddressModel
 import models.core.SubscriptionUpdateResponseModel
 import models.customerInfo.CustomerDetailsModel
+import models.returnFrequency.ReturnDateOption
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -43,6 +44,12 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   }
 
   def updateBusinessAddress(vrn: String, address: AddressModel)
+                           (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+    // TODO: call vat-subscription
+    Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
+  }
+
+  def updateReturnFrequency(vrn: String, frequency: ReturnDateOption)
                            (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     // TODO: call vat-subscription
     Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
