@@ -18,7 +18,7 @@ package controllers.agentClientRelationship
 
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AgentOnlyAuthPredicate
-import forms.VrnInputForm
+import forms.ClientVrnForm
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -38,7 +38,7 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn).map {
-        case Right(_) => Ok(views.html.agentClientRelationship.select_client_vrn(VrnInputForm.form))
+        case Right(_) => Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
@@ -46,7 +46,7 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
   val submit: Action[AnyContent] = authenticate.async {
 
     implicit user =>
-      VrnInputForm.form.bindFromRequest().fold(
+      ClientVrnForm.form.bindFromRequest().fold(
         error => {
           Logger.debug(s"[SelectClientVrnController][submit] Error")
           customerDetailsService.getCustomerDetails(user.vrn).map {

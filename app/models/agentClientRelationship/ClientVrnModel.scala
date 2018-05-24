@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package models.customerInfo
+package models.agentClientRelationship
 
 import play.api.libs.json.{Json, OFormat}
 
-case class VrnModel(text: String)
+case class ClientVrnModel(vrn: String)
 
-object VrnModel {
-  implicit val format: OFormat[VrnModel] = Json.format[VrnModel]
+object ClientVrnModel {
+  implicit val format: OFormat[ClientVrnModel] = Json.format[ClientVrnModel]
 }
 

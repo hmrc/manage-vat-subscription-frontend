@@ -17,7 +17,7 @@
 package views.agentClientRelationship
 
 import assets.messages.{BaseMessages, ClientVrnPageMessages => viewMessages}
-import forms.VrnInputForm
+import forms.ClientVrnForm
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -26,7 +26,7 @@ class SelectClientVrnViewSpec extends ViewBaseSpec {
 
   "Rendering the Change Clients VRN page" should {
 
-    lazy val view = views.html.agentClientRelationship.select_client_vrn(VrnInputForm.form)(request, messages, mockConfig)
+    lazy val view = views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
