@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package controllers
-
-import javax.inject.{Inject, Singleton}
+package controllers.agentClientRelationship
 
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AgentOnlyAuthPredicate
 import forms.VrnInputForm
+import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -30,16 +29,16 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class ClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                    val authenticate: AgentOnlyAuthPredicate,
-                                    val customerDetailsService: CustomerDetailsService,
-                                    val serviceErrorHandler: ServiceErrorHandler,
-                                    implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
+                                          val authenticate: AgentOnlyAuthPredicate,
+                                          val customerDetailsService: CustomerDetailsService,
+                                          val serviceErrorHandler: ServiceErrorHandler,
+                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn).map {
-        case Right(_) => Ok(views.html.customerInfo.clients_vrn(VrnInputForm.form))
+        case Right(_) => Ok(views.html.agentClientRelationship.select_client_vrn(VrnInputForm.form))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
@@ -49,18 +48,18 @@ class ClientVrnController @Inject()(val messagesApi: MessagesApi,
     implicit user =>
       VrnInputForm.form.bindFromRequest().fold(
         error => {
-          Logger.debug(s"[ClientVrnController][submit] Error")
+          Logger.debug(s"[SelectClientVrnController][submit] Error")
           customerDetailsService.getCustomerDetails(user.vrn).map {
             case Right(_) =>
-              Logger.debug(s"[ClientVrnController][submit] Right")
-              BadRequest(views.html.customerInfo.clients_vrn(error))
+              Logger.debug(s"[SelectClientVrnController][submit] Right")
+              BadRequest(views.html.agentClientRelationship.select_client_vrn(error))
             case _ =>
-              Logger.debug(s"[ClientVrnController][submit] Left")
+              Logger.debug(s"[SelectClientVrnController][submit] Left")
               serviceErrorHandler.showInternalServerError
           }
         },
         success => {
-          Logger.debug(s"[ClientVrnController][submit] Success")
+          Logger.debug(s"[SelectClientVrnController][submit] Success")
           Future.successful(
             Redirect(controllers.routes.CustomerDetailsController.show())
           )

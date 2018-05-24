@@ -24,11 +24,8 @@ POST        /confirm-dates                               @controllers.returnFreq
 
 GET         /dates-received                              @controllers.returnFrequency.DatesReceivedController.show
 
-GET        /client_vrn                                   @controllers.ClientVrnController.show
-POST       /client_vrn                                   @controllers.ClientVrnController.submit
-
-GET        /money-input                                  @controllers.HelloWorldController.moneyInput
-POST       /money-input                                  @controllers.HelloWorldController.submitMoney
+GET        /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.show
+POST       /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.submit
 
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)

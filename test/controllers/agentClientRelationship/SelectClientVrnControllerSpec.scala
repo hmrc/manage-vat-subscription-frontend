@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.agentClientRelationship
 
 import assets.CustomerDetailsTestConstants.customerDetailsMax
 import assets.messages.{ClientVrnPageMessages => messages}
 import config.ServiceErrorHandler
+import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class ClientVrnControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestClientVrnControllerSpec extends ClientVrnController(
+  object TestClientVrnControllerSpec extends SelectClientVrnController(
     messagesApi,
     mockAgentOnlyAuthPredicate,
     mockCustomerDetailsService,

@@ -33,7 +33,7 @@
 
     <p>@messages("clients_vrn.p1")</p>
 
-    @helpers.form(action = controllers.routes.ClientVrnController.submit){
+    @helpers.form(action = controllers.agentClientRelationship.routes.SelectClientVrnController.submit){
     <div class="form-group">
         @text(
             form("vrn"),
