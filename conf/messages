@@ -6,10 +6,14 @@ common.year = Year
 common.dateError = Enter a valid date
 common.continue = Continue
 common.confirm = Confirm
+common.errorSummary.heading = You have one or more errors
 
 # Client VRN form messages
 clientVrnForm.vrn.missing = Enter your client''s VAT number
 clientVrnForm.vrn.invalid = Enter a valid VAT number
+
+# Choose return frequency dates messages
+chooseDatesForm.frequency.missing = Select the new VAT Return dates
 
 sessionTimeout.title = Your session has timed out
 sessionTimeout.helpOne = To manage your VAT account, you''ll have to
