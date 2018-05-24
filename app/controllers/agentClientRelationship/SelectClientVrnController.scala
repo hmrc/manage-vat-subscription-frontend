@@ -23,7 +23,6 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -31,16 +30,12 @@ import scala.concurrent.Future
 @Singleton
 class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AgentOnlyAuthPredicate,
-                                          val customerDetailsService: CustomerDetailsService,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      customerDetailsService.getCustomerDetails(user.vrn).map {
-        case Right(_) => Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form))
-        case _ => serviceErrorHandler.showInternalServerError
-      }
+      Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))
   }
 
   val submit: Action[AnyContent] = authenticate.async {
@@ -49,20 +44,11 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
       ClientVrnForm.form.bindFromRequest().fold(
         error => {
           Logger.debug(s"[SelectClientVrnController][submit] Error")
-          customerDetailsService.getCustomerDetails(user.vrn).map {
-            case Right(_) =>
-              Logger.debug(s"[SelectClientVrnController][submit] Right")
-              BadRequest(views.html.agentClientRelationship.select_client_vrn(error))
-            case _ =>
-              Logger.debug(s"[SelectClientVrnController][submit] Left")
-              serviceErrorHandler.showInternalServerError
-          }
+          Future.successful(BadRequest(views.html.agentClientRelationship.select_client_vrn(error)))
         },
-        success => {
+        _ => { // success path
           Logger.debug(s"[SelectClientVrnController][submit] Success")
-          Future.successful(
-            Redirect(controllers.routes.CustomerDetailsController.show())
-          )
+          Future.successful(Redirect(controllers.routes.CustomerDetailsController.show()))
         }
       )
   }
