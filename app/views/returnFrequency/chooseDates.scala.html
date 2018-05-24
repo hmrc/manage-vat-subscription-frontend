@@ -14,12 +14,14 @@
 * limitations under the License.
 *@
 
+@import models.returnFrequency.ReturnDatesModel
 @import models.returnFrequency._
-@import uk.gov.hmrc.play.views.html.helpers.form
+@import uk.gov.hmrc.play.views.html.helpers
 @import templates.headings
-@import views.html.templates.inputs.radioGroup
+@import templates.inputs.radioGroup
+@import templates.errors.errorSummary
 
-@(model: Form[ReturnDatesModel], current: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(form: Form[ReturnDatesModel], current: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @label = {
   <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>
@@ -31,13 +33,15 @@
   bodyClasses = None,
   appConfig = appConfig) {
 
+  @errorSummary("common.errorSummary.heading", form)
+
   @headings(messages("return_frequency.heading"))
 
-  @form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
+  @helpers.form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
 
       <div class="form-group">
           @radioGroup(
-              field = model("period-option"),
+              field = form("period-option"),
               choices = Seq(Jan, Feb, Mar, Monthly).filterNot(_ == current).map { option =>
                 (option.id, messages(s"return_frequency.${option.id}"))
               },
