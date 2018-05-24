@@ -37,7 +37,6 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
 
   def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerDetailsModel]] = {
-
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
     http.GET(url)(CustomerDetailsReads, headerCarrier, ec)

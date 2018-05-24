@@ -19,7 +19,7 @@ package controllers
 import javax.inject.{Inject, Singleton}
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.AgentOnlyAuthPredicate
 import forms.VrnInputForm
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,7 +31,7 @@ import scala.concurrent.Future
 
 @Singleton
 class ClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                    val authenticate: AuthPredicate,
+                                    val authenticate: AgentOnlyAuthPredicate,
                                     val customerDetailsService: CustomerDetailsService,
                                     val serviceErrorHandler: ServiceErrorHandler,
                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
@@ -49,18 +49,18 @@ class ClientVrnController @Inject()(val messagesApi: MessagesApi,
     implicit user =>
       VrnInputForm.form.bindFromRequest().fold(
         error => {
-          Logger.debug(s"\n\n[ClientVrnController][submit] Error")
+          Logger.debug(s"[ClientVrnController][submit] Error")
           customerDetailsService.getCustomerDetails(user.vrn).map {
             case Right(_) =>
-              Logger.debug(s"\n\n[ClientVrnController][submit] Right")
+              Logger.debug(s"[ClientVrnController][submit] Right")
               BadRequest(views.html.customerInfo.clients_vrn(error))
             case _ =>
-              Logger.debug(s"\n\n[ClientVrnController][submit] Left")
+              Logger.debug(s"[ClientVrnController][submit] Left")
               serviceErrorHandler.showInternalServerError
           }
         },
         success => {
-          Logger.debug(s"\n\n[ClientVrnController][submit] Success")
+          Logger.debug(s"[ClientVrnController][submit] Success")
           Future.successful(
             Redirect(controllers.routes.CustomerDetailsController.show())
           )
