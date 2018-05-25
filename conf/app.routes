@@ -24,6 +24,9 @@ POST        /confirm-dates                               @controllers.returnFreq
 
 GET         /dates-received                              @controllers.returnFrequency.DatesReceivedController.show
 
+GET        /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.show
+POST       /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.submit
+
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
 

@@ -16,7 +16,7 @@
 
 package mocks
 
-import controllers.predicates.{AuthPredicate, AuthoriseAsAgent, AuthoriseAsPrinciple}
+import controllers.predicates.{AgentOnlyAuthPredicate, AuthPredicate, AuthoriseAsAgent, AuthoriseAsPrinciple}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
@@ -57,6 +57,14 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       mockEnrolmentsAuthService,
       messagesApi,
       mockAuthIndividualPredicate,
+      mockAuthAgentPredicate,
+      mockAppConfig
+    )
+
+  val mockAgentOnlyAuthPredicate: AgentOnlyAuthPredicate =
+    new AgentOnlyAuthPredicate(
+      mockEnrolmentsAuthService,
+      messagesApi,
       mockAuthAgentPredicate,
       mockAppConfig
     )

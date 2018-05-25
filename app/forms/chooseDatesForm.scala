@@ -18,15 +18,15 @@ package forms
 
 import models.returnFrequency.ReturnDatesModel
 import play.api.data.Form
-import play.api.data.Forms.{mapping, text}
+import play.api.data.Forms._
 
 object chooseDatesForm {
 
-  lazy val datesForm: Form[ReturnDatesModel] = Form(
+  val datesForm: Form[ReturnDatesModel] = Form(
     mapping(
-      "period-option" -> text
-        .verifying("Choose an option", dates => dates.nonEmpty)
+      "period-option" -> default(text, "")
+        .verifying("chooseDatesForm.frequency.missing", dates => dates.nonEmpty)
     )(ReturnDatesModel.apply)(ReturnDatesModel.unapply)
-  )
 
+  )
 }

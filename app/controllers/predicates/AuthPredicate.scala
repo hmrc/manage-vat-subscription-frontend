@@ -36,7 +36,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                               val authenticateAsPrinciple: AuthoriseAsPrinciple,
                               val authenticateAsAgent: AuthoriseAsAgent,
                               implicit val appConfig: AppConfig
-                             ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request,User] {
+                             ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
   private def isAgent(group: AffinityGroup): Boolean = group.toString.contains("Agent")
 
@@ -50,10 +50,9 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
           case (true, enrolments) => checkAgentEnrolment(enrolments, request, block)
           case (_, enrolments) => checkVatEnrolment(enrolments, request, block)
         }
-      case _ => {
+      case _ =>
         Logger.info("[AuthPredicate][invokeBlock] - Missing affinity group")
         Future(InternalServerError)
-      }
     } recover {
       case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
       case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
@@ -62,7 +61,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
   }
 
   private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
-    if(enrolments.enrolments.exists(_.key == "HMRC-AS-AGENT")) {
+    if (enrolments.enrolments.exists(_.key == "HMRC-AS-AGENT")) {
       Logger.info("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
       authenticateAsAgent.authorise(request, block)
     }
@@ -72,7 +71,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     }
 
   private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
-    if(enrolments.enrolments.exists(_.key == "HMRC-MTD-VAT")) {
+    if (enrolments.enrolments.exists(_.key == "HMRC-MTD-VAT")) {
       Logger.info("[AuthPredicate][checkVatEnrolment] - Authenticating as principle")
       authenticateAsPrinciple.authorise(request, block)
     }
@@ -81,4 +80,27 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
       Future(InternalServerError)
     }
 
+}
+
+@Singleton
+class AgentOnlyAuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
+                                       val messagesApi: MessagesApi,
+                                       val authenticateAsAgent: AuthoriseAsAgent,
+                                       implicit val appConfig: AppConfig
+                                      ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
+
+  override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
+
+    implicit val req = request
+
+    // TODO: Remove this retrieval but WAY too difficult right now
+    val unnecessaryRetrievals = Retrievals.affinityGroup and Retrievals.allEnrolments
+    enrolmentsAuthService.authorised(Enrolment("HMRC-AS-AGENT")).retrieve(unnecessaryRetrievals) {
+      case _ => authenticateAsAgent.authorise(request, block)
+    } recover {
+      case _: InsufficientEnrolments => Forbidden(views.html.errors.unauthorised())
+      case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
+      case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
+    }
+  }
 }
