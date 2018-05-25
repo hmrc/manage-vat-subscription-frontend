@@ -37,7 +37,7 @@ object AgentClientRelationshipHttpParser {
           Logger.debug("[AgentClientRelationshipHttpParser][read]: Status OK")
           Right(false)
         case status =>
-          Logger.warn(s"[AgentClientRelationshipHttpParser][read]: Unexpected Response, Status $status returned")
+          Logger.warn(s"[AgentClientRelationshipHttpParser][read]: Unexpected Response, Status $status returned. Body: ${response.body}")
           Left(ErrorModel(status, "Downstream error returned when retrieving agent -> client relationship status from agent-client-relationship"))
       }
     }

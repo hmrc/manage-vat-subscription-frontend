@@ -18,4 +18,5 @@ package common
 
 object EnrolmentKeys {
   val vatEnrolmentId: String = "HMRC-MTD-VAT"
+  val agentEnrolmentId: String = "HMRC-AS-AGENT"
 }

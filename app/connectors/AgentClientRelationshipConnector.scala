@@ -29,7 +29,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class AgentClientRelationshipConnector @Inject()(val http: HttpClient,
                                                  val config: FrontendAppConfig) {
 
-  private[connectors] def getRelationshipCheckUrl(arn: String, vrn: String) = s"${config.addressLookupService}/agent/$arn/service/HMRC-MTD-VAT/client/VRN/$vrn"
+  private[connectors] def getRelationshipCheckUrl(arn: String, vrn: String) = {
+    val baseUrl = config.agentClientRelationshipBaseUrl + "/agent-client-relationships"
+    s"$baseUrl/agent/$arn/service/HMRC-MTD-VAT/client/VRN/$vrn"
+  }
 
   def checkRelationship(arn: String, vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[Boolean]] = {
     http.GET[HttpGetResult[Boolean]](getRelationshipCheckUrl(arn, vrn))(AgentClientRelationshipCheckReads, hc, ec)

@@ -58,7 +58,7 @@ class AgentClientRelationshipConnectorSpec extends TestUtil with MockHttp{
     "Calling getRelationshipCheckUrl" should {
       "format the url correctly" in {
         val testUrl = TargetConnector.getRelationshipCheckUrl(arn, vrn)
-        testUrl shouldBe s"${frontendAppConfig.addressLookupService}/agent/$arn/service/HMRC-MTD-VAT/client/VRN/$vrn"
+        testUrl shouldBe s"${frontendAppConfig.agentClientRelationshipBaseUrl}/agent-client-relationships/agent/$arn/service/HMRC-MTD-VAT/client/VRN/$vrn"
       }
     }
 

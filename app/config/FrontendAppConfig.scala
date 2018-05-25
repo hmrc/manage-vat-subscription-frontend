@@ -47,6 +47,7 @@ trait AppConfig extends ServicesConfig {
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
+  val agentClientRelationshipBaseUrl: String
 }
 
 @Singleton
@@ -100,4 +101,5 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
+  override val agentClientRelationshipBaseUrl: String = baseUrl("agent-client-relationship")
 }
