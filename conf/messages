@@ -8,6 +8,7 @@ common.continue = Continue
 common.confirm = Confirm
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
+common.fullStop = .
 
 # Client VRN form messages
 clientVrnForm.vrn.missing = Enter your client''s VAT number
@@ -27,6 +28,12 @@ unauthorised.instructions = Here are some instructions about what you should do 
 unauthorised.agent.title = You can’t use this service yet
 unauthorised.agent.useThisService = To use this service, you need to
 unauthorised.agent.setUpAccount = set up an agent services account
+
+unauthorised.agentForClient.title = You’re not authorised for this client
+unauthorised.agentForClient.useThisService = To use this service, your client needs to
+unauthorised.agentForClient.authoriseForClient = authorise you as their agent
+unauthorised.agentForClient.enterDetails = If you think you have entered the wrong details you can
+unauthorised.agentForClient.tryAgain = try again
 
 featureSwitch.title = Feature switches
 featureSwitch.heading = Features
