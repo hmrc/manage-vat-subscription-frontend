@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package views.customerInfo
+package views.agentClientRelationship
 
-import assets.CustomerDetailsTestConstants
-import assets.BaseTestConstants
+import assets.{BaseTestConstants, CustomerDetailsTestConstants}
 import assets.messages.{BaseMessages, ConfirmClientVrnPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class ConfirmClientsVrnViewSpec extends ViewBaseSpec {
+class ConfirmClientVrnViewSpec extends ViewBaseSpec {
 
   "The Confirm Change Client VRN page" when {
 
     "given an individial" should {
 
-      lazy val view = views.html.customerInfo.confirm_clients_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.individual)(request, messages, mockConfig)
+      lazy val view = views.html.agentClientRelationship.confirm_client_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {

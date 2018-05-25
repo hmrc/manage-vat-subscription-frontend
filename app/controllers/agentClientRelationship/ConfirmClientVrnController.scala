@@ -16,40 +16,33 @@
 
 package controllers.agentClientRelationship
 
+import javax.inject.{Inject, Singleton}
+
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AgentOnlyAuthPredicate
-import forms.ClientVrnForm
-import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
-class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AgentOnlyAuthPredicate,
-                                          val serviceErrorHandler: ServiceErrorHandler,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
+                                           val authenticate: AgentOnlyAuthPredicate,
+                                           val customerDetailsService: CustomerDetailsService,
+                                           val serviceErrorHandler: ServiceErrorHandler,
+                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))
+      customerDetailsService.getCustomerDetails(user.vrn) map {
+        case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn,customerDetails))
+        case _ => serviceErrorHandler.showInternalServerError
+      }
   }
 
   val submit: Action[AnyContent] = authenticate.async {
-
-    implicit user =>
-      ClientVrnForm.form.bindFromRequest().fold(
-        error => {
-          Logger.debug(s"[SelectClientVrnController][submit] Error")
-          Future.successful(BadRequest(views.html.agentClientRelationship.select_client_vrn(error)))
-        },
-        _ => { // success path
-          Logger.debug(s"[SelectClientVrnController][submit] Success")
-          Future.successful(Redirect(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show()))
-        }
-      )
+    implicit user => Future.successful(Redirect(controllers.routes.CustomerDetailsController.show()))
   }
 }

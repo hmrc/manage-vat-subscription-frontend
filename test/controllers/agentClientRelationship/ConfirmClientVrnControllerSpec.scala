@@ -16,20 +16,23 @@
 
 package controllers.agentClientRelationship
 
-import assets.messages.{ClientVrnPageMessages => messages}
+import assets.messages.{ConfirmClientVrnPageMessages => messages}
+import assets.CustomerDetailsTestConstants.customerDetailsMax
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
+import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
+class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerDetailsService {
 
-  object TestClientVrnControllerSpec extends SelectClientVrnController(
+  object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
     mockAgentOnlyAuthPredicate,
+    mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig
   )
@@ -38,10 +41,11 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestClientVrnControllerSpec.show(fakeRequest)
+      lazy val result = TestConfirmClientVrnControllerSpec.show(fakeRequest)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
+        mockCustomerDetailsSuccess(customerDetailsMax)
         status(result) shouldBe Status.OK
       }
 
@@ -50,37 +54,27 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
         charset(result) shouldBe Some("utf-8")
       }
 
-      "render the Client Vrn Page" in {
+      "render the Confirm Client Vrn Page" in {
         document.select("h1").text shouldBe messages.heading
       }
     }
 
-    unauthenticatedCheck(TestClientVrnControllerSpec.show)
+    unauthenticatedCheck(TestConfirmClientVrnControllerSpec.show)
   }
 
   "Calling the .submit action" when {
 
     "valid data is posted" should {
 
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", "123456789"))
-      lazy val result = TestClientVrnControllerSpec.submit(request)
+      lazy val request = FakeRequest("POST", "/")
+      lazy val result = TestConfirmClientVrnControllerSpec.submit(request)
 
       "return 303" in {
         status(result) shouldBe Status.SEE_OTHER
       }
 
       "contain the correct location header" in {
-        redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-      }
-    }
-
-    "invalid data is posted" should {
-
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", ""))
-      lazy val result = TestClientVrnControllerSpec.submit(request)
-
-      "return 400" in {
-        status(result) shouldBe Status.BAD_REQUEST
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerDetailsController.show().url)
       }
     }
   }
