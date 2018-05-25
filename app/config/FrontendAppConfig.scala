@@ -45,6 +45,7 @@ trait AppConfig extends ServicesConfig {
   val addressLookupCallbackUrl: String
   val addressLookupService: String
   val addressLookupUrlHost: String
+  val agentServicesGovUkGuidance: String
 }
 
 @Singleton
@@ -72,7 +73,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
   private lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
-  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.HelloWorldController.helloWorld().url).encodedUrl
+  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show().url).encodedUrl
   private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
@@ -95,4 +96,5 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
+  override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
 }
