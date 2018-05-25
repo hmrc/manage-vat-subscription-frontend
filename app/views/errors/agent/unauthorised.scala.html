@@ -13,12 +13,13 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
+@import views.html.templates.headings
 
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(title = Messages("unauthorised.agent.title"), bodyClasses = None, appConfig = appConfig) {
 
-    <h1>@Messages("unauthorised.agent.title")</h1>
+    @headings(Messages("unauthorised.agent.title"))
 
     <p>
         @Messages("unauthorised.agent.useThisService")
