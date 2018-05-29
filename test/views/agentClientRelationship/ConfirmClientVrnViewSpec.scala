@@ -49,8 +49,15 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
         elementText("article > p:nth-of-type(2)") shouldBe BaseTestConstants.vrn
       }
 
-      s"have a confirm button with the text '${BaseMessages.confirm}'" in {
-        elementText("button") shouldBe BaseMessages.confirm
+      s"have a confirm button" which {
+
+        s"has the text '${BaseMessages.confirm}'" in {
+          elementText("a.button") shouldBe BaseMessages.confirm
+        }
+
+        s"has a link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
+          element("a.button").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+        }
       }
 
       "have an edit different client link" which {

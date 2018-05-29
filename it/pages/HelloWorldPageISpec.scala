@@ -39,13 +39,13 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
     "the user is not authorised" should {
 
-      "return 500 (ISE)" in {
+      "return 403 (Forbidden)" in {
 
         given.user.isNotEnrolled
 
         val result = await(buildRequest("/hello-world").get())
 
-        result.status shouldBe INTERNAL_SERVER_ERROR
+        result.status shouldBe FORBIDDEN
       }
     }
 

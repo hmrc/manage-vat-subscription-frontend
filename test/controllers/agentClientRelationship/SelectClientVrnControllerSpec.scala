@@ -17,6 +17,7 @@
 package controllers.agentClientRelationship
 
 import assets.messages.{ClientVrnPageMessages => messages}
+import common.{EnrolmentKeys, SessionKeys}
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
@@ -71,6 +72,10 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
 
       "contain the correct location header" in {
         redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+      }
+
+      "contain the Clients VRN in the session" in {
+        session(result).get(SessionKeys.CLIENT_VRN) shouldBe Some("123456789")
       }
     }
 

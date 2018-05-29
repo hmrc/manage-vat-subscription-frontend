@@ -16,8 +16,9 @@
 
 package controllers.agentClientRelationship
 
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AgentOnlyAuthPredicate
+import controllers.predicates.AuthoriseAsAgentOnly
 import forms.ClientVrnForm
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
@@ -29,7 +30,7 @@ import scala.concurrent.Future
 
 @Singleton
 class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AgentOnlyAuthPredicate,
+                                          val authenticate: AuthoriseAsAgentOnly,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
@@ -46,9 +47,10 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
           Logger.debug(s"[SelectClientVrnController][submit] Error")
           Future.successful(BadRequest(views.html.agentClientRelationship.select_client_vrn(error)))
         },
-        _ => { // success path
+        data => { // success path
           Logger.debug(s"[SelectClientVrnController][submit] Success")
-          Future.successful(Redirect(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show()))
+          Future.successful(Redirect(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show())
+            .addingToSession(SessionKeys.CLIENT_VRN -> data.vrn))
         }
       )
   }

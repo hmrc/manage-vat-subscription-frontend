@@ -28,5 +28,4 @@ object BaseTestConstants {
   val vrn = "999999999"
   val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
   val arn = "ABCD12345678901"
-
 }

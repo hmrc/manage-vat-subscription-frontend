@@ -18,66 +18,46 @@ package controllers.predicates
 
 import mocks.MockAuth
 import play.api.http.Status
-import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
-import assets.BaseTestConstants.vrn
+import play.api.mvc.Results.Ok
 
 import scala.concurrent.Future
 
-class AuthoriseAsPrincipleSpec extends MockAuth {
+class AuthoriseAsAgentOnlySpec extends MockAuth {
 
-
-  "The AuthenticationPredicate" when {
-
-    def target: Action[AnyContent] = {
-      mockAuthPredicate.async{
-        implicit request => Future.successful(Ok("test"))
-      }
+  def target: Action[AnyContent] = {
+    mockAgentOnlyAuthPredicate.async{
+      implicit request => Future.successful(Ok("test"))
     }
+  }
+
+  "The AuthoriseAsAgentOnlySpec" when {
 
     "the user is authorised" should {
 
       "return 200" in {
-        mockIndividualAuthorised()
+        mockAgentAuthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.OK
         await(bodyOf(result)) shouldBe "test"
       }
     }
 
-    "a user attempts to sign in without 'HMRC_MTD_VAT' enrolment" should {
-
-      "throw an ISE (500)" in {
-        mockUserWithoutEnrolment()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-    }
-
-    "a user attempts to sign in without an affinity group" should {
-
-      "throw an ISE (500)" in {
-        mockUserWithoutAffinity()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-    }
-
-    "the user is not authenticated" should {
-
-      "return 401 (Unauthorised)" in {
-        mockUnauthenticated
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
-
-    "the user is not authorised" should {
+    "a user attempts to sign in without 'HMRC_AS_AGENT' enrolment" should {
 
       "return 403 (Forbidden)" in {
         mockUnauthorised
         val result = target(fakeRequest)
         status(result) shouldBe Status.FORBIDDEN
+      }
+    }
+
+    "a user with no active session" should {
+
+      "return 401 (Unauthorized)" in {
+        mockMissingBearerToken
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.UNAUTHORIZED
       }
     }
   }

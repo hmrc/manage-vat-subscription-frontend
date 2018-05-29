@@ -28,7 +28,6 @@ GET        /client-vat-number                            @controllers.agentClien
 POST       /client-vat-number                            @controllers.agentClientRelationship.SelectClientVrnController.submit
 
 GET        /confirm_client_vrn                           @controllers.agentClientRelationship.ConfirmClientVrnController.show
-POST       /confirm_client_vrn                           @controllers.agentClientRelationship.ConfirmClientVrnController.submit
 
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)

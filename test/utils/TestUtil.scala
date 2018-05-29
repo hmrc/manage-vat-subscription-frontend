@@ -16,6 +16,7 @@
 
 package utils
 
+import common.SessionKeys
 import config.{FrontendAppConfig, ServiceErrorHandler}
 import mocks.MockAppConfig
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -36,9 +37,12 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSuppor
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
   implicit lazy val mockAppConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   implicit lazy val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
   implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
+
+  implicit lazy val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999")
 
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]

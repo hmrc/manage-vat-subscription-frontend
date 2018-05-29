@@ -31,7 +31,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
-    mockAgentOnlyAuthPredicate,
+    mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig
@@ -60,23 +60,6 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     }
 
     unauthenticatedCheck(TestConfirmClientVrnControllerSpec.show)
-  }
-
-  "Calling the .submit action" when {
-
-    "valid data is posted" should {
-
-      lazy val request = FakeRequest("POST", "/")
-      lazy val result = TestConfirmClientVrnControllerSpec.submit(request)
-
-      "return 303" in {
-        status(result) shouldBe Status.SEE_OTHER
-      }
-
-      "contain the correct location header" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.CustomerDetailsController.show().url)
-      }
-    }
   }
 
 }

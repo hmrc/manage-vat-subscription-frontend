@@ -17,54 +17,53 @@
 package controllers.predicates
 
 import mocks.MockAuth
+import models.User
 import play.api.http.Status
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, Result}
 import play.api.mvc.Results.Ok
+import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class AuthoriseAsAgentSpec extends MockAuth {
+class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
-  "The AuthoriseAgentPredicate" when {
+  def f[A]: User[A] => Future[Result] = user => Future.successful(Ok(s"test ${user.vrn}"))
 
-    def target: Action[AnyContent] = {
-      mockAuthPredicate.async{
-        implicit request => Future.successful(Ok("test"))
-      }
-    }
+  def target: Action[AnyContent] = Action.async {
+    implicit request =>
+      mockAuthAsAgentWithClient.authorise(request, f)
+  }
 
-    "the agent is authorised" should {
+  "The AuthoriseAsAgentWithClientSpec" when {
+
+    "the agent is authorised with a Client VRN in session" should {
 
       "return 200" in {
         mockAgentAuthorised()
-        val result = target(fakeRequest)
+        val result = target(fakeRequestWithClientsVRN)
         status(result) shouldBe Status.OK
       }
     }
 
-    "an agent attempts to sign in without 'HMRC_AS_AGENT' enrolment" should {
+    "an agent has not selected their Client (No Client VRN in session)" should {
 
-      "throw an ISE (500)" in {
-        mockAgentWithoutEnrolment()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      lazy val result = target(fakeRequest)
+
+      "return 303 (SEE_OTHER) redirect" in {
+        mockAgentAuthorised()
+        status(result) shouldBe Status.SEE_OTHER
       }
-    }
 
-    "an agent attempts to sign in without an affinity group" should {
-
-      "throw an ISE (500)" in {
-        mockAgentWithoutAffinity()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      "redirect to the Select Your Client controller" in {
+        redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
       }
     }
 
     "the agent is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
-        mockUnauthenticated
-        val result = target(fakeRequest)
+        mockMissingBearerToken
+        val result = target(fakeRequestWithClientsVRN)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
@@ -73,7 +72,7 @@ class AuthoriseAsAgentSpec extends MockAuth {
 
       "return 403 (Forbidden)" in {
         mockUnauthorised
-        val result = target(fakeRequest)
+        val result = target(fakeRequestWithClientsVRN)
         status(result) shouldBe Status.FORBIDDEN
       }
     }

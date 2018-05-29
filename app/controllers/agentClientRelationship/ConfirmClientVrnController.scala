@@ -16,20 +16,17 @@
 
 package controllers.agentClientRelationship
 
-import javax.inject.{Inject, Singleton}
-
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AgentOnlyAuthPredicate
+import controllers.predicates.AuthPredicate
+import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-import scala.concurrent.Future
-
 @Singleton
 class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                           val authenticate: AgentOnlyAuthPredicate,
+                                           val authenticate: AuthPredicate,
                                            val customerDetailsService: CustomerDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
@@ -37,12 +34,8 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn,customerDetails))
+        case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
-  }
-
-  val submit: Action[AnyContent] = authenticate.async {
-    implicit user => Future.successful(Redirect(controllers.routes.CustomerDetailsController.show()))
   }
 }
