@@ -1,6 +1,6 @@
 # microservice specific routes
 
-GET         /                                            @controllers.CustomerDetailsController.show
+GET         /change-business-details                     @controllers.CustomerDetailsController.show
 
 GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
 
@@ -16,16 +16,16 @@ GET         /change-business-address/confirmation        @controllers.BusinessAd
 GET         /text-input                                  @controllers.HelloWorldController.textInput
 GET         /date-input                                  @controllers.HelloWorldController.dateInput
 
-GET         /frequency                                   @controllers.returnFrequency.ChooseDatesController.show
-POST        /frequency                                   @controllers.returnFrequency.ChooseDatesController.submit
+GET         /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.show
+POST        /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.submit
 
-GET         /confirm-dates                               @controllers.returnFrequency.ConfirmVatDatesController.show
-POST        /confirm-dates                               @controllers.returnFrequency.ConfirmVatDatesController.submit
+GET         /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.show
+POST        /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.submit
 
-GET         /dates-received                              @controllers.returnFrequency.DatesReceivedController.show
+GET         /confirmation-vat-return-dates               @controllers.returnFrequency.DatesReceivedController.show
 
-GET        /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.show
-POST       /client_vrn                                   @controllers.agentClientRelationship.SelectClientVrnController.submit
+GET        /client-vat-number                            @controllers.agentClientRelationship.SelectClientVrnController.show
+POST       /client-vat-number                            @controllers.agentClientRelationship.SelectClientVrnController.submit
 
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
