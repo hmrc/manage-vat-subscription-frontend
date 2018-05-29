@@ -8,7 +8,6 @@ common.continue = Continue
 common.confirm = Confirm
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
-common.fullStop = .
 
 # Client VRN form messages
 clientVrnForm.vrn.missing = Enter your client''s VAT number
