@@ -56,8 +56,8 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
       elementText(Selectors.tryAgain) shouldBe "If you think you have entered the wrong details you can try again."
     }
 
-    s"have a link to '#'" in {
-      element(Selectors.tryAgainLink).attr("href") shouldBe "#"
+    s"have a link to '${controllers.agentClientRelationship.routes.SelectClientVrnController.show().url}'" in {
+      element(Selectors.tryAgainLink).attr("href") shouldBe controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
     }
 
     s"have a Sign out button" in {

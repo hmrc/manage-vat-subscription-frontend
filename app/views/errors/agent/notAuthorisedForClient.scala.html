@@ -29,8 +29,7 @@
 
     <p>
         @Messages("unauthorised.agentForClient.enterDetails")
-        @* TODO: update with ClientVrnController route *@
-        <a href="#">@Messages("unauthorised.agentForClient.tryAgain")</a>@Messages("common.fullStop")
+        <a href="@controllers.agentClientRelationship.routes.SelectClientVrnController.show()">@Messages("unauthorised.agentForClient.tryAgain")</a>@Messages("common.fullStop")
     </p>
 
     <a class="button" href="@controllers.routes.SignOutController.signOut(authorised = false)">@Messages("base.sign-out")</a>
