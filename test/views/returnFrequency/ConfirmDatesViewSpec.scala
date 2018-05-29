@@ -71,7 +71,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       }
 
       "has a URL back to the change dates page" in {
-        element("#change-vat-link").attr("href") shouldBe "/vat-through-software/account/frequency"
+        element("#change-vat-link").attr("href") shouldBe "/vat-through-software/account/change-vat-return-dates"
       }
 
     }
@@ -91,7 +91,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       }
 
       "posts data to the correct endpoint" in {
-        element("form").attr("action") shouldBe "/vat-through-software/account/confirm-dates"
+        element("form").attr("action") shouldBe "/vat-through-software/account/confirm-vat-return-dates"
       }
 
     }

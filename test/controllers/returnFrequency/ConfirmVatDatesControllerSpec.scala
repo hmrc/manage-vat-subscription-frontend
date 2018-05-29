@@ -95,7 +95,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        redirectLocation(result) shouldBe Some("/vat-through-software/account/dates-received")
+        redirectLocation(result) shouldBe Some("/vat-through-software/account/confirmation-vat-return-dates")
       }
     }
 
