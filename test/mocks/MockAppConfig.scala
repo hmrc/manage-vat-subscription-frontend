@@ -40,7 +40,6 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val addressLookupCallbackUrl: String = ""
   override val addressLookupService: String = ""
   override val addressLookupUrlHost: String = ""
-  override val agentClientRelationshipBaseUrl: String = "agent-client-relationship-base-url"
   override val agentServicesGovUkGuidance: String = "guidance-url"
   override val agentAuthoriseForClient: String = "appoint-tax-agent"
 }
