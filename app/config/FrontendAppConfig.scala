@@ -46,6 +46,7 @@ trait AppConfig extends ServicesConfig {
   val addressLookupService: String
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
+  val agentAuthoriseForClient: String
 }
 
 @Singleton
@@ -97,4 +98,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
+  override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
+
 }
