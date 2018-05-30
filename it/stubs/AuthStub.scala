@@ -54,6 +54,11 @@ object AuthStub extends WireMockMethods {
       .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Agent, otherEnrolment))
   }
 
+  def insufficientEnrolments(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="InsufficientEnrolments""""))
+  }
+
   private val mtdVatEnrolment = Json.obj(
     "key" -> SERVICE_ENROLMENT_KEY,
     "identifiers" -> Json.arr(

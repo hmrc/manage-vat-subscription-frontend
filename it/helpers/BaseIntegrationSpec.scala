@@ -20,12 +20,14 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, TestSuite}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
+import play.api.http.HeaderNames
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.AuthStub
+import uk.gov.hmrc.play.test.UnitSpec
 
-trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite with TestSuite
+trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite with TestSuite
   with BeforeAndAfterEach with BeforeAndAfterAll {
 
   val mockHost: String = WireMockHelper.host
@@ -36,6 +38,7 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
     implicit val builder: PreconditionBuilder = this
 
     def user: User = new User()
+    def agent: Agent = new Agent()
   }
 
   def given: PreconditionBuilder = new PreconditionBuilder
@@ -55,20 +58,21 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
       AuthStub.unauthorisedOtherEnrolment()
       builder
     }
+  }
 
-
-    def isAgentAuthenticated: PreconditionBuilder = {
-      AuthStub.authorised()
+  class Agent()(implicit builder: PreconditionBuilder) {
+    def isAgentAuthorised: PreconditionBuilder = {
+      AuthStub.agentAuthorised()
       builder
     }
 
-    def isAgentNotAuthenticated: PreconditionBuilder = {
-      AuthStub.unauthorisedNotLoggedIn()
-      builder
-    }
-
-    def isAgentNotEnrolled: PreconditionBuilder = {
+    def isAgentNotEnrolledToAsAgent: PreconditionBuilder = {
       AuthStub.agentUnauthorisedOtherEnrolment()
+      builder
+    }
+
+    def isAgentUnauthorised: PreconditionBuilder = {
+      AuthStub.insufficientEnrolments()
       builder
     }
   }
@@ -93,7 +97,15 @@ trait BaseIntegrationSpec extends WireMockHelper with GuiceOneServerPerSuite wit
     super.afterAll()
   }
 
-  def buildRequest(path: String): WSRequest = client.url(s"http://localhost:$port$appContextRoute$path").withFollowRedirects(false)
+
+  def get(path: String, additionalCookies: Map[String, String] = Map.empty): WSResponse = await(
+    buildRequest(path, additionalCookies).get()
+  )
+
+  def buildRequest(path: String, additionalCookies: Map[String, String] = Map.empty): WSRequest =
+    client.url(s"http://localhost:$port$appContextRoute$path")
+      .withHeaders(HeaderNames.COOKIE -> SessionCookieBaker.bakeSessionCookie(additionalCookies))
+      .withFollowRedirects(false)
 
   def document(response: WSResponse): Document = Jsoup.parse(response.body)
 

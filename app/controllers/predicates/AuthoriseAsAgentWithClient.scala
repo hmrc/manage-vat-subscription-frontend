@@ -46,9 +46,9 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
   def authorise[A](implicit request: Request[A], f: User[A] => Future[Result]): Future[Result] =
     request.session.get(SessionKeys.CLIENT_VRN) match {
       case Some(vrn) =>
-        enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.authorisedEnrolments) {
-          case _ ~ authorisedEnrolments =>
-            f(User(vrn, active = true, arn(authorisedEnrolments)))
+        enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+          case _ ~ allEnrolments =>
+            f(User(vrn, active = true, arn(allEnrolments)))
         } recover {
           case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
           case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())

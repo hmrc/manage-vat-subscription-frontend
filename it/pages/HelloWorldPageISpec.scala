@@ -16,12 +16,12 @@
 
 package pages
 
+import common.SessionKeys
 import helpers.BaseIntegrationSpec
-import play.api.http.HeaderNames
+import helpers.IntegrationTestConstants._
 import play.api.http.Status._
-import uk.gov.hmrc.play.test.UnitSpec
 
-class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
+class HelloWorldPageISpec extends BaseIntegrationSpec {
 
   "Calling the helloWorld action" when {
 
@@ -31,7 +31,7 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
         given.user.isAuthenticated
 
-        val result = await(buildRequest("/hello-world").get())
+        val result = get("/hello-world")
 
         result.status shouldBe OK
       }
@@ -43,7 +43,7 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
         given.user.isNotEnrolled
 
-        val result = await(buildRequest("/hello-world").get())
+        val result = get("/hello-world")
 
         result.status shouldBe FORBIDDEN
       }
@@ -55,20 +55,20 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
         given.user.isNotAuthenticated
 
-        val result = await(buildRequest("/hello-world").get())
+        val result = get("/hello-world")
 
         result.status shouldBe UNAUTHORIZED
       }
     }
 
 
-    "the agent is authenticated" should {
+    "the agent is authorised" should {
 
       "return 200 OK" in {
 
-        given.user.isAgentAuthenticated
+        given.agent.isAgentAuthorised
 
-        val result = await(buildRequest("/hello-world").get())
+        val result = get("/hello-world", Map(SessionKeys.CLIENT_VRN -> clientVRN))
 
         result.status shouldBe OK
       }
@@ -78,9 +78,9 @@ class HelloWorldPageISpec extends UnitSpec with BaseIntegrationSpec {
 
       "return 500 (ISE)" in {
 
-        given.user.isAgentNotEnrolled
+        given.agent.isAgentNotEnrolledToAsAgent
 
-        val result = await(buildRequest("/hello-world").get())
+        val result = get("/hello-world")
 
         result.status shouldBe INTERNAL_SERVER_ERROR
       }
