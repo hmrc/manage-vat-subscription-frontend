@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 import common.{EnrolmentKeys, SessionKeys}
 import config.AppConfig
 import models.User
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
@@ -48,14 +49,21 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
     implicit val req = request
     request.session.get(SessionKeys.CLIENT_VRN) match {
       case Some(vrn) =>
+        Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
         enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
           case _ ~ allEnrolments =>
             block(User(vrn, active = true, arn(allEnrolments)))
         } recover {
-          case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
-          case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
+          case _: NoActiveSession =>
+            Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, rendering Session Timeout")
+            Unauthorized(views.html.errors.sessionTimeout())
+          case _: AuthorisationException =>
+            Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
+            Forbidden(views.html.errors.unauthorised())
         }
-      case _ => Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
+      case _ =>
+        Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
+        Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
     }
   }
 }
