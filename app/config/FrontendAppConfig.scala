@@ -100,4 +100,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
+  lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
+
 }
