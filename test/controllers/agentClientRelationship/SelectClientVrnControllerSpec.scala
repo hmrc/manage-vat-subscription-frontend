@@ -17,7 +17,7 @@
 package controllers.agentClientRelationship
 
 import assets.messages.{ClientVrnPageMessages => messages}
-import common.{EnrolmentKeys, SessionKeys}
+import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
@@ -37,12 +37,13 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
 
   "Calling the .show action" when {
 
-    "the user is authorised and a CustomerDetailsModel" should {
+    "the user is an authorised Agent" should {
 
       lazy val result = TestClientVrnControllerSpec.show(fakeRequest)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
+        mockAgentAuthorised()
         status(result) shouldBe Status.OK
       }
 
@@ -61,33 +62,37 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
 
   "Calling the .submit action" when {
 
-    "valid data is posted" should {
+    "the user is an authorised Agent" should {
 
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", "123456789"))
-      lazy val result = TestClientVrnControllerSpec.submit(request)
+      "valid data is posted" should {
 
-      "return 303" in {
-        status(result) shouldBe Status.SEE_OTHER
+        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", "123456789"))
+        lazy val result = TestClientVrnControllerSpec.submit(request)
+
+        "return 303" in {
+          mockAgentAuthorised()
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "contain the correct location header" in {
+          redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+        }
+
+        "contain the Clients VRN in the session" in {
+          session(result).get(SessionKeys.CLIENT_VRN) shouldBe Some("123456789")
+        }
       }
 
-      "contain the correct location header" in {
-        redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-      }
+      "invalid data is posted" should {
 
-      "contain the Clients VRN in the session" in {
-        session(result).get(SessionKeys.CLIENT_VRN) shouldBe Some("123456789")
-      }
-    }
+        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", ""))
+        lazy val result = TestClientVrnControllerSpec.submit(request)
 
-    "invalid data is posted" should {
-
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", ""))
-      lazy val result = TestClientVrnControllerSpec.submit(request)
-
-      "return 400" in {
-        status(result) shouldBe Status.BAD_REQUEST
+        "return 400" in {
+          mockAgentAuthorised()
+          status(result) shouldBe Status.BAD_REQUEST
+        }
       }
     }
   }
-
 }

@@ -23,6 +23,7 @@ import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import _root_.services.EnrolmentsAuthService
+import config.ServiceErrorHandler
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
@@ -62,6 +63,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     new AuthoriseAsAgentOnly(
       mockEnrolmentsAuthService,
       messagesApi,
+      injector.instanceOf[ServiceErrorHandler],
       mockAppConfig
     )
 

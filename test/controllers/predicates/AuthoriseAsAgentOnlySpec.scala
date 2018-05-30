@@ -33,22 +33,43 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
   "The AuthoriseAsAgentOnlySpec" when {
 
-    "the user is authorised" should {
+    "the user is an Agent" when {
 
-      "return 200" in {
-        mockAgentAuthorised()
-        val result = target(fakeRequest)
-        status(result) shouldBe Status.OK
-        await(bodyOf(result)) shouldBe "test"
+      "the Agent is signed up to HMRC-AS-AGENT" should {
+
+        "return 200" in {
+          mockAgentAuthorised()
+          val result = target(fakeRequest)
+          status(result) shouldBe Status.OK
+          await(bodyOf(result)) shouldBe "test"
+        }
+      }
+
+      "the Agent is not signed up to HMRC_AS_AGENT" should {
+
+        "return 500 (ISE)" in {
+          mockAgentWithoutEnrolment()
+          val result = target(fakeRequest)
+          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        }
       }
     }
 
-    "a user attempts to sign in without 'HMRC_AS_AGENT' enrolment" should {
+    "the user is not an Agent" should {
 
-      "return 403 (Forbidden)" in {
-        mockUnauthorised
+      "redirect to the Customer Details Home Page SEE_OTHER (303)" in {
+        mockIndividualAuthorised()
         val result = target(fakeRequest)
-        status(result) shouldBe Status.FORBIDDEN
+        status(result) shouldBe Status.SEE_OTHER
+      }
+    }
+
+    "the user does not have an affinity group" should {
+
+      "render an ISE (500)" in {
+        mockUserWithoutAffinity()
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 

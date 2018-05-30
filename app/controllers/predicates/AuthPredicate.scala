@@ -36,9 +36,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                               val messagesApi: MessagesApi,
                               val authenticateAsAgentWithClient: AuthoriseAsAgentWithClient,
                               implicit val appConfig: AppConfig
-                             ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
-
-  private def isAgent(group: AffinityGroup): Boolean = group.toString.contains(EnrolmentKeys.agentAffinityGroup)
+                             ) extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
