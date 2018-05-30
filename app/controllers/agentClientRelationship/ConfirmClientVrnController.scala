@@ -17,7 +17,7 @@
 package controllers.agentClientRelationship
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.AuthoriseAsAgentWithClient
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -26,12 +26,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                           val authenticate: AuthPredicate,
+                                           val authenticate: AuthoriseAsAgentWithClient,
                                            val customerDetailsService: CustomerDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async {
+  def show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
         case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, customerDetails))

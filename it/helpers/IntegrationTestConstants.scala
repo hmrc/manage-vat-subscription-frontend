@@ -18,9 +18,26 @@ package helpers
 
 import java.util.UUID
 
+import models.customerInfo.CustomerDetailsModel
+
 object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
   val userId = s"/auth/oid/1234567890"
 
   val clientVRN = "999999999"
+  val VRN = "111111111"
+
+  val individualCustomerDetails = CustomerDetailsModel(
+    firstName = Some("Nanana"),
+    lastName = Some("VatMan"),
+    tradingName = Some("Vatmobile Taxi"),
+    organisationName = None
+  )
+
+  val organisationCustomerDetails = CustomerDetailsModel(
+    firstName = None,
+    lastName = None,
+    tradingName = Some("Vatmobile Taxi"),
+    organisationName = Some("Vatman Trading Ltd")
+  )
 }

@@ -56,6 +56,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       mockEnrolmentsAuthService,
       messagesApi,
       mockAuthAsAgentWithClient,
+      injector.instanceOf[ServiceErrorHandler],
       mockAppConfig
     )
 

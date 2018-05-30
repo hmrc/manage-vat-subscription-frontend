@@ -27,12 +27,11 @@ import scala.concurrent.Future
 
 class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
-  def f[A]: User[A] => Future[Result] = user => Future.successful(Ok(s"test ${user.vrn}"))
-
-  def target: Action[AnyContent] = Action.async {
-    implicit request =>
-      mockAuthAsAgentWithClient.authorise(request, f)
-  }
+  def target: Action[AnyContent] =
+    mockAuthAsAgentWithClient.async {
+      implicit user =>
+        Future.successful(Ok(s"test ${user.vrn}"))
+    }
 
   "The AuthoriseAsAgentWithClientSpec" when {
 

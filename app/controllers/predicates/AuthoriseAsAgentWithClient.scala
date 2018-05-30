@@ -32,7 +32,8 @@ import scala.concurrent.Future
 @Singleton
 class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                                            implicit val messagesApi: MessagesApi,
-                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport  {
+                                           implicit val appConfig: AppConfig)
+  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
   private def delegatedAuthRule(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
@@ -43,16 +44,18 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
     _.getIdentifier(EnrolmentKeys.agentIdentifierId).map(_.value)
   }
 
-  def authorise[A](implicit request: Request[A], f: User[A] => Future[Result]): Future[Result] =
+  override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
+    implicit val req = request
     request.session.get(SessionKeys.CLIENT_VRN) match {
       case Some(vrn) =>
         enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
           case _ ~ allEnrolments =>
-            f(User(vrn, active = true, arn(allEnrolments)))
+            block(User(vrn, active = true, arn(allEnrolments)))
         } recover {
           case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
           case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
         }
       case _ => Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
     }
+  }
 }

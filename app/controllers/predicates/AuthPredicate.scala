@@ -17,7 +17,7 @@
 package controllers.predicates
 
 import common.EnrolmentKeys
-import config.AppConfig
+import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.Logger
@@ -35,6 +35,7 @@ import scala.concurrent.Future
 class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                               val messagesApi: MessagesApi,
                               val authenticateAsAgentWithClient: AuthoriseAsAgentWithClient,
+                              val serviceErrorHandler: ServiceErrorHandler,
                               implicit val appConfig: AppConfig
                              ) extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
@@ -50,23 +51,22 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
         }
       case _ =>
         Logger.info("[AuthPredicate][invokeBlock] - Missing affinity group")
-        Future(InternalServerError)
+        Future.successful(serviceErrorHandler.showInternalServerError)
     } recover {
       case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
       case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
     }
-
   }
 
   private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
       Logger.info("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
-      authenticateAsAgentWithClient.authorise(request, block)
+      authenticateAsAgentWithClient.invokeBlock(request, block)
     }
     else {
       //TODO: Render Agent not Signed Up for Agent Services View
       Logger.info(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-      Future(InternalServerError)
+      Future.successful(serviceErrorHandler.showInternalServerError(request))
     }
 
   private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =

@@ -31,7 +31,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
-    mockAuthPredicate,
+    mockAuthAsAgentWithClient,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig
@@ -39,27 +39,57 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
   "Calling the .show action" when {
 
-    "the user is authorised and a CustomerDetailsModel" should {
+    "the user is an Agent" when {
 
-      lazy val result = TestConfirmClientVrnControllerSpec.show(fakeRequest)
-      lazy val document = Jsoup.parse(bodyOf(result))
+      "the Agent is authorised and signed up to HMRC-AS-AGENT" when {
 
-      "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
-        status(result) shouldBe Status.OK
-      }
+        "a Clients VRN is held in Session and details are successfully retrieved" should {
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+          lazy val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
+          lazy val document = Jsoup.parse(bodyOf(result))
 
-      "render the Confirm Client Vrn Page" in {
-        document.select("h1").text shouldBe messages.heading
+          "return 200" in {
+            mockAgentAuthorised()
+            mockCustomerDetailsSuccess(customerDetailsMax)
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Confirm Client Vrn Page" in {
+            document.select("h1").text shouldBe messages.heading
+          }
+        }
+
+        "a Clients VRN is held in Session and NO details are retrieved" should {
+
+          lazy val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+          "return 200" in {
+            mockAgentAuthorised()
+            mockCustomerDetailsError()
+            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+        }
       }
     }
 
-    unauthenticatedCheck(TestConfirmClientVrnControllerSpec.show)
-  }
+    "the user is not authenticated" should {
 
+      "return 401 (Unauthorised)" in {
+        mockMissingBearerToken
+        val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+  }
 }

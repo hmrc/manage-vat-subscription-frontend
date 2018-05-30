@@ -90,7 +90,9 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   def servicesConfig: Map[String, String] = Map(
     "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck",
     "microservice.services.auth.host" -> mockHost,
-    "microservice.services.auth.port" -> mockPort
+    "microservice.services.auth.port" -> mockPort,
+    "microservice.services.vat-subscription.host" -> mockHost,
+    "microservice.services.vat-subscription.port" -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
