@@ -24,10 +24,10 @@ POST        /confirm-vat-return-dates                    @controllers.returnFreq
 
 GET         /confirmation-vat-return-dates               @controllers.returnFrequency.DatesReceivedController.show
 
-GET        /client-vat-number                            @controllers.agentClientRelationship.SelectClientVrnController.show
-POST       /client-vat-number                            @controllers.agentClientRelationship.SelectClientVrnController.submit
+GET         /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.show
+POST        /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.submit
 
-GET        /confirm_client_vrn                           @controllers.agentClientRelationship.ConfirmClientVrnController.show
+GET         /confirm-client-vat-number                   @controllers.agentClientRelationship.ConfirmClientVrnController.show
 
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
