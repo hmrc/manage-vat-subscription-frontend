@@ -20,5 +20,6 @@ object BaseMessages {
 
   val continue = "Continue"
   val confirm = "Confirm"
+  val confirmAndContinue = "Confirm and continue"
 
 }

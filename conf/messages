@@ -6,6 +6,7 @@ common.year = Year
 common.dateError = Enter a valid date
 common.continue = Continue
 common.confirm = Confirm
+common.confirmAndContinue = Confirm and continue
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
 

@@ -52,7 +52,7 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
       s"have a confirm button" which {
 
         s"has the text '${BaseMessages.confirm}'" in {
-          elementText("a.button") shouldBe BaseMessages.confirm
+          elementText("a.button") shouldBe BaseMessages.confirmAndContinue
         }
 
         s"has a link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
@@ -67,7 +67,7 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
         }
 
         "has the correct URL" in {
-          element("article > p > a").attr("href") shouldBe "#"
+          element("article > p > a").attr("href") shouldBe controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
         }
       }
     }
