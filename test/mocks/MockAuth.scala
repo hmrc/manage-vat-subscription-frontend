@@ -130,10 +130,10 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       )
     ))
 
-  lazy val mockMissingBearerToken: OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+  def mockMissingBearerToken()(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
     setupAuthResponse(Future.failed(MissingBearerToken()))
 
-  lazy val mockUnauthorised: OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+  def mockUnauthorised()(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
     setupAuthResponse(Future.failed(InsufficientEnrolments()))
 
 }

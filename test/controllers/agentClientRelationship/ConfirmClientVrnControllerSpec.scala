@@ -18,6 +18,7 @@ package controllers.agentClientRelationship
 
 import assets.messages.{ConfirmClientVrnPageMessages => messages}
 import assets.CustomerDetailsTestConstants.customerDetailsMax
+import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
@@ -86,10 +87,48 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
-        mockMissingBearerToken
+        mockMissingBearerToken()
         val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
   }
+
+  "Calling the .changeClient action" when {
+
+    "the user is an Agent" when {
+
+      "the Agent is authorised and signed up to HMRC-AS-AGENT" when {
+
+        "a Clients VRN is held in Session" should {
+
+          lazy val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithClientsVRN)
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+          "return status redirect SEE_OTHER (303)" in {
+            mockAgentAuthorised()
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          "redirect to the Select Your Client show action" in {
+            redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+          }
+
+          "have removed the Clients VRN from session" in {
+            session(result).get(SessionKeys.CLIENT_VRN) shouldBe None
+          }
+        }
+      }
+    }
+
+    "the user is not authenticated" should {
+
+      "return 401 (Unauthorised)" in {
+        mockMissingBearerToken()
+        val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithClientsVRN)
+        status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+  }
+
 }

@@ -56,7 +56,7 @@ class AuthPredicateSpec extends MockAuth {
         "the Agent is unauthorised to act on behalf of the Client" should {
 
           "return Forbidden (403)" in {
-            mockUnauthorised
+            mockUnauthorised()
             status(target(fakeRequestWithClientsVRN)) shouldBe Status.FORBIDDEN
           }
         }

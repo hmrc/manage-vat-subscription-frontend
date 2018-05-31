@@ -16,6 +16,7 @@
 
 package controllers.agentClientRelationship
 
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
 import javax.inject.{Inject, Singleton}
@@ -23,6 +24,8 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.Future
 
 @Singleton
 class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
@@ -37,5 +40,13 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
         case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
+  }
+
+  def changeClient: Action[AnyContent] = authenticate.async {
+    implicit user =>
+      Future.successful(
+        Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show())
+          .removingFromSession(SessionKeys.CLIENT_VRN)
+      )
   }
 }

@@ -77,7 +77,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
     "a user with no active session" should {
 
       "return 401 (Unauthorized)" in {
-        mockMissingBearerToken
+        mockMissingBearerToken()
         val result = target(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }
@@ -86,7 +86,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
     "a user with an authorisation exception" should {
 
       "return 403 (Forbidden)" in {
-        mockUnauthorised
+        mockUnauthorised()
         val result = target(fakeRequest)
         status(result) shouldBe Status.FORBIDDEN
       }
