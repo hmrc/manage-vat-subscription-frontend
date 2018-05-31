@@ -16,12 +16,13 @@
 
 package controllers.predicates
 
+import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, UnauthorisedPageMessages}
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
-import play.api.i18n.Messages
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
+
 import scala.concurrent.Future
 
 class AuthPredicateSpec extends MockAuth {
@@ -44,7 +45,7 @@ class AuthPredicateSpec extends MockAuth {
 
       "the Agent has an Active HMRC-AS-AGENT enrolment" when {
 
-        "the Agent is authorised to act on behalf of the Client" should {
+        "a successful authorisation result is returned from Auth" should {
 
           "return OK (200)" in {
             mockAgentAuthorised()
@@ -52,24 +53,32 @@ class AuthPredicateSpec extends MockAuth {
           }
         }
 
-        "the Agent is unauthorised to act on behalf of the Client" should {
+        "an unauthorised result is returned from Auth" should {
+
+          lazy val result = await(target(fakeRequestWithClientsVRN))
 
           "return Forbidden (403)" in {
             mockUnauthorised()
-            val result = await(target(fakeRequestWithClientsVRN))
             status(result) shouldBe Status.FORBIDDEN
-            Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agentForClient.title")
+          }
+
+          "render the Unauthorised page" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe UnauthorisedPageMessages.title
           }
         }
       }
 
       "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
+        lazy val result = await(target(fakeRequestWithClientsVRN))
+
         "return Forbidden" in {
           mockAgentWithoutEnrolment()
-          val result = await(target(fakeRequestWithClientsVRN))
           status(result) shouldBe Status.FORBIDDEN
-          Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agent.title")
+        }
+
+        "render the Unauthorised Agent page" in {
+          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
         }
       }
     }

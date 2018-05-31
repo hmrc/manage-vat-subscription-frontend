@@ -16,11 +16,10 @@
 
 package assets.messages
 
-object BaseMessages {
+object UnauthorisedPageMessages {
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
+  val title = "Unauthorised access"
+  val pageHeading = title
+  val instructions = "Here are some instructions about what you should do next."
 
 }

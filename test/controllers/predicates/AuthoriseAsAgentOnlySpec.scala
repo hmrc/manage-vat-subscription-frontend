@@ -16,20 +16,20 @@
 
 package controllers.predicates
 
+import assets.messages.AgentUnauthorisedPageMessages
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
-import play.api.i18n.Messages
-import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, AnyContent}
 
 import scala.concurrent.Future
 
 class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
   def target: Action[AnyContent] = {
-    mockAgentOnlyAuthPredicate.async{
+    mockAgentOnlyAuthPredicate.async {
       implicit request => Future.successful(Ok("test"))
     }
   }
@@ -50,11 +50,15 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "the Agent is not signed up to HMRC_AS_AGENT" should {
 
-        "return Forbidden" in {
+        lazy val result = target(fakeRequest)
+
+        "return Forbidden (403)" in {
           mockAgentWithoutEnrolment()
-          val result = target(fakeRequest)
           status(result) shouldBe Status.FORBIDDEN
-          Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agent.title")
+        }
+
+        "render the Unauthorised Agent page" in {
+          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
         }
       }
     }
