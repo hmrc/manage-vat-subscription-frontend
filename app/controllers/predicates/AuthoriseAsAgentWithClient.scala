@@ -59,7 +59,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
             Unauthorized(views.html.errors.sessionTimeout())
           case _: AuthorisationException =>
             Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
-            Forbidden(views.html.errors.unauthorised())
+            Forbidden(views.html.errors.agent.notAuthorisedForClient())
         }
       case _ =>
         Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")

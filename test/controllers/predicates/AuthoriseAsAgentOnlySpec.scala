@@ -18,7 +18,9 @@ package controllers.predicates
 
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
+import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Results.Ok
 
@@ -48,10 +50,11 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "the Agent is not signed up to HMRC_AS_AGENT" should {
 
-        "return 500 (ISE)" in {
+        "return Forbidden" in {
           mockAgentWithoutEnrolment()
           val result = target(fakeRequest)
-          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          status(result) shouldBe Status.FORBIDDEN
+          Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agent.title")
         }
       }
     }
