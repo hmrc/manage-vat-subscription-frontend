@@ -36,7 +36,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
       "the Agent is signed up for HMRC-AS-AGENT (authorised)" should {
 
         "return 200 OK" in {
-          given.agent.isAgentAuthorised
+          given.agent.isSignedUpToAgentServices
           show.status shouldBe OK
         }
       }
@@ -44,7 +44,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
       "the Agent is not signed up for HMRC-AS-AGENT (not authorised)" should {
 
         "return ISE (500)" in {
-          given.agent.isAgentNotEnrolledToAsAgent
+          given.agent.isNotSignedUpToAgentServices
           show.status shouldBe INTERNAL_SERVER_ERROR
         }
       }
@@ -101,7 +101,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
           lazy val result = submit(ClientVrnModel(clientVRN))
 
           "return status redirect SEE_OTHER (303)" in {
-            given.agent.isAgentAuthorised
+            given.agent.isSignedUpToAgentServices
             result.status shouldBe SEE_OTHER
           }
 
@@ -119,7 +119,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
           lazy val result = submit(ClientVrnModel("ABC"))
 
           "return status BAD_REQUEST (404)" in {
-            given.agent.isAgentAuthorised
+            given.agent.isSignedUpToAgentServices
             result.status shouldBe BAD_REQUEST
           }
         }
@@ -132,7 +132,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
           lazy val result = submit(ClientVrnModel(clientVRN))
 
           "return status ISE (500)" in {
-            given.agent.isAgentNotEnrolledToAsAgent
+            given.agent.isNotSignedUpToAgentServices
             result.status shouldBe INTERNAL_SERVER_ERROR
           }
 

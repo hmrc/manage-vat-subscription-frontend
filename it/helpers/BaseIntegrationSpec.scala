@@ -71,17 +71,17 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   }
 
   class Agent()(implicit builder: PreconditionBuilder) {
-    def isAgentAuthorised: PreconditionBuilder = {
+    def isSignedUpToAgentServices: PreconditionBuilder = {
       AuthStub.agentAuthorised()
       builder
     }
 
-    def isAgentNotEnrolledToAsAgent: PreconditionBuilder = {
+    def isNotSignedUpToAgentServices: PreconditionBuilder = {
       AuthStub.agentUnauthorisedOtherEnrolment()
       builder
     }
 
-    def isAgentUnauthorised: PreconditionBuilder = {
+    def isUnauthorised: PreconditionBuilder = {
       AuthStub.insufficientEnrolments()
       builder
     }

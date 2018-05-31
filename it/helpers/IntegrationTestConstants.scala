@@ -33,11 +33,4 @@ object IntegrationTestConstants {
     tradingName = Some("Vatmobile Taxi"),
     organisationName = None
   )
-
-  val organisationCustomerDetails = CustomerDetailsModel(
-    firstName = None,
-    lastName = None,
-    tradingName = Some("Vatmobile Taxi"),
-    organisationName = Some("Vatman Trading Ltd")
-  )
 }

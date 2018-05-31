@@ -33,8 +33,8 @@ import scala.concurrent.Future
 class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                                      val messagesApi: MessagesApi,
                                      val serviceErrorHandler: ServiceErrorHandler,
-                                     implicit val appConfig: AppConfig
-                                    ) extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[Request] with ActionFunction[Request, Request] {
+                                     implicit val appConfig: AppConfig)
+  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[Request] with ActionFunction[Request, Request] {
 
   override def invokeBlock[A](request: Request[A], f: Request[A] => Future[Result]): Future[Result] = {
 

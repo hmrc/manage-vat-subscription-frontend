@@ -40,7 +40,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
           "a success response is received for the Customer Details" should {
 
             "return 200 OK" in {
-              given.agent.isAgentAuthorised
+              given.agent.isSignedUpToAgentServices
               VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(individualCustomerDetails)
               target(Some(clientVRN)).status shouldBe OK
             }
@@ -51,7 +51,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
             lazy val result = target(Some(clientVRN))
 
             "return status ISE (500)" in {
-              given.agent.isAgentAuthorised
+              given.agent.isSignedUpToAgentServices
               VatSubscriptionStub.getClientDetailsError(clientVRN)
               result.status shouldBe INTERNAL_SERVER_ERROR
             }
@@ -67,7 +67,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
           lazy val result = target()
 
           "return redirect status SEE_OTHER (303)" in {
-            given.agent.isAgentAuthorised
+            given.agent.isSignedUpToAgentServices
             result.status shouldBe SEE_OTHER
           }
 
@@ -80,7 +80,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
       "the Agent is not signed up for HMRC-AS-AGENT (not authorised)" should {
 
         "return ISE (500)" in {
-          given.agent.isAgentNotEnrolledToAsAgent
+          given.agent.isNotSignedUpToAgentServices
           target(Some(clientVRN)).status shouldBe INTERNAL_SERVER_ERROR
         }
       }

@@ -66,7 +66,7 @@ class HelloWorldPageISpec extends BaseIntegrationSpec {
 
       "return 200 OK" in {
 
-        given.agent.isAgentAuthorised
+        given.agent.isSignedUpToAgentServices
 
         val result = get("/hello-world", Map(SessionKeys.CLIENT_VRN -> clientVRN))
 
@@ -78,7 +78,7 @@ class HelloWorldPageISpec extends BaseIntegrationSpec {
 
       "return 500 (ISE)" in {
 
-        given.agent.isAgentNotEnrolledToAsAgent
+        given.agent.isNotSignedUpToAgentServices
 
         val result = get("/hello-world")
 
