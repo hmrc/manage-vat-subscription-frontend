@@ -31,12 +31,17 @@ object AuthStub extends WireMockMethods {
 
   def authorised(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Individual, mtdVatEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(Some(AffinityGroup.Individual), mtdVatEnrolment))
   }
 
   def unauthorisedOtherEnrolment(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Individual, otherEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(Some(AffinityGroup.Individual), otherEnrolment))
+  }
+
+  def authorisedNoAffinityGroup(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = OK, body = successfulAuthResponse(None, otherEnrolment))
   }
 
   def unauthorisedNotLoggedIn(): StubMapping = {
@@ -46,12 +51,17 @@ object AuthStub extends WireMockMethods {
 
   def agentAuthorised(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Agent, agentEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(Some(AffinityGroup.Agent), agentEnrolment))
   }
 
   def agentUnauthorisedOtherEnrolment(): StubMapping = {
     when(method = POST, uri = authoriseUri)
-      .thenReturn(status = OK, body = successfulAuthResponse(AffinityGroup.Agent, otherEnrolment))
+      .thenReturn(status = OK, body = successfulAuthResponse(Some(AffinityGroup.Agent), otherEnrolment))
+  }
+
+  def insufficientEnrolments(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="InsufficientEnrolments""""))
   }
 
   private val mtdVatEnrolment = Json.obj(
@@ -84,10 +94,15 @@ object AuthStub extends WireMockMethods {
     )
   )
 
-  private def successfulAuthResponse(affinityGroup: AffinityGroup, enrolments: JsObject*): JsObject = {
-    Json.obj(
-      "affinityGroup" -> affinityGroup,
-      "allEnrolments" -> enrolments
-    )
+  private def successfulAuthResponse(affinityGroup: Option[AffinityGroup], enrolments: JsObject*): JsObject = {
+    affinityGroup match {
+      case Some(group) => Json.obj(
+        "affinityGroup" -> affinityGroup,
+        "allEnrolments" -> enrolments
+      )
+      case _ => Json.obj(
+        "allEnrolments" -> enrolments
+      )
+    }
   }
 }

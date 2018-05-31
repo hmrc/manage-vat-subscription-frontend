@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package common
+package controllers.predicates
 
-object EnrolmentKeys {
-  val vatEnrolmentId: String = "HMRC-MTD-VAT"
-  val vatIdentifierId: String = "VRN"
-  val agentEnrolmentId: String = "HMRC-AS-AGENT"
-  val agentIdentifierId: String = "AgentReferenceNumber"
-  val agentAffinityGroup: String = "Agent"
-  val mtdVatDelegatedAuthRule: String = "mtd-vat-auth"
+import common.EnrolmentKeys
+import uk.gov.hmrc.auth.core.AffinityGroup
+
+trait AuthBasePredicate {
+
+  def isAgent(group: AffinityGroup): Boolean = group.toString.contains(EnrolmentKeys.agentAffinityGroup)
+
 }

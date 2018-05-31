@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-package common
+package helpers
 
-object EnrolmentKeys {
-  val vatEnrolmentId: String = "HMRC-MTD-VAT"
-  val vatIdentifierId: String = "VRN"
-  val agentEnrolmentId: String = "HMRC-AS-AGENT"
-  val agentIdentifierId: String = "AgentReferenceNumber"
-  val agentAffinityGroup: String = "Agent"
-  val mtdVatDelegatedAuthRule: String = "mtd-vat-auth"
+import java.util.UUID
+
+import models.customerInfo.CustomerDetailsModel
+
+object IntegrationTestConstants {
+  val sessionId = s"stubbed-${UUID.randomUUID}"
+  val userId = s"/auth/oid/1234567890"
+
+  val clientVRN = "999999999"
+  val VRN = "111111111"
+
+  val individualCustomerDetails = CustomerDetailsModel(
+    firstName = Some("Nanana"),
+    lastName = Some("VatMan"),
+    tradingName = Some("Vatmobile Taxi"),
+    organisationName = None
+  )
 }
