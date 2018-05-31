@@ -67,7 +67,7 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
         }
 
         "has the correct URL" in {
-          element("article > p > a").attr("href") shouldBe controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
+          element("article > p > a").attr("href") shouldBe controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
         }
       }
     }

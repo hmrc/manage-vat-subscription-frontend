@@ -27,6 +27,8 @@ GET         /confirmation-vat-return-dates               @controllers.returnFreq
 GET         /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.show
 POST        /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.submit
 
+GET         /change-client-vat-number                    @controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
+
 GET         /confirm-client-vat-number                   @controllers.agentClientRelationship.ConfirmClientVrnController.show
 
 #Sign Out Routes
