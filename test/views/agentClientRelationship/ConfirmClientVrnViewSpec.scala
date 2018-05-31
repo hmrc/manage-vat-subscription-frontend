@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package views.customerInfo
+package views.agentClientRelationship
 
-import assets.CustomerDetailsTestConstants
-import assets.BaseTestConstants
+import assets.{BaseTestConstants, CustomerDetailsTestConstants}
 import assets.messages.{BaseMessages, ConfirmClientVrnPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class ConfirmClientsVrnViewSpec extends ViewBaseSpec {
+class ConfirmClientVrnViewSpec extends ViewBaseSpec {
 
   "The Confirm Change Client VRN page" when {
 
     "given an individial" should {
 
-      lazy val view = views.html.customerInfo.confirm_clients_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.individual)(request, messages, mockConfig)
+      lazy val view = views.html.agentClientRelationship.confirm_client_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -50,8 +49,15 @@ class ConfirmClientsVrnViewSpec extends ViewBaseSpec {
         elementText("article > p:nth-of-type(2)") shouldBe BaseTestConstants.vrn
       }
 
-      s"have a confirm button with the text '${BaseMessages.confirm}'" in {
-        elementText("button") shouldBe BaseMessages.confirm
+      s"have a confirm button" which {
+
+        s"has the text '${BaseMessages.confirm}'" in {
+          elementText("a.button") shouldBe BaseMessages.confirm
+        }
+
+        s"has a link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
+          element("a.button").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+        }
       }
 
       "have an edit different client link" which {

@@ -18,7 +18,7 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import config.AppConfig
-import controllers.predicates.{AuthPredicate, AuthoriseAsPrinciple}
+import controllers.predicates.AuthPredicate
 import forms.test.MoneyInputForm._
 import forms.test.{DateInputForm, MoneyInputForm, TextInputForm}
 import models.test.MoneyInputModel
