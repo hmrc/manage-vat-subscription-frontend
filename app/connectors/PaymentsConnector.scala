@@ -17,6 +17,7 @@
 package connectors
 
 import config.FrontendAppConfig
+import connectors.httpParsers.PaymentsHttpParser.PaymentsReads
 import connectors.httpParsers.ResponseHttpParser._
 import javax.inject.{Inject, Singleton}
 import models.core.ErrorModel
@@ -25,7 +26,6 @@ import play.api.Logger
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import play.api.http.Status
-import play.api.http.HeaderNames._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,13 +40,7 @@ class PaymentsConnector @Inject()(val http: HttpClient,
 
     http.POST[PaymentStartModel,HttpResponse](url, paymentStart) map { resp =>
       resp.status match {
-        case Status.ACCEPTED =>
-          resp.header(LOCATION) match {
-            case Some(redirectUrl) => Right(PaymentRedirectModel(redirectUrl))
-            case _ =>
-              Logger.warn(s"[PaymentsConnector][postPaymentsDetails]: Response Header did not contain location redirect")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
-          }
+        case Status.ACCEPTED => PaymentsReads.read("","",resp)
         case status =>
           Logger.warn(s"[PaymentsConnector][postPaymentsDetails]: Unexpected Response, Status $status returned")
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Payments"))

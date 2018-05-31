@@ -16,19 +16,10 @@
 
 package models.payments
 
-import play.api.libs.json.{JsObject, Json, Writes}
+import play.api.libs.json.{Format, Json}
 
 case class PaymentStartModel(vrn: String, agent: Boolean, returnUrl: String, backUrl: String)
 
 object PaymentStartModel {
-  implicit val writes: Writes[PaymentStartModel] = new Writes[PaymentStartModel] {
-
-    def writes(data: PaymentStartModel): JsObject = Json.obj(fields =
-      "vrn" -> data.vrn,
-      "agent" -> data.agent,
-      "returnUrl" -> data.returnUrl,
-      "backUrl" -> data.backUrl
-    )
-
-  }
+  implicit val format: Format[PaymentStartModel] = Json.format[PaymentStartModel]
 }

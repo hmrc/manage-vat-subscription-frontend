@@ -25,6 +25,7 @@ import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
+import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
@@ -45,7 +46,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
       "when given a successful response" should {
 
         "return a Right with a PaymentRedirectModel" in {
-          val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+          val successfulResponse = HttpResponse(Status.ACCEPTED, responseJson = Some(Json.obj("nextUrl" -> continueUrl)))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
           await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(continueUrl))
         }
@@ -54,16 +55,16 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
       "given a successful response status, but no redirect location" should {
 
         "return an Left with an ErrorModel" in {
-          val noRedirectResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq()))
+          val noRedirectResponse = HttpResponse(Status.ACCEPTED, responseJson = Some(Json.obj()))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(noRedirectResponse)
-          await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
+          await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
         }
       }
 
       "given a non successful response" should {
 
         "return an Left with an ErrorModel" in {
-          val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+          val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR)
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(failedResponse)
           await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Payments"))
         }

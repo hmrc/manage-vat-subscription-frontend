@@ -16,35 +16,37 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
+import models.payments.PaymentRedirectModel
+import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import play.api.Logger
 
+object PaymentsHttpParser {
 
-object CustomerDetailsHttpParser {
+  implicit object PaymentsReads extends HttpReads[HttpPostResult[PaymentRedirectModel]] {
 
-  implicit object CustomerDetailsReads extends HttpReads[HttpGetResult[CustomerDetailsModel]] {
-
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CustomerDetailsModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
 
       response.status match {
-        case Status.OK => {
-          Logger.debug("[CustomerDetailsHttpParser][read]: Status OK")
-          response.json.validate[CustomerDetailsModel].fold(
+        case Status.ACCEPTED => {
+          Logger.debug("[PaymentsHttpParser][read]: Status OK")
+          response.json.validate[PaymentRedirectModel].fold(
             invalid => {
-              Logger.warn(s"[CustomerDetailsHttpParser][read]: Invalid Json - $invalid")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
+              Logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
+              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Logger.warn(s"[CustomerDetailsHttpParser][read]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
+          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned")
+          Left(ErrorModel(status,"Downstream error returned when retrieving payment redirect"))
       }
+
     }
+
   }
+
 }
