@@ -43,9 +43,9 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
 
       "the Agent is not signed up for HMRC-AS-AGENT (not authorised)" should {
 
-        "return ISE (500)" in {
+        "return 403 (Forbidden)" in {
           given.agent.isNotSignedUpToAgentServices
-          show.status shouldBe INTERNAL_SERVER_ERROR
+          show.status shouldBe FORBIDDEN
         }
       }
     }
@@ -131,13 +131,13 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
 
           lazy val result = submit(ClientVrnModel(clientVRN))
 
-          "return status ISE (500)" in {
+          "return status 403 (Forbidden)" in {
             given.agent.isNotSignedUpToAgentServices
-            result.status shouldBe INTERNAL_SERVER_ERROR
+            result.status shouldBe FORBIDDEN
           }
 
-          "render the Internal Server Error page" in {
-            document(result).title shouldBe Messages("global.error.InternalServerError500.title")
+          "render the Agent Unauthorised page" in {
+            document(result).title shouldBe Messages("unauthorised.agent.title")
           }
         }
       }

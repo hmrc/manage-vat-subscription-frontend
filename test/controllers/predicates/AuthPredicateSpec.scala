@@ -64,9 +64,9 @@ class AuthPredicateSpec extends MockAuth {
 
       "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
-        "return ISE (500)" in {
+        "return Forbidden" in {
           mockAgentWithoutEnrolment()
-          status(target(fakeRequestWithClientsVRN)) shouldBe Status.INTERNAL_SERVER_ERROR
+          status(target(fakeRequestWithClientsVRN)) shouldBe Status.FORBIDDEN
         }
       }
     }

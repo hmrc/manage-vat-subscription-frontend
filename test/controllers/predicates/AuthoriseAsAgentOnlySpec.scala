@@ -48,10 +48,10 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "the Agent is not signed up to HMRC_AS_AGENT" should {
 
-        "return 500 (ISE)" in {
+        "return Forbidden" in {
           mockAgentWithoutEnrolment()
           val result = target(fakeRequest)
-          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          status(result) shouldBe Status.FORBIDDEN
         }
       }
     }

@@ -76,13 +76,13 @@ class HelloWorldPageISpec extends BaseIntegrationSpec {
 
     "the agent is not authorised" should {
 
-      "return 500 (ISE)" in {
+      "return 403 (Forbidden)" in {
 
         given.agent.isNotSignedUpToAgentServices
 
         val result = get("/hello-world")
 
-        result.status shouldBe INTERNAL_SERVER_ERROR
+        result.status shouldBe FORBIDDEN
       }
     }
   }

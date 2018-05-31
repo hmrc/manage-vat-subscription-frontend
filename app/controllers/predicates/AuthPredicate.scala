@@ -46,7 +46,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
-          case (true, enrolments) => checkAgentEnrolment(enrolments, request, block)
+          case (true, enrolments) => checkAgentEnrolment(enrolments, block)
           case (_, enrolments) => checkVatEnrolment(enrolments, block)
         }
       case _ =>
@@ -62,16 +62,15 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     }
   }
 
-  private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
+  private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
       Logger.debug("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
       authenticateAsAgentWithClient.invokeBlock(request, block)
     }
     else {
-      //TODO: Render Agent not Signed Up for Agent Services View
       Logger.debug(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
       Logger.warn(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment.")
-      Future.successful(serviceErrorHandler.showInternalServerError(request))
+      Future.successful(Forbidden(views.html.errors.agent.unauthorised()))
     }
 
   private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
