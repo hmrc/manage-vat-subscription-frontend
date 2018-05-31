@@ -46,6 +46,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
         "return 403 (Forbidden)" in {
           given.agent.isNotSignedUpToAgentServices
           show.status shouldBe FORBIDDEN
+          document(show).title shouldBe Messages("unauthorised.agent.title")
         }
       }
     }

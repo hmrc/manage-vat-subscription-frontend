@@ -18,7 +18,9 @@ package controllers.predicates
 
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
+import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.i18n.Messages
 import play.api.mvc.{Action, AnyContent}
 import play.api.mvc.Results.Ok
 
@@ -52,6 +54,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
           mockAgentWithoutEnrolment()
           val result = target(fakeRequest)
           status(result) shouldBe Status.FORBIDDEN
+          Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agent.title")
         }
       }
     }

@@ -17,12 +17,11 @@
 package controllers.predicates
 
 import mocks.MockAuth
-import models.User
+import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.i18n.Messages
 import play.api.mvc.Results.Ok
-import play.api.mvc.{Action, AnyContent, Result}
-import play.api.test.Helpers._
-
+import play.api.mvc.{Action, AnyContent}
 import scala.concurrent.Future
 
 class AuthPredicateSpec extends MockAuth {
@@ -57,7 +56,9 @@ class AuthPredicateSpec extends MockAuth {
 
           "return Forbidden (403)" in {
             mockUnauthorised()
-            status(target(fakeRequestWithClientsVRN)) shouldBe Status.FORBIDDEN
+            val result = await(target(fakeRequestWithClientsVRN))
+            status(result) shouldBe Status.FORBIDDEN
+            Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agentForClient.title")
           }
         }
       }
@@ -66,7 +67,9 @@ class AuthPredicateSpec extends MockAuth {
 
         "return Forbidden" in {
           mockAgentWithoutEnrolment()
-          status(target(fakeRequestWithClientsVRN)) shouldBe Status.FORBIDDEN
+          val result = await(target(fakeRequestWithClientsVRN))
+          status(result) shouldBe Status.FORBIDDEN
+          Jsoup.parse(bodyOf(result)) shouldBe Messages("unauthorised.agent.title")
         }
       }
     }
