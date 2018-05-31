@@ -16,6 +16,7 @@
 
 package controllers.predicates
 
+import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.{Action, AnyContent}
@@ -23,7 +24,7 @@ import play.api.mvc.Results.Ok
 
 import scala.concurrent.Future
 
-class AuthoriseAsAgentOnlySpec extends MockAuth {
+class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
   def target: Action[AnyContent] = {
     mockAgentOnlyAuthPredicate.async{
@@ -79,6 +80,15 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
         mockMissingBearerToken
         val result = target(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
+      }
+    }
+
+    "a user with an authorisation exception" should {
+
+      "return 403 (Forbidden)" in {
+        mockUnauthorised
+        val result = target(fakeRequest)
+        status(result) shouldBe Status.FORBIDDEN
       }
     }
   }
