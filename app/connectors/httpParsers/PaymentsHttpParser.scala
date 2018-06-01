@@ -30,7 +30,7 @@ object PaymentsHttpParser {
     override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
 
       response.status match {
-        case Status.ACCEPTED => {
+        case Status.OK => {
           Logger.debug("[PaymentsHttpParser][read]: Status OK")
           response.json.validate[PaymentRedirectModel].fold(
             invalid => {

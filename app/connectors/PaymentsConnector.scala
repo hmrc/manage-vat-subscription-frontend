@@ -40,7 +40,7 @@ class PaymentsConnector @Inject()(val http: HttpClient,
 
     http.POST[PaymentStartModel,HttpResponse](url, paymentStart) map { resp =>
       resp.status match {
-        case Status.ACCEPTED => PaymentsReads.read("","",resp)
+        case Status.OK => PaymentsReads.read("","",resp)
         case status =>
           Logger.warn(s"[PaymentsConnector][postPaymentsDetails]: Unexpected Response, Status $status returned")
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Payments"))

@@ -46,7 +46,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
       "when given a successful response" should {
 
         "return a Right with a PaymentRedirectModel" in {
-          val successfulResponse = HttpResponse(Status.ACCEPTED, responseJson = Some(Json.obj("nextUrl" -> continueUrl)))
+          val successfulResponse = HttpResponse(Status.OK, responseJson = Some(Json.obj("nextUrl" -> continueUrl)))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
           await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(continueUrl))
         }
@@ -55,7 +55,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
       "given a successful response status, but no redirect location" should {
 
         "return an Left with an ErrorModel" in {
-          val noRedirectResponse = HttpResponse(Status.ACCEPTED, responseJson = Some(Json.obj()))
+          val noRedirectResponse = HttpResponse(Status.OK, responseJson = Some(Json.obj()))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(noRedirectResponse)
           await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
         }
