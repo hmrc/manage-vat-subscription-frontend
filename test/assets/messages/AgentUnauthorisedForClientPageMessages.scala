@@ -16,11 +16,11 @@
 
 package assets.messages
 
-object BaseMessages {
+object AgentUnauthorisedForClientPageMessages {
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
+  val title = "You’re not authorised for this client"
+  val pageHeading = "You’re not authorised for this client"
+  val instructions = "To use this service, your client needs to authorise you as their agent."
+  val tryAgain = "If you think you have entered the wrong details you can try again."
 
 }

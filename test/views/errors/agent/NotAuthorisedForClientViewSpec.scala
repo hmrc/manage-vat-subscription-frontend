@@ -19,6 +19,8 @@ package views.errors.agent
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import assets.messages.BaseMessages
+import assets.messages.{AgentUnauthorisedForClientPageMessages => Messages}
 
 class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
 
@@ -37,15 +39,15 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title" in {
-      document.title shouldBe "You’re not authorised for this client"
+      document.title shouldBe Messages.title
     }
 
     s"have a the correct page heading" in {
-      elementText(Selectors.pageHeading) shouldBe "You’re not authorised for this client"
+      elementText(Selectors.pageHeading) shouldBe Messages.pageHeading
     }
 
     s"have the correct instructions on the page" in {
-      elementText(Selectors.instructions) shouldBe "To use this service, your client needs to authorise you as their agent."
+      elementText(Selectors.instructions) shouldBe Messages.instructions
     }
 
     s"have a link to GOV.UK guidance" in {
@@ -53,7 +55,7 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct content for trying again" in {
-      elementText(Selectors.tryAgain) shouldBe "If you think you have entered the wrong details you can try again."
+      elementText(Selectors.tryAgain) shouldBe Messages.tryAgain
     }
 
     s"have a link to '${controllers.agentClientRelationship.routes.SelectClientVrnController.show().url}'" in {
@@ -61,7 +63,7 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
     }
 
     s"have a Sign out button" in {
-      elementText(Selectors.button) shouldBe "Sign out"
+      elementText(Selectors.button) shouldBe BaseMessages.signOut
     }
 
     s"have a link to sign out" in {

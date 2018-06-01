@@ -32,9 +32,11 @@ package views.errors.agent
  * limitations under the License.
  */
 
+import assets.messages.BaseMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import assets.messages.{AgentUnauthorisedPageMessages => Messages}
 
 class UnauthorisedViewSpec extends ViewBaseSpec {
 
@@ -51,15 +53,15 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title" in {
-      document.title shouldBe "You can’t use this service yet"
+      document.title shouldBe Messages.title
     }
 
     s"have a the correct page heading" in {
-      elementText(Selectors.pageHeading) shouldBe "You can’t use this service yet"
+      elementText(Selectors.pageHeading) shouldBe Messages.pageHeading
     }
 
     s"have the correct instructions on the page" in {
-      elementText(Selectors.instructions) shouldBe "To use this service, you need to set up an agent services account."
+      elementText(Selectors.instructions) shouldBe Messages.instructions
     }
 
     s"have a link to GOV.UK guidance" in {
@@ -67,7 +69,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     }
 
     s"have a Sign out button" in {
-      elementText(Selectors.button) shouldBe "Sign out"
+      elementText(Selectors.button) shouldBe BaseMessages.signOut
     }
 
     s"have a link to sign out" in {

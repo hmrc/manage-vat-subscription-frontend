@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package assets.messages
+package models.payments
 
-object BaseMessages {
+import play.api.libs.json.{Format, Json}
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
+case class PaymentRedirectModel(nextUrl: String)
 
+object PaymentRedirectModel {
+  implicit val format: Format[PaymentRedirectModel] = Json.format[PaymentRedirectModel]
 }

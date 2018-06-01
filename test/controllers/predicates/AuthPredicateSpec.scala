@@ -16,12 +16,12 @@
 
 package controllers.predicates
 
+import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, UnauthorisedPageMessages}
 import mocks.MockAuth
-import models.User
+import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
-import play.api.mvc.{Action, AnyContent, Result}
-import play.api.test.Helpers._
+import play.api.mvc.{Action, AnyContent}
 
 import scala.concurrent.Future
 
@@ -45,7 +45,7 @@ class AuthPredicateSpec extends MockAuth {
 
       "the Agent has an Active HMRC-AS-AGENT enrolment" when {
 
-        "the Agent is authorised to act on behalf of the Client" should {
+        "a successful authorisation result is returned from Auth" should {
 
           "return OK (200)" in {
             mockAgentAuthorised()
@@ -53,20 +53,32 @@ class AuthPredicateSpec extends MockAuth {
           }
         }
 
-        "the Agent is unauthorised to act on behalf of the Client" should {
+        "an unauthorised result is returned from Auth" should {
+
+          lazy val result = await(target(fakeRequestWithClientsVRN))
 
           "return Forbidden (403)" in {
-            mockUnauthorised
-            status(target(fakeRequestWithClientsVRN)) shouldBe Status.FORBIDDEN
+            mockUnauthorised()
+            status(result) shouldBe Status.FORBIDDEN
+          }
+
+          "render the Unauthorised page" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe UnauthorisedPageMessages.title
           }
         }
       }
 
       "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
-        "return ISE (500)" in {
+        lazy val result = await(target(fakeRequestWithClientsVRN))
+
+        "return Forbidden" in {
           mockAgentWithoutEnrolment()
-          status(target(fakeRequestWithClientsVRN)) shouldBe Status.INTERNAL_SERVER_ERROR
+          status(result) shouldBe Status.FORBIDDEN
+        }
+
+        "render the Unauthorised Agent page" in {
+          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
         }
       }
     }

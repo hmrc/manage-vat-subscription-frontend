@@ -27,7 +27,7 @@ trait ControllerBaseSpec extends MockAuth {
     "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
-        mockMissingBearerToken
+        mockMissingBearerToken()
         val result = controllerAction(fakeRequest)
         status(result) shouldBe Status.UNAUTHORIZED
       }

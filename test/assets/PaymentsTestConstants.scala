@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-package assets.messages
+package assets
 
-object BaseMessages {
+import BaseTestConstants._
+import models.core.ErrorModel
+import models.payments.PaymentStartModel
+import play.api.http.Status
+import play.api.libs.json.{JsObject, Json}
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
+object PaymentsTestConstants {
+
+  val paymentStart1: PaymentStartModel = PaymentStartModel(vrn, agent = true, "someReturnUrl", "someBackUrl")
+
+  val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
+
+  val successBadJson = Some(Json.obj("nextUrl" -> 1))
+
+  val successPaymentsResponse: String = "continueUrl"
+
+  val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
 
 }

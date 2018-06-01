@@ -45,7 +45,7 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
         (isAgent(affinityGroup), allEnrolments) match {
           case (true, _) =>
             Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
-            checkAgentEnrolment(allEnrolments, request, f)
+            checkAgentEnrolment(allEnrolments, f)
           case (_, _) =>
             Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
             Future.successful(Redirect(controllers.routes.CustomerDetailsController.show()))
@@ -64,15 +64,14 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
     }
   }
 
-  private def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], f: Request[A] => Future[Result]) =
+  private def checkAgentEnrolment[A](enrolments: Enrolments, f: Request[A] => Future[Result])(implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
       Logger.debug("[AuthoriseAsAgentOnly][checkAgentEnrolment] - Authenticated as agent")
       f(request)
     }
     else {
-      //TODO: Render Agent not Signed Up for Agent Services View
       Logger.debug(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
       Logger.warn(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment")
-      Future.successful(serviceErrorHandler.showInternalServerError(request))
+      Future.successful(Forbidden(views.html.errors.agent.unauthorised()))
     }
 }
