@@ -33,11 +33,11 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
     def result: Future[Either[ErrorModel, PaymentRedirectModel]] = TestPaymentsService.postPaymentDetails(paymentStart1)
 
-    "for getCustomerDetails method" when {
+    "for postPaymentDetails method" when {
 
-      "called for a Right with CustomerDetails" should {
+      "called for a Right with a redirect url" should {
 
-        "return a CustomerDetailsModel" in {
+        "return a PaymentRedirectModel" in {
           setupMockPostPaymentsDetails(paymentStart1)(Right(successPaymentsResponseModel))
           await(result) shouldBe Right(successPaymentsResponseModel)
         }
@@ -45,7 +45,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
       "given an error should" should {
 
-        "return an Left with an ErrorModel" in {
+        "return a Left with an ErrorModel" in {
           setupMockPostPaymentsDetails(paymentStart1)(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
