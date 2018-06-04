@@ -17,6 +17,7 @@
 package services
 
 import assets.BaseTestConstants.errorModel
+import assets.PaymentsTestConstants._
 import mocks.connectors.MockPaymentsConnector
 import models.core.ErrorModel
 import models.payments.PaymentRedirectModel
@@ -30,22 +31,22 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
   "PaymentsService" should {
 
-    def result: Future[Either[ErrorModel, PaymentRedirectModel]] = TestPaymentsService.postPaymentDetails(vrn)
+    def result: Future[Either[ErrorModel, PaymentRedirectModel]] = TestPaymentsService.postPaymentDetails(paymentStart1)
 
     "for getCustomerDetails method" when {
 
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockPostPaymentsDetails(vrn)(Right(individual))
-          await(result) shouldBe Right(individual)
+          setupMockPostPaymentsDetails(paymentStart1)(Right(successPaymentsResponseModel))
+          await(result) shouldBe Right(successPaymentsResponseModel)
         }
       }
 
       "given an error should" should {
 
         "return an Left with an ErrorModel" in {
-          setupMockUserDetails(vrn)(Left(errorModel))
+          setupMockPostPaymentsDetails(paymentStart1)(Left(errorModel))
           await(result) shouldBe Left(errorModel)
         }
       }

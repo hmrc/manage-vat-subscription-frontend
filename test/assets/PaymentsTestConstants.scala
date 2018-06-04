@@ -17,9 +17,7 @@
 package assets
 
 import BaseTestConstants._
-import models.core.ErrorModel
-import models.payments.PaymentStartModel
-import play.api.http.Status
+import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.libs.json.{JsObject, Json}
 
 object PaymentsTestConstants {
@@ -32,6 +30,6 @@ object PaymentsTestConstants {
 
   val successPaymentsResponse: String = "continueUrl"
 
-  val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
+  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(successPaymentsResponse)
 
 }

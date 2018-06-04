@@ -16,7 +16,8 @@
 
 package controllers.predicates
 
-import config.AppConfig
+import common.EnrolmentKeys
+import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.Logger
@@ -33,12 +34,10 @@ import scala.concurrent.Future
 @Singleton
 class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                               val messagesApi: MessagesApi,
-                              val authenticateAsPrinciple: AuthoriseAsPrinciple,
-                              val authenticateAsAgent: AuthoriseAsAgent,
+                              val authenticateAsAgentWithClient: AuthoriseAsAgentWithClient,
+                              val serviceErrorHandler: ServiceErrorHandler,
                               implicit val appConfig: AppConfig
-                             ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
-
-  private def isAgent(group: AffinityGroup): Boolean = group.toString.contains("Agent")
+                             ) extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
@@ -48,59 +47,41 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
           case (true, enrolments) => checkAgentEnrolment(enrolments, request, block)
-          case (_, enrolments) => checkVatEnrolment(enrolments, request, block)
+          case (_, enrolments) => checkVatEnrolment(enrolments, block)
         }
       case _ =>
-        Logger.info("[AuthPredicate][invokeBlock] - Missing affinity group")
-        Future(InternalServerError)
+        Logger.warn("[AuthPredicate][invokeBlock] - Missing affinity group")
+        Future.successful(serviceErrorHandler.showInternalServerError)
     } recover {
-      case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
-      case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
+      case _: NoActiveSession =>
+        Logger.debug("[AuthPredicate][invokeBlock] - No active session, rendering Session Timeout view")
+        Unauthorized(views.html.errors.sessionTimeout())
+      case _: AuthorisationException =>
+        Logger.warn("[AuthPredicate][invokeBlock] - Unauthorised exception, rendering Unauthorised view")
+        Forbidden(views.html.errors.unauthorised())
     }
-
   }
 
   private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
-    if (enrolments.enrolments.exists(_.key == "HMRC-AS-AGENT")) {
-      Logger.info("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
-      authenticateAsAgent.authorise(request, block)
+    if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
+      Logger.debug("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
+      authenticateAsAgentWithClient.invokeBlock(request, block)
     }
     else {
-      Logger.info(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-      Future(InternalServerError)
+      //TODO: Render Agent not Signed Up for Agent Services View
+      Logger.debug(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
+      Logger.warn(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment.")
+      Future.successful(serviceErrorHandler.showInternalServerError(request))
     }
 
-  private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, request: Request[A], block: User[A] => Future[Result]) =
-    if (enrolments.enrolments.exists(_.key == "HMRC-MTD-VAT")) {
-      Logger.info("[AuthPredicate][checkVatEnrolment] - Authenticating as principle")
-      authenticateAsPrinciple.authorise(request, block)
+  private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
+    if (enrolments.enrolments.exists(_.key == EnrolmentKeys.vatEnrolmentId)) {
+      Logger.debug("[AuthPredicate][checkVatEnrolment] - Authenticated as principle")
+      block(User(enrolments))
     }
     else {
-      Logger.info("[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment")
-      Future(InternalServerError)
+      Logger.debug(s"[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment. $enrolments")
+      Future.successful(Forbidden(views.html.errors.unauthorised()))
     }
-
 }
 
-@Singleton
-class AgentOnlyAuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
-                                       val messagesApi: MessagesApi,
-                                       val authenticateAsAgent: AuthoriseAsAgent,
-                                       implicit val appConfig: AppConfig
-                                      ) extends FrontendController with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
-
-  override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
-
-    implicit val req = request
-
-    // TODO: Remove this retrieval but WAY too difficult right now
-    val unnecessaryRetrievals = Retrievals.affinityGroup and Retrievals.allEnrolments
-    enrolmentsAuthService.authorised(Enrolment("HMRC-AS-AGENT")).retrieve(unnecessaryRetrievals) {
-      case _ => authenticateAsAgent.authorise(request, block)
-    } recover {
-      case _: InsufficientEnrolments => Forbidden(views.html.errors.unauthorised())
-      case _: NoActiveSession => Unauthorized(views.html.errors.sessionTimeout())
-      case _: AuthorisationException => Forbidden(views.html.errors.unauthorised())
-    }
-  }
-}

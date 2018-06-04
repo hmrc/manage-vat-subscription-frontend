@@ -37,7 +37,7 @@ trait MockPaymentsConnector extends UnitSpec with MockitoSugar with BeforeAndAft
     reset(mockPaymentsConnector)
   }
 
-  def setupMockPostPaymentsDetails(model: PaymentStartModel, response: Either[ErrorModel, PaymentRedirectModel]): Unit = {
+  def setupMockPostPaymentsDetails(model: PaymentStartModel)(response: Either[ErrorModel, PaymentRedirectModel]): Unit = {
     when(mockPaymentsConnector.postPaymentsDetails(ArgumentMatchers.eq(model))(any(), any()))
       .thenReturn(Future.successful(response))
   }
