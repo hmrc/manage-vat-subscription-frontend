@@ -11,7 +11,14 @@
 
 # Add all the application routes to the prod.routes file
 
-GET        /vat-through-software/account/test-only/feature-switch            @controllers.testOnly.FeatureSwitchController.featureSwitch
-POST       /vat-through-software/account/test-only/feature-switch            @controllers.testOnly.FeatureSwitchController.submitFeatureSwitch
+GET        /vat-through-software/account/test-only/feature-switch            @testOnly.controllers.FeatureSwitchController.featureSwitch
+POST       /vat-through-software/account/test-only/feature-switch            @testOnly.controllers.FeatureSwitchController.submitFeatureSwitch
+
+# NOCSRF
+POST        /vat-through-software/account/test-only/populate-stub            @testOnly.controllers.DynamicStubController.populateStub
+
+# NOCSRF
+DELETE      /vat-through-software/account/test-only/clear-stub               @testOnly.controllers.DynamicStubController.clearStub
+
 
 ->         /                                                                  prod.Routes
