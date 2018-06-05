@@ -36,10 +36,11 @@ object ReturnFrequencyMessages {
   }
 
   object ReceivedPage {
-    val heading = "We have received your details"
-    val subheading = "What happens next"
-    val p1 = "We will usually update the VAT Return dates within 2 working days. We will send you an email notification and a secure message when the details have changed."
-    val p2 = "If this change is accepted, the business must submit this quarter’s return before following the new VAT Return dates"
-    val p3 = "You can view your requested change."
+    val heading = "We have received the new VAT Return dates"
+    val h2 = "What happens next"
+    val p1 = "We will usually let you know if you can change these details within 2 working days."
+    val p2 = "If this change is accepted:"
+    val bullet1 = "we will send a confirmation letter to your business address"
+    val bullet2 = "the business must submit this quarter’s return before following the new VAT Return dates"
   }
 }
