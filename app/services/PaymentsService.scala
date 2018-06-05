@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package assets
+package services
 
-import BaseTestConstants._
+import connectors.PaymentsConnector
+import javax.inject.{Inject, Singleton}
+import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
-import play.api.libs.json.{JsObject, Json}
+import uk.gov.hmrc.http.HeaderCarrier
 
-object PaymentsTestConstants {
+import scala.concurrent.{ExecutionContext, Future}
 
-  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, agent = true, "someReturnUrl", "someBackUrl")
+@Singleton
+class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
-  val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
-
-  val successBadJson = Some(Json.obj("nextUrl" -> 1))
-
-  val successPaymentsResponse: String = "continueUrl"
-
-  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(successPaymentsResponse)
+  def postPaymentDetails(paymentStartModel: PaymentStartModel)
+                       (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, PaymentRedirectModel]] =
+    paymentsConnector.postPaymentsDetails(paymentStartModel)
 
 }
