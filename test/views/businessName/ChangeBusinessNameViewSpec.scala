@@ -27,6 +27,18 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
 
   "Rendering the Change Business Name page" should {
 
+    object Selectors {
+      val wrapper = "#content"
+      val pageHeading = s"$wrapper h1"
+      val p1 = s"$wrapper p:nth-of-type(1)"
+      val p2 = s"$wrapper p:nth-of-type(2)"
+      val p3 = s"$wrapper p:nth-of-type(3)"
+      val bullet1 = s"$wrapper li:nth-of-type(1)"
+      val bullet2 = s"$wrapper li:nth-of-type(2)"
+      val p4 = s"$wrapper p:nth-of-type(4)"
+      val link = s"$wrapper #continue"
+    }
+
     lazy val view = views.html.businessName.change_business_name(organisationName)(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -35,32 +47,42 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
     }
 
     s"have a the correct page heading of '${viewMessages.h1}'" in {
-      elementText("h1") shouldBe viewMessages.h1
+      elementText(Selectors.pageHeading) shouldBe viewMessages.h1
     }
 
     s"have a the correct p1 of '${viewMessages.p1(organisationName)}'" in {
-      elementText("#p1") shouldBe viewMessages.p1(organisationName)
-    }
-
-    s"have a the correct panel indent of '${viewMessages.tradingNameMessage}'" in {
-      elementText("#tradingNameMessage") shouldBe viewMessages.tradingNameMessage
+      elementText(Selectors.p1) shouldBe viewMessages.p1(organisationName)
     }
 
     s"have a the correct p2 of '${viewMessages.p2}'" in {
-      elementText("#p2") shouldBe viewMessages.p2
+      elementText(Selectors.p2) shouldBe viewMessages.p2
+    }
+
+    s"have a the correct p3 of '${viewMessages.p3}'" in {
+      elementText(Selectors.p3) shouldBe viewMessages.p3
+    }
+
+    s"have a the correct bullet1 of '${viewMessages.bullet1}'" in {
+      elementText(Selectors.bullet1) shouldBe viewMessages.bullet1
+    }
+
+    s"have a the correct bullet2 of '${viewMessages.bullet2}'" in {
+      elementText(Selectors.bullet2) shouldBe viewMessages.bullet2
+    }
+
+    s"have a the correct p4 of '${viewMessages.p4}'" in {
+      elementText(Selectors.p4) shouldBe viewMessages.p4
     }
 
     "have a continue link" which {
 
       s"has the text '${viewMessages.link}'" in {
-        elementText("#continue") shouldBe viewMessages.link
+        elementText(Selectors.link) shouldBe viewMessages.link
       }
 
       "has a URL to the Gov.UK guidance page for changing name via COHO" in {
-        element("#continue").attr("href") shouldBe mockConfig.govUkCohoNameChangeUrl
+        element(Selectors.link).attr("href") shouldBe mockConfig.govUkCohoNameChangeUrl
       }
-
     }
-
   }
 }

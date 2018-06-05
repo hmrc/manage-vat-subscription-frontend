@@ -25,14 +25,19 @@
 
     @headings(messages("change_business_name.h1"))
 
-    <p id="p1">@Html(messages("change_business_name.p1", organisationName))</p>
+    <p>@messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.</p>
 
-    <div class="panel panel-border-wide">
-        <p id="tradingNameMessage">@messages("change_business_name.tradingName")</p>
-    </div>
+    <p>@messages("change_business_name.p2")</p>
 
-    <p id="p2">@messages("change_business_name.p2")</p>
+    <p>@messages("change_business_name.p3")</p>
 
-    <a  id="continue" target="_blank" href="@appConfig.govUkCohoNameChangeUrl" type="submit">@messages("change_business_name.link")</a>
+    <ul class="list list-bullet">
+        <li>@Html(messages("change_business_name.bullet1"))</li>
+        <li>@Html(messages("change_business_name.bullet2"))</li>
+    </ul>
+
+    <p>@messages("change_business_name.p4")</p>
+
+    <a id="continue" target="_blank" href="@appConfig.govUkCohoNameChangeUrl" type="submit">@messages("change_business_name.link")</a>
 
 }

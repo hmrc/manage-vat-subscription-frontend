@@ -18,12 +18,16 @@ package assets.messages
 
 object ChangeBusinessNamePageMessages {
 
-  val title = "Change of business name"
+  val title = "Change the business name"
   val h1 = title
 
-  val p1: String => String = name => s"""You can change the business name from $name."""
-  val tradingNameMessage = "You do not need to tell us if the business will use a different trading name."
-  val p2 = "We will update the business name with HMRC and Companies House. This can take up to xx working days."
-  val link = "Continue (opens in a new tab)"
+  val p1: String => String = name => s"""The business name is currently $name."""
+  val p2 = "You will be taken to Companies House to change it. The business name will automatically update with HMRC too."
+  val p3 = "Changing the business name costs:"
+  val bullet1 = "£8 to update within 2 working days"
+  val bullet2 = "£30 to update on the same day"
+  val p4 = "Companies House will send you an email notification, a secure message and a new certificate when the details have changed."
+
+  val link = "Continue to Companies House (opens in a new tab)"
 
 }

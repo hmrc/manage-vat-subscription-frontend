@@ -18,14 +18,9 @@ package assets.messages
 
 object CustomerDetailsPageMessages {
 
-  val title = "Change the business details"
+  val title = "Change of business details"
   val h1 = title
   val subheading = "Your VAT details"
-
-  val p1 = "Tell HMRC about changes to the VAT details for:"
-  val bullet1 = "your own business"
-  val bullet2 = "a business that you represent"
-  val p2 = "We will send a confirmation message when the details have been changed."
 
   val h2 = "About the business"
 

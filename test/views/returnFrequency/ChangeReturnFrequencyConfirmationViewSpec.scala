@@ -19,13 +19,13 @@ package views.returnFrequency
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-import assets.messages.{ReturnFrequencyMessages => viewMessages}
+import assets.messages.{BaseMessages, ReturnFrequencyMessages => viewMessages}
 
-class DatesReceivedViewSpec extends ViewBaseSpec {
+class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
   "Rendering the Dates Received page" should {
 
-    lazy val view = views.html.returnFrequency.dates_received()(request, messages, mockConfig)
+    lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
@@ -36,28 +36,35 @@ class DatesReceivedViewSpec extends ViewBaseSpec {
       elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
     }
 
-    s"have the correct sub heading of '${viewMessages.ReceivedPage.subheading}'" in {
-      elementText("#sub-heading") shouldBe viewMessages.ReceivedPage.subheading
+    s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {
+      elementText("h2") shouldBe viewMessages.ReceivedPage.h2
     }
 
     s"have the correct p1 of '${viewMessages.ReceivedPage.p1}'" in {
-      elementText("#p1") shouldBe viewMessages.ReceivedPage.p1
+      paragraph(1) shouldBe viewMessages.ReceivedPage.p1
     }
 
     s"have the correct p2 of '${viewMessages.ReceivedPage.p2}'" in {
-      elementText("#p2") shouldBe viewMessages.ReceivedPage.p2
+      paragraph(2) shouldBe viewMessages.ReceivedPage.p2
     }
 
-    s"have the correct p3" which {
+    s"have the correct bullet1 of '${viewMessages.ReceivedPage.bullet1}'" in {
+      bullet(1) shouldBe viewMessages.ReceivedPage.bullet1
+    }
 
-      s"has the text '${viewMessages.ReceivedPage.p3}'" in {
-        elementText("#p3") shouldBe viewMessages.ReceivedPage.p3
+    s"have the correct p2 of '${viewMessages.ReceivedPage.bullet2}'" in {
+      bullet(2) shouldBe viewMessages.ReceivedPage.bullet2
+    }
+
+    s"have the correct finish button" which {
+
+      s"has the text '${BaseMessages.finish}'" in {
+        elementText("#finish") shouldBe BaseMessages.finish
       }
 
       s"has link back to customer details page" in {
-        element("#view-change-link").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
       }
-
     }
   }
 }

@@ -22,6 +22,7 @@ import play.twirl.api.Html
 import views.ViewBaseSpec
 import views.html.{businessAddress => views}
 import assets.messages.{ChangeAddressConfirmationPageMessages => viewMessages}
+import assets.messages.BaseMessages
 
 class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
@@ -37,17 +38,21 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
   }
 
   s"have the correct p1 of '${viewMessages.p1}'" in {
-    elementText("article > p:nth-of-type(1)") shouldBe viewMessages.p1
+    paragraph(1) shouldBe viewMessages.p1
   }
 
-  s"have the correct p2" which {
+  s"have the correct p2 of '${viewMessages.p2}'" in {
+    paragraph(2) shouldBe viewMessages.p2
+  }
 
-    s"has the correct text of '${viewMessages.p2}" in {
-      elementText("article > p:nth-of-type(2)") shouldBe viewMessages.p2
+  s"have a button to finish" which {
+
+    s"has the correct text of '${BaseMessages.finish}" in {
+      elementText("#finish") shouldBe BaseMessages.finish
     }
 
     s"has the correct link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
-      element("article > p:nth-of-type(2) a").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+      element("#finish").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
     }
   }
 }
