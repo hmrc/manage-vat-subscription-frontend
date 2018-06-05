@@ -40,13 +40,9 @@ featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
 
-customer_details.title = Change the business details
+customer_details.title = Change of business details
 customer_details.subheading = Your VAT details
-customer_details.h1 = Change the business details
-customer_details.p1 = Tell HMRC about changes to the VAT details for:
-customer_details.bullet1 = your own business
-customer_details.bullet2 = a business that you represent
-customer_details.p2 = We will send a confirmation message when the details have been changed.
+customer_details.h1 = Change of business details
 customer_details.h2 = About the business
 customer_details.change = Change
 customer_details.businessName.heading = Business name
@@ -58,12 +54,15 @@ customer_details.businessAddress.change.hidden = your Business address
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = your VAT Return dates
 
-change_business_name.title = Change of business name
-change_business_name.h1 = Change of business name
-change_business_name.p1 = You can change the business name from <span class="bold-small">{0}</span>.
-change_business_name.tradingName = You do not need to tell us if the business will use a different trading name.
-change_business_name.p2 = We will update the business name with HMRC and Companies House. This can take up to xx working days.
-change_business_name.link = Continue (opens in a new tab)
+change_business_name.title = Change the business name
+change_business_name.h1 = Change the business name
+change_business_name.p1 = The business name is currently
+change_business_name.p2 = You will be taken to Companies House to change it. The business name will automatically update with HMRC too.
+change_business_name.p3 = Changing the business name costs:
+change_business_name.bullet1 = &pound;8 to update within 2 working days
+change_business_name.bullet2 = &pound;30 to update on the same day
+change_business_name.p4 = Companies House will send you an email notification, a secure message and a new certificate when the details have changed.
+change_business_name.link = Continue to Companies House (opens in a new tab)
 
 change_address_confirmation.title = We''ve received your details
 change_address_confirmation.h2 = What happens next

@@ -43,18 +43,6 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         elementText("#sub-heading") shouldBe viewMessages.subheading
       }
 
-      s"have a paragraph p1 with '${viewMessages.p1}'" in {
-        elementText("#p1") shouldBe viewMessages.p1
-      }
-
-      s"have a bullet1 with '${viewMessages.bullet1}'" in {
-        elementText("#bullet1") shouldBe viewMessages.bullet1
-      }
-
-      s"have a bullet2 with '${viewMessages.bullet2}'" in {
-        elementText("#bullet2") shouldBe viewMessages.bullet2
-      }
-
       s"have a section heading (h2) with '${viewMessages.h2}'" in {
         elementText("h2") shouldBe viewMessages.h2
       }
