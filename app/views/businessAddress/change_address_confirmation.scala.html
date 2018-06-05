@@ -26,11 +26,11 @@
     </div>
 
     <h2>@messages("change_address_confirmation.h2")</h2>
+
     <p>@messages("change_address_confirmation.p1")</p>
-    <p>
-        @messages("change_address_confirmation.p2")
-        <a href='@controllers.routes.CustomerDetailsController.show()'>
-            @messages("change_address_confirmation.p2.link")</a>@messages("common.fullStop")
-    </p>
+
+    <p>@messages("change_address_confirmation.p2")</p>
+
+    <a href='@controllers.routes.CustomerDetailsController.show()' class="button">@messages("common.finish")</a>
 
 }
