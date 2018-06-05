@@ -48,11 +48,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
   s"have a button to finish" which {
 
     s"has the correct text of '${BaseMessages.finish}" in {
-      elementText(".button") shouldBe BaseMessages.finish
+      elementText("#finish") shouldBe BaseMessages.finish
     }
 
     s"has the correct link to '${controllers.routes.CustomerDetailsController.show().url}'" in {
-      element(".button").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+      element("#finish").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
     }
   }
 }

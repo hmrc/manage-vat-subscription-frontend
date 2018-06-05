@@ -27,13 +27,13 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class DatesReceivedController @Inject()(val messagesApi: MessagesApi,
-                                        val authenticate: AuthPredicate,
-                                        val customerDetailsService: CustomerDetailsService,
-                                        val serviceErrorHandler: ServiceErrorHandler,
-                                        implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
+                                                  val authenticate: AuthPredicate,
+                                                  val customerDetailsService: CustomerDetailsService,
+                                                  val serviceErrorHandler: ServiceErrorHandler,
+                                                  implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
-    Future.successful(Ok(views.html.returnFrequency.dates_received()))
+    Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
   }
 }
