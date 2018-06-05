@@ -53,6 +53,7 @@ trait AppConfig extends ServicesConfig {
 class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig with AppConfig {
 
   override protected def mode: Mode = environment.mode
+  private def loadConfig(key: String) = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = getString(Keys.contactFrontendService)
   private lazy val contactFormServiceIdentifier: String = "VATVC"
@@ -101,5 +102,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
+
+  lazy val manageVatSubscriptionFrontendUrl: String = loadConfig("base.url")
+  lazy val changeBusinessDetailsUrl: String = manageVatSubscriptionFrontendUrl + "/change-business-details"
 
 }

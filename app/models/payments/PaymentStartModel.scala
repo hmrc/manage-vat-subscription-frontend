@@ -18,7 +18,10 @@ package models.payments
 
 import play.api.libs.json.{Format, Json}
 
-case class PaymentStartModel(vrn: String, agent: Boolean, returnUrl: String, backUrl: String)
+case class PaymentStartModel(vrn: String,
+                             agent: Boolean,
+                             returnUrl: String,
+                             backUrl: String)
 
 object PaymentStartModel {
   implicit val format: Format[PaymentStartModel] = Json.format[PaymentStartModel]
