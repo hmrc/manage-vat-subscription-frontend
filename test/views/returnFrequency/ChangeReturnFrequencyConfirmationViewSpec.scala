@@ -21,11 +21,11 @@ import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 import assets.messages.{ReturnFrequencyMessages => viewMessages}
 
-class DatesReceivedViewSpec extends ViewBaseSpec {
+class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
   "Rendering the Dates Received page" should {
 
-    lazy val view = views.html.returnFrequency.dates_received()(request, messages, mockConfig)
+    lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
