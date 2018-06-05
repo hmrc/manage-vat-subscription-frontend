@@ -57,4 +57,6 @@ trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
   }
 
   def formatHtml(markup: String): String = Jsoup.parseBodyFragment(s"\n$markup\n").toString.trim
+
+  def paragraph(index: Int)(implicit document: Document): String = elementText(s"article > p:nth-of-type($index)")
 }
