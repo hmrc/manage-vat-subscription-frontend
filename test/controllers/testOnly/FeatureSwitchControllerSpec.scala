@@ -19,6 +19,7 @@ package controllers.testOnly
 import controllers.ControllerBaseSpec
 import play.api.http.Status
 import play.api.test.Helpers._
+import testOnly.controllers.FeatureSwitchController
 import utils.TestUtil
 
 class FeatureSwitchControllerSpec extends TestUtil {
@@ -52,7 +53,7 @@ class FeatureSwitchControllerSpec extends TestUtil {
     }
 
     "redirect the user to the feature switch page" in {
-      redirectLocation(result) shouldBe Some(routes.FeatureSwitchController.featureSwitch().url)
+      redirectLocation(result) shouldBe Some(testOnly.controllers.routes.FeatureSwitchController.featureSwitch().url)
     }
   }
 

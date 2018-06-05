@@ -39,13 +39,14 @@ object CustomerDetailsTestConstants {
     "tradingName" -> tradingName
   )
 
+
   val customerDetailsJsonMin = Json.obj()
 
   val individual = CustomerDetailsModel(
-    firstName = Some(firstName),
-    lastName = Some(lastName),
-    organisationName = None,
-    tradingName = None
+      firstName = Some(firstName),
+      lastName = Some(lastName),
+      organisationName = None,
+      tradingName = None
   )
 
   val organisation = CustomerDetailsModel(

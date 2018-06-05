@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package config.filters
+package models
 
-import javax.inject.Inject
+import play.api.libs.json.{JsPath, Reads}
 
-import play.api.http.DefaultHttpFilters
-import play.filters.csrf.CSRFFilter
-import uk.gov.hmrc.play.bootstrap.filters.FrontendFilters
+trait JsonReadUtil {
 
-class ServiceFilters @Inject()(defaultFilters: FrontendFilters, excludingCSRFFilter: ExcludingCSRFFilter, whitelistFilter: WhitelistFilter)
-extends DefaultHttpFilters({
-defaultFilters.filters.filterNot(f => f.isInstanceOf[CSRFFilter]) :+ excludingCSRFFilter :+ whitelistFilter
-}:_*)
+  implicit class JsonReadUtil(jsPath: JsPath) {
+    def readOpt[T](implicit reads: Reads[T]): Reads[Option[T]] = jsPath.readNullable[T].orElse(Reads.pure(None))
+  }
+
+}

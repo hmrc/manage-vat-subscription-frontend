@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package config.filters
+package testOnly.models
 
-import javax.inject.Inject
+import play.api.libs.json.{JsValue, Json, OFormat}
 
-import play.api.http.DefaultHttpFilters
-import play.filters.csrf.CSRFFilter
-import uk.gov.hmrc.play.bootstrap.filters.FrontendFilters
+case class SchemaModel(
+                        _id: String,
+                        url: String,
+                        method: String,
+                        responseSchema: JsValue,
+                        requestSchema: Option[JsValue] = None
+                      )
 
-class ServiceFilters @Inject()(defaultFilters: FrontendFilters, excludingCSRFFilter: ExcludingCSRFFilter, whitelistFilter: WhitelistFilter)
-extends DefaultHttpFilters({
-defaultFilters.filters.filterNot(f => f.isInstanceOf[CSRFFilter]) :+ excludingCSRFFilter :+ whitelistFilter
-}:_*)
+object SchemaModel {
+  implicit val formats: OFormat[SchemaModel] = Json.format[SchemaModel]
+}

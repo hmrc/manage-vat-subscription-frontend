@@ -21,7 +21,7 @@
 
 @views.html.main_template(title = messages("featureSwitch.title"), bodyClasses = None, appConfig = appConfig) {
 
-  @helper.form(action = controllers.testOnly.routes.FeatureSwitchController.submitFeatureSwitch) {
+  @helper.form(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
       @CSRF.formField
 
       <div class="form-group">
