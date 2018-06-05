@@ -9,6 +9,7 @@ common.confirm = Confirm
 common.confirmAndContinue = Confirm and continue
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
+common.finish = Finish
 
 # Client VRN form messages
 clientVrnForm.vrn.missing = Enter your client''s VAT number
@@ -64,11 +65,10 @@ change_business_name.bullet2 = &pound;30 to update on the same day
 change_business_name.p4 = Companies House will send you an email notification, a secure message and a new certificate when the details have changed.
 change_business_name.link = Continue to Companies House (opens in a new tab)
 
-change_address_confirmation.title = We''ve received your details
+change_address_confirmation.title = We have received the new business address
 change_address_confirmation.h2 = What happens next
-change_address_confirmation.p1 = If this change is accepted, we will usually update the principal place of business within 2 working days.
-change_address_confirmation.p2 = You can
-change_address_confirmation.p2.link = view your requested change
+change_address_confirmation.p1 = If this change is accepted, we will send a confirmation letter to the new business address.
+change_address_confirmation.p2 = We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately.
 
 clients_vrn.title = Changes in circumstances
 clients_vrn.heading = What is your client''s VAT number?
