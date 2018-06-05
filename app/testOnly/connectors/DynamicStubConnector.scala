@@ -44,7 +44,7 @@ class DynamicStubConnector @Inject()(val http: HttpClient,
   }
 
   def clearSchema()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
-    lazy val url = s"${appConfig.dynamicStubUrl}/setup/all-schema"
+    lazy val url = s"${appConfig.dynamicStubUrl}/setup/all-schemas"
     http.DELETE[HttpResponse](url)
   }
 }
