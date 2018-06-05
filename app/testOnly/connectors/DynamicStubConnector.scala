@@ -19,7 +19,7 @@ package testOnly.connectors
 import javax.inject.Inject
 
 import testOnly.TestOnlyAppConfig
-import testOnly.models.DataModel
+import testOnly.models.{DataModel, SchemaModel}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
@@ -38,4 +38,13 @@ class DynamicStubConnector @Inject()(val http: HttpClient,
     http.DELETE[HttpResponse](url)
   }
 
+  def populateSchema(schemaModel: SchemaModel)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+    lazy val url = s"${appConfig.dynamicStubUrl}/setup/schema"
+    http.POST[SchemaModel, HttpResponse](url, schemaModel)
+  }
+
+  def clearSchema()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResponse] = {
+    lazy val url = s"${appConfig.dynamicStubUrl}/setup/all-schema"
+    http.DELETE[HttpResponse](url)
+  }
 }

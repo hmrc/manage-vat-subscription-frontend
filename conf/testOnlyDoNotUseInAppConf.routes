@@ -18,7 +18,13 @@ POST       /vat-through-software/account/test-only/feature-switch            @te
 POST        /vat-through-software/account/test-only/populate-stub            @testOnly.controllers.DynamicStubController.populateStub
 
 # NOCSRF
+POST        /vat-through-software/account/test-only/populate-schema          @testOnly.controllers.DynamicStubController.populateSchema
+
+# NOCSRF
 DELETE      /vat-through-software/account/test-only/clear-stub               @testOnly.controllers.DynamicStubController.clearStub
+
+# NOCSRF
+DELETE      /vat-through-software/account/test-only/clear-schema             @testOnly.controllers.DynamicStubController.clearSchema
 
 
 ->         /                                                                  prod.Routes
