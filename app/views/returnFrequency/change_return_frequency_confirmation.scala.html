@@ -21,18 +21,23 @@
   bodyClasses = None,
   appConfig = appConfig) {
 
-  <div class="govuk-box-highlight">
-    <h1 id="page-heading" class="heading-xlarge">@messages("received_frequency.heading")</h1>
-  </div>
+    <div class="govuk-box-highlight">
+        <h1 id="page-heading" class="heading-xlarge">@messages("received_frequency.heading")</h1>
+    </div>
 
-  <h2 id="sub-heading" class="heading-medium">@messages("received_frequency.subheading")</h2>
-  <p id="p1" class="form-group">@messages("received_frequency.p1")</p>
-  <p id="p2">@messages("received_frequency.p2")</p>
-  <p id="p3">
-      @messages("received_frequency.p3")
-      <a id="view-change-link"
-         href="@controllers.routes.CustomerDetailsController.show().url"
-         type="submit">@messages("received_frequency.p3.link")
-      </a>
-  </p>
+    <h2 class="heading-medium">@messages("received_frequency.subheading")</h2>
+
+    <p>@messages("received_frequency.p1")</p>
+
+    <p>@messages("received_frequency.p2")</p>
+
+    <ul class="list list-bullet">
+        <li>@messages("received_frequency.bullet1")</li>
+        <li>@messages("received_frequency.bullet2")</li>
+    </ul>
+
+    <a  id="finish"
+        href="@controllers.routes.CustomerDetailsController.show().url"
+        class="button"
+        type="submit">@messages("common.finish")</a>
 }

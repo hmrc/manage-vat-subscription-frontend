@@ -17,8 +17,8 @@
 package assets.messages
 
 object ChangeAddressConfirmationPageMessages {
-  val title: String = "We've received your details"
+  val title: String = "We have received the new business address"
   val h2: String = "What happens next"
-  val p1: String = "If this change is accepted, we will usually update the principal place of business within 2 working days."
-  val p2: String = "You can view your requested change."
+  val p1: String = "If this change is accepted, we will send a confirmation letter to the new business address."
+  val p2: String = "We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately."
 }

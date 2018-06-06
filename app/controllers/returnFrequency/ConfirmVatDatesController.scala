@@ -49,7 +49,7 @@ class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
     getReturnFrequency() match {
       case Some(frequency) =>
         returnFrequencyService.updateReturnFrequency(user.vrn, frequency).map {
-          case Right(_) => Redirect(controllers.returnFrequency.routes.DatesReceivedController.show())
+          case Right(_) => Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show())
             .withSession(user.session - SessionKeys.RETURN_FREQUENCY)
           case _ => serviceErrorHandler.showInternalServerError
         }

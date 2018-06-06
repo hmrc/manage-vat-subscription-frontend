@@ -25,9 +25,9 @@ import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class DatesReceivedControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerDetailsService {
 
-  object TestDatesReceivedController extends DatesReceivedController(
+  object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
     messagesApi,
     mockAuthPredicate,
     mockCustomerDetailsService,
@@ -39,7 +39,7 @@ class DatesReceivedControllerSpec extends ControllerBaseSpec with MockCustomerDe
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestDatesReceivedController.show(fakeRequest)
+      lazy val result = TestChangeReturnFrequencyConfirmation.show(fakeRequest)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -57,6 +57,6 @@ class DatesReceivedControllerSpec extends ControllerBaseSpec with MockCustomerDe
       }
     }
 
-    unauthenticatedCheck(TestDatesReceivedController.show)
+    unauthenticatedCheck(TestChangeReturnFrequencyConfirmation.show)
   }
 }
