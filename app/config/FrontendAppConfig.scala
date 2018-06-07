@@ -74,7 +74,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
-  private lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
+  lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show().url).encodedUrl
   private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
@@ -102,8 +102,5 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
-
-  lazy val manageVatSubscriptionFrontendUrl: String = loadConfig("base.url")
-  lazy val changeBusinessDetailsUrl: String = manageVatSubscriptionFrontendUrl + "/change-business-details"
 
 }

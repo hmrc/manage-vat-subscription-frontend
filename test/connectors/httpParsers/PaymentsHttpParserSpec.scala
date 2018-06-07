@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 import assets.PaymentsTestConstants._
 import connectors.httpParsers.PaymentsHttpParser.PaymentsReads
-import models.payments.PaymentRedirectModel
+import models.payments.{NextUrl, PaymentRedirectModel}
 
 class PaymentsHttpParserSpec extends TestUtil {
 
@@ -31,7 +31,8 @@ class PaymentsHttpParserSpec extends TestUtil {
     "the http response status is OK with valid Json" should {
 
       "return a CustomerDetailsModel" in {
-        PaymentsReads.read("", "", HttpResponse(Status.OK, Some(successPaymentsResponseJson))) shouldBe Right(PaymentRedirectModel(successPaymentsResponse))
+        PaymentsReads.read("", "", HttpResponse(Status.OK, Some(successPaymentsResponseJson))) shouldBe
+          Right(PaymentRedirectModel(NextUrl(successPaymentsResponse)))
       }
     }
 

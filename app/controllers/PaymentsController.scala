@@ -33,14 +33,14 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
                                    val paymentsService: PaymentsService,
                                    val config: FrontendAppConfig) extends FrontendController with I18nSupport {
 
-  def paymentDetails(vrn: String, isAgent: Boolean): PaymentStartModel =
-    PaymentStartModel(vrn, isAgent,
-      config.manageVatSubscriptionFrontendUrl + controllers.routes.CustomerDetailsController.show(),
-      config.manageVatSubscriptionFrontendUrl + controllers.routes.CustomerDetailsController.show())
+  private[PaymentsController] def paymentDetails(vrn: String, isAgent: Boolean): PaymentStartModel =
+    PaymentStartModel("220432715", isAgent,
+      config.signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show(),
+      config.signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show())
 
   val sendToPayments: Action[AnyContent] = authenticate.async { implicit user =>
     paymentsService.postPaymentDetails(paymentDetails(user.vrn, user.isAgent)) map {
-      case Right(response) => Redirect(response.nextUrl)
+      case Right(response) => Redirect(response.links.nextUrl)
       case _ =>
         Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
         serviceErrorHandler.showInternalServerError

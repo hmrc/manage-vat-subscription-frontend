@@ -28,25 +28,14 @@ object PaymentsHttpParser {
   implicit object PaymentsReads extends HttpReads[HttpPostResult[PaymentRedirectModel]] {
 
     override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
-
-      response.status match {
-        case Status.OK => {
-          Logger.debug("[PaymentsHttpParser][read]: Status OK")
-          response.json.validate[PaymentRedirectModel].fold(
-            invalid => {
-              Logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
-            },
-            valid => Right(valid)
-          )
-        }
-        case status =>
-          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(status,"Downstream error returned when retrieving payment redirect"))
-      }
-
+      Logger.debug("[PaymentsHttpParser][read]: Status CREATED")
+      response.json.validate[PaymentRedirectModel].fold(
+        invalid => {
+          Logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
+          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
+        },
+        valid => Right(valid)
+      )
     }
-
   }
-
 }

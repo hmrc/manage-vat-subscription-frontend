@@ -20,7 +20,7 @@ import assets.BaseTestConstants.vrn
 import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import mocks.MockHttp
 import models.core.ErrorModel
-import models.payments.{PaymentRedirectModel, PaymentStartModel}
+import models.payments.{NextUrl, PaymentRedirectModel, PaymentStartModel}
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
@@ -48,7 +48,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
         "return a Right with a PaymentRedirectModel" in {
           val successfulResponse = HttpResponse(Status.OK, responseJson = Some(Json.obj("nextUrl" -> continueUrl)))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
-          await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(continueUrl))
+          await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(NextUrl(continueUrl)))
         }
       }
 

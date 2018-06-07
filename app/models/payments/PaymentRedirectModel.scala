@@ -18,8 +18,14 @@ package models.payments
 
 import play.api.libs.json.{Format, Json}
 
-case class PaymentRedirectModel(nextUrl: String)
+case class PaymentRedirectModel(links: NextUrl)
+
+case class NextUrl(nextUrl:String)
 
 object PaymentRedirectModel {
   implicit val format: Format[PaymentRedirectModel] = Json.format[PaymentRedirectModel]
+}
+
+object NextUrl {
+  implicit val format: Format[NextUrl] = Json.format[NextUrl]
 }

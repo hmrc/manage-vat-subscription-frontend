@@ -17,7 +17,7 @@
 package assets
 
 import BaseTestConstants._
-import models.payments.{PaymentRedirectModel, PaymentStartModel}
+import models.payments.{NextUrl, PaymentRedirectModel, PaymentStartModel}
 import play.api.libs.json.{JsObject, Json}
 
 object PaymentsTestConstants {
@@ -30,6 +30,6 @@ object PaymentsTestConstants {
 
   val successPaymentsResponse: String = "continueUrl"
 
-  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(successPaymentsResponse)
+  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(NextUrl(successPaymentsResponse))
 
 }
