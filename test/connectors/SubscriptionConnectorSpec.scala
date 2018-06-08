@@ -42,7 +42,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
       "format the url correctly" in {
         val testUrl = TestSubscriptionConnector.getCustomerDetailsUrl(vrn)
-        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
+        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
       }
     }
 
