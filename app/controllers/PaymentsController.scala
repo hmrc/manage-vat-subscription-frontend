@@ -34,7 +34,7 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
                                    val config: FrontendAppConfig) extends FrontendController with I18nSupport {
 
   private[PaymentsController] def paymentDetails(vrn: String, isAgent: Boolean): PaymentStartModel =
-    PaymentStartModel("220432715", isAgent,
+    PaymentStartModel(vrn, isAgent,
       config.signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show(),
       config.signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show())
 

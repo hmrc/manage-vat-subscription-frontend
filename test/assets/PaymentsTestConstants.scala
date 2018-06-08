@@ -24,7 +24,7 @@ object PaymentsTestConstants {
 
   val paymentStart: PaymentStartModel = PaymentStartModel(vrn, agent = false, "someReturnUrl", "someBackUrl")
 
-  val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
+  val successPaymentsResponseJson: JsObject = Json.obj("links" -> Json.obj("nextUrl" -> "continueUrl"))
 
   val successBadJson = Some(Json.obj("nextUrl" -> 1))
 

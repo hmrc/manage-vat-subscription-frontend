@@ -19,7 +19,7 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.WireMockMethods
 import models.payments.PaymentRedirectModel
-import play.api.http.Status.{OK, BAD_REQUEST}
+import play.api.http.Status.{OK, CREATED, BAD_REQUEST}
 import play.api.libs.json.Json
 
 object PaymentStub extends WireMockMethods {
@@ -28,7 +28,7 @@ object PaymentStub extends WireMockMethods {
 
   def postPaymentSuccess(paymentRedirect: PaymentRedirectModel): StubMapping = {
     when(method = POST, uri = paymentsUri)
-      .thenReturn(status = OK, body = Json.toJson(paymentRedirect))
+      .thenReturn(status = CREATED, body = Json.toJson(paymentRedirect))
   }
 
   def postPaymentError(): StubMapping = {
