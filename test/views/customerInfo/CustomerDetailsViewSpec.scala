@@ -53,6 +53,16 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
         }
 
+        "has the correct address output" in {
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line1.get
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.postCode.get
+          elementText("#businessAddress li:nth-child(7)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get
+        }
+
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {

@@ -16,6 +16,7 @@
 
 @import models.circumstanceInfo.CircumstanceDetails
 @import helpers.render_return_frequency
+@import helpers.render_address
 
 @(circumstances: CircumstanceDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -50,20 +51,24 @@
             </div>
         }
 
-        <div>
-            <dt id="businessAddressHeading" class="cya-question">
-                @messages("customer_details.businessAddress.heading")
-            </dt>
-            <dd id="businessAddress" class="cya-answer">
-
-            </dd>
-            <dd class="cya-change">
-                <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
-                    @messages("customer_details.change")
-                    <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
-                </a>
-            </dd>
-        </div>
+        @circumstances.ppob.map { ppob =>
+            @ppob.address.map { address =>
+                <div>
+                    <dt id="businessAddressHeading" class="cya-question">
+                        @messages("customer_details.businessAddress.heading")
+                    </dt>
+                    <dd id="businessAddress" class="cya-answer">
+                        @render_address(address)
+                    </dd>
+                    <dd class="cya-change">
+                        <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                            @messages("customer_details.change")
+                            <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+        }
 
         @circumstances.returnPeriod.map { period =>
             <div>
