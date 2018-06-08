@@ -16,8 +16,8 @@
 
 package views.customerInfo
 
-import assets.CustomerDetailsTestConstants._
-import assets.messages.{CustomerDetailsPageMessages => viewMessages}
+import assets.CircumstanceDetailsTestConstants._
+import assets.messages.{ReturnFrequencyMessages, CustomerDetailsPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -26,9 +26,9 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
   "Rendering the Customer Details page" when {
 
-    "Viewing for any user" should {
+    "Viewing for any user (in this case Individual)" should {
 
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -71,6 +71,10 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
         }
 
+        "has the correct value output for the current frequency" in {
+          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+        }
+
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
@@ -84,38 +88,9 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "Viewing for an Self-Employed Individual" should {
-
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "have a change details section for the Business Name" which {
-
-        s"has the heading '${viewMessages.organisationNameHeading}'" in {
-          elementText("#individual-name-text") shouldBe viewMessages.individualNameHeading
-        }
-
-        s"has the value '${individual.userName.get}'" in {
-          elementText("#individual-name") shouldBe individual.userName.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#individual-name-status") shouldBe viewMessages.change + " " + viewMessages.changeIndividualHidden
-          }
-
-          //TODO: Update this when URL developed and known
-          "has a link to '#'" in {
-            element("#individual-name-status").attr("href") shouldBe "#"
-          }
-        }
-      }
-    }
-
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customer_details(organisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -124,8 +99,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
         }
 
-        s"has the value '${organisation.organisationName.get}'" in {
-          elementText("#business-name") shouldBe organisation.organisationName.get
+        s"has the value '${customerInformationModelMaxOrganisation.customerDetails.organisationName.get}'" in {
+          elementText("#business-name") shouldBe customerInformationModelMaxOrganisation.customerDetails.organisationName.get
         }
 
         "has a change link" which {

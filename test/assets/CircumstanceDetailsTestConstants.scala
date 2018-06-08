@@ -59,7 +59,7 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(MCReturnPeriod)
+    Some(Mar)
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -68,7 +68,7 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(MCReturnPeriod)
+    Some(Mar)
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(

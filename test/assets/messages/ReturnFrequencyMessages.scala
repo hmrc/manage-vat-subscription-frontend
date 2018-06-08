@@ -19,10 +19,10 @@ package assets.messages
 object ReturnFrequencyMessages {
 
   val title = "Changes in circumstances"
-  val option1 = "January, April, July and October"
-  val option2 = "February, May, August and November"
-  val option3 = "March, June, September and December"
-  val option4 = "Every month"
+  val option1Jan = "January, April, July and October"
+  val option2Feb = "February, May, August and November"
+  val option3Mar = "March, June, September and December"
+  val option4Monthly = "Every month"
 
   object ChoosePage {
     val heading = "Choose the new VAT Return dates"

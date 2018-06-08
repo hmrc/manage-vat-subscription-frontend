@@ -13,8 +13,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
-@import models.circumstanceInfo.CustomerDetails
-@(customerDetails: CustomerDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+
+@import models.circumstanceInfo.CircumstanceDetails
+@import helpers.render_return_frequency
+
+@(circumstances: CircumstanceDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("customer_details.title"),
@@ -30,7 +33,7 @@
 
     <dl class="govuk-check-your-answers cya-questions-short">
 
-        @customerDetails.organisationName.map { orgName =>
+        @circumstances.customerDetails.organisationName.map { orgName =>
             <div>
                 <dt id="business-name-text" class="cya-question">
                     @messages("customer_details.businessName.heading")
@@ -42,23 +45,6 @@
                     <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
                         @messages("customer_details.change")
                         <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
-                    </a>
-                </dd>
-            </div>
-        }
-
-        @customerDetails.userName.map { indName =>
-            <div>
-                <dt id="individual-name-text" class="cya-question">
-                    @messages("customer_details.individualName.heading")
-                </dt>
-                <dd id="individual-name" class="cya-answer">
-                    @indName
-                </dd>
-                <dd class="cya-change">
-                    <a id="individual-name-status" href="#">
-                        @messages("customer_details.change")
-                        <span class="visually-hidden">@messages("customer_details.individualName.change.hidden")</span>
                     </a>
                 </dd>
             </div>
@@ -79,20 +65,22 @@
             </dd>
         </div>
 
-        <div>
-            <dt id="vat-return-dates-text" class="cya-question">
-                @messages("customer_details.returnFrequency.heading")
-            </dt>
-            <dd id="vat-return-dates" class="cya-answer">
-
-            </dd>
-            <dd class="cya-change">
-                <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
-                    @messages("customer_details.change")
-                    <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
-                </a>
-            </dd>
-        </div>
+        @circumstances.returnPeriod.map { period =>
+            <div>
+                <dt id="vat-return-dates-text" class="cya-question">
+                    @messages("customer_details.returnFrequency.heading")
+                </dt>
+                <dd id="vat-return-dates" class="cya-answer">
+                    @render_return_frequency(period)
+                </dd>
+                <dd class="cya-change">
+                    <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
+                        @messages("customer_details.change")
+                        <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
+                    </a>
+                </dd>
+            </div>
+        }
 
     </dl>
 
