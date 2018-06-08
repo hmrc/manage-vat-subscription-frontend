@@ -17,6 +17,7 @@
 package connectors
 
 import assets.BaseTestConstants.vrn
+import assets.PaymentsTestConstants._
 import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import mocks.MockHttp
 import models.core.ErrorModel
@@ -39,34 +40,25 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
     val continueUrl = "continue-url"
     def postPaymentsDetailsResult: Future[HttpPostResult[PaymentRedirectModel]] =
-      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", true, "returnUrl", "backUrl"))
+      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", true, "returnUrl", "backUrl", Some("convenienceUrl")))
 
     "for postPaymentsDetails method" when {
 
       "when given a successful response" should {
 
         "return a Right with a PaymentRedirectModel" in {
-          val successfulResponse = HttpResponse(Status.OK, responseJson = Some(Json.obj("nextUrl" -> continueUrl)))
+          val successfulResponse = Right(PaymentRedirectModel(continueUrl))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
           await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(continueUrl))
         }
       }
 
-      "given a successful response status, but no redirect location" should {
+      "given an unsuccessful response" should {
 
         "return an Left with an ErrorModel" in {
-          val noRedirectResponse = HttpResponse(Status.OK, responseJson = Some(Json.obj()))
-          setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(noRedirectResponse)
-          await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
-        }
-      }
-
-      "given a non successful response" should {
-
-        "return an Left with an ErrorModel" in {
-          val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR)
+          val failedResponse = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Bad things"))
           setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(failedResponse)
-          await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Payments"))
+          await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Bad things"))
         }
       }
     }

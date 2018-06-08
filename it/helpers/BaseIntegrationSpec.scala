@@ -16,6 +16,7 @@
 
 package helpers
 
+import models.payments.PaymentStartModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, TestSuite}
@@ -25,12 +26,13 @@ import play.api.http.HeaderNames
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.AuthStub
 import uk.gov.hmrc.play.test.UnitSpec
 
 trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite with TestSuite
-  with BeforeAndAfterEach with BeforeAndAfterAll {
+  with BeforeAndAfterEach with BeforeAndAfterAll with CustomMatchers {
 
   val mockHost: String = WireMockHelper.host
   val mockPort: String = WireMockHelper.wmPort.toString
@@ -92,7 +94,9 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
     "microservice.services.auth.host" -> mockHost,
     "microservice.services.auth.port" -> mockPort,
     "microservice.services.vat-subscription.host" -> mockHost,
-    "microservice.services.vat-subscription.port" -> mockPort
+    "microservice.services.vat-subscription.port" -> mockPort,
+    "microservice.services.bank-account-coc.host" -> mockHost,
+    "microservice.services.bank-account-coc.port" -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
@@ -116,6 +120,10 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
   )
 
   def post(path: String, additionalCookies: Map[String, String] = Map.empty)(body: Map[String, Seq[String]]): WSResponse = await(
+    buildRequest(path, additionalCookies).post(body)
+  )
+
+  def postJSValueBody(path: String, additionalCookies: Map[String, String] = Map.empty)(body: JsValue): WSResponse = await(
     buildRequest(path, additionalCookies).post(body)
   )
 

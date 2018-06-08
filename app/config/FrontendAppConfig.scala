@@ -53,6 +53,7 @@ trait AppConfig extends ServicesConfig {
 class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig with AppConfig {
 
   override protected def mode: Mode = environment.mode
+  private def loadConfig(key: String) = runModeConfiguration.getString(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   private lazy val contactHost: String = getString(Keys.contactFrontendService)
   private lazy val contactFormServiceIdentifier: String = "VATVC"
@@ -73,8 +74,10 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
-  private lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
-  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
+  lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
+  private lazy val signInContinueUrl: String =
+    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
+
   private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 

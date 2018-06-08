@@ -37,15 +37,8 @@ class PaymentsConnector @Inject()(val http: HttpClient,
                          (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[PaymentRedirectModel]] = {
 
     val url = s"${config.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account"
-
-    http.POST[PaymentStartModel,HttpResponse](url, paymentStart) map { resp =>
-      resp.status match {
-        case Status.OK => PaymentsReads.read("","",resp)
-        case status =>
-          Logger.warn(s"[PaymentsConnector][postPaymentsDetails]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Payments"))
-      }
-    }
+    Logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with URL - $url")
+    http.POST[PaymentStartModel,HttpPostResult[PaymentRedirectModel]](url, paymentStart)
 
   }
 
