@@ -24,7 +24,7 @@ import models.returnFrequency._
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.{CustomerDetailsService, ReturnFrequencyService}
+import services.{CustomerCircumstanceDetailsService, ReturnFrequencyService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -33,7 +33,6 @@ import scala.concurrent.Future
 class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthPredicate,
                                           val serviceErrorHandler: ServiceErrorHandler,
-                                          customerDetailsService: CustomerDetailsService,
                                           returnFrequencyService: ReturnFrequencyService,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 

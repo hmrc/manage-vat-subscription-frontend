@@ -25,7 +25,7 @@ import models.returnFrequency.{Jan, ReturnDatesModel}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -33,13 +33,13 @@ import scala.concurrent.Future
 @Singleton
 class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
                                       val authenticate: AuthPredicate,
-                                      val customerDetailsService: CustomerDetailsService,
+                                      val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                       val serviceErrorHandler: ServiceErrorHandler,
                                       implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
 
-    customerDetailsService.getCustomerDetails(user.vrn) map {
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
       case Right(_) =>
         val frequency = Jan // this will eventually come from the call to getCustomerDetails
 
@@ -63,7 +63,7 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
 
     datesForm.bindFromRequest().fold(
       errors => {
-        customerDetailsService.getCustomerDetails(user.vrn) map {
+        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
           case Right(_) =>
             val frequency = Jan // this will eventually come from the call to getCustomerDetails
             BadRequest(views.html.returnFrequency.chooseDates(errors, frequency))

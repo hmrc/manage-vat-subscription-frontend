@@ -21,20 +21,19 @@ import assets.messages.{ReturnFrequencyMessages => messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.{MockCustomerDetailsService, MockReturnFrequencyService}
+import mocks.services.{MockCustomerCircumstanceDetailsService, MockReturnFrequencyService}
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
 class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
-  with MockCustomerDetailsService
+  with MockCustomerCircumstanceDetailsService
   with MockReturnFrequencyService {
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
     messagesApi,
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockCustomerDetailsService,
     mockReturnFrequencyService,
     mockAppConfig
   )

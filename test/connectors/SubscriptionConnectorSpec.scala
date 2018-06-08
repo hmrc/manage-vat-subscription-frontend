@@ -48,7 +48,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .getCustomerDetails" when {
 
-      def result: Future[HttpGetResult[CircumstanceDetails]] = TestSubscriptionConnector.getCustomerDetails(vrn)
+      def result: Future[HttpGetResult[CircumstanceDetails]] = TestSubscriptionConnector.getCustomerCircumstanceDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 

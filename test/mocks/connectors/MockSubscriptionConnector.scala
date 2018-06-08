@@ -41,7 +41,7 @@ trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAn
   }
 
   def setupMockUserDetails(vrn: String)(response: Either[ErrorModel, CircumstanceDetails]): Unit = {
-    when(mockSubscriptionConnector.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+    when(mockSubscriptionConnector.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 

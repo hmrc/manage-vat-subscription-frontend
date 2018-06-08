@@ -18,7 +18,7 @@ package controllers
 
 import assets.messages.ChangeBusinessNamePageMessages
 import assets.CircumstanceDetailsTestConstants._
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Result
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)

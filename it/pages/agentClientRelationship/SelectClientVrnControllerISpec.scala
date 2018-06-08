@@ -59,7 +59,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
       }
 
       "have the redirect location header set to the Customer Details home page" in {
-        redirectLocation(show) shouldBe Some(controllers.routes.CustomerDetailsController.show().url)
+        redirectLocation(show) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
       }
     }
 
@@ -154,7 +154,7 @@ class SelectClientVrnControllerISpec extends BaseIntegrationSpec {
       }
 
       "have the redirect location header set to the Customer Details home page" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.CustomerDetailsController.show().url)
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
       }
     }
 

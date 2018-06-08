@@ -21,20 +21,20 @@ import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
                                              val authenticate: AuthPredicate,
-                                             val customerDetailsService: CustomerDetailsService,
+                                             val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
                                              implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      customerDetailsService.getCustomerDetails(user.vrn) map {
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
           Ok(views.html.businessName.change_business_name(circumstances.customerDetails.organisationName.get))
         case _ => serviceErrorHandler.showInternalServerError

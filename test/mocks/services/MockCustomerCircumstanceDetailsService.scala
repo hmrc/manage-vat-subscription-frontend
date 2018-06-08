@@ -24,15 +24,15 @@ import org.mockito.Mockito._
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
 
-trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockCustomerCircumstanceDetailsService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockCustomerDetailsService: CustomerDetailsService = mock[CustomerDetailsService]
+  val mockCustomerDetailsService: CustomerCircumstanceDetailsService = mock[CustomerCircumstanceDetailsService]
 
   type CircumstanceDetailsResponse = Either[ErrorModel, CircumstanceDetails]
 
@@ -42,7 +42,7 @@ trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeA
   }
 
   def setupMockCustomerDetails(vrn: String)(response: CircumstanceDetailsResponse): OngoingStubbing[Future[CircumstanceDetailsResponse]] = {
-    when(mockCustomerDetailsService.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+    when(mockCustomerDetailsService.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 

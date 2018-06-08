@@ -22,13 +22,13 @@ import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerDetailsService {
+class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService {
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,

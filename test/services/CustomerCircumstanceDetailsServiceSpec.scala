@@ -25,13 +25,13 @@ import utils.TestUtil
 
 import scala.concurrent.Future
 
-class CustomerDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
+class CustomerCircumstanceDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
 
-  object TestCustomerDetailsService extends CustomerDetailsService(mockSubscriptionConnector)
+  object TestCustomerCircumstanceDetailsService extends CustomerCircumstanceDetailsService(mockSubscriptionConnector)
 
   "CustomerDetailsService" should {
 
-    def result: Future[Either[ErrorModel, CircumstanceDetails]] = TestCustomerDetailsService.getCustomerDetails(vrn)
+    def result: Future[Either[ErrorModel, CircumstanceDetails]] = TestCustomerCircumstanceDetailsService.getCustomerCircumstanceDetails(vrn)
 
     "for getCustomerDetails method" when {
 
