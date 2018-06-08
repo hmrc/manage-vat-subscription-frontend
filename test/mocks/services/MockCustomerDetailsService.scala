@@ -17,8 +17,8 @@
 package mocks.services
 
 import assets.BaseTestConstants._
+import models.circumstanceInfo.CustomerDetails
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.mockito.stubbing.OngoingStubbing
@@ -34,7 +34,7 @@ trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeA
 
   val mockCustomerDetailsService: CustomerDetailsService = mock[CustomerDetailsService]
 
-  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetailsModel]
+  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetails]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -46,7 +46,7 @@ trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeA
       .thenReturn(Future.successful(response))
   }
 
-  def mockCustomerDetailsSuccess(customerDetails: CustomerDetailsModel): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
+  def mockCustomerDetailsSuccess(customerDetails: CustomerDetails): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
   def mockCustomerDetailsError(): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Left(errorModel))
 }
 

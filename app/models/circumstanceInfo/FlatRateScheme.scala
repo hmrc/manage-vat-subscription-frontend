@@ -17,35 +17,33 @@
 package models.circumstanceInfo
 
 import models.JsonReadUtil
-import play.api.libs.json._
+import play.api.libs.json.{__, Writes, Reads}
 import play.api.libs.functional.syntax._
 
-case class FlatRateScheme(FRSCategory: Option[String], FRSPercentage: Option[BigDecimal],
-                          limitedCostTrader: Option[Boolean], startDate: Option[String])
+case class FlatRateScheme(FRSCategory: Option[String],
+                          FRSPercentage: Option[BigDecimal],
+                          limitedCostTrader: Option[Boolean],
+                          startDate: Option[String])
 
 object FlatRateScheme extends JsonReadUtil {
 
-  private val frsCategoryPath = JsPath \ "FRSCategory"
-  private val frsPerecentPath =  JsPath \ "FRSPercentage"
-  private val limitedCostPath = JsPath \ "limitedCostTrader"
-  private val startDatePath = JsPath \ "startDate"
+  private val frsCategoryPath = __ \ "FRSCategory"
+  private val frsPerecentPath =  __ \ "FRSPercentage"
+  private val limitedCostPath = __ \ "limitedCostTrader"
+  private val startDatePath = __ \ "startDate"
 
-  implicit val frsReader: Reads[FlatRateScheme] = for {
-    frsCategory <- frsCategoryPath.readOpt[String]
-    frsPercentage <- frsPerecentPath.readOpt[BigDecimal]
-    limitedCostTrader <- limitedCostPath.readOpt[Boolean]
-    startDate <- startDatePath.readOpt[String]
-  } yield FlatRateScheme(frsCategory, frsPercentage, limitedCostTrader, startDate)
+  implicit val reads: Reads[FlatRateScheme] = (
+    frsCategoryPath.readOpt[String] and
+      frsPerecentPath.readOpt[BigDecimal] and
+      limitedCostPath.readOpt[Boolean] and
+      startDatePath.readOpt[String]
+    )(FlatRateScheme.apply _)
 
-  implicit val frsWriter: Writes[FlatRateScheme] = (
+  implicit val writes: Writes[FlatRateScheme] = (
     frsCategoryPath.writeNullable[String] and
       frsPerecentPath.writeNullable[BigDecimal] and
       limitedCostPath.writeNullable[Boolean] and
       startDatePath.writeNullable[String]
     )(unlift(FlatRateScheme.unapply))
 
-  implicit val format: Format[FlatRateScheme] = Format[FlatRateScheme](
-    frsReader,
-    frsWriter
-  )
 }

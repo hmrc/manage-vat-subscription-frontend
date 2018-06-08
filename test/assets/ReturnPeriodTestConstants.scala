@@ -16,20 +16,13 @@
 
 package assets
 
-import common.EnrolmentKeys
-import models.core.ErrorModel
-import play.api.http.Status
-import uk.gov.hmrc.auth.core.Enrolment
+import play.api.libs.json.{JsValue, Json}
 
-object BaseTestConstants {
+object ReturnPeriodTestConstants {
 
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
-  val arn = "ABCD12345678901"
-  val vrn: String = "999999999"
-  val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
+  val returnPeriodMA: JsValue = Json.obj("stdReturnPeriod" -> "MA")
+  val returnPeriodMB: JsValue = Json.obj("stdReturnPeriod" -> "MB")
+  val returnPeriodMC: JsValue = Json.obj("stdReturnPeriod" -> "MC")
+  val returnPeriodMM: JsValue = Json.obj("stdReturnPeriod" -> "MM")
 
-  val orgName = "Ancient Antiques Ltd"
-  val tradingName = "Dusty Relics"
-  val firstName = "Fred"
-  val lastName = "Flintstone"
 }

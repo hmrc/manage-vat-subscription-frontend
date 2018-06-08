@@ -19,7 +19,7 @@ package models.circumstanceInfo
 import play.api.libs.json._
 
 sealed trait ReturnPeriod {
-  def stdReturnPeriod: String = ""
+  def stdReturnPeriod: String
 }
 
 case object MAReturnPeriod extends ReturnPeriod {
@@ -44,7 +44,7 @@ object ReturnPeriod {
 
   def unapply(arg: ReturnPeriod): String = arg.stdReturnPeriod
 
-  implicit val returnPeriodReader: Reads[ReturnPeriod] = for {
+  implicit val reads: Reads[ReturnPeriod] = for {
     value <- (__ \ "stdReturnPeriod").read[String] map {
       case MAReturnPeriod.stdReturnPeriod => MAReturnPeriod
       case MBReturnPeriod.stdReturnPeriod => MBReturnPeriod
@@ -53,21 +53,8 @@ object ReturnPeriod {
     }
   } yield value
 
-
-  implicit val returnPeriodWriter = new Writes[ReturnPeriod] {
-    def writes(period: ReturnPeriod): JsValue = {
-      if (period.stdReturnPeriod.trim.length > 0) {
-        Json.obj(
-          "stdReturnPeriod" -> period.stdReturnPeriod
-        )
-      } else {
-        Json.obj()
-      }
-    }
+  implicit val writes: Writes[ReturnPeriod] = Writes {
+    case period if period.stdReturnPeriod.trim.length > 0 => Json.obj("stdReturnPeriod" -> period.stdReturnPeriod)
+    case _ => Json.obj()
   }
-
-  implicit val format: Format[ReturnPeriod] = Format[ReturnPeriod](
-    returnPeriodReader,
-    returnPeriodWriter
-  )
 }

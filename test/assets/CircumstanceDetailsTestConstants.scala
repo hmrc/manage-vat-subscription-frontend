@@ -16,55 +16,100 @@
 
 package assets
 
+import play.api.libs.json.{JsObject, JsValue, Json}
+import BaseTestConstants._
+import BankDetailsTestConstants._
+import FlatRateSchemeTestConstants._
+import PPOBAddressTestConstants._
+import models.circumstanceInfo._
+
 object CircumstanceDetailsTestConstants {
 
-  val fullPopulation =
-    """
-      |{"organisationName":"Ancient Antiques",
-      |"flatRateScheme":{"FRSCategory":"001","FRSPercentage":123.12,"limitedCostTrader":true,"startDate":"2001-01-01"},
-      |"PPOB":{"address":{"line1":"VAT ADDR 1","line2":"VAT ADDR 2","line3":"VAT ADDR 3","line4":"VAT ADDR 4","postCode":"SW1A 2BQ","countryCode":"ES"}},
-      |"bankDetails":{"accountHolderName":"***********************","bankAccountNumber":"****5274","sortCode":"77****"},
-      |"returnPeriod":{"stdReturnPeriod":"MM"}}
-    """.stripMargin
+  val mandationStatus = "MTDfB Mandated"
+  val returnPeriod = "MC"
 
-  val noBanking =
-    """
-      |{"organisationName":"Ancient Antiques",
-      |"flatRateScheme":{"FRSCategory":"001","FRSPercentage":123.12,"limitedCostTrader":true,"startDate":"2001-01-01"},
-      |"PPOB":{"address":{"line1":"VAT ADDR 1","line2":"VAT ADDR 2","line3":"VAT ADDR 3","line4":"VAT ADDR 4","postCode":"SW1A 2BQ","countryCode":"ES"}},
-      |"returnPeriod":{"stdReturnPeriod":"MM"}}
-    """.stripMargin
+  val customerInformationJsonMax: JsValue =
+    Json.obj(
+      "customerDetails" -> Json.obj(
+        "organisationName" -> orgName,
+        "firstName" -> firstName,
+        "lastName" -> lastName,
+        "tradingName" -> tradingName,
+        "hasFlatRateScheme" -> true
+      ),
+      "flatRateScheme" -> Json.obj(
+        "FRSCategory" -> frsCategory,
+        "FRSPercentage" -> frsPercentage,
+        "limitedCostTrader" -> frsLimitedCostTrader,
+        "startDate" -> frsStartDate
+      ),
+      "ppob" -> Json.obj(
+        "address" -> Json.obj(
+          "line1" -> addLine1,
+          "line2" -> addLine2,
+          "line3" -> addLine3,
+          "line4" -> addLine4,
+          "line5" -> addLine5,
+          "postCode" -> postcode,
+          "countryCode" -> countryCode
+        )
+      ),
+      "bankDetails" -> Json.obj(
+        "accountHolderName" -> accName,
+        "bankAccountNumber" -> accNum,
+        "sortCode" -> accSort
+      ),
+      "returnPeriod" -> Json.obj(
+        "stdReturnPeriod" -> returnPeriod
+      ),
+      "mandationStatus" -> mandationStatus
+    )
 
-  val noBusinessName =
-    """
-      |{"flatRateScheme":{"FRSCategory":"001","FRSPercentage":123.12,"limitedCostTrader":true,"startDate":"2001-01-01"},
-      |"PPOB":{"address":{"line1":"VAT ADDR 1","line2":"VAT ADDR 2","line3":"VAT ADDR 3","line4":"VAT ADDR 4","postCode":"SW1A 2BQ","countryCode":"ES"}},
-      |"bankDetails":{"accountHolderName":"***********************","bankAccountNumber":"****5274","sortCode":"77****"},
-      |"returnPeriod":{"stdReturnPeriod":"MM"}}
-    """.stripMargin
+  val customerInformationJsonMin: JsValue =
+    Json.obj(
+      "customerDetails" -> Json.obj(
+        "hasFlatRateScheme" -> false
+      ),
+      "mandationStatus" -> mandationStatus
+    )
 
-  val noPPOB =
-    """
-      |{"organisationName":"Ancient Antiques",
-      |"flatRateScheme":{"FRSCategory":"001","FRSPercentage":123.12,"limitedCostTrader":true,"startDate":"2001-01-01"},
-      |"bankDetails":{"accountHolderName":"***********************","bankAccountNumber":"****5274","sortCode":"77****"},
-      |"returnPeriod":{"stdReturnPeriod":"MM"}}
-    """.stripMargin
 
-  val noFlatRateScheme =
-    """
-      |{"organisationName":"Ancient Antiques",
-      |"PPOB":{"address":{"line1":"VAT ADDR 1","line2":"VAT ADDR 2","line3":"VAT ADDR 3","line4":"VAT ADDR 4","postCode":"SW1A 2BQ","countryCode":"ES"}},
-      |"bankDetails":{"accountHolderName":"***********************","bankAccountNumber":"****5274","sortCode":"77****"},
-      |"returnPeriod":{"stdReturnPeriod":"MM"}}
-    """.stripMargin
+  val customerInformationModelMax: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    CustomerDetails(
+      firstName = Some(firstName),
+      lastName = Some(lastName),
+      organisationName = Some(orgName),
+      tradingName = Some(tradingName),
+      hasFlatRateScheme = true
+    ),
+    Some(FlatRateScheme(
+      Some(frsCategory),
+      Some(frsPercentage),
+      Some(frsLimitedCostTrader),
+      Some(frsStartDate)
+    )),
+    Some(PPOB(
+      Some(PPOBAddress(
+        Some(addLine1),
+        Some(addLine2),
+        Some(addLine3),
+        Some(addLine4),
+        Some(addLine5),
+        Some(postcode),
+        Some(countryCode)
+      ))
+    )),
+    Some(BankDetails(
+      Some(accName),
+      Some(accNum),
+      Some(accSort)
+    )),
+    Some(MCReturnPeriod)
+  )
 
-  val noReturnPeriod =
-    """
-      |{"organisationName":"Ancient Antiques",
-      |"flatRateScheme":{"FRSCategory":"001","FRSPercentage":123.12,"limitedCostTrader":true,"startDate":"2001-01-01"},
-      |"PPOB":{"address":{"line1":"VAT ADDR 1","line2":"VAT ADDR 2","line3":"VAT ADDR 3","line4":"VAT ADDR 4","postCode":"SW1A 2BQ","countryCode":"ES"}},
-      |"bankDetails":{"accountHolderName":"***********************","bankAccountNumber":"****5274","sortCode":"77****"}}
-    """.stripMargin
+  val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated, CustomerDetails(None, None, None, None), None, None, None, None
+  )
 
 }

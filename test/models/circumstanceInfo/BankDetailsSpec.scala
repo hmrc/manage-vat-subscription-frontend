@@ -18,28 +18,28 @@ package models.circumstanceInfo
 
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
-import assets.FlatRateSchemeTestConstants._
+import assets.BankDetailsTestConstants._
 
-class FlatRateSchemeSpec extends UnitSpec {
+class BankDetailsSpec extends UnitSpec {
 
-  "FlatRateScheme Reads" should {
+  "BankDetails Reads" should {
     "parse the json correctly when all optional fields are populated" in {
-      frsJsonMax.as[FlatRateScheme] shouldBe frsModelMax
+      bankDetailsJsonMax.as[BankDetails] shouldBe bankDetailsModelMax
     }
 
-    "parse the json correctly when all fields are null" in {
-      frsJsonMin.as[FlatRateScheme] shouldBe frsModelMin
+    "parse the json correctly when no fields are supplied" in {
+      bankDetailsJsonMin.as[BankDetails] shouldBe bankDetailsModelMin
     }
   }
 
-  "FlatRateScheme Writes" should {
+  "BankDetails Writes" should {
 
-    "output a fully populated FlatRateScheme object with all fields populated" in {
-      Json.toJson(frsModelMax) shouldBe frsJsonMax
+    "output a fully populated BankDetails object with all fields populated" in {
+      Json.toJson(bankDetailsModelMax) shouldBe bankDetailsJsonMax
     }
 
-    "an empty json object when an empty FlatRateScheme object is marshalled" in {
-      Json.toJson(frsModelMin) shouldBe frsJsonMin
+    "an empty json object when an empty BankDetails object is marshalled" in {
+      Json.toJson(bankDetailsModelMin) shouldBe bankDetailsJsonMin
     }
   }
 }

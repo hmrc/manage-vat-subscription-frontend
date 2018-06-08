@@ -13,12 +13,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
-
-@import models.customerInfo.CustomerDetailsModel
+@import models.circumstanceInfo.CustomerDetails
 @import uk.gov.hmrc.play.views.html.helpers.form
 
 
-@(vrn: String, customerDetails: CustomerDetailsModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(vrn: String, customerDetails: CustomerDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("confirm_client_vrn.title"),

@@ -16,20 +16,23 @@
 
 package assets
 
-import common.EnrolmentKeys
-import models.core.ErrorModel
-import play.api.http.Status
-import uk.gov.hmrc.auth.core.Enrolment
+import models.circumstanceInfo.BankDetails
+import play.api.libs.json.{JsValue, Json}
 
-object BaseTestConstants {
+object BankDetailsTestConstants {
 
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
-  val arn = "ABCD12345678901"
-  val vrn: String = "999999999"
-  val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
+  val accName = "**********************"
+  val accNum = "**7425"
+  val accSort = "69***"
 
-  val orgName = "Ancient Antiques Ltd"
-  val tradingName = "Dusty Relics"
-  val firstName = "Fred"
-  val lastName = "Flintstone"
+  val bankDetailsModelMax: BankDetails = BankDetails(Some(accName), Some(accNum), Some(accSort))
+  val bankDetailsModelMin: BankDetails = BankDetails(None, None, None)
+
+  val bankDetailsJsonMax: JsValue = Json.obj(
+    "accountHolderName" -> accName,
+    "bankAccountNumber" -> accNum,
+    "sortCode" -> accSort
+  )
+  val bankDetailsJsonMin: JsValue = Json.obj()
+
 }

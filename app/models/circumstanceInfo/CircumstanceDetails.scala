@@ -17,29 +17,40 @@
 package models.circumstanceInfo
 
 import models.JsonReadUtil
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.functional.syntax._
+import play.api.libs.json.{Reads, Writes, __}
 
-case class CircumstanceDetails(businessName:Option[String], flatRateScheme: Option[FlatRateScheme], ppob: Option[PPOB],
-                               bankDetails:Option[BankDetails], returnPeriod: Option[ReturnPeriod])
+case class CircumstanceDetails(mandationStatus: MandationStatus,
+                               customerDetails: CustomerDetails,
+                               flatRateScheme: Option[FlatRateScheme],
+                               ppob: Option[PPOB],
+                               bankDetails:Option[BankDetails],
+                               returnPeriod: Option[ReturnPeriod])
 
 object CircumstanceDetails extends JsonReadUtil {
 
-  private val flatRateSchemeKey = "flatRateScheme"
-  private val ppobKey = "PPOB"
-  private val bankDetailsKey = "bankDetails"
-  private val returnPeriodKey = "returnPeriod"
-  private val organisationNamePath = JsPath \ "organisationName"
-  private val flatRateSchemePath = JsPath \ flatRateSchemeKey
-  private val ppobPath = JsPath \ ppobKey
-  private val bankDetailsPath = JsPath \ bankDetailsKey
-  private val returnPeriodPath = JsPath \ returnPeriodKey
+  private val mandationStatusPath = __ \ "mandationStatus"
+  private val customerDetailsPath = __ \ "customerDetails"
+  private val flatRateSchemePath = __ \ "flatRateScheme"
+  private val ppobPath = __ \ "ppob"
+  private val bankDetailsPath = __ \ "bankDetails"
+  private val returnPeriodPath = __ \ "returnPeriod"
 
-  implicit val desReader: Reads[CircumstanceDetails] = for {
-    businessName <- organisationNamePath.readOpt[String]
-    flatRateScheme <- flatRateSchemePath.readOpt[FlatRateScheme]
-    ppob <- ppobPath.readOpt[PPOB]
-    bankDetails <- bankDetailsPath.readOpt[BankDetails]
-    returnPeriod <- returnPeriodPath.readOpt[ReturnPeriod]
+  implicit val reads: Reads[CircumstanceDetails] = (
+    mandationStatusPath.read[MandationStatus] and
+    customerDetailsPath.read[CustomerDetails] and
+      flatRateSchemePath.readOpt[FlatRateScheme] and
+      ppobPath.readOpt[PPOB] and
+      bankDetailsPath.readOpt[BankDetails] and
+      returnPeriodPath.readOpt[ReturnPeriod]
+    )(CircumstanceDetails.apply _)
 
-  } yield CircumstanceDetails(businessName = businessName, flatRateScheme = flatRateScheme, ppob = ppob, bankDetails = bankDetails, returnPeriod = returnPeriod)
+  implicit val writes: Writes[CircumstanceDetails] = (
+    mandationStatusPath.write[MandationStatus] and
+      customerDetailsPath.write[CustomerDetails] and
+      flatRateSchemePath.writeNullable[FlatRateScheme] and
+      ppobPath.writeNullable[PPOB] and
+      bankDetailsPath.writeNullable[BankDetails] and
+      returnPeriodPath.writeNullable[ReturnPeriod]
+    )(unlift(CircumstanceDetails.unapply))
 }

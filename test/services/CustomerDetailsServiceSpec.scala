@@ -19,8 +19,8 @@ package services
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
 import mocks.connectors.MockSubscriptionConnector
+import models.circumstanceInfo.CustomerDetails
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
 import utils.TestUtil
 
 import scala.concurrent.Future
@@ -31,7 +31,7 @@ class CustomerDetailsServiceSpec extends TestUtil with MockSubscriptionConnector
 
   "CustomerDetailsService" should {
 
-    def result: Future[Either[ErrorModel, CustomerDetailsModel]] = TestCustomerDetailsService.getCustomerDetails(vrn)
+    def result: Future[Either[ErrorModel, CustomerDetails]] = TestCustomerDetailsService.getCustomerDetails(vrn)
 
     "for getCustomerDetails method" when {
 

@@ -20,9 +20,9 @@ import config.FrontendAppConfig
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
+import models.circumstanceInfo.CustomerDetails
 import models.customerAddress.AddressModel
 import models.core.SubscriptionUpdateResponseModel
-import models.customerInfo.CustomerDetailsModel
 import models.returnFrequency.ReturnDateOption
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
@@ -36,7 +36,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
 
-  def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerDetailsModel]] = {
+  def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerDetails]] = {
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
     http.GET(url)(CustomerDetailsReads, headerCarrier, ec)

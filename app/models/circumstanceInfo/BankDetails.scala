@@ -18,31 +18,26 @@ package models.circumstanceInfo
 
 import models.JsonReadUtil
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Format, JsPath, Reads, Writes}
+import play.api.libs.json.{Reads, Writes, __}
 
 case class BankDetails(accountHolderName:Option[String],bankAccountNumber:Option[String],sortCode:Option[String])
 
 object BankDetails extends JsonReadUtil {
 
-  private val accountHolderNamePath = JsPath \ "accountHolderName"
-  private val bankAccountNumberPath = JsPath \ "bankAccountNumber"
-  private val sortCodePath = JsPath \ "sortCode"
+  private val accountHolderNamePath = __ \ "accountHolderName"
+  private val bankAccountNumberPath = __ \ "bankAccountNumber"
+  private val sortCodePath = __ \ "sortCode"
 
-  implicit val bankReader: Reads[BankDetails] = for {
-    accountHolderName <- accountHolderNamePath.readOpt[String]
-    bankAccountNumber <- bankAccountNumberPath.readOpt[String]
-    sortCode <- sortCodePath.readOpt[String]
-  } yield BankDetails(accountHolderName, bankAccountNumber, sortCode)
+  implicit val reads: Reads[BankDetails] = (
+    accountHolderNamePath.readOpt[String] and
+      bankAccountNumberPath.readOpt[String] and
+      sortCodePath.readOpt[String]
+    )(BankDetails.apply _)
 
-  implicit val bankWriter: Writes[BankDetails] = (
+  implicit val writes: Writes[BankDetails] = (
     accountHolderNamePath.writeNullable[String] and
       bankAccountNumberPath.writeNullable[String] and
       sortCodePath.writeNullable[String]
     )(unlift(BankDetails.unapply))
-
-  implicit val format: Format[BankDetails] = Format[BankDetails](
-    bankReader,
-    bankWriter
-  )
 
 }

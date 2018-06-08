@@ -16,54 +16,59 @@
 
 package assets
 
-import models.customerInfo.CustomerDetailsModel
 import BaseTestConstants._
+import models.circumstanceInfo.CustomerDetails
 import play.api.libs.json.Json
 
 object CustomerDetailsTestConstants {
 
   val individualJson = Json.obj(
     "firstName" -> firstName,
-    "lastName" -> lastName
+    "lastName" -> lastName,
+    "hasFlatRateScheme" -> false
   )
 
   val organisationJson = Json.obj(
-    "organisationName" -> organisationName,
-    "tradingName" -> tradingName
+    "organisationName" -> orgName,
+    "tradingName" -> tradingName,
+    "hasFlatRateScheme" -> false
   )
 
   val customerDetailsJsonMax = Json.obj(
-    "organisationName" -> organisationName,
+    "organisationName" -> orgName,
     "firstName" -> firstName,
     "lastName" -> lastName,
-    "tradingName" -> tradingName
+    "tradingName" -> tradingName,
+    "hasFlatRateScheme" -> false
   )
 
 
-  val customerDetailsJsonMin = Json.obj()
+  val customerDetailsJsonMin = Json.obj(
+    "hasFlatRateScheme" -> false
+  )
 
-  val individual = CustomerDetailsModel(
+  val individual = CustomerDetails(
       firstName = Some(firstName),
       lastName = Some(lastName),
       organisationName = None,
       tradingName = None
   )
 
-  val organisation = CustomerDetailsModel(
+  val organisation = CustomerDetails(
     firstName = None,
     lastName = None,
-    organisationName = Some(organisationName),
+    organisationName = Some(orgName),
     tradingName = Some(tradingName)
   )
 
-  val customerDetailsMax = CustomerDetailsModel(
+  val customerDetailsMax = CustomerDetails(
     Some(firstName),
     Some(lastName),
-    Some(organisationName),
+    Some(orgName),
     Some(tradingName)
   )
 
-  val customerDetailsMin = CustomerDetailsModel(
+  val customerDetailsMin = CustomerDetails(
     None,
     None,
     None,

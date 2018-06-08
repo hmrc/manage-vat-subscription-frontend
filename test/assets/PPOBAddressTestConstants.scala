@@ -16,20 +16,27 @@
 
 package assets
 
-import common.EnrolmentKeys
-import models.core.ErrorModel
-import play.api.http.Status
-import uk.gov.hmrc.auth.core.Enrolment
+import models.circumstanceInfo.{PPOB, PPOBAddress}
 
-object BaseTestConstants {
+object PPOBAddressTestConstants {
 
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
-  val arn = "ABCD12345678901"
-  val vrn: String = "999999999"
-  val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
+  val addLine1 = "Add Line 1"
+  val addLine2 = "Add Line 2"
+  val addLine3 = "Add Line 3"
+  val addLine4 = "Add Line 4"
+  val addLine5 = "Add Line 5"
+  val postcode = "TE37 7AD"
+  val countryCode = "ES"
 
-  val orgName = "Ancient Antiques Ltd"
-  val tradingName = "Dusty Relics"
-  val firstName = "Fred"
-  val lastName = "Flintstone"
+
+  val ppobAddressModelMax = PPOBAddress(
+    Some(addLine1),
+    Some(addLine2),
+    Some(addLine3),
+    Some(addLine4),
+    Some(addLine5),
+    Some(postcode),
+    Some(countryCode)
+  )
+  val ppobModelMax = PPOB(Some(ppobAddressModelMax))
 }

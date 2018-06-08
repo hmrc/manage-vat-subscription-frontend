@@ -26,27 +26,23 @@ object PPOB extends JsonReadUtil {
 
   private val addressPath = JsPath \ "address"
 
-  implicit val ppobReader: Reads[PPOB] = for {
+  implicit val reads: Reads[PPOB] = for {
     address <- addressPath.readOpt[PPOBAddress]
   } yield PPOB(address)
 
-  implicit val ppobWriter = new Writes[PPOB] {
-    def writes(ppob: PPOB): JsValue = {
-      Json.obj(
-        "address" -> ppob.address
-      )
-    }
-  }
-
-  implicit val ppobFormat: Format[PPOB] = Format[PPOB](
-    ppobReader,
-    ppobWriter
+  implicit val writes: Writes[PPOB] = Writes(
+    ppob => Json.obj("address" -> ppob.address)
   )
 }
 
 
-case class PPOBAddress(line1: Option[String], line2: Option[String], line3: Option[String], line4: Option[String],
-                       line5: Option[String], postCode: Option[String], countryCode: Option[String])
+case class PPOBAddress(line1: Option[String],
+                       line2: Option[String],
+                       line3: Option[String],
+                       line4: Option[String],
+                       line5: Option[String],
+                       postCode: Option[String],
+                       countryCode: Option[String])
 
 object PPOBAddress extends JsonReadUtil {
 
@@ -58,17 +54,17 @@ object PPOBAddress extends JsonReadUtil {
   private val postCodePath = JsPath \ "postCode"
   private val countryCodePath = JsPath \ "countryCode"
 
-  implicit val ppobAddressReader: Reads[PPOBAddress] = for {
-    line1 <- line1Path.readOpt[String]
-    line2 <- line2Path.readOpt[String]
-    line3 <- line3Path.readOpt[String]
-    line4 <- line4Path.readOpt[String]
-    line5 <- line5Path.readOpt[String]
-    postCode <- postCodePath.readOpt[String]
-    countryCode <- countryCodePath.readOpt[String]
-  } yield PPOBAddress(line1, line2, line3, line4, line5, postCode, countryCode)
+  implicit val reads: Reads[PPOBAddress] = (
+    line1Path.readOpt[String] and
+      line2Path.readOpt[String] and
+      line3Path.readOpt[String] and
+      line4Path.readOpt[String] and
+      line5Path.readOpt[String] and
+      postCodePath.readOpt[String] and
+      countryCodePath.readOpt[String]
+    )(PPOBAddress.apply _)
 
-  implicit val ppobAddressWriter: Writes[PPOBAddress] = (
+  implicit val writes: Writes[PPOBAddress] = (
     line1Path.writeNullable[String] and
       line2Path.writeNullable[String] and
       line3Path.writeNullable[String] and
@@ -77,10 +73,5 @@ object PPOBAddress extends JsonReadUtil {
       postCodePath.writeNullable[String] and
       countryCodePath.writeNullable[String]
     )(unlift(PPOBAddress.unapply))
-
-  implicit val ppobAddressformat: Format[PPOBAddress] = Format[PPOBAddress](
-    ppobAddressReader,
-    ppobAddressWriter
-  )
 }
 
