@@ -16,12 +16,11 @@
 
 package views.businessName
 
+import assets.CustomerDetailsTestConstants.orgName
+import assets.messages.{ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-import assets.BaseTestConstants.orgName
-import assets.messages.{ChangeBusinessNamePageMessages => viewMessages}
-import assets.messages.BaseMessages
 
 class ChangeBusinessNameViewSpec extends ViewBaseSpec {
 

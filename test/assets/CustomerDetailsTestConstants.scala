@@ -16,11 +16,15 @@
 
 package assets
 
-import BaseTestConstants._
 import models.circumstanceInfo.CustomerDetails
 import play.api.libs.json.Json
 
 object CustomerDetailsTestConstants {
+
+  val orgName = "Ancient Antiques Ltd"
+  val tradingName = "Dusty Relics"
+  val firstName = "Fred"
+  val lastName = "Flintstone"
 
   val individualJson = Json.obj(
     "firstName" -> firstName,

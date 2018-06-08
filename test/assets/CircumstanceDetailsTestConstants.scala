@@ -16,12 +16,12 @@
 
 package assets
 
-import play.api.libs.json.{JsObject, JsValue, Json}
-import BaseTestConstants._
-import BankDetailsTestConstants._
-import FlatRateSchemeTestConstants._
-import PPOBAddressTestConstants._
+import assets.BankDetailsTestConstants._
+import assets.CustomerDetailsTestConstants._
+import assets.FlatRateSchemeTestConstants._
+import assets.PPOBAddressTestConstants._
 import models.circumstanceInfo._
+import play.api.libs.json.{JsValue, Json}
 
 object CircumstanceDetailsTestConstants {
 

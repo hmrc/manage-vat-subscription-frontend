@@ -28,8 +28,4 @@ object BaseTestConstants {
   val vrn: String = "999999999"
   val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
 
-  val orgName = "Ancient Antiques Ltd"
-  val tradingName = "Dusty Relics"
-  val firstName = "Fred"
-  val lastName = "Flintstone"
 }
