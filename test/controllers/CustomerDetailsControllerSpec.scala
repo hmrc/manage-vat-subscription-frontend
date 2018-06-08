@@ -17,7 +17,7 @@
 package controllers
 
 import assets.messages.{CustomerDetailsPageMessages => messages}
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerDetailsService
 import org.jsoup.Jsoup
@@ -42,7 +42,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 

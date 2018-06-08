@@ -16,7 +16,7 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ReturnFrequencyMessages
 import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerDetailsService
@@ -37,7 +37,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
       lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return OK (200)" in {
-        mockCustomerDetailsSuccess(organisation)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
@@ -82,7 +82,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
       lazy val result = TestChooseDatesController.submit(request)
 
       "return 400" in {
-        mockCustomerDetailsSuccess(organisation)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.BAD_REQUEST
       }
     }

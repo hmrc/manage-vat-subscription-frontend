@@ -17,6 +17,7 @@
 package assets
 
 import models.circumstanceInfo.{PPOB, PPOBAddress}
+import play.api.libs.json.{JsValue, Json}
 
 object PPOBAddressTestConstants {
 
@@ -39,4 +40,17 @@ object PPOBAddressTestConstants {
     Some(countryCode)
   )
   val ppobModelMax = PPOB(Some(ppobAddressModelMax))
+
+  val ppobJsonMax: JsValue = Json.obj(
+    "address" -> Json.obj(
+      "line1" -> addLine1,
+      "line2" -> addLine2,
+      "line3" -> addLine3,
+      "line4" -> addLine4,
+      "line5" -> addLine5,
+      "postCode" -> postcode,
+      "countryCode" -> countryCode
+    )
+  )
+
 }

@@ -35,8 +35,8 @@ class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) if customerDetails.organisationName.isDefined =>
-          Ok(views.html.businessName.change_business_name(customerDetails.organisationName.get))
+        case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
+          Ok(views.html.businessName.change_business_name(circumstances.customerDetails.organisationName.get))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

@@ -18,7 +18,7 @@ package stubs
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.WireMockMethods
-import models.circumstanceInfo.CustomerDetails
+import models.circumstanceInfo.CircumstanceDetails
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, OK}
 import play.api.libs.json.Json
 
@@ -26,7 +26,7 @@ object VatSubscriptionStub extends WireMockMethods {
 
   private val subscriptionUri: String => String = vrn => s"/vat-subscription/$vrn/customer-details"
 
-  def getClientDetailsSuccess(vrn: String)(customerDetails: CustomerDetails): StubMapping = {
+  def getClientDetailsSuccess(vrn: String)(customerDetails: CircumstanceDetails): StubMapping = {
     when(method = GET, uri = subscriptionUri(vrn))
       .thenReturn(status = OK, body = Json.toJson(customerDetails))
   }

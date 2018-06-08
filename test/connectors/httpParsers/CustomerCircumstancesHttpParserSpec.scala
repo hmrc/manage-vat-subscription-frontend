@@ -16,15 +16,15 @@
 
 package connectors.httpParsers
 
-import assets.CustomerDetailsTestConstants._
-import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
+import assets.CircumstanceDetailsTestConstants._
+import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import models.core.ErrorModel
 import play.api.http.Status
 import play.api.libs.json.Json
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 
-class CustomerDetailsHttpParserSpec extends TestUtil {
+class CustomerCircumstancesHttpParserSpec extends TestUtil {
 
   val successBadJson = Some(Json.obj("firstName" -> 1))
   val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
@@ -34,14 +34,14 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
     "the http response status is OK with valid Json" should {
 
       "return a CustomerDetailsModel" in {
-        CustomerDetailsReads.read("", "", HttpResponse(Status.OK, Some(individualJson))) shouldBe Right(individual)
+        CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, Some(customerInformationJsonMaxOrganisation))) shouldBe Right(customerInformationModelMaxOrganisation)
       }
     }
 
     "the http response status is OK with invalid Json" should {
 
       "return an ErrorModel" in {
-        CustomerDetailsReads.read("", "", HttpResponse(Status.OK, successBadJson)) shouldBe
+        CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, successBadJson)) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
       }
     }
@@ -49,7 +49,7 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
     "the http response status is BAD_REQUEST" should {
 
       "return an ErrorModel" in {
-        CustomerDetailsReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
+        CustomerCircumstanceReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
           Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerDetails"))
       }
     }
@@ -57,7 +57,7 @@ class CustomerDetailsHttpParserSpec extends TestUtil {
     "the http response status unexpected" should {
 
       "return an ErrorModel" in {
-        CustomerDetailsReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
+        CustomerCircumstanceReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
           Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerDetails"))
       }
     }

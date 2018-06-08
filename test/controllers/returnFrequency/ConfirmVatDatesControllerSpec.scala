@@ -16,7 +16,7 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
@@ -48,7 +48,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 

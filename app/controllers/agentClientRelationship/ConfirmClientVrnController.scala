@@ -37,7 +37,7 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
   def show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, customerDetails))
+        case Right(circumstances) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

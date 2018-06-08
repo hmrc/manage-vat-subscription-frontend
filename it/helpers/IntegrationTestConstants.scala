@@ -18,7 +18,7 @@ package helpers
 
 import java.util.UUID
 
-import models.circumstanceInfo.CustomerDetails
+import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails, MTDfBMandated}
 
 object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
@@ -27,10 +27,17 @@ object IntegrationTestConstants {
   val clientVRN = "999999999"
   val VRN = "111111111"
 
-  val individualCustomerDetails = CustomerDetails(
-    firstName = Some("Nanana"),
-    lastName = Some("VatMan"),
-    tradingName = Some("Vatmobile Taxi"),
-    organisationName = None
+  val customerCircumstancesDetailsOrganisation: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    CustomerDetails(
+      firstName = Some("Nanana"),
+      lastName = Some("VatMan"),
+      tradingName = Some("Vatmobile Taxi"),
+      organisationName = None
+    ),
+    None,
+    None,
+    None,
+    None
   )
 }

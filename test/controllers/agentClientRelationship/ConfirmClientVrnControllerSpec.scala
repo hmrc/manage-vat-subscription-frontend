@@ -17,7 +17,7 @@
 package controllers.agentClientRelationship
 
 import assets.messages.{ConfirmClientVrnPageMessages => messages}
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -51,7 +51,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
           "return 200" in {
             mockAgentAuthorised()
-            mockCustomerDetailsSuccess(customerDetailsMax)
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             status(result) shouldBe Status.OK
           }
 

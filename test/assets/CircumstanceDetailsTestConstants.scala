@@ -20,91 +20,54 @@ import assets.BankDetailsTestConstants._
 import assets.CustomerDetailsTestConstants._
 import assets.FlatRateSchemeTestConstants._
 import assets.PPOBAddressTestConstants._
+import assets.ReturnPeriodTestConstants._
 import models.circumstanceInfo._
 import play.api.libs.json.{JsValue, Json}
 
 object CircumstanceDetailsTestConstants {
 
   val mandationStatus = "MTDfB Mandated"
-  val returnPeriod = "MC"
 
-  val customerInformationJsonMax: JsValue =
-    Json.obj(
-      "customerDetails" -> Json.obj(
-        "organisationName" -> orgName,
-        "firstName" -> firstName,
-        "lastName" -> lastName,
-        "tradingName" -> tradingName,
-        "hasFlatRateScheme" -> true
-      ),
-      "flatRateScheme" -> Json.obj(
-        "FRSCategory" -> frsCategory,
-        "FRSPercentage" -> frsPercentage,
-        "limitedCostTrader" -> frsLimitedCostTrader,
-        "startDate" -> frsStartDate
-      ),
-      "ppob" -> Json.obj(
-        "address" -> Json.obj(
-          "line1" -> addLine1,
-          "line2" -> addLine2,
-          "line3" -> addLine3,
-          "line4" -> addLine4,
-          "line5" -> addLine5,
-          "postCode" -> postcode,
-          "countryCode" -> countryCode
-        )
-      ),
-      "bankDetails" -> Json.obj(
-        "accountHolderName" -> accName,
-        "bankAccountNumber" -> accNum,
-        "sortCode" -> accSort
-      ),
-      "returnPeriod" -> Json.obj(
-        "stdReturnPeriod" -> returnPeriod
-      ),
-      "mandationStatus" -> mandationStatus
-    )
+  val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
+    "customerDetails" -> organisationJson,
+    "flatRateScheme" -> frsJsonMax,
+    "ppob" -> ppobJsonMax,
+    "bankDetails" -> bankDetailsJsonMax,
+    "returnPeriod" -> returnPeriodMC,
+    "mandationStatus" -> mandationStatus
+  )
+
+  val customerInformationJsonMaxIndividual: JsValue = Json.obj(
+    "customerDetails" -> individualJson,
+    "flatRateScheme" -> frsJsonMax,
+    "ppob" -> ppobJsonMax,
+    "bankDetails" -> bankDetailsModelMax,
+    "returnPeriod" -> returnPeriodMC,
+    "mandationStatus" -> mandationStatus
+  )
 
   val customerInformationJsonMin: JsValue =
     Json.obj(
-      "customerDetails" -> Json.obj(
-        "hasFlatRateScheme" -> false
-      ),
+      "customerDetails" -> customerDetailsJsonMin,
       "mandationStatus" -> mandationStatus
     )
 
 
-  val customerInformationModelMax: CircumstanceDetails = CircumstanceDetails(
+  val customerInformationModelMaxOrganisation: CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated,
-    CustomerDetails(
-      firstName = Some(firstName),
-      lastName = Some(lastName),
-      organisationName = Some(orgName),
-      tradingName = Some(tradingName),
-      hasFlatRateScheme = true
-    ),
-    Some(FlatRateScheme(
-      Some(frsCategory),
-      Some(frsPercentage),
-      Some(frsLimitedCostTrader),
-      Some(frsStartDate)
-    )),
-    Some(PPOB(
-      Some(PPOBAddress(
-        Some(addLine1),
-        Some(addLine2),
-        Some(addLine3),
-        Some(addLine4),
-        Some(addLine5),
-        Some(postcode),
-        Some(countryCode)
-      ))
-    )),
-    Some(BankDetails(
-      Some(accName),
-      Some(accNum),
-      Some(accSort)
-    )),
+    organisation,
+    Some(frsModelMax),
+    Some(ppobModelMax),
+    Some(bankDetailsModelMax),
+    Some(MCReturnPeriod)
+  )
+
+  val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    individual,
+    Some(frsModelMax),
+    Some(ppobModelMax),
+    Some(bankDetailsModelMax),
     Some(MCReturnPeriod)
   )
 

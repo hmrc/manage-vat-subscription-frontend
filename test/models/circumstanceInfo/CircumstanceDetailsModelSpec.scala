@@ -25,7 +25,7 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
   "Deserialize from JSON" when {
 
     "succeeds when all registration fields are populated" in {
-      customerInformationJsonMax.as[CircumstanceDetails] shouldBe customerInformationModelMax
+      customerInformationJsonMaxOrganisation.as[CircumstanceDetails] shouldBe customerInformationModelMaxOrganisation
     }
 
 
@@ -38,7 +38,7 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
   "Serialize to JSON" when {
 
     "succeeds when all registration fields are populated" in {
-      Json.toJson(customerInformationModelMax) shouldBe customerInformationJsonMax
+      Json.toJson(customerInformationModelMaxOrganisation) shouldBe customerInformationJsonMaxOrganisation
     }
 
 

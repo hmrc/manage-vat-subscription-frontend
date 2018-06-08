@@ -16,7 +16,7 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => messages}
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -43,7 +43,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
