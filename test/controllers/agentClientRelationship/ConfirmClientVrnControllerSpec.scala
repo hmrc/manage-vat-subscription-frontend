@@ -17,18 +17,18 @@
 package controllers.agentClientRelationship
 
 import assets.messages.{ConfirmClientVrnPageMessages => messages}
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerDetailsService {
+class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService {
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
@@ -51,7 +51,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
           "return 200" in {
             mockAgentAuthorised()
-            mockCustomerDetailsSuccess(customerDetailsMax)
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             status(result) shouldBe Status.OK
           }
 

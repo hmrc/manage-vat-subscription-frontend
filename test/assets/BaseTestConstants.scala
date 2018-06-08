@@ -16,16 +16,16 @@
 
 package assets
 
+import common.EnrolmentKeys
 import models.core.ErrorModel
 import play.api.http.Status
+import uk.gov.hmrc.auth.core.Enrolment
 
 object BaseTestConstants {
 
-  val firstName = "Albert"
-  val lastName = "Einstein"
-  val organisationName = "Ancient Antiques LTD"
-  val tradingName = "Ancient Antiques"
-  val vrn = "999999999"
   val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
   val arn = "ABCD12345678901"
+  val vrn: String = "999999999"
+  val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
+
 }

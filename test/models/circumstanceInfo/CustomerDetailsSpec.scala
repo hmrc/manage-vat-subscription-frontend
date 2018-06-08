@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package models.customerInfo
+package models.circumstanceInfo
 
 import assets.BaseTestConstants._
 import assets.CustomerDetailsTestConstants._
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
-class CustomerDetailsModelSpec extends UnitSpec {
+class CustomerDetailsSpec extends UnitSpec {
 
   "CustomerDetailsModel" when {
 
@@ -51,12 +51,12 @@ class CustomerDetailsModelSpec extends UnitSpec {
       }
       "FirstName is present" should {
         "return 'Firstname'" in {
-          CustomerDetailsModel(Some(firstName), None, None, None).userName shouldBe Some(s"$firstName")
+          CustomerDetails(Some(firstName), None, None, None).userName shouldBe Some(s"$firstName")
         }
       }
       "LastName is present" should {
         "return 'Lastname'" in {
-          CustomerDetailsModel(None, Some(lastName), None, None).userName shouldBe Some(s"$lastName")
+          CustomerDetails(None, Some(lastName), None, None).userName shouldBe Some(s"$lastName")
         }
       }
       "No names are present" should {
@@ -69,7 +69,7 @@ class CustomerDetailsModelSpec extends UnitSpec {
     "calling .businessName" when {
       "Organisation Name is present" should {
         "return Organisation name" in {
-          customerDetailsMax.businessName shouldBe Some(s"$organisationName")
+          customerDetailsMax.businessName shouldBe Some(s"$orgName")
         }
       }
       "username is present and org name is missing" should {
@@ -87,11 +87,11 @@ class CustomerDetailsModelSpec extends UnitSpec {
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        customerDetailsJsonMax.as[CustomerDetailsModel] shouldBe customerDetailsMax
+        customerDetailsJsonMax.as[CustomerDetails] shouldBe customerDetailsMax
       }
 
       "no optional fields are returned" in {
-        customerDetailsJsonMin.as[CustomerDetailsModel] shouldBe customerDetailsMin
+        customerDetailsJsonMin.as[CustomerDetails] shouldBe customerDetailsMin
       }
     }
 

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package controllers.testOnly
+package testOnly.controllers
+
+import javax.inject.{Inject, Singleton}
 
 import config.AppConfig
 import forms.FeatureSwitchForm
-import javax.inject.{Inject, Singleton}
 import models.FeatureSwitchModel
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Result}
@@ -29,7 +30,7 @@ class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit v
   extends FrontendController with I18nSupport {
 
   val featureSwitch: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.featureSwitch(FeatureSwitchForm.form.fill(
+    Ok(testOnly.views.html.featureSwitch(FeatureSwitchForm.form.fill(
       FeatureSwitchModel(simpleAuthEnabled = appConfig.features.simpleAuth())
     )))
   }

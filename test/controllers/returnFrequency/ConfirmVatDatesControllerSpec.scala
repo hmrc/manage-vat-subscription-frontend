@@ -16,25 +16,24 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.{MockCustomerDetailsService, MockReturnFrequencyService}
+import mocks.services.{MockCustomerCircumstanceDetailsService, MockReturnFrequencyService}
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
 class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
-  with MockCustomerDetailsService
+  with MockCustomerCircumstanceDetailsService
   with MockReturnFrequencyService {
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
     messagesApi,
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockCustomerDetailsService,
     mockReturnFrequencyService,
     mockAppConfig
   )
@@ -48,7 +47,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 

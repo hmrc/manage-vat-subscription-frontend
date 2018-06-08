@@ -17,12 +17,12 @@
 package connectors
 
 import config.FrontendAppConfig
+import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import connectors.httpParsers.ResponseHttpParser._
-import connectors.httpParsers.CustomerDetailsHttpParser.CustomerDetailsReads
 import javax.inject.{Inject, Singleton}
-import models.customerAddress.AddressModel
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.customerInfo.CustomerDetailsModel
+import models.customerAddress.AddressModel
 import models.returnFrequency.ReturnDateOption
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
@@ -34,12 +34,12 @@ import scala.concurrent.{ExecutionContext, Future}
 class SubscriptionConnector @Inject()(val http: HttpClient,
                                       val config: FrontendAppConfig) {
 
-  private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
+  private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
-  def getCustomerDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CustomerDetailsModel]] = {
+  def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
-    http.GET(url)(CustomerDetailsReads, headerCarrier, ec)
+    http.GET(url)(CustomerCircumstanceReads, headerCarrier, ec)
   }
 
   def updateBusinessAddress(vrn: String, address: AddressModel)

@@ -17,21 +17,22 @@
 package mocks.connectors
 
 import connectors.SubscriptionConnector
+import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails}
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
-import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import uk.gov.hmrc.play.test.UnitSpec
 import org.mockito.ArgumentMatchers._
+
 import scala.concurrent.Future
 
 trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
 
-  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetailsModel]
+  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetails]
   type UpdateBusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
@@ -39,8 +40,8 @@ trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAn
     reset(mockSubscriptionConnector)
   }
 
-  def setupMockUserDetails(vrn: String)(response: Either[ErrorModel, CustomerDetailsModel]): Unit = {
-    when(mockSubscriptionConnector.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+  def setupMockUserDetails(vrn: String)(response: Either[ErrorModel, CircumstanceDetails]): Unit = {
+    when(mockSubscriptionConnector.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 

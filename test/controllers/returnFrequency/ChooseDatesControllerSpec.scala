@@ -16,16 +16,16 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ReturnFrequencyMessages
 import controllers.ControllerBaseSpec
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
 
-class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
@@ -37,7 +37,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
       lazy val result = TestChooseDatesController.show(fakeRequest)
 
       "return OK (200)" in {
-        mockCustomerDetailsSuccess(organisation)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
@@ -82,7 +82,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerDeta
       lazy val result = TestChooseDatesController.submit(request)
 
       "return 400" in {
-        mockCustomerDetailsSuccess(organisation)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.BAD_REQUEST
       }
     }
