@@ -63,7 +63,7 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"has link back to customer details page" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerDetailsController.show().url
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
       }
     }
   }

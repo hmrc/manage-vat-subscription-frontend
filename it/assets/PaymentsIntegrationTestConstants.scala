@@ -20,8 +20,8 @@ import models.payments.PaymentStartModel
 
 object PaymentsIntegrationTestConstants {
 
-  val paymentStart: PaymentStartModel = PaymentStartModel("999999999", agent = false, "someReturnUrl", "someBackUrl")
+  val paymentStart: PaymentStartModel = PaymentStartModel("999999999", isAgent = false, "someReturnUrl", "someBackUrl", None)
 
-  val paymentStartInvalid: PaymentStartModel = PaymentStartModel("99999999", agent = false, "someReturnUrl", "someBackUrl")
+  val paymentStartInvalid: PaymentStartModel = PaymentStartModel("99999999", isAgent = false, "someReturnUrl", "someBackUrl", None)
 
 }

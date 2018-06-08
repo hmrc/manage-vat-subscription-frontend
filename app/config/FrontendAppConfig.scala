@@ -75,7 +75,9 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
   lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
-  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerDetailsController.show().url).encodedUrl
+  private lazy val signInContinueUrl: String =
+    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
+
   private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 

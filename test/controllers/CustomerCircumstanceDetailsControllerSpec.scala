@@ -17,16 +17,16 @@
 package controllers
 
 import assets.messages.{CustomerDetailsPageMessages => messages}
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import config.ServiceErrorHandler
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
-  object TestCustomerDetailsController extends CustomerDetailsController(
+  object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     messagesApi,
     mockAuthPredicate,
     mockCustomerDetailsService,
@@ -38,11 +38,11 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestCustomerDetailsController.show(fakeRequest)
+      lazy val result = TestCustomerCircumstanceDetailsController.show(fakeRequest)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
@@ -58,7 +58,7 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
 
     "the user is authorised and an Error is returned" should {
 
-      lazy val result = TestCustomerDetailsController.show(fakeRequest)
+      lazy val result = TestCustomerCircumstanceDetailsController.show(fakeRequest)
 
       "return 500" in {
         mockCustomerDetailsError()
@@ -71,6 +71,6 @@ class CustomerDetailsControllerSpec extends ControllerBaseSpec with MockCustomer
       }
     }
 
-    unauthenticatedCheck(TestCustomerDetailsController.show)
+    unauthenticatedCheck(TestCustomerCircumstanceDetailsController.show)
   }
 }

@@ -18,15 +18,16 @@ package services
 
 import connectors.SubscriptionConnector
 import javax.inject.{Inject, Singleton}
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CustomerDetailsService @Inject()(val subscriptionConnector: SubscriptionConnector) {
+class CustomerCircumstanceDetailsService @Inject()(val subscriptionConnector: SubscriptionConnector) {
 
-  def getCustomerDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, CustomerDetailsModel]] =
-    subscriptionConnector.getCustomerDetails(vrn)
+  def getCustomerCircumstanceDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext)
+  : Future[Either[ErrorModel, CircumstanceDetails]] =
+    subscriptionConnector.getCustomerCircumstanceDetails(vrn)
 }

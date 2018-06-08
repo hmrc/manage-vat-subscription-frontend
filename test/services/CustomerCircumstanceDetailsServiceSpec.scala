@@ -17,29 +17,29 @@
 package services
 
 import assets.BaseTestConstants._
-import assets.CustomerDetailsTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import mocks.connectors.MockSubscriptionConnector
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
 import utils.TestUtil
 
 import scala.concurrent.Future
 
-class CustomerDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
+class CustomerCircumstanceDetailsServiceSpec extends TestUtil with MockSubscriptionConnector {
 
-  object TestCustomerDetailsService extends CustomerDetailsService(mockSubscriptionConnector)
+  object TestCustomerCircumstanceDetailsService extends CustomerCircumstanceDetailsService(mockSubscriptionConnector)
 
   "CustomerDetailsService" should {
 
-    def result: Future[Either[ErrorModel, CustomerDetailsModel]] = TestCustomerDetailsService.getCustomerDetails(vrn)
+    def result: Future[Either[ErrorModel, CircumstanceDetails]] = TestCustomerCircumstanceDetailsService.getCustomerCircumstanceDetails(vrn)
 
     "for getCustomerDetails method" when {
 
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockUserDetails(vrn)(Right(individual))
-          await(result) shouldBe Right(individual)
+          setupMockUserDetails(vrn)(Right(customerInformationModelMaxOrganisation))
+          await(result) shouldBe Right(customerInformationModelMaxOrganisation)
         }
       }
 

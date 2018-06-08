@@ -21,7 +21,6 @@ import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -29,7 +28,6 @@ import scala.concurrent.Future
 @Singleton
 class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val authenticate: AuthPredicate,
-                                                  val customerDetailsService: CustomerDetailsService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 

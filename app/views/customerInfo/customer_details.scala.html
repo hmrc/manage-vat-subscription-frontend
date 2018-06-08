@@ -13,10 +13,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 *@
-
-@import models.customerInfo.CustomerDetailsModel
-
-@(customerDetails: CustomerDetailsModel)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@import models.circumstanceInfo.CustomerDetails
+@(customerDetails: CustomerDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("customer_details.title"),

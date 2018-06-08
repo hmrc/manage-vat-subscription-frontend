@@ -17,36 +17,36 @@
 package mocks.services
 
 import assets.BaseTestConstants._
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
-import models.customerInfo.CustomerDetailsModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
 
-trait MockCustomerDetailsService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockCustomerCircumstanceDetailsService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockCustomerDetailsService: CustomerDetailsService = mock[CustomerDetailsService]
+  val mockCustomerDetailsService: CustomerCircumstanceDetailsService = mock[CustomerCircumstanceDetailsService]
 
-  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetailsModel]
+  type CircumstanceDetailsResponse = Either[ErrorModel, CircumstanceDetails]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockCustomerDetailsService)
   }
 
-  def setupMockCustomerDetails(vrn: String)(response: CustomerDetailsResponse): OngoingStubbing[Future[CustomerDetailsResponse]] = {
-    when(mockCustomerDetailsService.getCustomerDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+  def setupMockCustomerDetails(vrn: String)(response: CircumstanceDetailsResponse): OngoingStubbing[Future[CircumstanceDetailsResponse]] = {
+    when(mockCustomerDetailsService.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 
-  def mockCustomerDetailsSuccess(customerDetails: CustomerDetailsModel): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
-  def mockCustomerDetailsError(): OngoingStubbing[Future[CustomerDetailsResponse]] = setupMockCustomerDetails(vrn)(Left(errorModel))
+  def mockCustomerDetailsSuccess(customerDetails: CircumstanceDetails): OngoingStubbing[Future[CircumstanceDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
+  def mockCustomerDetailsError(): OngoingStubbing[Future[CircumstanceDetailsResponse]] = setupMockCustomerDetails(vrn)(Left(errorModel))
 }
 

@@ -17,19 +17,19 @@
 package assets
 
 import BaseTestConstants._
-import models.payments.{NextUrl, PaymentRedirectModel, PaymentStartModel}
+import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.libs.json.{JsObject, Json}
 
 object PaymentsTestConstants {
 
-  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, agent = false, "someReturnUrl", "someBackUrl")
+  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, isAgent = false, "someReturnUrl", "someBackUrl", None)
 
-  val successPaymentsResponseJson: JsObject = Json.obj("links" -> Json.obj("nextUrl" -> "continueUrl"))
+  val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
 
   val successBadJson = Some(Json.obj("nextUrl" -> 1))
 
   val successPaymentsResponse: String = "continueUrl"
 
-  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(NextUrl(successPaymentsResponse))
+  val successPaymentsResponseModel: PaymentRedirectModel = PaymentRedirectModel(successPaymentsResponse)
 
 }

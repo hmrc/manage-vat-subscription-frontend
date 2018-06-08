@@ -19,7 +19,7 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.WireMockMethods
 import models.payments.PaymentRedirectModel
-import play.api.http.Status.{OK, CREATED, BAD_REQUEST}
+import play.api.http.Status.{CREATED, BAD_REQUEST}
 import play.api.libs.json.Json
 
 object PaymentStub extends WireMockMethods {

@@ -19,12 +19,49 @@ package controllers
 import mocks.services.MockPaymentsService
 import assets.BaseTestConstants._
 import assets.PaymentsTestConstants._
+import models.payments.PaymentStartModel
 import play.api.http.Status
 import play.api.test.Helpers.redirectLocation
 import play.api.test.Helpers._
 
 
 class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService {
+
+  object TestPaymentController extends PaymentsController(
+    messagesApi,
+    mockAuthPredicate,
+    serviceErrorHandler,
+    mockPaymentsService,
+    frontendAppConfig
+  )
+
+  "The 'paymentDetails' method" when {
+
+    "passed '(999999999, true)' should return a PaymentStartModel with defined 'convenienceUrl'" in {
+
+      TestPaymentController.paymentDetails("someVrn", isAgent = true) shouldBe
+        PaymentStartModel(
+          "someVrn",
+          isAgent = true,
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
+          Some(frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/client-vat-number")
+        )
+    }
+
+    "passed '(999999999, false)' should return a PaymentStartModel with undefined 'convenienceUrl'" in {
+
+      TestPaymentController.paymentDetails("someVrn", isAgent = false) shouldBe
+        PaymentStartModel(
+          "someVrn",
+          isAgent = false,
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
+          None
+        )
+    }
+
+  }
 
   "Calling the sendToPayments method for an individual" when {
 
@@ -33,12 +70,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
       setupMockPaymentsService(paymentsResponse)
       mockIndividualAuthorised()
 
-      new PaymentsController(
-        messagesApi,
-        mockAuthPredicate,
-        serviceErrorHandler,
-        mockPaymentsService,
-        frontendAppConfig)
+      TestPaymentController
     }
 
     "the PaymentsService returns a Right(PaymentRedirectModel)" should {

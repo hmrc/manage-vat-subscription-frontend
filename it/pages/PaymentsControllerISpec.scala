@@ -18,7 +18,7 @@ package pages
 
 import assets.PaymentsIntegrationTestConstants._
 import helpers.BaseIntegrationSpec
-import models.payments.{NextUrl, PaymentRedirectModel}
+import models.payments.PaymentRedirectModel
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
@@ -32,7 +32,7 @@ class PaymentsControllerISpec extends BaseIntegrationSpec {
 
       "return status 303 and redirect to the returned url " in {
         given.user.isAuthenticated
-        PaymentStub.postPaymentSuccess(PaymentRedirectModel(NextUrl("change-business-details")))
+        PaymentStub.postPaymentSuccess(PaymentRedirectModel("change-business-details"))
         val res: WSResponse = get("/initialise-payment-journey")
 
         res should have(

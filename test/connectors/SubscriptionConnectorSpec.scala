@@ -17,12 +17,12 @@
 package connectors
 
 import assets.BaseTestConstants._
-import assets.CustomerDetailsTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.customerInfo.CustomerDetailsModel
 import models.returnFrequency.Jan
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
@@ -42,19 +42,19 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
       "format the url correctly" in {
         val testUrl = TestSubscriptionConnector.getCustomerDetailsUrl(vrn)
-        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/customer-details"
+        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
       }
     }
 
     "calling .getCustomerDetails" when {
 
-      def result: Future[HttpGetResult[CustomerDetailsModel]] = TestSubscriptionConnector.getCustomerDetails(vrn)
+      def result: Future[HttpGetResult[CircumstanceDetails]] = TestSubscriptionConnector.getCustomerCircumstanceDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Right(individual))
-          await(result) shouldBe Right(individual)
+          setupMockHttpGet(TestSubscriptionConnector.getCustomerDetailsUrl(vrn))(Right(customerInformationModelMaxOrganisation))
+          await(result) shouldBe Right(customerInformationModelMaxOrganisation)
         }
       }
 

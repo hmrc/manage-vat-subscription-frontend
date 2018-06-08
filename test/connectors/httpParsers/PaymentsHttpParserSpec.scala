@@ -22,7 +22,7 @@ import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 import assets.PaymentsTestConstants._
 import connectors.httpParsers.PaymentsHttpParser.PaymentsReads
-import models.payments.{NextUrl, PaymentRedirectModel}
+import models.payments.PaymentRedirectModel
 
 class PaymentsHttpParserSpec extends TestUtil {
 
@@ -32,7 +32,7 @@ class PaymentsHttpParserSpec extends TestUtil {
 
       "return a CustomerDetailsModel" in {
         PaymentsReads.read("", "", HttpResponse(Status.CREATED, Some(successPaymentsResponseJson))) shouldBe
-          Right(PaymentRedirectModel(NextUrl(successPaymentsResponse)))
+          Right(PaymentRedirectModel(successPaymentsResponse))
       }
     }
 

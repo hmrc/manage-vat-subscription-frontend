@@ -22,23 +22,23 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
-class CustomerDetailsController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthPredicate,
-                                          val customerDetailsService: CustomerDetailsService,
-                                          val serviceErrorHandler: ServiceErrorHandler,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class CustomerCircumstanceDetailsController @Inject()(val messagesApi: MessagesApi,
+                                                      val authenticate: AuthPredicate,
+                                                      val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
+                                                      val serviceErrorHandler: ServiceErrorHandler,
+                                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      Logger.debug(s"[CustomerDetailsController][show] User: ${user.vrn}")
-      customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.customerInfo.customer_details(customerDetails))
+      Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+        case Right(circumstances) => Ok(views.html.customerInfo.customer_details(circumstances.customerDetails))
         case _ =>
-          Logger.debug(s"[CustomerDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
+          Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           serviceErrorHandler.showInternalServerError
       }
   }

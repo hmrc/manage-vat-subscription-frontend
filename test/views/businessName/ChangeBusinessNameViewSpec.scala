@@ -16,12 +16,11 @@
 
 package views.businessName
 
+import assets.CustomerDetailsTestConstants.orgName
+import assets.messages.{ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-import assets.BaseTestConstants.organisationName
-import assets.messages.{ChangeBusinessNamePageMessages => viewMessages}
-import assets.messages.BaseMessages
 
 class ChangeBusinessNameViewSpec extends ViewBaseSpec {
 
@@ -39,7 +38,7 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       val link = s"$wrapper #continue"
     }
 
-    lazy val view = views.html.businessName.change_business_name(organisationName)(request, messages, mockConfig)
+    lazy val view = views.html.businessName.change_business_name(orgName)(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
@@ -50,8 +49,8 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       elementText(Selectors.pageHeading) shouldBe viewMessages.h1
     }
 
-    s"have a the correct p1 of '${viewMessages.p1(organisationName)}'" in {
-      elementText(Selectors.p1) shouldBe viewMessages.p1(organisationName)
+    s"have a the correct p1 of '${viewMessages.p1(orgName)}'" in {
+      elementText(Selectors.p1) shouldBe viewMessages.p1(orgName)
     }
 
     s"have a the correct p2 of '${viewMessages.p2}'" in {

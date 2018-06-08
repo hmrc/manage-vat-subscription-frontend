@@ -17,8 +17,8 @@
 package controllers
 
 import assets.messages.ChangeBusinessNamePageMessages
-import assets.CustomerDetailsTestConstants._
-import mocks.services.MockCustomerDetailsService
+import assets.CircumstanceDetailsTestConstants._
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Result
@@ -26,7 +26,7 @@ import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
     messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
@@ -38,7 +38,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCusto
       lazy val result: Future[Result] = TestChangeBusinessNameController.show(fakeRequest)
 
       "return OK (200)" in {
-        mockCustomerDetailsSuccess(organisation)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
@@ -57,7 +57,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCusto
       lazy val result = TestChangeBusinessNameController.show(fakeRequest)
 
       "return ISE (500)" in {
-        mockCustomerDetailsSuccess(individual)
+        mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }

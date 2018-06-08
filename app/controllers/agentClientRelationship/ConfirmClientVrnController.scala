@@ -22,7 +22,7 @@ import controllers.predicates.AuthoriseAsAgentWithClient
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerDetailsService
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -30,14 +30,14 @@ import scala.concurrent.Future
 @Singleton
 class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
                                            val authenticate: AuthoriseAsAgentWithClient,
-                                           val customerDetailsService: CustomerDetailsService,
+                                           val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   def show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      customerDetailsService.getCustomerDetails(user.vrn) map {
-        case Right(customerDetails) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, customerDetails))
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+        case Right(circumstances) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

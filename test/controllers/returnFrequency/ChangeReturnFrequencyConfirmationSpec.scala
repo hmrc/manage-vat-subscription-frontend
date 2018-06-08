@@ -16,21 +16,20 @@
 
 package controllers.returnFrequency
 
-import assets.CustomerDetailsTestConstants.customerDetailsMax
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => messages}
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.MockCustomerDetailsService
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerDetailsService {
+class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
     messagesApi,
     mockAuthPredicate,
-    mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAppConfig
   )
@@ -43,7 +42,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
-        mockCustomerDetailsSuccess(customerDetailsMax)
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
       }
 
