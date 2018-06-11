@@ -42,7 +42,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
         "return 200" in {
           mockAgentAuthorised()
-          val result = target(fakeRequest)
+          val result = target(request)
           status(result) shouldBe Status.OK
           await(bodyOf(result)) shouldBe "test"
         }
@@ -50,7 +50,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "the Agent is not signed up to HMRC_AS_AGENT" should {
 
-        lazy val result = target(fakeRequest)
+        lazy val result = target(request)
 
         "return Forbidden (403)" in {
           mockAgentWithoutEnrolment()
@@ -67,7 +67,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "redirect to the Customer Details Home Page SEE_OTHER (303)" in {
         mockIndividualAuthorised()
-        val result = target(fakeRequest)
+        val result = target(request)
         status(result) shouldBe Status.SEE_OTHER
       }
     }
@@ -76,7 +76,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "render an ISE (500)" in {
         mockUserWithoutAffinity()
-        val result = target(fakeRequest)
+        val result = target(request)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
@@ -85,7 +85,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "return 401 (Unauthorized)" in {
         mockMissingBearerToken()
-        val result = target(fakeRequest)
+        val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
@@ -94,7 +94,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "return 403 (Forbidden)" in {
         mockUnauthorised()
-        val result = target(fakeRequest)
+        val result = target(request)
         status(result) shouldBe Status.FORBIDDEN
       }
     }

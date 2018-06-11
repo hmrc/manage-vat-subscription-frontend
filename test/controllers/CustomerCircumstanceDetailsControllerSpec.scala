@@ -16,7 +16,7 @@
 
 package controllers
 
-import assets.messages.{CustomerDetailsPageMessages => messages}
+import assets.messages.{CustomerDetailsPageMessages => Messages}
 import assets.CircumstanceDetailsTestConstants._
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerCircumstanceDetailsService
@@ -31,14 +31,14 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockAppConfig
+    mockConfig
   )
 
   "Calling the .show action" when {
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestCustomerCircumstanceDetailsController.show(fakeRequest)
+      lazy val result = TestCustomerCircumstanceDetailsController.show(request)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -52,13 +52,13 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       }
 
       "render the CustomerDetails Page" in {
-        document.title shouldBe messages.title
+        document.title shouldBe Messages.title
       }
     }
 
     "the user is authorised and an Error is returned" should {
 
-      lazy val result = TestCustomerCircumstanceDetailsController.show(fakeRequest)
+      lazy val result = TestCustomerCircumstanceDetailsController.show(request)
 
       "return 500" in {
         mockCustomerDetailsError()

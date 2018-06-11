@@ -28,25 +28,25 @@ import scala.concurrent.Future
 class SignOutControllerSpec extends ControllerBaseSpec {
 
 
-  object TestSignOutController extends SignOutController(messagesApi, mockAppConfig) {
+  object TestSignOutController extends SignOutController(messagesApi, mockConfig) {
 
     "navigating to signout page" when {
 
       "authorised" should {
         "return 303 and navigate to the survey url" in {
-          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = true)(fakeRequest)
+          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = true)(request)
 
           status(result) shouldBe Status(SEE_OTHER)
-          redirectLocation(result) shouldBe Some(mockAppConfig.signOutUrl)
+          redirectLocation(result) shouldBe Some(mockConfig.signOutUrl)
         }
       }
 
       "unauthorised" should {
         "return 303 and navigate to sign out url" in {
-          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = false)(fakeRequest)
+          lazy val result: Future[Result] = TestSignOutController.signOut(authorised = false)(request)
 
           status(result) shouldBe Status(SEE_OTHER)
-          redirectLocation(result) shouldBe Some(mockAppConfig.unauthorisedSignOutUrl)
+          redirectLocation(result) shouldBe Some(mockConfig.unauthorisedSignOutUrl)
         }
       }
     }

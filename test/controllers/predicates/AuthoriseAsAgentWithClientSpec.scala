@@ -46,7 +46,7 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
     "an agent has not selected their Client (No Client VRN in session)" should {
 
-      lazy val result = target(fakeRequest)
+      lazy val result = target(request)
 
       "return 303 (SEE_OTHER) redirect" in {
         mockAgentAuthorised()

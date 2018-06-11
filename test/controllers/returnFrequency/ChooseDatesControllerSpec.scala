@@ -28,13 +28,13 @@ import play.api.test.Helpers.{contentType, _}
 class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChooseDatesController extends ChooseDatesController(
-    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
+    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
 
   "ChooseDatesController 'show' method" when {
 
     "the user is authorised" should {
 
-      lazy val result = TestChooseDatesController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(request)
 
       "return OK (200)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
@@ -54,7 +54,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
     "the user is authorised and an Error is returned from Customer Details" should {
 
-      lazy val result = TestChooseDatesController.show(fakeRequest)
+      lazy val result = TestChooseDatesController.show(request)
 
       "return ISE (500)" in {
         mockCustomerDetailsError()

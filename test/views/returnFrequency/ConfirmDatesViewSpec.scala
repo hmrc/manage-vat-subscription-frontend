@@ -39,28 +39,28 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     s"have a the display the correct dates of" when {
 
-      s"the current date is '${viewMessages.option1}'" in {
+      s"the current date is '${viewMessages.option1Jan}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Jan)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option1
+        elementText("#p1") shouldBe viewMessages.option1Jan
       }
 
-      s"the current date is '${viewMessages.option2}'" in {
+      s"the current date is '${viewMessages.option2Feb}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Feb)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option2
+        elementText("#p1") shouldBe viewMessages.option2Feb
       }
 
-      s"the current date is '${viewMessages.option3}'" in {
+      s"the current date is '${viewMessages.option3Mar}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Mar)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option3
+        elementText("#p1") shouldBe viewMessages.option3Mar
       }
 
-      s"the current date is '${viewMessages.option4}'" in {
+      s"the current date is '${viewMessages.option4Monthly}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option4
+        elementText("#p1") shouldBe viewMessages.option4Monthly
       }
     }
 

@@ -29,13 +29,13 @@ import scala.concurrent.Future
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
-    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAppConfig)
+    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
 
   "Calling the .show action" when {
 
     "the user is authorised and an Organisation Name exists" should {
 
-      lazy val result: Future[Result] = TestChangeBusinessNameController.show(fakeRequest)
+      lazy val result: Future[Result] = TestChangeBusinessNameController.show(request)
 
       "return OK (200)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
@@ -54,7 +54,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCusto
 
     "the user is authorised and an Individual Name exists" should {
 
-      lazy val result = TestChangeBusinessNameController.show(fakeRequest)
+      lazy val result = TestChangeBusinessNameController.show(request)
 
       "return ISE (500)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
@@ -64,7 +64,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCusto
 
     "the user is authorised and an Error is returned from Customer Details" should {
 
-      lazy val result = TestChangeBusinessNameController.show(fakeRequest)
+      lazy val result = TestChangeBusinessNameController.show(request)
 
       "return ISE (500)" in {
         mockCustomerDetailsError()

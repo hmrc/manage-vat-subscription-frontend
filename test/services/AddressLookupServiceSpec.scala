@@ -27,7 +27,7 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
       setupMockGetAddress(addressLookupGetResponse)
-      new AddressLookupService(mockAddressLookupConnector, mockAppConfig)
+      new AddressLookupService(mockAddressLookupConnector, mockConfig)
     }
 
     "connector call is successful" should {
@@ -44,7 +44,7 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
       setupMockInitialiseJourney(addressLookupInitialiseResponse)
-      new AddressLookupService(mockAddressLookupConnector, mockAppConfig)
+      new AddressLookupService(mockAddressLookupConnector, mockConfig)
     }
 
     "connector call is successful" should {

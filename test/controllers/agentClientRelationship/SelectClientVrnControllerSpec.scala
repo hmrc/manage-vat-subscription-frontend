@@ -16,7 +16,7 @@
 
 package controllers.agentClientRelationship
 
-import assets.messages.{ClientVrnPageMessages => messages}
+import assets.messages.{ClientVrnPageMessages => Messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -32,14 +32,14 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
     messagesApi,
     mockAgentOnlyAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockAppConfig
+    mockConfig
   )
 
   "Calling the .show action" when {
 
     "the user is an authorised Agent" should {
 
-      lazy val result = TestClientVrnControllerSpec.show(fakeRequest)
+      lazy val result = TestClientVrnControllerSpec.show(request)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -53,7 +53,7 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
       }
 
       "render the Client Vrn Page" in {
-        document.select("h1").text shouldBe messages.heading
+        document.select("h1").text shouldBe Messages.heading
       }
     }
 

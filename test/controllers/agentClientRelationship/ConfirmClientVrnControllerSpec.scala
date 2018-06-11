@@ -16,7 +16,7 @@
 
 package controllers.agentClientRelationship
 
-import assets.messages.{ConfirmClientVrnPageMessages => messages}
+import assets.messages.{ConfirmClientVrnPageMessages => Messages}
 import assets.CircumstanceDetailsTestConstants._
 import common.SessionKeys
 import config.ServiceErrorHandler
@@ -35,7 +35,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     mockAuthAsAgentWithClient,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockAppConfig
+    mockConfig
   )
 
   "Calling the .show action" when {
@@ -61,7 +61,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           }
 
           "render the Confirm Client Vrn Page" in {
-            document.select("h1").text shouldBe messages.heading
+            document.select("h1").text shouldBe Messages.heading
           }
         }
 

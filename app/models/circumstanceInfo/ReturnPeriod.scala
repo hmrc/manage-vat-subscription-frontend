@@ -19,42 +19,47 @@ package models.circumstanceInfo
 import play.api.libs.json._
 
 sealed trait ReturnPeriod {
-  def stdReturnPeriod: String
+  def id: String
+  def internalId: String
 }
 
-case object MAReturnPeriod extends ReturnPeriod {
-  override val stdReturnPeriod: String = "MA"
+case object Jan extends ReturnPeriod {
+  override val internalId: String = "MA"
+  override val id: String = "January"
 }
 
-case object MBReturnPeriod extends ReturnPeriod {
-  override val stdReturnPeriod: String = "MB"
-}
-
-
-case object MCReturnPeriod extends ReturnPeriod {
-  override val stdReturnPeriod: String = "MC"
+case object Feb extends ReturnPeriod {
+  override val internalId: String = "MB"
+  override val id: String = "February"
 }
 
 
-case object MMReturnPeriod extends ReturnPeriod {
-  override val stdReturnPeriod: String = "MM"
+case object Mar extends ReturnPeriod {
+  override val internalId: String = "MC"
+  override val id: String = "March"
+}
+
+
+case object Monthly extends ReturnPeriod {
+  override val internalId: String = "MM"
+  override val id: String = "Monthly"
 }
 
 object ReturnPeriod {
 
-  def unapply(arg: ReturnPeriod): String = arg.stdReturnPeriod
+  def unapply(arg: ReturnPeriod): String = arg.id
 
   implicit val reads: Reads[ReturnPeriod] = for {
     value <- (__ \ "stdReturnPeriod").read[String] map {
-      case MAReturnPeriod.stdReturnPeriod => MAReturnPeriod
-      case MBReturnPeriod.stdReturnPeriod => MBReturnPeriod
-      case MCReturnPeriod.stdReturnPeriod => MCReturnPeriod
-      case MMReturnPeriod.stdReturnPeriod => MMReturnPeriod
+      case Jan.internalId => Jan
+      case Feb.internalId => Feb
+      case Mar.internalId => Mar
+      case Monthly.internalId => Monthly
     }
   } yield value
 
   implicit val writes: Writes[ReturnPeriod] = Writes {
-    case period if period.stdReturnPeriod.trim.length > 0 => Json.obj("stdReturnPeriod" -> period.stdReturnPeriod)
+    case period if period.id.trim.length > 0 => Json.obj("stdReturnPeriod" -> period.internalId)
     case _ => Json.obj()
   }
 }
