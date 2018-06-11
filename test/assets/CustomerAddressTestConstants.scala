@@ -112,8 +112,9 @@ object CustomerAddressTestConstants {
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
       "title" -> "Changes in circumstances",
-      "heading" -> "What is the new business address?",
-      "filterLabel" -> "Property name or number"
+      "heading" -> "Select the new business address",
+      "filterLabel" -> "Property name or number",
+      "postcodeLabel" -> "Postcode"
     )
   )
 
