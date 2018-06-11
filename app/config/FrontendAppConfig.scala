@@ -102,4 +102,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
 
+  val btaUrl: String = getString("business-tax-account.url")
+
 }

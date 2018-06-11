@@ -102,3 +102,6 @@ confirm_client_vrn.heading = Confirm your client’s VAT number
 confirm_client_vrn.name = Business name
 confirm_client_vrn.vrn = VAT number
 confirm_client_vrn.edit = Edit different client
+
+breadcrumb.bta = Business tax account
+breadcrumb.yourVatDetails = Your VAT details
