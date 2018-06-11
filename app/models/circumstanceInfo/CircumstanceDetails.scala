@@ -17,6 +17,7 @@
 package models.circumstanceInfo
 
 import models.JsonReadUtil
+import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, Writes, __}
 

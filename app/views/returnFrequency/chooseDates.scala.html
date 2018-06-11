@@ -15,13 +15,14 @@
 *@
 
 @import models.returnFrequency.ReturnDatesModel
-@import models.returnFrequency._
 @import uk.gov.hmrc.play.views.html.helpers
 @import templates.headings
 @import templates.inputs.radioGroup
 @import templates.errors.errorSummary
+@import models.returnFrequency._
 
-@(form: Form[ReturnDatesModel], current: ReturnDateOption)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+
+@(form: Form[ReturnDatesModel], current: ReturnPeriod)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @label = {
   <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>

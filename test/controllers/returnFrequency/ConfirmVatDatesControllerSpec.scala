@@ -112,7 +112,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     "the user is authorised and a the session contains invalid data" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
-      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
 
       "return 500" in {
         setupMockReturnFrequencyServiceWithSuccess()

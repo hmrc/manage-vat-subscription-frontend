@@ -18,6 +18,8 @@ package controllers.returnFrequency
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ReturnFrequencyMessages
+import assets.ReturnPeriodTestConstants.returnPeriodJan
+import common.SessionKeys
 import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
@@ -32,22 +34,62 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
   "ChooseDatesController 'show' method" when {
 
-    "the user is authorised" should {
+    "the user is authorised" when {
 
-      lazy val result = TestChooseDatesController.show(request)
+      "a return frequency is returned from the call to get circumstance info" when {
 
-      "return OK (200)" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.OK
+        "a value is not already held in session for the Return Frequency" should {
+
+          lazy val result = TestChooseDatesController.show(request)
+
+          "return OK (200)" in {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
+            Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
+          }
+        }
+
+        "a value is already held in session for the Return Frequency = January" should {
+
+          lazy val result = TestChooseDatesController.show(request.withSession(SessionKeys.RETURN_FREQUENCY -> returnPeriodJan))
+
+          "return OK (200)" in {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "have the January radio option selected" in {
+            Jsoup.parse(bodyOf(result)).select("#period-option-january").attr("checked") shouldBe "checked"
+          }
+        }
       }
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+      "a return frequency is NOT returned from the call to get circumstance info" should {
 
-      s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
+        lazy val result = TestChooseDatesController.show(request)
+
+        "return ISE (500)" in {
+          mockCustomerDetailsSuccess(customerInformationModelMin)
+          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
       }
 
     }
@@ -78,15 +120,27 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
     "submitting with no option selected" should {
 
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
-      lazy val result = TestChooseDatesController.submit(request)
+      "when a return period is returned from get customer details" should {
 
-      "return 400" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.BAD_REQUEST
+        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+        lazy val result = TestChooseDatesController.submit(request)
+
+        "return Bad Request (400)" in {
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+      }
+
+      "when a return period is NOT returned from get customer details" should {
+
+        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+        lazy val result = TestChooseDatesController.submit(request)
+
+        "return ISE (500)" in {
+          mockCustomerDetailsSuccess(customerInformationModelMin)
+          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        }
       }
     }
-
   }
-
 }
