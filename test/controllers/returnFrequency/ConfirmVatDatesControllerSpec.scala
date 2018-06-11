@@ -17,7 +17,7 @@
 package controllers.returnFrequency
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.messages.{ReturnFrequencyMessages => messages}
+import assets.messages.{ReturnFrequencyMessages => Messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -35,7 +35,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
     mockReturnFrequencyService,
-    mockAppConfig
+    mockConfig
   )
 
   "Calling the .show action" when {
@@ -43,7 +43,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     "the user is authorised and a CustomerDetailsModel" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "January"
-      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
+      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -57,14 +57,14 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       }
 
       "render the CustomerDetails Page" in {
-        document.title shouldBe messages.title
+        document.title shouldBe Messages.title
       }
     }
 
     "the user is authorised and an Error is returned" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
-      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
+      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
 
       "return 500" in {
         mockCustomerDetailsError()
@@ -85,7 +85,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     "the user is authorised and a the session contains valid data" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
-      lazy val result = TestConfirmVatDatesController.submit(fakeRequest.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
 
       "return 303" in {
         setupMockReturnFrequencyServiceWithSuccess()
@@ -101,7 +101,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     "the user is authorised but submitting the changes to the backend fails" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
-      lazy val result = TestConfirmVatDatesController.submit(fakeRequest.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
 
       "return 500" in {
         setupMockReturnFrequencyServiceWithFailure()
@@ -112,7 +112,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     "the user is authorised and a the session contains invalid data" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
-      lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(session))
+      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
 
       "return 500" in {
         setupMockReturnFrequencyServiceWithSuccess()

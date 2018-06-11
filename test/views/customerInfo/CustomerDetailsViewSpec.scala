@@ -16,8 +16,9 @@
 
 package views.customerInfo
 
-import assets.CustomerDetailsTestConstants._
-import assets.messages.{CustomerDetailsPageMessages => viewMessages}
+import assets.CircumstanceDetailsTestConstants._
+import assets.messages.{ReturnFrequencyMessages, CustomerDetailsPageMessages => viewMessages}
+import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -26,9 +27,9 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
   "Rendering the Customer Details page" when {
 
-    "Viewing for any user" should {
+    "Viewing for any user (in this case Individual)" should {
 
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -53,6 +54,17 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
         }
 
+        "has the correct address output" in {
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line1.get
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.postCode.get
+          elementText("#businessAddress li:nth-child(7)") shouldBe
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get)(frontendAppConfig).get
+        }
+
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
@@ -65,10 +77,32 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-      "have a section for bank account details" which {
+      "have a section for repayment Bank Account details" which {
 
         "has the heading" in {
           elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+        }
+
+        "has a the correct Account Number" which {
+
+          "has the correct heading for the Account Number" in {
+            elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+          }
+
+          "has the correct value for the account number" in {
+            elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+          }
+        }
+
+        "has a the correct Sort Code" which {
+
+          "has the correct heading for the Sort Code" in {
+            elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+          }
+
+          "has the correct value for the account number" in {
+            elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+          }
         }
 
         "has a change link" which {
@@ -83,10 +117,15 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
+
       "have a section for return frequency" which {
 
         "has the heading" in {
           elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+        }
+
+        "has the correct value output for the current frequency" in {
+          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
         }
 
         "has a change link" which {
@@ -102,38 +141,9 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "Viewing for an Self-Employed Individual" should {
-
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "have a change details section for the Business Name" which {
-
-        s"has the heading '${viewMessages.organisationNameHeading}'" in {
-          elementText("#individual-name-text") shouldBe viewMessages.individualNameHeading
-        }
-
-        s"has the value '${individual.userName.get}'" in {
-          elementText("#individual-name") shouldBe individual.userName.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#individual-name-status") shouldBe viewMessages.change + " " + viewMessages.changeIndividualHidden
-          }
-
-          //TODO: Update this when URL developed and known
-          "has a link to '#'" in {
-            element("#individual-name-status").attr("href") shouldBe "#"
-          }
-        }
-      }
-    }
-
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customer_details(organisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -142,8 +152,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
         }
 
-        s"has the value '${organisation.organisationName.get}'" in {
-          elementText("#business-name") shouldBe organisation.organisationName.get
+        s"has the value '${customerInformationModelMaxOrganisation.customerDetails.organisationName.get}'" in {
+          elementText("#business-name") shouldBe customerInformationModelMaxOrganisation.customerDetails.organisationName.get
         }
 
         "has a change link" which {

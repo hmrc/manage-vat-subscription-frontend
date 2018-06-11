@@ -21,13 +21,13 @@ import play.api.test.Helpers._
 
 class HelloWorldControllerSpec extends ControllerBaseSpec {
 
-  object TestHelloWorldController extends HelloWorldController(messagesApi, mockAuthPredicate, mockAppConfig)
+  object TestHelloWorldController extends HelloWorldController(messagesApi, mockAuthPredicate, mockConfig)
 
   "Calling the .helloWorld action" when {
 
     "the user is authorised" should {
 
-      lazy val result = TestHelloWorldController.helloWorld(fakeRequest)
+      lazy val result = TestHelloWorldController.helloWorld(request)
 
       "return 200" in {
         status(result) shouldBe Status.OK

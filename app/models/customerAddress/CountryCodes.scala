@@ -14,23 +14,22 @@
  * limitations under the License.
  */
 
-package controllers
+package models.customerAddress
 
-import mocks.MockAuth
-import play.api.http.Status
-import play.api.mvc.{Action, AnyContent}
+import config.AppConfig
+import play.api.libs.json.{Format, Json}
 
-trait ControllerBaseSpec extends MockAuth {
+object CountryCodes {
 
-  def unauthenticatedCheck(controllerAction: Action[AnyContent]): Unit = {
+  case class Country(country: String, countryCode: String)
 
-    "the user is not authenticated" should {
-
-      "return 401 (Unauthorised)" in {
-        mockMissingBearerToken()
-        val result = controllerAction(request)
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
+  object Country {
+    implicit val format: Format[Country] = Json.format[Country]
   }
+
+  private def countryCodesMap(implicit appConfig: AppConfig): Map[String, String] =
+    appConfig.countryCodeJson.as[List[Country]].map(country => (country.countryCode, country.country)).toMap
+
+  def getCountry(countryCode: String)(implicit appConfig: AppConfig): Option[String] = countryCodesMap.get(countryCode)
+
 }

@@ -24,38 +24,38 @@ class ReturnPeriodSpec extends UnitSpec {
 
   "ReturnPeriod Reads" should {
     "parse the json correctly for MA types" in {
-      returnPeriodMA.as[ReturnPeriod] shouldBe MAReturnPeriod
+      returnPeriodMA.as[ReturnPeriod] shouldBe Jan
     }
 
     "parse the json correctly for MB types" in {
-      returnPeriodMB.as[ReturnPeriod] shouldBe MBReturnPeriod
+      returnPeriodMB.as[ReturnPeriod] shouldBe Feb
     }
 
     "parse the json correctly for MC types" in {
-      returnPeriodMC.as[ReturnPeriod] shouldBe MCReturnPeriod
+      returnPeriodMC.as[ReturnPeriod] shouldBe Mar
     }
 
     "parse the json correctly for MM types" in {
-      returnPeriodMM.as[ReturnPeriod] shouldBe MMReturnPeriod
+      returnPeriodMM.as[ReturnPeriod] shouldBe Monthly
     }
   }
 
   "ReturnPeriod Writes" should {
 
     "output a fully populated MA ReturnPeriod object with all fields populated" in {
-      Json.toJson(MAReturnPeriod) shouldBe returnPeriodMA
+      Json.toJson(Jan) shouldBe returnPeriodMA
     }
 
     "output a fully populated MB ReturnPeriod object with all fields populated" in {
-      Json.toJson(MBReturnPeriod) shouldBe returnPeriodMB
+      Json.toJson(Feb) shouldBe returnPeriodMB
     }
 
     "output a fully populated MC ReturnPeriod object with all fields populated" in {
-      Json.toJson(MCReturnPeriod) shouldBe returnPeriodMC
+      Json.toJson(Mar) shouldBe returnPeriodMC
     }
 
     "output a fully populated MM ReturnPeriod object with all fields populated" in {
-      Json.toJson(MMReturnPeriod) shouldBe returnPeriodMM
+      Json.toJson(Monthly) shouldBe returnPeriodMM
     }
   }
 }

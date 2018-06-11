@@ -36,7 +36,7 @@ class CustomerCircumstanceDetailsController @Inject()(val messagesApi: MessagesA
     implicit user =>
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) => Ok(views.html.customerInfo.customer_details(circumstances.customerDetails))
+        case Right(circumstances) => Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           serviceErrorHandler.showInternalServerError

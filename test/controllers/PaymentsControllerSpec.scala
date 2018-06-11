@@ -76,7 +76,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     "the PaymentsService returns a Right(PaymentRedirectModel)" should {
 
       lazy val controller = setup(paymentsResponse = Right(successPaymentsResponseModel))
-      lazy val result = controller.sendToPayments(fakeRequest)
+      lazy val result = controller.sendToPayments(request)
 
       "return 303 (Redirect)" in {
         status(result) shouldBe Status.SEE_OTHER
@@ -90,7 +90,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     "the PaymentsService returns an error" should {
 
       lazy val controller = setup(paymentsResponse = Left(errorModel))
-      lazy val result = controller.sendToPayments(fakeRequest)
+      lazy val result = controller.sendToPayments(request)
 
       "return 500 (ISE)" in {
         status(result) shouldBe INTERNAL_SERVER_ERROR

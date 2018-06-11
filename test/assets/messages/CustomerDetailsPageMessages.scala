@@ -28,13 +28,16 @@ object CustomerDetailsPageMessages {
   val organisationNameHeading = "Business name"
   val businessAddressHeading = "Business address"
   val bankDetailsHeading = "Bank account for repayments only"
+  val accountNumberHeading = "Account number"
+  val sortcodeHeading = "Sort code"
   val returnFrequencyHeading = "VAT Return dates"
 
   val change = "Change"
   val changeBusinessHidden = "your Business name"
   val changeIndividualHidden = "your name"
   val changeBusinessAddressHidden = "your Business address"
-  val changeBankDetailsHidden = "Bank account for repayments only"
+  val changeBankDetailsHidden = "your repayment Bank Account"
   val changeReturnFrequencyHidden = "your VAT Return dates"
+  val bankAccountHidden = "your repayment Bank Account"
 
 }

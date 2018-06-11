@@ -49,7 +49,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
 
   val mockEnrolmentsAuthService: EnrolmentsAuthService = new EnrolmentsAuthService(mockAuthConnector)
 
-  val mockAuthAsAgentWithClient: AuthoriseAsAgentWithClient = new AuthoriseAsAgentWithClient(mockEnrolmentsAuthService, messagesApi, mockAppConfig)
+  val mockAuthAsAgentWithClient: AuthoriseAsAgentWithClient = new AuthoriseAsAgentWithClient(mockEnrolmentsAuthService, messagesApi, mockConfig)
 
   val mockAuthPredicate: AuthPredicate =
     new AuthPredicate(
@@ -57,7 +57,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       messagesApi,
       mockAuthAsAgentWithClient,
       injector.instanceOf[ServiceErrorHandler],
-      mockAppConfig
+      mockConfig
     )
 
   val mockAgentOnlyAuthPredicate: AuthoriseAsAgentOnly =
@@ -65,7 +65,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       mockEnrolmentsAuthService,
       messagesApi,
       injector.instanceOf[ServiceErrorHandler],
-      mockAppConfig
+      mockConfig
     )
 
   def mockIndividualAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =

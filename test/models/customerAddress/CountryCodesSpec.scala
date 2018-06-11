@@ -14,23 +14,18 @@
  * limitations under the License.
  */
 
-package controllers
+package models.customerAddress
 
-import mocks.MockAuth
-import play.api.http.Status
-import play.api.mvc.{Action, AnyContent}
+import utils.TestUtil
 
-trait ControllerBaseSpec extends MockAuth {
+class CountryCodesSpec extends TestUtil {
 
-  def unauthenticatedCheck(controllerAction: Action[AnyContent]): Unit = {
-
-    "the user is not authenticated" should {
-
-      "return 401 (Unauthorised)" in {
-        mockMissingBearerToken()
-        val result = controllerAction(request)
-        status(result) shouldBe Status.UNAUTHORIZED
-      }
+  "CountryCodeTest" should {
+    "successfully convert a country code to a country" in {
+      CountryCodes.getCountry("GB")(frontendAppConfig) should be (Some("United Kingdom"))
+    }
+    "return None if a country code is not found" in {
+      CountryCodes.getCountry("ZZ")(frontendAppConfig) should be (None)
     }
   }
 }

@@ -20,12 +20,10 @@ import config.FrontendAppConfig
 import connectors.httpParsers.PaymentsHttpParser.PaymentsReads
 import connectors.httpParsers.ResponseHttpParser._
 import javax.inject.{Inject, Singleton}
-import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.Logger
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
-import play.api.http.Status
 
 import scala.concurrent.{ExecutionContext, Future}
 
