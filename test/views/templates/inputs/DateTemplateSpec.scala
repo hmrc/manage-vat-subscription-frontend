@@ -16,7 +16,7 @@
 
 package views.templates.inputs
 
-import forms.test.DateInputForm
+import testOnly.forms.test.DateInputForm
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
 
