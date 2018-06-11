@@ -22,7 +22,7 @@ import play.api.libs.json.{JsObject, Json}
 
 object PaymentsTestConstants {
 
-  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, isAgent = false, "someReturnUrl", "someBackUrl", None)
+  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, isAgent = false, "someReturnUrl", "someBackUrl", "someConvenienceUrl")
 
   val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
 

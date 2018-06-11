@@ -80,6 +80,21 @@
         </div>
 
         <div>
+            <dt id="bank-details-text" class="cya-question">
+                @messages("customer_details.bankDetails.heading")
+            </dt>
+            <dd id="bank-details" class="cya-answer">
+
+            </dd>
+            <dd class="cya-change">
+                <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
+                    @messages("customer_details.change")
+                    <span class="visually-hidden">@messages("customer_details.bankDetails.heading")</span>
+                </a>
+            </dd>
+        </div>
+
+        <div>
             <dt id="vat-return-dates-text" class="cya-question">
                 @messages("customer_details.returnFrequency.heading")
             </dt>

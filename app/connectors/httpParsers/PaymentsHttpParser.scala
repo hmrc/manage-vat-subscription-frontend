@@ -41,7 +41,7 @@ object PaymentsHttpParser {
           )
         }
         case status =>
-          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned")
+          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned, with response: ${response.body}")
           Left(ErrorModel(status,"Downstream error returned when retrieving payment redirect"))
       }
     }

@@ -40,7 +40,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
     val continueUrl = "continue-url"
     def postPaymentsDetailsResult: Future[HttpPostResult[PaymentRedirectModel]] =
-      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", true, "returnUrl", "backUrl", Some("convenienceUrl")))
+      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", true, "returnUrl", "backUrl", "convenienceUrl"))
 
     "for postPaymentsDetails method" when {
 

@@ -65,6 +65,24 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
+      "have a section for bank account details" which {
+
+        "has the heading" in {
+          elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#bank-details-status") shouldBe viewMessages.change + " " + viewMessages.changeBankDetailsHidden
+          }
+
+          s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+          }
+        }
+      }
+
       "have a section for return frequency" which {
 
         "has the heading" in {

@@ -41,9 +41,9 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
 
   private[PaymentsController] def convenienceUrl(isAgent: Boolean) = {
     if(isAgent) {
-      Some(config.signInContinueBaseUrl + controllers.agentClientRelationship.routes.SelectClientVrnController.show())
+      config.signInContinueBaseUrl + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
     } else {
-      None
+      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show()
     }
   }
 

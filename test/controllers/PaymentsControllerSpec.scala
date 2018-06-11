@@ -45,7 +45,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
           isAgent = true,
           frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
           frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          Some(frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/client-vat-number")
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/client-vat-number"
         )
     }
 
@@ -57,7 +57,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
           isAgent = false,
           frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
           frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          None
+          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details"
         )
     }
 
