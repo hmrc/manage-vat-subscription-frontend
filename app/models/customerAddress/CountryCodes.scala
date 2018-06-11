@@ -28,10 +28,7 @@ object CountryCodes {
   }
 
   private def countryCodesMap(implicit appConfig: AppConfig): Map[String, String] =
-    appConfig.countryCodeJson.validate[List[Country]].fold(
-      _ => throw new Exception("Country codes file in invalid format"),
-      countryCodesList => countryCodesList.map(country => (country.countryCode, country.country)).toMap
-    )
+    appConfig.countryCodeJson.as[List[Country]].map(country => (country.countryCode, country.country)).toMap
 
   def getCountry(countryCode: String)(implicit appConfig: AppConfig): Option[String] = countryCodesMap.get(countryCode)
 
