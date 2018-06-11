@@ -31,7 +31,6 @@ case class AddressLookupJsonBuilder(continueUrl: String) {
     "heading" -> "Select the new business address",
     "filterLabel" -> "Property name or number",
     "postcodeLabel" -> "Postcode"
-//    "manualAddressLinkText" -> "bob" // ignored whilst ukMode == true?
   )
 
   val confirmPage = Map(
