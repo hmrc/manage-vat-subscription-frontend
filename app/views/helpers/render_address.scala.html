@@ -27,7 +27,9 @@
             <li>@line</li>
         }
         @address.countryCode.map { code =>
-            <li>@CountryCodes.getCountry(code)</li>
+            @CountryCodes.getCountry(code).map { country =>
+                <li>@country</li>
+            }
         }
     </ol>
 }
