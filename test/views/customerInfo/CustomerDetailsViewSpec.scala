@@ -77,6 +77,48 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
+      "have a section for repayment Bank Account details" which {
+
+        "has the heading" in {
+          elementText("#bankAccountHeading") shouldBe viewMessages.bankAccountHeading
+        }
+
+        "has a the correct Account Number" which {
+
+          "has the correct heading for the Account Number" in {
+            elementText("#bankAccount li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+          }
+
+          "has the correct value for the account number" in {
+            elementText("#bankAccount li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+          }
+        }
+
+        "has a the correct Sort Code" which {
+
+          "has the correct heading for the Sort Code" in {
+            elementText("#bankAccount li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+          }
+
+          "has the correct value for the account number" in {
+            elementText("#bankAccount li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+          }
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#bankDetailsStatus") shouldBe viewMessages.change + " " + viewMessages.bankAccountHidden
+          }
+
+          //TODO: Update this when the repayment bank details hand-off is merged to master
+          s"has a link to #" in {
+            element("#bankDetailsStatus").attr("href") shouldBe "#"
+          }
+        }
+      }
+
+
       "have a section for return frequency" which {
 
         "has the heading" in {

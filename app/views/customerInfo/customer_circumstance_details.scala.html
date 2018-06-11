@@ -70,6 +70,32 @@
             }
         }
 
+        @circumstances.bankDetails.map { bankDetails =>
+            <div>
+                <dt id="bankAccountHeading" class="cya-question">
+                    @messages("customer_details.bankAccount.heading")
+                </dt>
+                <dd id="bankAccount" class="cya-answer">
+                    <ol>
+                        @bankDetails.bankAccountNumber.map { accNum =>
+                            <li class="bold">@messages("customer_details.bankAccount.number")</li>
+                            <li>@accNum</li>
+                        }
+                        @bankDetails.sortCode.map { sortcode =>
+                            <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
+                            <li>@sortcode</li>
+                        }
+                    </ol>
+                </dd>
+                <dd class="cya-change">
+                    <a id="bankDetailsStatus" href="#">
+                        @messages("customer_details.change")
+                        <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
+                    </a>
+                </dd>
+            </div>
+        }
+
         @circumstances.returnPeriod.map { period =>
             <div>
                 <dt id="vat-return-dates-text" class="cya-question">

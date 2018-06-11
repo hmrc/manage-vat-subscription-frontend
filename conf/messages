@@ -52,6 +52,10 @@ customer_details.individualName.heading = Individual name
 customer_details.individualName.change.hidden = your name
 customer_details.businessAddress.heading = Business address
 customer_details.businessAddress.change.hidden = your Business address
+customer_details.bankAccount.heading = Bank account for repayments only
+customer_details.bankAccount.number = Account number
+customer_details.bankAccount.sortcode = Sort code
+customer_details.bankAccount.change.hidden = your repayment Bank Account
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = your VAT Return dates
 
