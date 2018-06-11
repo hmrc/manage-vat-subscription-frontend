@@ -21,7 +21,7 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.chooseDatesForm.datesForm
 import javax.inject.{Inject, Singleton}
-import models.returnFrequency.{Jan, ReturnDatesModel}
+import models.returnFrequency.ReturnDatesModel
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
@@ -40,21 +40,12 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
   val show: Action[AnyContent] = authenticate.async { implicit user =>
 
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-      case Right(_) =>
-        val frequency = Jan // this will eventually come from the call to getCustomerDetails
-
-        val form: Form[ReturnDatesModel] = if (user.session.data.contains(SessionKeys.RETURN_FREQUENCY)) {
-          user.session(SessionKeys.RETURN_FREQUENCY) match {
-            case value if value.nonEmpty => datesForm.fill(ReturnDatesModel(value))
-            case _ => datesForm
-          }
+      case Right(details) if details.returnPeriod.isDefined =>
+        val form: Form[ReturnDatesModel] = user.session.get(SessionKeys.RETURN_FREQUENCY) match {
+          case Some(value) => datesForm.fill(ReturnDatesModel(value))
+          case _ => datesForm
         }
-        else {
-          datesForm
-        }
-
-        Ok(views.html.returnFrequency.chooseDates(form, frequency))
-
+        Ok(views.html.returnFrequency.chooseDates(form, details.returnPeriod.get))
       case _ => serviceErrorHandler.showInternalServerError
     }
   }
@@ -64,9 +55,8 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
     datesForm.bindFromRequest().fold(
       errors => {
         customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-          case Right(_) =>
-            val frequency = Jan // this will eventually come from the call to getCustomerDetails
-            BadRequest(views.html.returnFrequency.chooseDates(errors, frequency))
+          case Right(details) if details.returnPeriod.isDefined =>
+            BadRequest(views.html.returnFrequency.chooseDates(errors, details.returnPeriod.get))
           case _ => serviceErrorHandler.showInternalServerError
         }
       },

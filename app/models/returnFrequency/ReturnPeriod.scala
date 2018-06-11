@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package models.circumstanceInfo
+package models.returnFrequency
 
-import play.api.libs.json._
+import play.api.Logger
+import play.api.libs.json.{Json, Reads, Writes, __}
 
 sealed trait ReturnPeriod {
   def id: String
@@ -33,19 +34,28 @@ case object Feb extends ReturnPeriod {
   override val id: String = "February"
 }
 
-
 case object Mar extends ReturnPeriod {
   override val internalId: String = "MC"
   override val id: String = "March"
 }
-
 
 case object Monthly extends ReturnPeriod {
   override val internalId: String = "MM"
   override val id: String = "Monthly"
 }
 
+
 object ReturnPeriod {
+
+  def apply(arg: String): Option[ReturnPeriod] = arg match {
+    case Jan.id => Some(Jan)
+    case Feb.id => Some(Feb)
+    case Mar.id => Some(Mar)
+    case Monthly.id => Some(Monthly)
+    case unknown =>
+      Logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
+      None
+  }
 
   def unapply(arg: ReturnPeriod): String = arg.id
 
@@ -59,7 +69,6 @@ object ReturnPeriod {
   } yield value
 
   implicit val writes: Writes[ReturnPeriod] = Writes {
-    case period if period.id.trim.length > 0 => Json.obj("stdReturnPeriod" -> period.internalId)
-    case _ => Json.obj()
+    period => Json.obj("stdReturnPeriod" -> period.internalId)
   }
 }
