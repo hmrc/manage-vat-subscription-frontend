@@ -43,6 +43,7 @@ features.simpleAuth.enabled = Simple auth
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details
+customer_details.agentSubheading = Your client''s VAT details
 customer_details.h1 = Change of business details
 customer_details.h2 = About the business
 customer_details.change = Change
