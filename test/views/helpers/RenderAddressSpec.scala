@@ -22,31 +22,38 @@ import views.ViewBaseSpec
 
 class RenderAddressSpec extends ViewBaseSpec {
 
-  "The RenderAddress helper" should {
+  "The RenderAddress helper" when {
 
-    "Render all lines of an address if all are populated" in {
-      val address = PPOBAddress(
+    "all lines of an address if all are populated" should {
+      lazy val address = PPOBAddress(
         Some("1"),
         Some("2"),
         Some("3"),
         Some("4"),
         Some("5"),
         Some("6"),
-        Some("7")
+        Some("GB")
       )
 
-      val view = views.html.helpers.render_address(address)(messages)
-      val document = Jsoup.parse(view.body)
+      lazy val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
+      lazy val document = Jsoup.parse(view.body)
 
-      for (i <- 1 to 7) {
-        document.select(s"li:nth-child($i)").text shouldBe s"$i"
+
+      "Render address lines 1 to 6" in {
+        for (i <- 1 to 6) {
+          document.select(s"li:nth-child($i)").text shouldBe s"$i"
+        }
+      }
+
+      "Render the correct Country for the Postcode" in {
+        document.select(s"li:nth-child(7)").text shouldBe "United Kingdom"
       }
     }
 
     "Render no lines of an address if none are populated" in {
       val address = PPOBAddress(None, None, None, None, None, None, None)
 
-      val view = views.html.helpers.render_address(address)(messages)
+      val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
       val document = Jsoup.parse(view.body)
 
       for (i <- 1 to 7) {

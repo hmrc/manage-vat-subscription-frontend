@@ -27,7 +27,7 @@ object PPOBAddressTestConstants {
   val addLine4 = "Add Line 4"
   val addLine5 = "Add Line 5"
   val postcode = "TE37 7AD"
-  val countryCode = "ES"
+  val countryCode = "GB"
 
 
   val ppobAddressModelMax = PPOBAddress(

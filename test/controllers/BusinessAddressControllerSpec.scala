@@ -44,7 +44,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
-        mockAppConfig)
+        mockConfig)
     }
 
     "address lookup service returns success" when {
@@ -54,7 +54,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
           businessAddressResponse = Right(SubscriptionUpdateResponseModel("")))
-        lazy val result = controller.callback("12345")(fakeRequest)
+        lazy val result = controller.callback("12345")(request)
 
         "return ok" in {
           status(result) shouldBe Status.OK
@@ -73,7 +73,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
           businessAddressResponse = Left(errorModel))
-        lazy val result = controller.callback("12345")(fakeRequest)
+        lazy val result = controller.callback("12345")(request)
 
         "return InternalServerError" in {
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -86,7 +86,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       lazy val controller = setup(
         addressLookupResponse = Left(errorModel),
         businessAddressResponse = Left(errorModel))
-      lazy val result = controller.callback("12345")(fakeRequest)
+      lazy val result = controller.callback("12345")(request)
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -115,13 +115,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
-        mockAppConfig)
+        mockConfig)
     }
 
     "address lookup service returns success" should {
 
       lazy val controller = setup(addressLookupResponse = Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = controller.initialiseJourney(fakeRequest)
+      lazy val result = controller.initialiseJourney(request)
 
       "return redirect to the url returned" in {
         status(result) shouldBe Status.SEE_OTHER
@@ -135,7 +135,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     "address lookup service returns an error" should {
 
       lazy val controller = setup(addressLookupResponse = Left(errorModel))
-      lazy val result = controller.initialiseJourney(fakeRequest)
+      lazy val result = controller.initialiseJourney(request)
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR

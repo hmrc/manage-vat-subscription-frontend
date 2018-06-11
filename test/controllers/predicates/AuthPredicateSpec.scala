@@ -37,7 +37,7 @@ class AuthPredicateSpec extends MockAuth {
 
       "return ISE (500)" in {
         mockUserWithoutAffinity()
-        status(target(fakeRequest)) shouldBe Status.INTERNAL_SERVER_ERROR
+        status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }
 
@@ -90,7 +90,7 @@ class AuthPredicateSpec extends MockAuth {
 
       "return OK (200)" in {
         mockIndividualAuthorised()
-        status(target(fakeRequest)) shouldBe Status.OK
+        status(target(request)) shouldBe Status.OK
       }
     }
 
@@ -98,7 +98,7 @@ class AuthPredicateSpec extends MockAuth {
 
       "return Forbidden (403)" in {
         mockIndividualWithoutEnrolment()
-        status(target(fakeRequest)) shouldBe Status.FORBIDDEN
+        status(target(request)) shouldBe Status.FORBIDDEN
       }
     }
   }

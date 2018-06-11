@@ -18,6 +18,7 @@ package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages, CustomerDetailsPageMessages => viewMessages}
+import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -60,7 +61,8 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line4.get
           elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line5.get
           elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.postCode.get
-          elementText("#businessAddress li:nth-child(7)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get
+          elementText("#businessAddress li:nth-child(7)") shouldBe
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get)(frontendAppConfig).get
         }
 
         "has a change link" which {

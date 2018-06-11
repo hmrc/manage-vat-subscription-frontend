@@ -14,15 +14,20 @@
 * limitations under the License.
 *@
 
+@import config.AppConfig
 @import models.circumstanceInfo.PPOBAddress
+@import models.customerAddress.CountryCodes
 
-@(address: PPOBAddress)(implicit messages: Messages)
+@(address: PPOBAddress)(implicit messages: Messages, appConfig: AppConfig)
 
 
-@defining(Seq(address.line1, address.line2, address.line3, address.line4, address.line5, address.postCode, address.countryCode).flatten) { addressLines =>
+@defining(Seq(address.line1, address.line2, address.line3, address.line4, address.line5, address.postCode).flatten) { addressLines =>
     <ol>
         @addressLines.map { line =>
             <li>@line</li>
+        }
+        @address.countryCode.map { code =>
+            <li>@CountryCodes.getCountry(code)</li>
         }
     </ol>
 }

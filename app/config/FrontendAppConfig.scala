@@ -17,15 +17,18 @@
 package config
 
 import java.util.Base64
-import javax.inject.{Inject, Singleton}
 
 import config.features.Features
+import config.{ConfigKeys => Keys}
+import javax.inject.{Inject, Singleton}
 import play.api.Mode.Mode
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
-import config.{ConfigKeys => Keys}
+
+import scala.io.Source
 
 trait AppConfig extends ServicesConfig {
   val analyticsToken: String
@@ -47,6 +50,7 @@ trait AppConfig extends ServicesConfig {
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
+  val countryCodeJson: JsValue
 }
 
 @Singleton
@@ -101,5 +105,10 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
+
+  lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
+    case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
+    case _ => throw new Exception("Country codes file not found")
+  }
 
 }
