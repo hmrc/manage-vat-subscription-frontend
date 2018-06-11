@@ -115,6 +115,9 @@ object CustomerAddressTestConstants {
       "heading" -> "Select the new business address",
       "filterLabel" -> "Property name or number",
       "postcodeLabel" -> "Postcode"
+    ),
+    "confirmPage" -> Json.obj(
+      "heading" -> "Confirm the new business address"
     )
   )
 
