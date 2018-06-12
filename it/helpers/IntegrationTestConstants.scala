@@ -28,16 +28,16 @@ object IntegrationTestConstants {
   val clientVRN = "999999999"
   val VRN = "111111111"
 
-  val individual = CustomerDetails(
+  val organisation = CustomerDetails(
     firstName = None,
     lastName = None,
     tradingName = Some("Vatmobile Taxi"),
     organisationName = Some("Vatmobile Taxi LTD")
   )
 
-  val organisation = CustomerDetails(
-    firstName = None,
-    lastName = None,
+  val individual = CustomerDetails(
+    firstName = Some("Nanana"),
+    lastName = Some("Vatman"),
     tradingName = Some("Vatmobile Taxi"),
     organisationName = None
   )

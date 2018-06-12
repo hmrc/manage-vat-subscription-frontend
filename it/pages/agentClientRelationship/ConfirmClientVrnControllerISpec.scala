@@ -18,10 +18,11 @@ package pages.agentClientRelationship
 
 import common.SessionKeys
 import helpers.BaseIntegrationSpec
+import helpers.IntegrationTestConstants._
+import models.customerAddress.CountryCodes
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
-import helpers.IntegrationTestConstants._
 import stubs.VatSubscriptionStub
 
 class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
@@ -39,92 +40,124 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
 
           "a success response is received for the Customer Details" should {
 
-            "return 200 OK" in {
+            "Render the Confirm Client View with the correction information" in {
+
               given.agent.isSignedUpToAgentServices
+
+              And("I stub a successful response Individual response from ")
               VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMax(individual))
-              target(Some(clientVRN)).status shouldBe OK
+
+              When("I call the Confirm Client VRN page with the clients VRN in the session")
+              val res = target(Some(clientVRN))
+
+              res should have(
+                httpStatus(OK),
+                //TODO: Future Story to be played to decide whether we show individual name instead of ""
+                elementText("article p:nth-of-type(1)")(individual.firstName.get + " " + individual.lastName.get),
+                elementText("article p:nth-of-type(2)")(clientVRN)
+              )
             }
           }
 
           "an error response is received for the Customer Details" should {
 
-            lazy val result = target(Some(clientVRN))
+            "Render the Internal Server Error view" in {
 
-            "return status ISE (500)" in {
               given.agent.isSignedUpToAgentServices
-              VatSubscriptionStub.getClientDetailsError(clientVRN)
-              result.status shouldBe INTERNAL_SERVER_ERROR
-            }
 
-            "render the ISE page" in {
-              document(result).title shouldBe Messages("global.error.InternalServerError500.title")
+              And("I stub an error response Individual response from ")
+              VatSubscriptionStub.getClientDetailsError(clientVRN)
+
+              When("I call the Confirm Client VRN page with the clients VRN in the session")
+              val res = target(Some(clientVRN))
+
+              res should have(
+                httpStatus(INTERNAL_SERVER_ERROR),
+                pageTitle(Messages("global.error.InternalServerError500.title"))
+              )
             }
           }
         }
 
         "NO client VRN is held in the session cookie" should {
 
-          lazy val result = target()
+          "Redirect to the Select Client VRN view" in {
 
-          "return redirect status SEE_OTHER (303)" in {
             given.agent.isSignedUpToAgentServices
-            result.status shouldBe SEE_OTHER
-          }
 
-          "redirect location should be to the Select Client VRN view" in {
-            redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+            When("I call the Confirm Client VRN page with NO client VRN held in the session")
+            val res = target(None)
+
+            res should have(
+              httpStatus(SEE_OTHER),
+              redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+            )
           }
         }
       }
 
       "the Agent is not signed up for HMRC-AS-AGENT (not authorised)" should {
 
-        "return ISE (500)" in {
+        "Render the Internal Server Error page" in {
+
           given.agent.isNotSignedUpToAgentServices
-          target(Some(clientVRN)).status shouldBe INTERNAL_SERVER_ERROR
+
+          When("I call the Confirm Client VRN page with the clients VRN in the session")
+          val res = target(Some(clientVRN))
+
+          res should have(
+            httpStatus(INTERNAL_SERVER_ERROR),
+            pageTitle(Messages("global.error.InternalServerError500.title"))
+          )
         }
       }
     }
 
     "the user is a Principle Entity and not an Agent" should {
 
-      lazy val result = target()
+      "Redirect to the Select Client Details page (this bounces them to Customer Details after)" in {
 
-      "have a redirect status SEE_OTHER (303)" in {
         given.user.isAuthenticated
-        result.status shouldBe SEE_OTHER
-      }
 
-      "have the redirect location header set to the Select Client Details page (this bounces them to Customer Details after)" in {
-        redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+        When("I call the Confirm Client VRN page")
+        val res = target()
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+        )
       }
     }
 
     "the user is timed out (not authenticated)" should {
 
-      lazy val result = target(Some(clientVRN))
+      "Render the session timeout view" in {
 
-      "return status 401 - unauthorised" in {
         given.user.isNotAuthenticated
-        result.status shouldBe UNAUTHORIZED
-      }
 
-      "render the session timeout view" in {
-        document(result).title shouldBe Messages("sessionTimeout.title")
+        When("I call the Confirm Client VRN page")
+        val res = target(Some(clientVRN))
+
+        res should have(
+          httpStatus(UNAUTHORIZED),
+          pageTitle(Messages("sessionTimeout.title"))
+        )
       }
     }
 
     "the user is logged in without an Affinity Group" should {
 
-      lazy val result = target(Some(clientVRN))
+      "Render the Internal Server Error view" in {
 
-      "return status 500 (ISE)" in {
-        given.user.noAffinityGroup
-        result.status shouldBe INTERNAL_SERVER_ERROR
-      }
+        given.user.isAuthenticated
 
-      "render the Internal Server Error page" in {
-        document(result).title shouldBe Messages("global.error.InternalServerError500.title")
+        When("I call the Confirm Client VRN page")
+        val res = target(Some(clientVRN))
+
+        res should have(
+          httpStatus(INTERNAL_SERVER_ERROR),
+          pageTitle(Messages("global.error.InternalServerError500.title"))
+        )
       }
     }
   }
