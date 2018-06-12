@@ -23,8 +23,6 @@ object CustomerCircumstanceDetailsPageMessages {
   val subheading = "Your VAT details"
   val agentSubheading = "Your client's VAT details"
 
-  val h2 = "About the business"
-
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
   val businessAddressHeading = "Business address"

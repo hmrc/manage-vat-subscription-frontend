@@ -44,10 +44,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#sub-heading") shouldBe viewMessages.subheading
       }
 
-      s"have a section heading (h2) with '${viewMessages.h2}'" in {
-        elementText("h2") shouldBe viewMessages.h2
-      }
-
       "have a section for business address" which {
 
         "has the heading" in {
