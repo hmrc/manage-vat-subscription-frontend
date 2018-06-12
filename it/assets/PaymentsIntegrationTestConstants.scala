@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package models.payments
+package assets
 
-import play.api.libs.json.{Format, Json}
+import models.payments.PaymentStartModel
 
-case class PaymentRedirectModel(nextUrl:String)
+object PaymentsIntegrationTestConstants {
 
-object PaymentRedirectModel {
-  implicit val format: Format[PaymentRedirectModel] = Json.format[PaymentRedirectModel]
+  val paymentStart: PaymentStartModel = PaymentStartModel("999999999", isAgent = false, "someReturnUrl", "someBackUrl", "someConvenienceUrl")
+
+  val paymentStartInvalid: PaymentStartModel = PaymentStartModel("99999999", isAgent = false, "someReturnUrl", "someBackUrl", "someConvenienceUrl")
+
 }

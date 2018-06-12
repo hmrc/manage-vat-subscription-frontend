@@ -23,6 +23,7 @@ GET         /change-client-vat-number                    @controllers.agentClien
 
 GET         /confirm-client-vat-number                   @controllers.agentClientRelationship.ConfirmClientVrnController.show
 
+GET         /initialise-payment-journey                  @controllers.PaymentsController.sendToPayments
+
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
-

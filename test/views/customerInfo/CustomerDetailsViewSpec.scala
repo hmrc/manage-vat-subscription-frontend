@@ -80,40 +80,39 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
       "have a section for repayment Bank Account details" which {
 
         "has the heading" in {
-          elementText("#bankAccountHeading") shouldBe viewMessages.bankAccountHeading
+          elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
         }
 
         "has a the correct Account Number" which {
 
           "has the correct heading for the Account Number" in {
-            elementText("#bankAccount li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+            elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
           }
 
           "has the correct value for the account number" in {
-            elementText("#bankAccount li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+            elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
           }
         }
 
         "has a the correct Sort Code" which {
 
           "has the correct heading for the Sort Code" in {
-            elementText("#bankAccount li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+            elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
           }
 
           "has the correct value for the account number" in {
-            elementText("#bankAccount li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+            elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
           }
         }
 
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#bankDetailsStatus") shouldBe viewMessages.change + " " + viewMessages.bankAccountHidden
+            elementText("#bank-details-status") shouldBe viewMessages.change + " " + viewMessages.changeBankDetailsHidden
           }
 
-          //TODO: Update this when the repayment bank details hand-off is merged to master
-          s"has a link to #" in {
-            element("#bankDetailsStatus").attr("href") shouldBe "#"
+          s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
           }
         }
       }

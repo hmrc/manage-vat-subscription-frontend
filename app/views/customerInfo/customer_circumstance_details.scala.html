@@ -72,10 +72,10 @@
 
         @circumstances.bankDetails.map { bankDetails =>
             <div>
-                <dt id="bankAccountHeading" class="cya-question">
+                <dt id="bank-details-text" class="cya-question">
                     @messages("customer_details.bankAccount.heading")
                 </dt>
-                <dd id="bankAccount" class="cya-answer">
+                <dd id="bank-details" class="cya-answer">
                     <ol>
                         @bankDetails.bankAccountNumber.map { accNum =>
                             <li class="bold">@messages("customer_details.bankAccount.number")</li>
@@ -88,7 +88,7 @@
                     </ol>
                 </dd>
                 <dd class="cya-change">
-                    <a id="bankDetailsStatus" href="#">
+                    <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
                         @messages("customer_details.change")
                         <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
                     </a>

@@ -30,8 +30,8 @@ object PaymentsHttpParser {
     override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
 
       response.status match {
-        case Status.OK => {
-          Logger.debug("[PaymentsHttpParser][read]: Status OK")
+        case Status.CREATED => {
+          Logger.debug("[PaymentsHttpParser][read]: Status CREATED")
           response.json.validate[PaymentRedirectModel].fold(
             invalid => {
               Logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
@@ -41,12 +41,9 @@ object PaymentsHttpParser {
           )
         }
         case status =>
-          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned")
+          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned, with response: ${response.body}")
           Left(ErrorModel(status,"Downstream error returned when retrieving payment redirect"))
       }
-
     }
-
   }
-
 }
