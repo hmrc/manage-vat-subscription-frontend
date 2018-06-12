@@ -16,10 +16,10 @@
 
 @()(implicit messages: Messages, appConfig: config.AppConfig)
 
-<div class="breadcrumbs soft--top">
+<div id="breadcrumb" class="breadcrumbs soft--top">
     <ol class="push--top">
-        <li><a href="/business-account">@messages("breadcrumb.bta")</a></li>
-        <li><a href="/vat-through-software/vat-overview">@messages("breadcrumb.yourVatDetails")</a></li>
-        <li>@messages("customer_details.h1")</li>
+        <li><a href="@{appConfig.btaUrl}">@messages("breadcrumb.bta")</a></li>
+        <li><a href="@{appConfig.vatSummaryUrl}">@messages("breadcrumb.yourVatDetails")</a></li>
+        <li>@messages("breadcrumb.changeBizDeets")</li>
     </ol>
 </div>

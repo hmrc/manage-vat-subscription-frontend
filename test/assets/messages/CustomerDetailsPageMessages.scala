@@ -35,4 +35,8 @@ object CustomerDetailsPageMessages {
   val changeBusinessAddressHidden = "your Business address"
   val changeReturnFrequencyHidden = "your VAT Return dates"
 
+  val breadcrumbBta = "Business tax account"
+  val breadcrumbVat = "Your VAT details"
+  val breadcrumbBizDeets = "Change of business details"
+
 }

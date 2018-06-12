@@ -16,8 +16,10 @@
 
 package views.customerInfo
 
+import assets.BaseTestConstants.vrn
 import assets.CustomerDetailsTestConstants._
 import assets.messages.{CustomerDetailsPageMessages => viewMessages}
+import models.User
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -28,7 +30,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for any user" should {
 
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig, user = User(vrn))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -86,8 +88,14 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Self-Employed Individual" should {
 
-      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig, user = User(vrn))
       lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "display a breadcrumb trail" in {
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe viewMessages.breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe viewMessages.breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe viewMessages.breadcrumbBizDeets
+      }
 
       "have a change details section for the Business Name" which {
 
@@ -115,7 +123,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customer_details(organisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_details(organisation)(request, messages, mockConfig, user = User(vrn))
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -139,6 +147,42 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
+    }
+
+    "Viewing for an agent" should {
+
+      lazy val view = views.html.customerInfo.customer_details(individual)(request, messages, mockConfig, user = User(vrn, arn = Some("someARN")))
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not display a breadcrumb trail" in {
+        elementExtinct(".breadcrumbs li:nth-of-type(1)")
+        elementExtinct(".breadcrumbs li:nth-of-type(2)")
+        elementExtinct(".breadcrumbs li:nth-of-type(3)")
+      }
+
+      "have a change details section for the Business Name" which {
+
+        s"has the heading '${viewMessages.organisationNameHeading}'" in {
+          elementText("#individual-name-text") shouldBe viewMessages.individualNameHeading
+        }
+
+        s"has the value '${individual.userName.get}'" in {
+          elementText("#individual-name") shouldBe individual.userName.get
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#individual-name-status") shouldBe viewMessages.change + " " + viewMessages.changeIndividualHidden
+          }
+
+          //TODO: Update this when URL developed and known
+          "has a link to '#'" in {
+            element("#individual-name-status").attr("href") shouldBe "#"
+          }
+        }
+      }
+
     }
   }
 }

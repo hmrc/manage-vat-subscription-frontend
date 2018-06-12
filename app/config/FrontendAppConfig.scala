@@ -47,6 +47,8 @@ trait AppConfig extends ServicesConfig {
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
+  val btaUrl: String
+  val vatSummaryUrl: String
 }
 
 @Singleton
@@ -102,6 +104,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
 
-  val btaUrl: String = getString("business-tax-account.url")
+  override lazy val btaUrl: String = getString("business-tax-account.url") + "/business-account"
+  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.url") + "/vat-through-software/vat-overview"
 
 }

@@ -17,10 +17,10 @@
 @import models.circumstanceInfo.CustomerDetails
 @import templates.breadcrumb
 
-@(customerDetails: CustomerDetails, isAgent: Boolean)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(customerDetails: CustomerDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig, user: User[AnyContent])
 
 @bc = {
-    @if(!isAgent){
+    @if(!user.isAgent){
         @breadcrumb()
     }
 }
