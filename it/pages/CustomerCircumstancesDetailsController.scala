@@ -67,8 +67,8 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
                 ),
 
                 //Bank Details
-                elementText("#bankAccount li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-                elementText("#bankAccount li:nth-of-type(4)")(bankDetails.sortCode.get),
+                elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
+                elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get),
 
                 //VAT Return Dates
                 elementText("#vat-return-dates")("January, April, July and October")
@@ -98,7 +98,7 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
                 isElementVisible("#businessAddress")(isVisible = false),
 
                 //Bank Details
-                isElementVisible("#bankAccount")(isVisible = false),
+                isElementVisible("#bank-details")(isVisible = false),
 
                 //VAT Return Dates
                 isElementVisible("#vat-return-dates")(isVisible = false)
@@ -136,8 +136,8 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
                 ),
 
                 //Bank Details
-                elementText("#bankAccount li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-                elementText("#bankAccount li:nth-of-type(4)")(bankDetails.sortCode.get),
+                elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
+                elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get),
 
                 //VAT Return Dates
                 elementText("#vat-return-dates")("January, April, July and October")
@@ -167,7 +167,7 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
                 isElementVisible("#businessAddress")(isVisible = false),
 
                 //Bank Details
-                isElementVisible("#bankAccount")(isVisible = false),
+                isElementVisible("#bank-details")(isVisible = false),
 
                 //VAT Return Dates
                 isElementVisible("#vat-return-dates")(isVisible = false)
@@ -262,8 +262,8 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
             ),
 
             //Bank Details
-            elementText("#bankAccount li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-            elementText("#bankAccount li:nth-of-type(4)")(bankDetails.sortCode.get),
+            elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
+            elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get),
 
             //VAT Return Dates
             elementText("#vat-return-dates")("January, April, July and October")
@@ -293,7 +293,7 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = false),
 
             //Bank Details
-            isElementVisible("#bankAccount")(isVisible = false),
+            isElementVisible("#bank-details")(isVisible = false),
 
             //VAT Return Dates
             isElementVisible("#vat-return-dates")(isVisible = false)
@@ -331,8 +331,8 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
             ),
 
             //Bank Details
-            elementText("#bankAccount li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-            elementText("#bankAccount li:nth-of-type(4)")(bankDetails.sortCode.get),
+            elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
+            elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get),
 
             //VAT Return Dates
             elementText("#vat-return-dates")("January, April, July and October")
@@ -362,7 +362,7 @@ class CustomerCircumstancesDetailsController extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = false),
 
             //Bank Details
-            isElementVisible("#bankAccount")(isVisible = false),
+            isElementVisible("#bank-details")(isVisible = false),
 
             //VAT Return Dates
             isElementVisible("#vat-return-dates")(isVisible = false)
