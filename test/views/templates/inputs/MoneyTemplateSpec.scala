@@ -16,7 +16,7 @@
 
 package views.templates.inputs
 
-import forms.test.MoneyInputForm
+import testOnly.forms.test.MoneyInputForm
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
 import views.html.templates.inputs.money

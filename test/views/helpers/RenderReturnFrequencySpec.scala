@@ -17,7 +17,7 @@
 package views.helpers
 
 import assets.messages.ReturnFrequencyMessages
-import models.circumstanceInfo._
+import models.returnFrequency._
 import views.ViewBaseSpec
 
 class RenderReturnFrequencySpec extends ViewBaseSpec {

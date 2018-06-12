@@ -14,24 +14,17 @@
  * limitations under the License.
  */
 
-package models.returnFrequency
+package testOnly.forms.test
 
-sealed trait ReturnDateOption {
-  val id: String
-}
+import models.test.TextInputModel
+import play.api.data.Form
+import play.api.data.Forms._
 
-case object Jan extends ReturnDateOption {
-  override val id: String = "January"
-}
+object TextInputForm {
 
-case object Feb extends ReturnDateOption {
-  override val id: String = "February"
-}
-
-case object Mar extends ReturnDateOption {
-  override val id: String = "March"
-}
-
-case object Monthly extends ReturnDateOption {
-  override val id: String = "Monthly"
+  val form: Form[TextInputModel] = Form(
+    mapping(
+      "text" -> nonEmptyText
+    )(TextInputModel.apply)(TextInputModel.unapply)
+  )
 }

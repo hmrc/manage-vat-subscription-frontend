@@ -16,7 +16,7 @@
 
 package views.templates.inputs
 
-import forms.test.TextInputForm
+import testOnly.forms.test.TextInputForm
 import play.api.data.{Field, FormError}
 import play.twirl.api.Html
 import views.templates.TemplateBaseSpec
