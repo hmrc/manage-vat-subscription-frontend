@@ -16,7 +16,7 @@
 
 package assets.messages
 
-object CustomerDetailsPageMessages {
+object CustomerCircumstanceDetailsPageMessages {
 
   val title = "Change of business details"
   val h1 = title

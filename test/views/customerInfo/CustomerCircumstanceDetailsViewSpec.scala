@@ -17,19 +17,19 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.messages.{ReturnFrequencyMessages, CustomerDetailsPageMessages => viewMessages}
+import assets.messages.{ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class CustomerDetailsViewSpec extends ViewBaseSpec {
+class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
   "Rendering the Customer Details page" when {
 
     "Viewing for any user (in this case Individual)" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual, false)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -143,7 +143,7 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation, false)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -167,6 +167,25 @@ class CustomerDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
+    }
+
+    "Viewing a client's details as an agent" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual, true)(request, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct document title '${viewMessages.title}'" in {
+        document.title shouldBe viewMessages.title
+      }
+
+      s"have a the correct page heading '${viewMessages.h1}'" in {
+        elementText("h1") shouldBe viewMessages.h1
+      }
+
+      s"have a the correct page subheading '${viewMessages.agentSubheading}'" in {
+        elementText("#sub-heading") shouldBe viewMessages.agentSubheading
+      }
+
     }
   }
 }

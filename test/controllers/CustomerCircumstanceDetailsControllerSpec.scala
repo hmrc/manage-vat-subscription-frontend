@@ -16,7 +16,7 @@
 
 package controllers
 
-import assets.messages.{CustomerDetailsPageMessages => Messages}
+import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import assets.CircumstanceDetailsTestConstants._
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerCircumstanceDetailsService
