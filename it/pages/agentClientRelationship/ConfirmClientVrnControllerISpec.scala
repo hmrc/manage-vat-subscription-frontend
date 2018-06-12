@@ -17,20 +17,21 @@
 package pages.agentClientRelationship
 
 import common.SessionKeys
-import helpers.BaseIntegrationSpec
 import helpers.IntegrationTestConstants._
-import models.customerAddress.CountryCodes
+import pages.BasePageISpec
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
 import stubs.VatSubscriptionStub
 
-class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
+class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
   "Calling the .show action" when {
 
-    def target(sessionVrn: Option[String] = None): WSResponse =
-      get("/confirm-client-vat-number", sessionVrn.fold(Map.empty[String, String])(x => Map(SessionKeys.CLIENT_VRN -> x)))
+    val path = "/confirm-client-vat-number"
+
+    def show(sessionVrn: Option[String] = None): WSResponse =
+      get(path, sessionVrn.fold(Map.empty[String, String])(x => Map(SessionKeys.CLIENT_VRN -> x)))
 
     "the user is an Agent" when {
 
@@ -48,7 +49,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
               VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMax(individual))
 
               When("I call the Confirm Client VRN page with the clients VRN in the session")
-              val res = target(Some(clientVRN))
+              val res = show(Some(clientVRN))
 
               res should have(
                 httpStatus(OK),
@@ -68,7 +69,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
               VatSubscriptionStub.getClientDetailsError(clientVRN)
 
               When("I call the Confirm Client VRN page with the clients VRN in the session")
-              val res = target(Some(clientVRN))
+              val res = show(Some(clientVRN))
 
               res should have(
                 httpStatus(INTERNAL_SERVER_ERROR),
@@ -85,7 +86,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
             given.agent.isSignedUpToAgentServices
 
             When("I call the Confirm Client VRN page with NO client VRN held in the session")
-            val res = target(None)
+            val res = show(None)
 
             res should have(
               httpStatus(SEE_OTHER),
@@ -102,7 +103,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
           given.agent.isNotSignedUpToAgentServices
 
           When("I call the Confirm Client VRN page with the clients VRN in the session")
-          val res = target(Some(clientVRN))
+          val res = show(Some(clientVRN))
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR),
@@ -119,7 +120,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
         given.user.isAuthenticated
 
         When("I call the Confirm Client VRN page")
-        val res = target()
+        val res = show()
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -128,36 +129,6 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
       }
     }
 
-    "the user is timed out (not authenticated)" should {
-
-      "Render the session timeout view" in {
-
-        given.user.isNotAuthenticated
-
-        When("I call the Confirm Client VRN page")
-        val res = target(Some(clientVRN))
-
-        res should have(
-          httpStatus(UNAUTHORIZED),
-          pageTitle(Messages("sessionTimeout.title"))
-        )
-      }
-    }
-
-    "the user is logged in without an Affinity Group" should {
-
-      "Render the Internal Server Error view" in {
-
-        given.user.isAuthenticated
-
-        When("I call the Confirm Client VRN page")
-        val res = target(Some(clientVRN))
-
-        res should have(
-          httpStatus(INTERNAL_SERVER_ERROR),
-          pageTitle(Messages("global.error.InternalServerError500.title"))
-        )
-      }
-    }
+    getAuthenticationTests(path, Some(clientVRN))
   }
 }

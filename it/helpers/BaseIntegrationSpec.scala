@@ -16,6 +16,7 @@
 
 package helpers
 
+import common.SessionKeys
 import config.AppConfig
 import models.payments.PaymentStartModel
 import org.jsoup.Jsoup
@@ -123,7 +124,6 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
     stopWireMock()
     super.afterAll()
   }
-
 
   def get(path: String, additionalCookies: Map[String, String] = Map.empty): WSResponse = await(
     buildRequest(path, additionalCookies).get()
