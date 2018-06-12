@@ -100,7 +100,7 @@ received_frequency.subheading = What happens next
 received_frequency.p1 = We will usually let you know if you can change these details within 2 working days.
 received_frequency.p2 = If this change is accepted:
 received_frequency.bullet1 = we will send a confirmation letter to your business address
-received_frequency.bullet2 = the business must submit this quarter’s return before following the new VAT Return dates
+received_frequency.bullet2 = the business must submit this period''s return before following the new VAT Return dates
 
 confirm_client_vrn.title = Changes in circumstances
 confirm_client_vrn.heading = Confirm your client’s VAT number

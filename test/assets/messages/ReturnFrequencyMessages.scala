@@ -42,6 +42,6 @@ object ReturnFrequencyMessages {
     val p1 = "We will usually let you know if you can change these details within 2 working days."
     val p2 = "If this change is accepted:"
     val bullet1 = "we will send a confirmation letter to your business address"
-    val bullet2 = "the business must submit this quarter’s return before following the new VAT Return dates"
+    val bullet2 = "the business must submit this period's return before following the new VAT Return dates"
   }
 }
