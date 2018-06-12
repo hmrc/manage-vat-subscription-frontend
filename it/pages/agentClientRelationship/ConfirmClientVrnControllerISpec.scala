@@ -16,7 +16,6 @@
 
 package pages.agentClientRelationship
 
-import common.SessionKeys
 import helpers.IntegrationTestConstants._
 import pages.BasePageISpec
 import play.api.i18n.Messages
@@ -26,12 +25,11 @@ import stubs.VatSubscriptionStub
 
 class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
+  val path = "/confirm-client-vat-number"
+
   "Calling the .show action" when {
 
-    val path = "/confirm-client-vat-number"
-
-    def show(sessionVrn: Option[String] = None): WSResponse =
-      get(path, sessionVrn.fold(Map.empty[String, String])(x => Map(SessionKeys.CLIENT_VRN -> x)))
+    def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
 
     "the user is an Agent" when {
 

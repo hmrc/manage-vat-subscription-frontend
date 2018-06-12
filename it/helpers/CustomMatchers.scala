@@ -95,6 +95,22 @@ trait   CustomMatchers extends UnitSpec with GivenWhenThen {
       }
     }
 
+  def elementWithLinkTo(cssSelector: String)(link: String): HavePropertyMatcher[WSResponse, String] =
+    new HavePropertyMatcher[WSResponse, String] {
+
+      def apply(response: WSResponse) = {
+        val body = Jsoup.parse(response.body)
+        Then(s"the link of '$cssSelector' should be '$link'")
+
+        HavePropertyMatchResult(
+          body.select(cssSelector).attr("href") == link,
+          cssSelector,
+          link,
+          body.select(cssSelector).attr("href")
+        )
+      }
+    }
+
   def redirectURI(expectedValue: String): HavePropertyMatcher[WSResponse, String] = new HavePropertyMatcher[WSResponse, String] {
     def apply(response: WSResponse) = {
       val redirectLocation: Option[String] = response.header("Location")
@@ -115,10 +131,10 @@ trait   CustomMatchers extends UnitSpec with GivenWhenThen {
       Then(s"it is $isVisible that '$cssSelector' should be on the page")
 
       HavePropertyMatchResult(
-        body.select(cssSelector).isEmpty != isVisible,
+        !body.select(cssSelector).isEmpty == isVisible,
         cssSelector,
         isVisible,
-        body.select(cssSelector).isEmpty
+        !body.select(cssSelector).isEmpty
       )
     }
   }

@@ -85,8 +85,6 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
         )
       }
     }
-
-
   }
 
 
@@ -101,62 +99,78 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         "a valid VRN is submitted" should {
 
-          lazy val result = submit(validData)
+          "Redirect to the Confirm Client page and add vrn to session" in {
 
-          "return status redirect SEE_OTHER (303)" in {
             given.agent.isSignedUpToAgentServices
-            result.status shouldBe SEE_OTHER
-          }
 
-          "redirect to the Confirm Client Controller" in {
-            redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-          }
+            When("I submit the Client VRN page with valid data")
+            val res = submit(validData)
 
-          "has the clientVRN added to the session" in {
-            SessionCookieCrumbler.getSessionMap(result).get(SessionKeys.CLIENT_VRN) shouldBe Some(clientVRN)
+            res should have(
+              httpStatus(SEE_OTHER),
+              redirectURI(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+            )
+
+            SessionCookieCrumbler.getSessionMap(res).get(SessionKeys.CLIENT_VRN) shouldBe Some(clientVRN)
           }
         }
 
         "an invalid VRN is submitted" should {
 
-          lazy val result = submit(ClientVrnModel("ABC"))
+          "Return a Bad Request and render the view with errors" in {
 
-          "return status BAD_REQUEST (404)" in {
             given.agent.isSignedUpToAgentServices
-            result.status shouldBe BAD_REQUEST
+
+            When("I submit the Client VRN page with invalid data")
+            val res = submit(ClientVrnModel("ABC"))
+
+            res should have(
+              httpStatus(BAD_REQUEST),
+
+              //Error Summary
+              isElementVisible("#error-summary-display")(isVisible = true),
+              isElementVisible("#vrn-error-summary")(isVisible = true),
+              elementText("#vrn-error-summary")("Enter a valid VAT number"),
+              elementWithLinkTo("#vrn-error-summary")("#vrn"),
+
+              //Error against Input Label
+              isElementVisible(".form-field--error .error-notification")(isVisible = true),
+              elementText(".form-field--error .error-notification")("Enter a valid VAT number")
+            )
           }
         }
       }
 
       "the Agent is NOT signed up for HMRC-AS-AGENT (unauthorised)" when {
 
-        "a valid VRN is submitted" should {
+        "render the Agent Unauthorised page" in {
 
-          lazy val result = submit(validData)
+          given.agent.isNotSignedUpToAgentServices
 
-          "return status 403 (Forbidden)" in {
-            given.agent.isNotSignedUpToAgentServices
-            result.status shouldBe FORBIDDEN
-          }
+          When("I submit the Client VRN page with valid data")
+          val res = submit(validData)
 
-          "render the Agent Unauthorised page" in {
-            document(result).title shouldBe Messages("unauthorised.agent.title")
-          }
+          res should have(
+            httpStatus(FORBIDDEN),
+            pageTitle(Messages("unauthorised.agent.title"))
+          )
         }
       }
     }
 
     "the user is a Principle Entity and not an Agent" should {
 
-      lazy val result = submit(validData)
+      "redirect to the Customer Details home page" in {
 
-      "have a redirect status SEE_OTHER (303)" in {
         given.user.isAuthenticated
-        result.status shouldBe SEE_OTHER
-      }
 
-      "have the redirect location header set to the Customer Details home page" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
+        When("I submit the Client VRN page with valid data")
+        val res = submit(validData)
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(controllers.routes.CustomerCircumstanceDetailsController.show().url)
+        )
       }
     }
 
