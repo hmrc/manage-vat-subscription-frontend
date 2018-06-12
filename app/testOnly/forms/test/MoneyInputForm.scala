@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package forms.test
+package testOnly.forms.test
 
 import models.test.MoneyInputModel
 import play.api.data.Form
