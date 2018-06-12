@@ -90,6 +90,7 @@ return_frequency.Monthly = Every month
 
 confirm_return_frequency.title = Changes in circumstances
 confirm_return_frequency.heading = Confirm the new VAT Return dates
+confirm_return_frequency.newDates = The new VAT Return dates are
 confirm_return_frequency.changeLink = Change the VAT Return dates
 confirm_return_frequency.p2 = By confirming this change, you agree that the information you have given is complete and correct.
 

@@ -31,6 +31,7 @@ object ReturnFrequencyMessages {
 
   object ConfirmPage {
     val heading = "Confirm the new VAT Return dates"
+    val newDates = "The new VAT Return dates are"
     val changeLink = "Change the VAT Return dates"
     val p2 = "By confirming this change, you agree that the information you have given is complete and correct."
   }
