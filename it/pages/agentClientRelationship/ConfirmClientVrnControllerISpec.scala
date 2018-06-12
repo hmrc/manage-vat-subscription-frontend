@@ -52,7 +52,6 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
 
               res should have(
                 httpStatus(OK),
-                //TODO: Future Story to be played to decide whether we show individual name instead of ""
                 elementText("article p:nth-of-type(1)")(individual.firstName.get + " " + individual.lastName.get),
                 elementText("article p:nth-of-type(2)")(clientVRN)
               )
