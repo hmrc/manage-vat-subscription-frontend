@@ -20,7 +20,7 @@ import play.api.libs.json.{Format, Json}
 
 case class PaymentStartModel(vrn: String,
                              isAgent: Boolean,
-                             returnUrl: String = "" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+                             returnUrl: String,
                              backUrl: String,
                              convenienceUrl: String)
 
