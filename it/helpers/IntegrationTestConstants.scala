@@ -18,7 +18,8 @@ package helpers
 
 import java.util.UUID
 
-import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails, MTDfBMandated}
+import models.circumstanceInfo._
+import models.returnFrequency.Jan
 
 object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
@@ -27,14 +28,50 @@ object IntegrationTestConstants {
   val clientVRN = "999999999"
   val VRN = "111111111"
 
-  val customerCircumstancesDetailsOrganisation: CircumstanceDetails = CircumstanceDetails(
+  val individual = CustomerDetails(
+    firstName = None,
+    lastName = None,
+    tradingName = Some("Vatmobile Taxi"),
+    organisationName = Some("Vatmobile Taxi LTD")
+  )
+
+  val organisation = CustomerDetails(
+    firstName = None,
+    lastName = None,
+    tradingName = Some("Vatmobile Taxi"),
+    organisationName = None
+  )
+
+  val ppob = PPOB(
+    Some(PPOBAddress(
+      Some("Add Line 1"),
+      Some("Add Line 2"),
+      Some("Add Line 3"),
+      Some("Add Line 4"),
+      Some("Add Line 5"),
+      Some("TE3 3ST"),
+      Some("GB")
+    ))
+  )
+
+  val bankDetails = BankDetails(
+    Some("***************"),
+    Some("****3421"),
+    Some("12****")
+  )
+
+  def customerCircumstancesDetailsMax(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated,
-    CustomerDetails(
-      firstName = Some("Nanana"),
-      lastName = Some("VatMan"),
-      tradingName = Some("Vatmobile Taxi"),
-      organisationName = None
-    ),
+    customerType,
+    None,
+    Some(ppob),
+    Some(bankDetails),
+    Some(Jan)
+  )
+
+  def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    customerType,
     None,
     None,
     None,

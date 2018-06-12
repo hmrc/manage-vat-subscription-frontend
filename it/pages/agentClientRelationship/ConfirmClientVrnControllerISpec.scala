@@ -41,7 +41,7 @@ class ConfirmClientVrnControllerISpec extends BaseIntegrationSpec {
 
             "return 200 OK" in {
               given.agent.isSignedUpToAgentServices
-              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsOrganisation)
+              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMax(individual))
               target(Some(clientVRN)).status shouldBe OK
             }
           }
