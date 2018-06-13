@@ -104,7 +104,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
-  override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
+
+  override lazy val agentAuthoriseForClient: String = getString("agent-subscription-frontend.host")
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
 
