@@ -28,7 +28,7 @@ case class AddressLookupJsonBuilder(continueUrl: String) {
   // lookup page overrides
   val lookupPage = Map(
     "title" -> "Changes in circumstances",
-    "heading" -> "Select the new business address",
+    "heading" -> "What is the new business address?",
     "filterLabel" -> "Property name or number",
     "postcodeLabel" -> "Postcode"
   )
