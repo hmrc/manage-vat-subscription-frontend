@@ -117,6 +117,7 @@ object CustomerAddressTestConstants {
       "postcodeLabel" -> "Postcode"
     ),
     "selectPage" -> Json.obj(
+      "heading" -> "Select the new business address",
       "submitLabel" -> "Save and continue"
     ),
     "confirmPage" -> Json.obj(

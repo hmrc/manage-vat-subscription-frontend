@@ -34,6 +34,7 @@ case class AddressLookupJsonBuilder(continueUrl: String) {
   )
 
   val selectPage = Map(
+    "heading" -> "Select the new business address",
     "submitLabel" -> "Save and continue"
   )
 
