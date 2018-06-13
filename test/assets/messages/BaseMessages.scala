@@ -23,5 +23,6 @@ object BaseMessages {
   val confirmAndContinue = "Confirm and continue"
   val signOut = "Sign out"
   val finish = "Finish"
+  val back = "Back"
 
 }
