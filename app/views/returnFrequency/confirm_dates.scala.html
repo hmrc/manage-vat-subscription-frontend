@@ -24,6 +24,7 @@
   title = messages("confirm_return_frequency.title"),
   bodyClasses = None,
   appConfig = appConfig) {
+  <a class="link-back" href="@{controllers.returnFrequency.routes.ChooseDatesController.show().url}">@messages("base.back")</a>
 
   @headings(messages("confirm_return_frequency.heading"))
 
