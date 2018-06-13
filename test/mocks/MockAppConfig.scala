@@ -49,4 +49,6 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
       "country" -> "United Kingdom"
     )
   )
+  override val bankAccountCoc: String = ""
+  override val signInContinueBaseUrl: String = "/manage-vat-subscription-frontend"
 }

@@ -35,34 +35,6 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     frontendAppConfig
   )
 
-  "The 'paymentDetails' method" when {
-
-    "passed '(999999999, true)' should return a PaymentStartModel with defined 'convenienceUrl'" in {
-
-      TestPaymentController.paymentDetails("someVrn", isAgent = true) shouldBe
-        PaymentStartModel(
-          "someVrn",
-          isAgent = true,
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/client-vat-number"
-        )
-    }
-
-    "passed '(999999999, false)' should return a PaymentStartModel with undefined 'convenienceUrl'" in {
-
-      TestPaymentController.paymentDetails("someVrn", isAgent = false) shouldBe
-        PaymentStartModel(
-          "someVrn",
-          isAgent = false,
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details",
-          frontendAppConfig.signInContinueBaseUrl + "/vat-through-software/account/change-business-details"
-        )
-    }
-
-  }
-
   "Calling the sendToPayments method for an individual" when {
 
     def setup(paymentsResponse: PaymentsResponse): PaymentsController = {
