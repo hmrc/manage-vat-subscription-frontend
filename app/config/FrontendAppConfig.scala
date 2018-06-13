@@ -51,6 +51,8 @@ trait AppConfig extends ServicesConfig {
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
   val countryCodeJson: JsValue
+  val signInContinueBaseUrl: String
+  val bankAccountCoc: String
 }
 
 @Singleton

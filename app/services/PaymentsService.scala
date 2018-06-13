@@ -16,8 +16,10 @@
 
 package services
 
+import config.AppConfig
 import connectors.PaymentsConnector
 import javax.inject.{Inject, Singleton}
+import models.User
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -27,8 +29,25 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
-  def postPaymentDetails(paymentStartModel: PaymentStartModel)
-                       (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, PaymentRedirectModel]] =
-    paymentsConnector.postPaymentsDetails(paymentStartModel)
+  def postPaymentDetails[A](user: User[A])
+                       (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
 
+    val convenienceUrl = {
+      if(user.isAgent) {
+        config.signInContinueBaseUrl + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
+      } else {
+        config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show()
+      }
+    }
+
+    val paymentDetails: PaymentStartModel = PaymentStartModel(
+      user.vrn,
+      user.isAgent,
+      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
+      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
+      convenienceUrl
+    )
+
+    paymentsConnector.postPaymentsDetails(paymentDetails)
+  }
 }

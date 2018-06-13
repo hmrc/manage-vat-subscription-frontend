@@ -41,7 +41,7 @@ trait MockPaymentsService extends UnitSpec with MockitoSugar with BeforeAndAfter
   }
 
   def setupMockPaymentsService(response: PaymentsResponse): OngoingStubbing[Future[PaymentsResponse]] = {
-    when(mockPaymentsService.postPaymentDetails(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any()))
+    when(mockPaymentsService.postPaymentDetails(ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 
