@@ -29,7 +29,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for any user (in this case Individual)" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual, false)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
@@ -139,7 +139,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Organisation" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation, false)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have a change details section for the Business Name" which {
@@ -167,7 +167,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing a client's details as an agent" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual, true)(request, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {
