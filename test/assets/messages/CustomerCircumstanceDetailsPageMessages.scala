@@ -16,13 +16,12 @@
 
 package assets.messages
 
-object CustomerDetailsPageMessages {
+object CustomerCircumstanceDetailsPageMessages {
 
   val title = "Change of business details"
   val h1 = title
   val subheading = "Your VAT details"
-
-  val h2 = "About the business"
+  val agentSubheading = "Your client's VAT details"
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"

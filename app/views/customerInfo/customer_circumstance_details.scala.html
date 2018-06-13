@@ -18,7 +18,7 @@
 @import helpers.render_return_frequency
 @import helpers.render_address
 
-@(circumstances: CircumstanceDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("customer_details.title"),
@@ -27,10 +27,11 @@
 
     <header class="page-heading">
         <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
-        <p id="sub-heading" class="heading-secondary">@messages("customer_details.subheading")</p>
+        <p id="sub-heading" class="heading-secondary">
+            @if(user.isAgent) {@messages("customer_details.agentSubheading")
+            } else {@messages("customer_details.subheading")}
+        </p>
     </header>
-
-    <h2 id="about-business" class="heading-medium">@messages("customer_details.h2")</h2>
 
     <dl class="govuk-check-your-answers cya-questions-short">
 

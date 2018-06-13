@@ -19,6 +19,7 @@ package utils
 import common.SessionKeys
 import config.{FrontendAppConfig, ServiceErrorHandler}
 import mocks.MockAppConfig
+import models.User
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.inject.Injector
@@ -45,6 +46,8 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSuppor
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999")
 
+  implicit lazy val user = User[AnyContentAsEmpty.type]("999999999",true)(request)
+  implicit lazy val agentUser = User[AnyContentAsEmpty.type]("999999999",true,Some("XAIT00000000000"))(fakeRequestWithClientsVRN)
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 
