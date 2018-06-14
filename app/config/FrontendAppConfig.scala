@@ -112,8 +112,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
 
-  override lazy val btaUrl: String = getString("business-tax-account.url") + "/business-account"
-  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.url") + "/vat-through-software/vat-overview"
+  override lazy val btaUrl: String = getString("business-tax-account.host") + "/business-account"
+  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
   lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
