@@ -24,5 +24,6 @@ object BaseMessages {
   val signOut = "Sign out"
   val finish = "Finish"
   val back = "Back"
+  val errorHeading = "You have one or more errors"
 
 }
