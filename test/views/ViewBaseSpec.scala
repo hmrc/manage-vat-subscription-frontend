@@ -16,26 +16,15 @@
 
 package views
 
-import mocks.MockAppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import org.scalatest.{Assertion, Matchers}
+import org.scalatest.Assertion
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.{Lang, Messages, MessagesApi}
-import play.api.inject.Injector
-import play.api.mvc.AnyContentAsEmpty
-import play.api.test.FakeRequest
-import uk.gov.hmrc.play.test.UnitSpec
+import utils.TestUtil
 
 import scala.collection.JavaConverters._
 
-trait ViewBaseSpec extends UnitSpec with GuiceOneAppPerSuite {
-
-  lazy val mockConfig = new MockAppConfig(app.configuration)
-  lazy implicit val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
-  lazy val injector: Injector = app.injector
-  lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-  implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
+trait ViewBaseSpec extends TestUtil with GuiceOneAppPerSuite {
 
   def elementText(selector: String)(implicit document: Document): String = {
     element(selector).text()

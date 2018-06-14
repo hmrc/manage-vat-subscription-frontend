@@ -20,6 +20,7 @@ import config.AppConfig
 import config.features.Features
 import play.api.{Configuration, Mode}
 import play.api.Mode.Mode
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
 class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
@@ -42,4 +43,14 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val addressLookupUrlHost: String = ""
   override val agentServicesGovUkGuidance: String = "guidance-url"
   override val agentAuthoriseForClient: String = "appoint-tax-agent"
+  override val btaUrl = "ye olde bta url"
+  override val vatSummaryUrl = "ye olde vat summary url"
+  override val countryCodeJson: JsValue = Json.arr(
+    Json.obj(
+      "countryCode" -> "GB",
+      "country" -> "United Kingdom"
+    )
+  )
+  override val bankAccountCoc: String = ""
+  override val signInContinueBaseUrl: String = "/manage-vat-subscription-frontend"
 }

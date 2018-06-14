@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import templates.inputs._
-@import views.html.main_template
-@import models.test.TextInputModel
-@import play.api.data.Form
+package models.customerAddress
 
-@(form: Form[TextInputModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+import config.AppConfig
+import play.api.libs.json.{Format, Json}
 
-@main_template(title = "Text Input", appConfig = appConfig) {
+object CountryCodes {
 
-    <h1>Text Input</h1>
+  case class Country(country: String, countryCode: String)
 
-    @text(
-        form("text"),
-        "Text Input",
-        Some("Some hint text")
-    )
+  object Country {
+    implicit val format: Format[Country] = Json.format[Country]
+  }
+
+  private def countryCodesMap(implicit appConfig: AppConfig): Map[String, String] =
+    appConfig.countryCodeJson.as[List[Country]].map(country => (country.countryCode, country.country)).toMap
+
+  def getCountry(countryCode: String)(implicit appConfig: AppConfig): Option[String] = countryCodesMap.get(countryCode)
 
 }

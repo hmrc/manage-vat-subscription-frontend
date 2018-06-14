@@ -19,10 +19,10 @@ package assets.messages
 object ReturnFrequencyMessages {
 
   val title = "Changes in circumstances"
-  val option1 = "January, April, July and October"
-  val option2 = "February, May, August and November"
-  val option3 = "March, June, September and December"
-  val option4 = "Every month"
+  val option1Jan = "January, April, July and October"
+  val option2Feb = "February, May, August and November"
+  val option3Mar = "March, June, September and December"
+  val option4Monthly = "Every month"
 
   object ChoosePage {
     val heading = "Choose the new VAT Return dates"
@@ -31,6 +31,7 @@ object ReturnFrequencyMessages {
 
   object ConfirmPage {
     val heading = "Confirm the new VAT Return dates"
+    val newDates = "The new VAT Return dates are"
     val changeLink = "Change the VAT Return dates"
     val p2 = "By confirming this change, you agree that the information you have given is complete and correct."
   }
@@ -41,6 +42,6 @@ object ReturnFrequencyMessages {
     val p1 = "We will usually let you know if you can change these details within 2 working days."
     val p2 = "If this change is accepted:"
     val bullet1 = "we will send a confirmation letter to your business address"
-    val bullet2 = "the business must submit this quarter’s return before following the new VAT Return dates"
+    val bullet2 = "the business must submit this period's return before following the new VAT Return dates"
   }
 }

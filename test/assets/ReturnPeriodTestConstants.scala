@@ -20,9 +20,19 @@ import play.api.libs.json.{JsValue, Json}
 
 object ReturnPeriodTestConstants {
 
-  val returnPeriodMA: JsValue = Json.obj("stdReturnPeriod" -> "MA")
-  val returnPeriodMB: JsValue = Json.obj("stdReturnPeriod" -> "MB")
-  val returnPeriodMC: JsValue = Json.obj("stdReturnPeriod" -> "MC")
-  val returnPeriodMM: JsValue = Json.obj("stdReturnPeriod" -> "MM")
+  val returnPeriodJan: String = "January"
+  val returnPeriodFeb: String = "February"
+  val returnPeriodMar: String = "March"
+  val returnPeriodMonthly: String = "Monthly"
+
+  val returnPeriodMA: String = "MA"
+  val returnPeriodMB: String = "MB"
+  val returnPeriodMC: String = "MC"
+  val returnPeriodMM: String = "MM"
+
+  val returnPeriodMAJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMA)
+  val returnPeriodMBJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMB)
+  val returnPeriodMCJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMC)
+  val returnPeriodMMJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMM)
 
 }

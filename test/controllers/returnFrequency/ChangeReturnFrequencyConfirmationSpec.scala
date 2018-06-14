@@ -17,7 +17,7 @@
 package controllers.returnFrequency
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.messages.{ReturnFrequencyMessages => messages}
+import assets.messages.{ReturnFrequencyMessages => Messages}
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerCircumstanceDetailsService
@@ -31,14 +31,14 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
     messagesApi,
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockAppConfig
+    mockConfig
   )
 
   "Calling the .show action" when {
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestChangeReturnFrequencyConfirmation.show(fakeRequest)
+      lazy val result = TestChangeReturnFrequencyConfirmation.show(request)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -52,7 +52,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
       }
 
       "render the CustomerDetails Page" in {
-        document.title shouldBe messages.title
+        document.title shouldBe Messages.title
       }
     }
 

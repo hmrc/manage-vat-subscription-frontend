@@ -21,10 +21,9 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import models.returnFrequency._
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.{CustomerCircumstanceDetailsService, ReturnFrequencyService}
+import services.ReturnFrequencyService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -37,15 +36,14 @@ class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
-
-    getReturnFrequency() match {
+    ReturnPeriod(user.session(SessionKeys.RETURN_FREQUENCY)) match {
       case Some(frequency) => Future.successful(Ok(views.html.returnFrequency.confirm_dates(frequency)))
       case None => Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 
   val submit: Action[AnyContent] = authenticate.async { implicit user =>
-    getReturnFrequency() match {
+    ReturnPeriod(user.session(SessionKeys.RETURN_FREQUENCY)) match {
       case Some(frequency) =>
         returnFrequencyService.updateReturnFrequency(user.vrn, frequency).map {
           case Right(_) => Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show())
@@ -53,18 +51,6 @@ class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
           case _ => serviceErrorHandler.showInternalServerError
         }
       case None => Future.successful(serviceErrorHandler.showInternalServerError)
-    }
-  }
-
-  private def getReturnFrequency()(implicit request: RequestHeader): Option[ReturnDateOption] = {
-    request.session(SessionKeys.RETURN_FREQUENCY) match {
-      case Jan.id => Some(Jan)
-      case Feb.id => Some(Feb)
-      case Mar.id => Some(Mar)
-      case Monthly.id => Some(Monthly)
-      case unknown =>
-        Logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
-        None
     }
   }
 }

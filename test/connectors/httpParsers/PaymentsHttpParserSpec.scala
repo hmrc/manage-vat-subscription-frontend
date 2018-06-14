@@ -31,14 +31,15 @@ class PaymentsHttpParserSpec extends TestUtil {
     "the http response status is OK with valid Json" should {
 
       "return a CustomerDetailsModel" in {
-        PaymentsReads.read("", "", HttpResponse(Status.OK, Some(successPaymentsResponseJson))) shouldBe Right(PaymentRedirectModel(successPaymentsResponse))
+        PaymentsReads.read("", "", HttpResponse(Status.CREATED, Some(successPaymentsResponseJson))) shouldBe
+          Right(PaymentRedirectModel(successPaymentsResponse))
       }
     }
 
     "the http response status is OK with invalid Json" should {
 
       "return an ErrorModel" in {
-        PaymentsReads.read("", "", HttpResponse(Status.OK, successBadJson)) shouldBe
+        PaymentsReads.read("", "", HttpResponse(Status.CREATED, successBadJson)) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json returned from payments"))
       }
     }

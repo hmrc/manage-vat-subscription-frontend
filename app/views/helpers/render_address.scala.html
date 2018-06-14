@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,24 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package models.returnFrequency
+@import config.AppConfig
+@import models.circumstanceInfo.PPOBAddress
+@import models.customerAddress.CountryCodes
 
-sealed trait ReturnDateOption {
-  val id: String
-}
+@(address: PPOBAddress)(implicit messages: Messages, appConfig: AppConfig)
 
-case object Jan extends ReturnDateOption {
-  override val id: String = "January"
-}
 
-case object Feb extends ReturnDateOption {
-  override val id: String = "February"
-}
-
-case object Mar extends ReturnDateOption {
-  override val id: String = "March"
-}
-
-case object Monthly extends ReturnDateOption {
-  override val id: String = "Monthly"
+@defining(Seq(address.line1, address.line2, address.line3, address.line4, address.line5, address.postCode).flatten) { addressLines =>
+    <ol>
+        @addressLines.map { line =>
+            <li>@line</li>
+        }
+        @address.countryCode.map { code =>
+            @CountryCodes.getCountry(code).map { country =>
+                <li>@country</li>
+            }
+        }
+    </ol>
 }

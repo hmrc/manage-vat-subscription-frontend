@@ -22,6 +22,7 @@ import assets.FlatRateSchemeTestConstants._
 import assets.PPOBAddressTestConstants._
 import assets.ReturnPeriodTestConstants._
 import models.circumstanceInfo._
+import models.returnFrequency._
 import play.api.libs.json.{JsValue, Json}
 
 object CircumstanceDetailsTestConstants {
@@ -33,7 +34,7 @@ object CircumstanceDetailsTestConstants {
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsJsonMax,
-    "returnPeriod" -> returnPeriodMC,
+    "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus
   )
 
@@ -42,7 +43,7 @@ object CircumstanceDetailsTestConstants {
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsModelMax,
-    "returnPeriod" -> returnPeriodMC,
+    "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus
   )
 
@@ -59,7 +60,7 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(MCReturnPeriod)
+    Some(Mar)
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -68,7 +69,7 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(MCReturnPeriod)
+    Some(Mar)
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(

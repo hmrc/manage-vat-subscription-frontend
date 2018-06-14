@@ -17,15 +17,18 @@
 package config
 
 import java.util.Base64
-import javax.inject.{Inject, Singleton}
 
 import config.features.Features
+import config.{ConfigKeys => Keys}
+import javax.inject.{Inject, Singleton}
 import play.api.Mode.Mode
+import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.config.ServicesConfig
-import config.{ConfigKeys => Keys}
+
+import scala.io.Source
 
 trait AppConfig extends ServicesConfig {
   val analyticsToken: String
@@ -49,6 +52,9 @@ trait AppConfig extends ServicesConfig {
   val agentAuthoriseForClient: String
   val btaUrl: String
   val vatSummaryUrl: String
+  val countryCodeJson: JsValue
+  val signInContinueBaseUrl: String
+  val bankAccountCoc: String
 }
 
 @Singleton
@@ -75,8 +81,10 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
-  private lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
-  private lazy val signInContinueUrl: String = ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
+  lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
+  private lazy val signInContinueUrl: String =
+    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
+
   private lazy val signInOrigin = getString("appName")
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
@@ -106,5 +114,10 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val btaUrl: String = getString("business-tax-account.url") + "/business-account"
   override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.url") + "/vat-through-software/vat-overview"
+
+  lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
+    case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
+    case _ => throw new Exception("Country codes file not found")
+  }
 
 }

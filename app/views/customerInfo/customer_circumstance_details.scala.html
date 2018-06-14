@@ -1,0 +1,127 @@
+@*
+ * Copyright 2018 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.circumstanceInfo.CircumstanceDetails
+@import helpers.render_return_frequency
+@import helpers.render_address
+@import templates.breadcrumb
+
+@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+
+@bc = {
+    @if(!user.isAgent){
+        @breadcrumb()
+    }
+}
+
+@views.html.main_template(
+    title = messages("customer_details.title"),
+    bodyClasses = None,
+    contentHeader = Some(bc),
+    appConfig = appConfig) {
+
+    <header class="page-heading">
+        <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
+        <p id="sub-heading" class="heading-secondary">
+            @if(user.isAgent) {@messages("customer_details.agentSubheading")
+            } else {@messages("customer_details.subheading")}
+        </p>
+    </header>
+
+    <dl class="govuk-check-your-answers cya-questions-short">
+
+        @circumstances.customerDetails.organisationName.map { orgName =>
+            <div>
+                <dt id="business-name-text" class="cya-question">
+                    @messages("customer_details.businessName.heading")
+                </dt>
+                <dd id="business-name" class="cya-answer">
+                    @orgName
+                </dd>
+                <dd class="cya-change">
+                    <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+                        @messages("customer_details.change")
+                        <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
+                    </a>
+                </dd>
+            </div>
+        }
+
+        @circumstances.ppob.map { ppob =>
+            @ppob.address.map { address =>
+                <div>
+                    <dt id="businessAddressHeading" class="cya-question">
+                        @messages("customer_details.businessAddress.heading")
+                    </dt>
+                    <dd id="businessAddress" class="cya-answer">
+                        @render_address(address)
+                    </dd>
+                    <dd class="cya-change">
+                        <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                            @messages("customer_details.change")
+                            <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+        }
+
+        @circumstances.bankDetails.map { bankDetails =>
+            <div>
+                <dt id="bank-details-text" class="cya-question">
+                    @messages("customer_details.bankAccount.heading")
+                </dt>
+                <dd id="bank-details" class="cya-answer">
+                    <ol>
+                        @bankDetails.bankAccountNumber.map { accNum =>
+                            <li class="bold">@messages("customer_details.bankAccount.number")</li>
+                            <li>@accNum</li>
+                        }
+                        @bankDetails.sortCode.map { sortcode =>
+                            <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
+                            <li>@sortcode</li>
+                        }
+                    </ol>
+                </dd>
+                <dd class="cya-change">
+                    <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
+                        @messages("customer_details.change")
+                        <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
+                    </a>
+                </dd>
+            </div>
+        }
+
+        @circumstances.returnPeriod.map { period =>
+            <div>
+                <dt id="vat-return-dates-text" class="cya-question">
+                    @messages("customer_details.returnFrequency.heading")
+                </dt>
+                <dd id="vat-return-dates" class="cya-answer">
+                    @render_return_frequency(period)
+                </dd>
+                <dd class="cya-change">
+                    <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
+                        @messages("customer_details.change")
+                        <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
+                    </a>
+                </dd>
+            </div>
+        }
+
+    </dl>
+
+}

@@ -21,6 +21,7 @@ import play.api.http.Status.{OK, UNAUTHORIZED}
 import play.api.libs.json.{JsObject, Json}
 import helpers.WireMockMethods
 import uk.gov.hmrc.auth.core.AffinityGroup
+import helpers.IntegrationTestConstants.VRN
 
 object AuthStub extends WireMockMethods {
 
@@ -69,7 +70,7 @@ object AuthStub extends WireMockMethods {
     "identifiers" -> Json.arr(
       Json.obj(
         "key" -> "VRN",
-        "value" -> "1234567890"
+        "value" -> VRN
       )
     )
   )

@@ -24,11 +24,11 @@ import utils.TestUtil
 
 class FeatureSwitchControllerSpec extends TestUtil {
 
-  private lazy val target = new FeatureSwitchController(messagesApi, mockAppConfig)
+  private lazy val target = new FeatureSwitchController(messagesApi, mockConfig)
 
   "Calling the .featureSwitch action" should {
 
-    lazy val result = target.featureSwitch(fakeRequest.addToken)
+    lazy val result = target.featureSwitch(request.addToken)
 
     "return 200" in {
       status(result) shouldBe Status.OK
@@ -45,7 +45,7 @@ class FeatureSwitchControllerSpec extends TestUtil {
 
   "Calling the .submitFeatureSwitch action" should {
 
-    lazy val result = target.submitFeatureSwitch(fakeRequest.addToken
+    lazy val result = target.submitFeatureSwitch(request.addToken
       .withFormUrlEncodedBody("features.simpleAuth.enabled" -> "true"))
 
     "return 303" in {

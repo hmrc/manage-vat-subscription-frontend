@@ -22,7 +22,21 @@ import play.api.libs.json.{JsObject, Json}
 
 object PaymentsTestConstants {
 
-  val paymentStart: PaymentStartModel = PaymentStartModel(vrn, agent = true, "someReturnUrl", "someBackUrl")
+  val principlePaymentStart: PaymentStartModel = PaymentStartModel(
+    vrn,
+    isAgent = false,
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show()
+  )
+
+  val agentPaymentStart: PaymentStartModel = PaymentStartModel(
+    vrn,
+    isAgent = true,
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+    "/manage-vat-subscription-frontend" + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
+  )
 
   val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
 

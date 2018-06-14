@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+package testOnly.forms.test
 
- @views.html.main_template(title = "Hello from manage-vat-subscription-frontend", bodyClasses = None, appConfig = appConfig) {
-  <h1>Hello from manage-vat-subscription-frontend !</h1>
- }
+import models.test.TextInputModel
+import play.api.data.Form
+import play.api.data.Forms._
+
+object TextInputForm {
+
+  val form: Form[TextInputModel] = Form(
+    mapping(
+      "text" -> nonEmptyText
+    )(TextInputModel.apply)(TextInputModel.unapply)
+  )
+}

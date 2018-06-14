@@ -18,8 +18,8 @@ package services
 
 import connectors.SubscriptionConnector
 import javax.inject.{Inject, Singleton}
+import models.returnFrequency.ReturnPeriod
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
-import models.returnFrequency.ReturnDateOption
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ReturnFrequencyService @Inject()(subscriptionConnector: SubscriptionConnector) {
 
-  def updateReturnFrequency(vrn: String, frequency: ReturnDateOption)
+  def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)
                            (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
     subscriptionConnector.updateReturnFrequency(vrn, frequency)
   }
