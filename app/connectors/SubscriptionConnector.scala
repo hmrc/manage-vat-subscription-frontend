@@ -19,6 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import connectors.httpParsers.ResponseHttpParser._
+import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
 import models.returnFrequency.ReturnPeriod
@@ -36,6 +37,8 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
+  private[connectors] def updateReturnPeriod(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/return-period"
+
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
@@ -50,7 +53,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)
                            (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
-    // TODO: call vat-subscription
-    Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
+    val url = updateReturnPeriod(vrn)
+    http.POST[ReturnPeriod,HttpPostResult[SubscriptionUpdateResponseModel]](url, frequency)
   }
 }
