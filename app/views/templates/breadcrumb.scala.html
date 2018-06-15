@@ -14,10 +14,12 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@()(implicit messages: Messages, appConfig: config.AppConfig)
 
-@views.html.main_template(title = Messages("unauthorised.title"), bodyClasses = None, appConfig = appConfig) {
-  <h1>@Messages("unauthorised.title")</h1>
-
-  <p>@Messages("unauthorised.instructions")</p>
-}
+<div id="breadcrumb" class="breadcrumbs soft--top">
+    <ol class="push--top">
+        <li><a id="breadcrumb-bta" href="@{appConfig.btaUrl}">@messages("breadcrumb.bta")</a></li>
+        <li><a id="breadcrumb-vat" href="@{appConfig.vatSummaryUrl}">@messages("breadcrumb.yourVatDetails")</a></li>
+        <li id="breadcrumb-biz-deets">@messages("breadcrumb.changeBizDeets")</li>
+    </ol>
+</div>

@@ -1,4 +1,6 @@
 base.sign-out = Sign out
+base.back = Back
+
 
 common.day = Day
 common.month = Month
@@ -43,8 +45,8 @@ features.simpleAuth.enabled = Simple auth
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details
+customer_details.agentSubheading = Your client''s VAT details
 customer_details.h1 = Change of business details
-customer_details.h2 = About the business
 customer_details.change = Change
 customer_details.businessName.heading = Business name
 customer_details.businessName.change.hidden = your Business name
@@ -58,6 +60,7 @@ customer_details.bankAccount.sortcode = Sort code
 customer_details.bankAccount.change.hidden = your repayment Bank Account
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = your VAT Return dates
+
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
@@ -90,6 +93,7 @@ return_frequency.Monthly = Every month
 
 confirm_return_frequency.title = Changes in circumstances
 confirm_return_frequency.heading = Confirm the new VAT Return dates
+confirm_return_frequency.newDates = The new VAT Return dates are
 confirm_return_frequency.changeLink = Change the VAT Return dates
 confirm_return_frequency.p2 = By confirming this change, you agree that the information you have given is complete and correct.
 
@@ -99,10 +103,14 @@ received_frequency.subheading = What happens next
 received_frequency.p1 = We will usually let you know if you can change these details within 2 working days.
 received_frequency.p2 = If this change is accepted:
 received_frequency.bullet1 = we will send a confirmation letter to your business address
-received_frequency.bullet2 = the business must submit this quarter’s return before following the new VAT Return dates
+received_frequency.bullet2 = the business must submit this period''s return before following the new VAT Return dates
 
 confirm_client_vrn.title = Changes in circumstances
 confirm_client_vrn.heading = Confirm your client’s VAT number
 confirm_client_vrn.name = Business name
 confirm_client_vrn.vrn = VAT number
 confirm_client_vrn.edit = Edit different client
+
+breadcrumb.bta = Business tax account
+breadcrumb.yourVatDetails = Your VAT details
+breadcrumb.changeBizDeets = Change of business details

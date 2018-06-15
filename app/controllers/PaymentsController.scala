@@ -16,10 +16,9 @@
 
 package controllers
 
-import config.{FrontendAppConfig, ServiceErrorHandler}
+import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
-import models.payments.PaymentStartModel
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
@@ -31,29 +30,14 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
                                    val authenticate: AuthPredicate,
                                    val serviceErrorHandler: ServiceErrorHandler,
                                    val paymentsService: PaymentsService,
-                                   val config: FrontendAppConfig) extends FrontendController with I18nSupport {
-
-  private[controllers] def paymentDetails(vrn: String, isAgent: Boolean): PaymentStartModel =
-    PaymentStartModel(vrn, isAgent,
-      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
-      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
-      convenienceUrl(isAgent))
-
-  private[PaymentsController] def convenienceUrl(isAgent: Boolean) = {
-    if(isAgent) {
-      config.signInContinueBaseUrl + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
-    } else {
-      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show()
-    }
-  }
+                                   implicit val config: AppConfig) extends FrontendController with I18nSupport {
 
   val sendToPayments: Action[AnyContent] = authenticate.async { implicit user =>
-    paymentsService.postPaymentDetails(paymentDetails(user.vrn, user.isAgent)) map {
+    paymentsService.postPaymentDetails(user) map {
       case Right(response) => Redirect(response.nextUrl)
       case _ =>
         Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
     }
   }
-
 }

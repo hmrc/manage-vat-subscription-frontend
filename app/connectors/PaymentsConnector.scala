@@ -36,8 +36,7 @@ class PaymentsConnector @Inject()(val http: HttpClient,
 
     val url = s"${config.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account"
     Logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with URL - $url")
+    Logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with Data - $paymentStart")
     http.POST[PaymentStartModel,HttpPostResult[PaymentRedirectModel]](url, paymentStart)
-
   }
-
 }

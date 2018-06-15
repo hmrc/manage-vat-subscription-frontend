@@ -32,6 +32,10 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
     s"have the correct document title of '${viewMessages.title}'" in {
       document.title shouldBe viewMessages.title
     }
+    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
+      elementText(".link-back") shouldBe BaseMessages.back
+      element(".link-back").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+    }
 
     s"have a the correct page heading of '${viewMessages.ConfirmPage.heading}'" in {
       elementText("#page-heading") shouldBe viewMessages.ConfirmPage.heading
@@ -42,25 +46,25 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
       s"the current date is '${viewMessages.option1Jan}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Jan)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option1Jan
+        elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option1Jan}"
       }
 
       s"the current date is '${viewMessages.option2Feb}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Feb)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option2Feb
+        elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option2Feb}"
       }
 
       s"the current date is '${viewMessages.option3Mar}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Mar)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option3Mar
+        elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option3Mar}"
       }
 
       s"the current date is '${viewMessages.option4Monthly}'" in {
         lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(request, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
-        elementText("#p1") shouldBe viewMessages.option4Monthly
+        elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option4Monthly}"
       }
     }
 
@@ -82,8 +86,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     "have a confirm button" which {
 
-      s"has the text '${BaseMessages.confirm}'" in {
-        elementText("#continue-button") shouldBe BaseMessages.confirm
+      s"has the text '${BaseMessages.confirmAndContinue}'" in {
+        elementText("#continue-button") shouldBe BaseMessages.confirmAndContinue
       }
 
       "posts data to the server" in {

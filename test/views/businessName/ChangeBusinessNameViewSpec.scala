@@ -17,7 +17,7 @@
 package views.businessName
 
 import assets.CustomerDetailsTestConstants.orgName
-import assets.messages.{ChangeBusinessNamePageMessages => viewMessages}
+import assets.messages.{BaseMessages,ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -36,6 +36,7 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       val bullet2 = s"$wrapper li:nth-of-type(2)"
       val p4 = s"$wrapper p:nth-of-type(4)"
       val link = s"$wrapper #continue"
+      val backLink = ".link-back"
     }
 
     lazy val view = views.html.businessName.change_business_name(orgName)(request, messages, mockConfig)
@@ -43,6 +44,11 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
 
     s"have the correct document title of '${viewMessages.title}'" in {
       document.title shouldBe viewMessages.title
+    }
+
+    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
+      elementText(Selectors.backLink) shouldBe BaseMessages.back
+      element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
     }
 
     s"have a the correct page heading of '${viewMessages.h1}'" in {

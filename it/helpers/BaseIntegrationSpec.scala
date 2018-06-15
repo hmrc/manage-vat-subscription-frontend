@@ -16,28 +16,32 @@
 
 package helpers
 
+import common.SessionKeys
+import config.AppConfig
 import models.payments.PaymentStartModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, TestSuite}
+import org.scalatest.concurrent.{Eventually, IntegrationPatience, ScalaFutures}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Matchers, TestSuite}
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.data.Form
 import play.api.http.HeaderNames
 import play.api.i18n.{Lang, Messages, MessagesApi}
-import play.api.{Application, Environment, Mode}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
+import play.api.{Application, Environment, Mode}
 import stubs.AuthStub
-import uk.gov.hmrc.play.test.UnitSpec
 
-trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServerPerSuite with TestSuite
-  with BeforeAndAfterEach with BeforeAndAfterAll with CustomMatchers {
+trait BaseIntegrationSpec extends TestSuite with CustomMatchers
+  with GuiceOneServerPerSuite with ScalaFutures with IntegrationPatience with Matchers
+  with WireMockHelper with BeforeAndAfterEach with BeforeAndAfterAll with Eventually {
 
   val mockHost: String = WireMockHelper.host
   val mockPort: String = WireMockHelper.wmPort.toString
   val appContextRoute: String = "/vat-through-software/account"
 
+  implicit lazy val appConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
@@ -52,21 +56,25 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
 
   class User()(implicit builder: PreconditionBuilder) {
     def isAuthenticated: PreconditionBuilder = {
+      Given("I stub a User who successfully signed up to MTD VAT")
       AuthStub.authorised()
       builder
     }
 
     def isNotAuthenticated: PreconditionBuilder = {
+      Given("I stub a User who is not logged in")
       AuthStub.unauthorisedNotLoggedIn()
       builder
     }
 
     def isNotEnrolled: PreconditionBuilder = {
+      Given("I stub a User who is NOT signed up to MTD VAT")
       AuthStub.unauthorisedOtherEnrolment()
       builder
     }
 
     def noAffinityGroup: PreconditionBuilder = {
+      Given("I stub a User who is authenticated but does NOT have an Affinity Group")
       AuthStub.authorisedNoAffinityGroup()
       builder
     }
@@ -74,16 +82,19 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
 
   class Agent()(implicit builder: PreconditionBuilder) {
     def isSignedUpToAgentServices: PreconditionBuilder = {
+      Given("I stub an Agent successfully signed up to Agent Services")
       AuthStub.agentAuthorised()
       builder
     }
 
     def isNotSignedUpToAgentServices: PreconditionBuilder = {
+      Given("I stub an Agent who is NOT signed up to Agent Services")
       AuthStub.agentUnauthorisedOtherEnrolment()
       builder
     }
 
     def isUnauthorised: PreconditionBuilder = {
+      Given("I stub an Agent who is Unauthorised")
       AuthStub.insufficientEnrolments()
       builder
     }
@@ -113,7 +124,6 @@ trait BaseIntegrationSpec extends UnitSpec with WireMockHelper with GuiceOneServ
     stopWireMock()
     super.afterAll()
   }
-
 
   def get(path: String, additionalCookies: Map[String, String] = Map.empty): WSResponse = await(
     buildRequest(path, additionalCookies).get()

@@ -19,11 +19,7 @@ package services
 import assets.BaseTestConstants.errorModel
 import assets.PaymentsTestConstants._
 import mocks.connectors.MockPaymentsConnector
-import models.core.ErrorModel
-import models.payments.PaymentRedirectModel
 import utils.TestUtil
-
-import scala.concurrent.Future
 
 class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
@@ -31,26 +27,34 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
   "PaymentsService" should {
 
-    def result: Future[Either[ErrorModel, PaymentRedirectModel]] = TestPaymentsService.postPaymentDetails(paymentStart)
-
     "for postPaymentDetails method" when {
 
-      "called for a Right with a redirect url" should {
+      "a success response is received" should {
 
-        "return a PaymentRedirectModel" in {
-          setupMockPostPaymentsDetails(paymentStart)(Right(successPaymentsResponseModel))
-          await(result) shouldBe Right(successPaymentsResponseModel)
+        "for a principal user" should {
+
+          "return a PaymentRedirectModel" in {
+            setupMockPostPaymentsDetails(principlePaymentStart)(Right(successPaymentsResponseModel))
+            await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+          }
+        }
+
+        "for an Agent" should {
+
+          "return a PaymentRedirectModel" in {
+            setupMockPostPaymentsDetails(agentPaymentStart)(Right(successPaymentsResponseModel))
+            await(TestPaymentsService.postPaymentDetails(agentUser)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+          }
         }
       }
 
       "given an error should" should {
 
         "return a Left with an ErrorModel" in {
-          setupMockPostPaymentsDetails(paymentStart)(Left(errorModel))
-          await(result) shouldBe Left(errorModel)
+          setupMockPostPaymentsDetails(principlePaymentStart)(Left(errorModel))
+          await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
         }
       }
     }
   }
-
 }

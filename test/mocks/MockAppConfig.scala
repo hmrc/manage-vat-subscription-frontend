@@ -43,10 +43,15 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val addressLookupUrlHost: String = ""
   override val agentServicesGovUkGuidance: String = "guidance/get-an-hmrc-agent-services-account"
   override val agentAuthoriseForClient: String = "agent-subscription/start"
+  override val btaUrl = "ye olde bta url"
+  override val vatSummaryUrl = "ye olde vat summary url"
   override val countryCodeJson: JsValue = Json.arr(
     Json.obj(
       "countryCode" -> "GB",
       "country" -> "United Kingdom"
     )
   )
+  override val bankAccountCoc: String = ""
+  override val signInContinueBaseUrl: String = "/manage-vat-subscription-frontend"
+  override val host: String = "/manage-vat-subscription-frontend"
 }

@@ -53,4 +53,6 @@ object ConfigKeys {
   val agentAuthoriseForClient: String = "agent-subscription-frontend.host"
 
   val bankAccountCoc: String = "bank-account-coc"
+
+  val host: String = "host"
 }

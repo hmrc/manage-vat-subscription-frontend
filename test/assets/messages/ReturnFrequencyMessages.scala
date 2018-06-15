@@ -26,11 +26,13 @@ object ReturnFrequencyMessages {
 
   object ChoosePage {
     val heading = "Choose the new VAT Return dates"
-    val question = "The Vat Return dates are currently"
+    val question = "The VAT Return dates are currently"
+    val error = "Select the new VAT Return dates"
   }
 
   object ConfirmPage {
     val heading = "Confirm the new VAT Return dates"
+    val newDates = "The new VAT Return dates are"
     val changeLink = "Change the VAT Return dates"
     val p2 = "By confirming this change, you agree that the information you have given is complete and correct."
   }
@@ -41,6 +43,6 @@ object ReturnFrequencyMessages {
     val p1 = "We will usually let you know if you can change these details within 2 working days."
     val p2 = "If this change is accepted:"
     val bullet1 = "we will send a confirmation letter to your business address"
-    val bullet2 = "the business must submit this quarter’s return before following the new VAT Return dates"
+    val bullet2 = "the business must submit this period's return before following the new VAT Return dates"
   }
 }

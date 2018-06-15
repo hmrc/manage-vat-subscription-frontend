@@ -18,6 +18,7 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
+import org.scalatest.Assertion
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import utils.TestUtil
 
@@ -34,6 +35,16 @@ trait ViewBaseSpec extends TestUtil with GuiceOneAppPerSuite {
     attributes.map(attribute => (attribute.getKey, attribute.getValue)).toMap
   }
 
+  def elementExtinct(cssSelector: String)(implicit document: Document): Assertion = {
+    val elements = document.select(cssSelector)
+
+    if (elements.size == 0) {
+      succeed
+    } else {
+      fail(s"Element with selector '$cssSelector' was found!")
+    }
+  }
+
   def element(cssSelector: String)(implicit document: Document): Element = {
     val elements = document.select(cssSelector)
 
@@ -41,7 +52,7 @@ trait ViewBaseSpec extends TestUtil with GuiceOneAppPerSuite {
       fail(s"No element exists with the selector '$cssSelector'")
     }
 
-    document.select(cssSelector).first()
+    elements.first()
   }
 
   def formatHtml(markup: String): String = Jsoup.parseBodyFragment(s"\n$markup\n").toString.trim

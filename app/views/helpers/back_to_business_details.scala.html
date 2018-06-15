@@ -14,10 +14,5 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
-
-@views.html.main_template(title = Messages("unauthorised.title"), bodyClasses = None, appConfig = appConfig) {
-  <h1>@Messages("unauthorised.title")</h1>
-
-  <p>@Messages("unauthorised.instructions")</p>
-}
+@()(implicit messages: Messages)
+<a class="link-back" href="@{controllers.routes.CustomerCircumstanceDetailsController.show().url}">@messages("base.back")</a>
