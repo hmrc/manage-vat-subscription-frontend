@@ -53,4 +53,5 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   )
   override val bankAccountCoc: String = ""
   override val signInContinueBaseUrl: String = "/manage-vat-subscription-frontend"
+  override val host: String = "/manage-vat-subscription-frontend"
 }
