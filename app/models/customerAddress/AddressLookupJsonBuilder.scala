@@ -29,8 +29,17 @@ case class AddressLookupJsonBuilder(continueUrl: String) {
   val lookupPage = Map(
     "title" -> "Changes in circumstances",
     "heading" -> "What is the new business address?",
-    "filterLabel" -> "Property name or number"
-//    "manualAddressLinkText" -> "bob" // ignored whilst ukMode == true?
+    "filterLabel" -> "Property name or number",
+    "postcodeLabel" -> "Postcode"
+  )
+
+  val selectPage = Map(
+    "heading" -> "Select the new business address",
+    "submitLabel" -> "Save and continue"
+  )
+
+  val confirmPage = Map(
+    "heading" -> "Confirm the new business address"
   )
 }
 
@@ -44,7 +53,11 @@ object AddressLookupJsonBuilder {
         "navTitle" -> data.navTitle,
         "ukMode" -> data.ukMode,
 
-        "lookupPage" -> data.lookupPage
+        "lookupPage" -> data.lookupPage,
+
+        "selectPage" -> data.selectPage,
+
+        "confirmPage" -> data.confirmPage
       )
     }
   }

@@ -32,6 +32,10 @@ object ConfigKeys {
   val signInBaseUrl: String = "signIn.url"
   val signInContinueBaseUrl: String = "signIn.continueBaseUrl"
 
+  val appName: String = "appName"
+
+  val vatSubscription: String = "vat-subscription"
+
   val simpleAuthFeature: String = "features.simpleAuth.enabled"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
@@ -39,10 +43,16 @@ object ConfigKeys {
 
   val governmentGatewayHost: String = "government-gateway.host"
 
+  val addressLookupFrontend: String = "address-lookup-frontend"
+  val addressLookupFrontendHost: String = s"$addressLookupFrontend.host"
+
+
   val surveyHost: String = "feedback-survey-frontend.host"
   val surveyUrl: String = "feedback-survey-frontend.url"
 
-  val agentAuthoriseForClient: String = "gov-uk.guidance.agentAuthoriseForClient.url"
+  val agentAuthoriseForClient: String = "agent-subscription-frontend.host"
+
+  val bankAccountCoc: String = "bank-account-coc"
 
   val host: String = "host"
 }

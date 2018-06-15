@@ -51,7 +51,7 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
     }
 
     s"have a link to GOV.UK guidance" in {
-      element(Selectors.instructionsLink).attr("href") shouldBe "appoint-tax-agent"
+      element(Selectors.instructionsLink).attr("href") shouldBe "agent-subscription/start"
     }
 
     s"have the correct content for trying again" in {
