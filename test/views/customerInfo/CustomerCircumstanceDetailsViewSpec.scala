@@ -44,6 +44,15 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#sub-heading") shouldBe viewMessages.subheading
       }
 
+      "display a breadcrumb trail which" in {
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe viewMessages.breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe viewMessages.breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe viewMessages.breadcrumbBizDeets
+
+        element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
+        element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
+      }
+
       "have a section for business address" which {
 
         "has the heading" in {
@@ -142,6 +151,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
+      "display a breadcrumb trail" in {
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe viewMessages.breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe viewMessages.breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe viewMessages.breadcrumbBizDeets
+      }
+
       "have a change details section for the Business Name" which {
 
         s"has the heading '${viewMessages.organisationNameHeading}'" in {
@@ -169,6 +184,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not display a breadcrumb trail" in {
+        elementExtinct(".breadcrumbs li:nth-of-type(1)")
+        elementExtinct(".breadcrumbs li:nth-of-type(2)")
+        elementExtinct(".breadcrumbs li:nth-of-type(3)")
+      }
 
       s"have the correct document title '${viewMessages.title}'" in {
         document.title shouldBe viewMessages.title

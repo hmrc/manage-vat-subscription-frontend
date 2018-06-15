@@ -43,6 +43,8 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val addressLookupUrlHost: String = ""
   override val agentServicesGovUkGuidance: String = "guidance-url"
   override val agentAuthoriseForClient: String = "appoint-tax-agent"
+  override val btaUrl = "ye olde bta url"
+  override val vatSummaryUrl = "ye olde vat summary url"
   override val countryCodeJson: JsValue = Json.arr(
     Json.obj(
       "countryCode" -> "GB",

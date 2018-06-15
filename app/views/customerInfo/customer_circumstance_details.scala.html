@@ -17,12 +17,20 @@
 @import models.circumstanceInfo.CircumstanceDetails
 @import helpers.render_return_frequency
 @import helpers.render_address
+@import templates.breadcrumb
 
 @(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+
+@bc = {
+    @if(!user.isAgent){
+        @breadcrumb()
+    }
+}
 
 @views.html.main_template(
     title = messages("customer_details.title"),
     bodyClasses = None,
+    contentHeader = Some(bc),
     appConfig = appConfig) {
 
     <header class="page-heading">

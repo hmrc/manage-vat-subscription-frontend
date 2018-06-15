@@ -50,6 +50,8 @@ trait AppConfig extends ServicesConfig {
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
+  val btaUrl: String
+  val vatSummaryUrl: String
   val countryCodeJson: JsValue
   val signInContinueBaseUrl: String
   val bankAccountCoc: String
@@ -109,6 +111,9 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
   lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
+
+  override lazy val btaUrl: String = getString("business-tax-account.host") + "/business-account"
+  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
   lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
