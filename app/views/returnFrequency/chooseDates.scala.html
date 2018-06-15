@@ -20,6 +20,7 @@
 @import templates.inputs.radioGroup
 @import templates.errors.errorSummary
 @import models.returnFrequency._
+@import views.html.helpers.back_to_business_details
 
 
 @(form: Form[ReturnDatesModel], current: ReturnPeriod)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
@@ -33,6 +34,8 @@
   title = messages("return_frequency.title"),
   bodyClasses = None,
   appConfig = appConfig) {
+
+    @back_to_business_details()
 
   @errorSummary("common.errorSummary.heading", form)
 

@@ -32,6 +32,10 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
     s"have the correct document title of '${viewMessages.title}'" in {
       document.title shouldBe viewMessages.title
     }
+    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
+      elementText(".link-back") shouldBe BaseMessages.back
+      element(".link-back").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+    }
 
     s"have a the correct page heading of '${viewMessages.ConfirmPage.heading}'" in {
       elementText("#page-heading") shouldBe viewMessages.ConfirmPage.heading
