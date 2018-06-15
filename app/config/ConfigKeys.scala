@@ -43,4 +43,6 @@ object ConfigKeys {
   val surveyUrl: String = "feedback-survey-frontend.url"
 
   val agentAuthoriseForClient: String = "gov-uk.guidance.agentAuthoriseForClient.url"
+
+  val host: String = "host"
 }

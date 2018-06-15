@@ -55,6 +55,7 @@ trait AppConfig extends ServicesConfig {
   val countryCodeJson: JsValue
   val signInContinueBaseUrl: String
   val bankAccountCoc: String
+  val host: String
 }
 
 @Singleton
@@ -119,5 +120,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
     case _ => throw new Exception("Country codes file not found")
   }
+
+  override lazy val host: String = getString(Keys.host)
 
 }

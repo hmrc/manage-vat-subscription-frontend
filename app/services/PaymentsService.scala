@@ -34,17 +34,17 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
     val convenienceUrl = {
       if(user.isAgent) {
-        config.signInContinueBaseUrl + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
+        config.host + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
       } else {
-        config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show()
+        config.host + controllers.routes.CustomerCircumstanceDetailsController.show()
       }
     }
 
     val paymentDetails: PaymentStartModel = PaymentStartModel(
       user.vrn,
       user.isAgent,
-      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
-      config.signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show(),
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(),
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(),
       convenienceUrl
     )
 
