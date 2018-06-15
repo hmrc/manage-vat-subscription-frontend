@@ -113,7 +113,15 @@ object CustomerAddressTestConstants {
     "lookupPage" -> Json.obj(
       "title" -> "Changes in circumstances",
       "heading" -> "What is the new business address?",
-      "filterLabel" -> "Property name or number"
+      "filterLabel" -> "Property name or number",
+      "postcodeLabel" -> "Postcode"
+    ),
+    "selectPage" -> Json.obj(
+      "heading" -> "Select the new business address",
+      "submitLabel" -> "Save and continue"
+    ),
+    "confirmPage" -> Json.obj(
+      "heading" -> "Confirm the new business address"
     )
   )
 
