@@ -39,4 +39,8 @@ object CustomerCircumstanceDetailsPageMessages {
   val changeReturnFrequencyHidden = "your VAT Return dates"
   val bankAccountHidden = "your repayment Bank Account"
 
+  val breadcrumbBta = "Business tax account"
+  val breadcrumbVat = "Your VAT details"
+  val breadcrumbBizDeets = "Change of business details"
+
 }

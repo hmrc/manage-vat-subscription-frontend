@@ -50,9 +50,12 @@ trait AppConfig extends ServicesConfig {
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
+  val btaUrl: String
+  val vatSummaryUrl: String
   val countryCodeJson: JsValue
   val signInContinueBaseUrl: String
   val bankAccountCoc: String
+  val host: String
 }
 
 @Singleton
@@ -83,10 +86,10 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private lazy val signInContinueUrl: String =
     ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
 
-  private lazy val signInOrigin = getString("appName")
+  private lazy val signInOrigin = getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
-  lazy val vatSubscriptionUrl:String = baseUrl("vat-subscription")
+  lazy val vatSubscriptionUrl:String = baseUrl(Keys.vatSubscription)
 
   override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
 
@@ -100,19 +103,25 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val signOutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$surveyUrl"
   override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
 
-  override lazy val addressLookupUrlHost: String = getString("address-lookup-frontend.host")
-  override lazy val addressLookupService: String = baseUrl("address-lookup-frontend")
+  override lazy val addressLookupUrlHost: String = getString(Keys.addressLookupFrontendHost)
+  override lazy val addressLookupService: String = baseUrl(Keys.addressLookupFrontend)
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
+
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
 
-  lazy val bankAccountCoc: String = baseUrl("bank-account-coc")
+  lazy val bankAccountCoc: String = baseUrl(Keys.bankAccountCoc)
+
+  override lazy val btaUrl: String = getString("business-tax-account.host") + "/business-account"
+  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
   lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
     case _ => throw new Exception("Country codes file not found")
   }
+
+  override lazy val host: String = getString(Keys.host)
 
 }

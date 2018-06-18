@@ -65,7 +65,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     }
 
     s"have a link to GOV.UK guidance" in {
-      element(Selectors.instructionsLink).attr("href") shouldBe "guidance-url"
+      element(Selectors.instructionsLink).attr("href") shouldBe "guidance/get-an-hmrc-agent-services-account"
     }
 
     s"have a Sign out button" in {
