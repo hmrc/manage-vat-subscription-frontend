@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package assets.messages
+@import templates.headings
+@import templates.breadcrumb
 
-object BaseMessages {
+@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
-  val finish = "Finish"
-  val back = "Back"
-  val errorHeading = "You have one or more errors"
+@views.html.main_template(title = messages("not_signed_up.title"), bodyClasses = None, appConfig = appConfig) {
 
-  val breadcrumbBta = "Business tax account"
-  val breadcrumbVat = "Your VAT details"
-  val breadcrumbBizDeets = "Change of business details"
+    @breadcrumb()
 
+    <h1 class="heading-large">@messages("not_signed_up.heading")</h1>
+
+    <p>@messages("not_signed_up.p1")</p>
+
+    <p>@messages("not_signed_up.p2")</p>
+
+    <a href="@routes.SignOutController.signOut(true)" class="button" role="button">@messages("base.sign-out")</a>
 }
