@@ -77,15 +77,25 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       }
     }
 
-    "calling .updateReturnFrequency" should {
+    "calling .updateReturnFrequency" when {
 
       def result: Future[HttpPostResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector.updateReturnFrequency("999999999", Jan)
 
-      val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
-      setupMockHttpPost(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
+      "called with a Right SubscriptionUpdateResponseModel" should {
 
-      "return a SubscriptionUpdateResponseModel" in {
-        await(result) shouldBe response
+        "return a SubscriptionUpdateResponseModel" in {
+          val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
+          setupMockHttpPost(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
+          await(result) shouldBe response
+        }
+      }
+
+      "given an error" should {
+
+        "return a Left with an ErrorModel" in {
+          setupMockHttpPost(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(errorModel)
+          await(result) shouldBe errorModel
+        }
       }
     }
   }
