@@ -110,7 +110,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
 
-  override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient)
+  override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
 
   lazy val bankAccountCoc: String = baseUrl(Keys.bankAccountCoc)
 
