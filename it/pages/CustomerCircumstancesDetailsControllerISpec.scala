@@ -23,7 +23,7 @@ import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
 import stubs.VatSubscriptionStub
 
-class CustomerCircumstancesDetailsController extends BasePageISpec {
+class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
   val path = "/change-business-details"
 
