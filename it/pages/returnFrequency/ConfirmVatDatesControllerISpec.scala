@@ -48,7 +48,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         res should have(
           httpStatus(OK),
           elementText("#page-heading")(Messages("confirm_return_frequency.heading")),
-          elementText("#p1")(Messages("confirm_return_frequency.newDates") + MA)
+          elementText("#p1")(Messages("confirm_return_frequency.newDates") + " " + MA)
         )
       }
 
@@ -61,7 +61,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         res should have(
           httpStatus(OK),
           elementText("#page-heading")(Messages("confirm_return_frequency.heading")),
-          elementText("#p1")(Messages("confirm_return_frequency.newDates") + MA)
+          elementText("#p1")(Messages("confirm_return_frequency.newDates") + " " + MA)
         )
       }
     }
