@@ -18,26 +18,23 @@ package pages.returnFrequency
 
 import assets.ReturnFrequencyIntegrationTestConstants._
 import common.SessionKeys
-import helpers.IntegrationTestConstants.clientVRN
+import helpers.IntegrationTestConstants.VRN
+import models.core.SubscriptionUpdateResponseModel
 import pages.BasePageISpec
+import play.api.http.Status.{SEE_OTHER, INTERNAL_SERVER_ERROR}
+import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.OK
+import stubs.ReturnFrequencyStub
 
 class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
   val path = "/confirm-vat-return-dates"
+  val sessionWithReturnFrequency: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, SessionKeys.RETURN_FREQUENCY -> Jan)
 
   "Calling ConfirmVatDatesController.show" when {
 
-    def sessionWithReturnFrequency: Option[(String, String)] => Map[String, String] =
-      _.fold(Map.empty[String, String])(x =>
-        Map(
-          SessionKeys.CLIENT_VRN -> x._1,
-          SessionKeys.RETURN_FREQUENCY -> x._2
-        )
-      )
-
-    def show(sessionVrn: String, returnFrequency: String): WSResponse = get(path, sessionWithReturnFrequency(Some(sessionVrn, returnFrequency)))
+    def show(sessionVrn: String, returnFrequency: String): WSResponse = get(path, sessionWithReturnFrequency)
 
     "A valid ReturnPeriod is returned" should {
 
@@ -45,7 +42,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         given.user.isAuthenticated
 
         When("I call to show the Customer Circumstances page")
-        val res = show(clientVRN, Jan)
+        val res = show(VRN, Jan)
 
         res should have(
           httpStatus(OK),
@@ -61,7 +58,42 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
     "A valid ReturnPeriod is returned" should {
 
       "render the ChangeReturnFrequencyConfirmation page" in {
-        // TODO - Tuesday's job
+        given.user.isAuthenticated
+
+        And("I stub a successful response from the Payments service")
+        ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+
+        When("I initiate a return frequency update journey")
+        val res: WSResponse = postJSValueBody(
+          "/confirm-vat-return-dates",
+          sessionWithReturnFrequency
+        )(Json.obj("body" -> "anything"))
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
+        )
+      }
+    }
+
+    "An invalid model is posted" should {
+
+      "Render the Internal Server Error page" in {
+
+        given.user.isAuthenticated
+
+        And("I stub an error response from the Payments service")
+        ReturnFrequencyStub.postSubscriptionError()
+
+        When("I initiate a return frequency update journey")
+        val res = postJSValueBody(
+          "/confirm-vat-return-dates",
+          sessionWithReturnFrequency
+        )(Json.obj("body" -> "anything"))
+
+        res should have(
+          httpStatus(INTERNAL_SERVER_ERROR)
+        )
       }
 
     }
