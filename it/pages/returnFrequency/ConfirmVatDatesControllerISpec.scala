@@ -47,8 +47,8 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(OK),
-          elementText("#page-heading")("Confirm the new VAT Return dates"),
-          elementText("#p1")("The new VAT Return dates are " + MA)
+          elementText("#page-heading")(Messages("confirm_return_frequency.heading")),
+          elementText("#p1")(Messages("confirm_return_frequency.newDates") + MA)
         )
       }
 
@@ -60,8 +60,8 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(OK),
-          elementText("#page-heading")("Confirm the new VAT Return dates"),
-          elementText("#p1")("The new VAT Return dates are " + MA)
+          elementText("#page-heading")(Messages("confirm_return_frequency.heading")),
+          elementText("#p1")(Messages("confirm_return_frequency.newDates") + MA)
         )
       }
     }
