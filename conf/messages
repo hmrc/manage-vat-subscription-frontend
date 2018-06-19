@@ -12,6 +12,8 @@ common.confirmAndContinue = Confirm and continue
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
 common.finish = Finish
+common.clientService = Business Tax Account
+common.agentService = Update your client''s VAT details
 
 # Client VRN form messages
 clientVrnForm.vrn.missing = Enter your client''s VAT number

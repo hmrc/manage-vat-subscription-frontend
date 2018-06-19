@@ -18,7 +18,7 @@
 @import uk.gov.hmrc.play.views.html.helpers.form
 @import templates.headings
 
-@(model: ReturnPeriod)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(model: ReturnPeriod)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
   title = messages("confirm_return_frequency.title"),

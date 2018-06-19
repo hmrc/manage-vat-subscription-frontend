@@ -23,7 +23,7 @@
 @import views.html.helpers.back_to_business_details
 
 
-@(form: Form[ReturnDatesModel], current: ReturnPeriod)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(form: Form[ReturnDatesModel], current: ReturnPeriod)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @label = {
   <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>

@@ -14,8 +14,6 @@
  * limitations under the License.
  *@
 
-@import views.utils.ServiceNameUtil
-
 @(appConfig: config.AppConfig,
   title: String,
   mainClass: Option[String] = None,
@@ -47,12 +45,9 @@
     </li>
 }
 
-@navTitle = @{
-    serviceName.fold
-
 @insideHeader = {
     @uiLayouts.header_nav(
-      navTitle = Some(ServiceNameUtil.generateHeader),
+      navTitle = Some("serviceName"),
       navTitleLink = None,
       showBetaLink = false,
       navLinks = Some(headerNavLinks))

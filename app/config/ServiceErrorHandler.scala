@@ -17,6 +17,7 @@
 package config
 
 import javax.inject.Inject
+
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.InternalServerError
 import play.api.mvc.{Request, Result}
