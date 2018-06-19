@@ -16,18 +16,11 @@
 
 package assets.messages
 
-object BaseMessages {
+object NotSignedUpPageMessages {
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
-  val finish = "Finish"
-  val back = "Back"
-  val errorHeading = "You have one or more errors"
-
-  val breadcrumbBta = "Business tax account"
-  val breadcrumbVat = "Your VAT details"
-  val breadcrumbBizDeets = "Change of business details"
+  val title = "Change of business details"
+  val pageHeading = "You can’t use this service yet"
+  val p1 = "This service is only available to some limited companies and sole traders."
+  val p2= "You’ll be able to sign up for this service by April 2019."
 
 }

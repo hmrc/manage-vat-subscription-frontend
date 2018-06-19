@@ -108,7 +108,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
-  override val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
+  override lazy val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
 
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
 

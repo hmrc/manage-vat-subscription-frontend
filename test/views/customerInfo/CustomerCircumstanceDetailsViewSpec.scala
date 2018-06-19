@@ -17,7 +17,7 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.messages.{ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
+import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -45,9 +45,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
 
       "display a breadcrumb trail which" in {
-        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe viewMessages.breadcrumbBta
-        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe viewMessages.breadcrumbVat
-        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe viewMessages.breadcrumbBizDeets
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
 
         element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
         element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
@@ -152,9 +152,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a breadcrumb trail" in {
-        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe viewMessages.breadcrumbBta
-        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe viewMessages.breadcrumbVat
-        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe viewMessages.breadcrumbBizDeets
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
       }
 
       "have a change details section for the Business Name" which {

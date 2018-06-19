@@ -16,7 +16,7 @@
 
 package controllers.predicates
 
-import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, UnauthorisedPageMessages}
+import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, NotSignedUpPageMessages, UnauthorisedPageMessages}
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
@@ -96,9 +96,15 @@ class AuthPredicateSpec extends MockAuth {
 
     "they do NOT have an active HMRC-MTD-VAT enrolment" should {
 
+      lazy val result = await(target(request))
+
       "return Forbidden (403)" in {
         mockIndividualWithoutEnrolment()
-        status(target(request)) shouldBe Status.FORBIDDEN
+        status(result) shouldBe Status.FORBIDDEN
+      }
+
+      "render the Not Signed Up page" in {
+        Jsoup.parse(bodyOf(result)).title shouldBe NotSignedUpPageMessages.title
       }
     }
   }

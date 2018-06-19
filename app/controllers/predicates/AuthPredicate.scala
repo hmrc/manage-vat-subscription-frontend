@@ -80,7 +80,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     }
     else {
       Logger.debug(s"[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment. $enrolments")
-      Future.successful(Forbidden(views.html.errors.unauthorised()))
+      Future.successful(Forbidden(views.html.errors.not_signed_up()))
     }
 }
 
