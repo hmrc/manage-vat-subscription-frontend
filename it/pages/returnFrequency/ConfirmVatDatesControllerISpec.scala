@@ -21,10 +21,11 @@ import common.SessionKeys
 import helpers.IntegrationTestConstants.VRN
 import models.core.SubscriptionUpdateResponseModel
 import pages.BasePageISpec
-import play.api.http.Status.{SEE_OTHER, INTERNAL_SERVER_ERROR}
+import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
+import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
-import play.api.test.Helpers.OK
+import play.api.test.Helpers.{FORBIDDEN, OK}
 import stubs.ReturnFrequencyStub
 
 class ConfirmVatDatesControllerISpec extends BasePageISpec {
@@ -38,8 +39,21 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
     "A valid ReturnPeriod is returned" should {
 
-      "render the page" in {
+      "render the page for an individual" in {
         given.user.isAuthenticated
+
+        When("I call to show the Customer Circumstances page")
+        val res = show(VRN, Jan)
+
+        res should have(
+          httpStatus(OK),
+          elementText("#page-heading")("Confirm the new VAT Return dates"),
+          elementText("#p1")("The new VAT Return dates are " + MA)
+        )
+      }
+
+      "render the page for a agent signed up to agent services" in {
+        given.agent.isSignedUpToAgentServices
 
         When("I call to show the Customer Circumstances page")
         val res = show(VRN, Jan)
@@ -55,47 +69,107 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
   "Calling ConfirmVatDatesController.submit" when {
 
-    "A valid ReturnPeriod is returned" should {
+    "the user is an individual" should {
 
-      "render the ChangeReturnFrequencyConfirmation page" in {
-        given.user.isAuthenticated
+      "A valid ReturnPeriod is returned" should {
 
-        And("I stub a successful response from the Payments service")
-        ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+        "render the ChangeReturnFrequencyConfirmation page" in {
+          given.user.isAuthenticated
+          And("I stub a successful response from the Payments service")
+          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
 
-        When("I initiate a return frequency update journey")
-        val res: WSResponse = postJSValueBody(
-          "/confirm-vat-return-dates",
-          sessionWithReturnFrequency
-        )(Json.obj("body" -> "anything"))
+          When("I initiate a return frequency update journey")
+          val res: WSResponse = postJSValueBody(
+            "/confirm-vat-return-dates",
+            sessionWithReturnFrequency
+          )(Json.obj("body" -> "anything"))
 
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
-        )
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
+          )
+        }
+      }
+      "An invalid model is posted" should {
+
+        "Render the Internal Server Error page" in {
+          given.user.isAuthenticated
+          And("I stub an error response from the Payments service")
+          ReturnFrequencyStub.postSubscriptionError()
+
+          When("I initiate a return frequency update journey")
+          val res = postJSValueBody(
+            "/confirm-vat-return-dates",
+            sessionWithReturnFrequency
+          )(Json.obj("body" -> "anything"))
+
+          res should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
+        }
       }
     }
 
-    "An invalid model is posted" should {
+    "the user is an agent" should {
 
-      "Render the Internal Server Error page" in {
+      "if a valid ReturnPeriod is returned" should {
 
-        given.user.isAuthenticated
+        "render the ChangeReturnFrequencyConfirmation page" in {
+          given.agent.isSignedUpToAgentServices
+          And("I stub a successful response from the Payments service")
+          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
 
-        And("I stub an error response from the Payments service")
-        ReturnFrequencyStub.postSubscriptionError()
+          When("I initiate a return frequency update journey")
+          val res: WSResponse = postJSValueBody(
+            "/confirm-vat-return-dates",
+            sessionWithReturnFrequency
+          )(Json.obj("body" -> "anything"))
 
-        When("I initiate a return frequency update journey")
-        val res = postJSValueBody(
-          "/confirm-vat-return-dates",
-          sessionWithReturnFrequency
-        )(Json.obj("body" -> "anything"))
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
+          )
+        }
+      }
+      "if an invalid model is posted" should {
 
-        res should have(
-          httpStatus(INTERNAL_SERVER_ERROR)
-        )
+        "Render the Internal Server Error page" in {
+          given.agent.isSignedUpToAgentServices
+          And("I stub an error response from the Payments service")
+          ReturnFrequencyStub.postSubscriptionError()
+
+          When("I initiate a return frequency update journey")
+          val res = postJSValueBody(
+            "/confirm-vat-return-dates",
+            sessionWithReturnFrequency
+          )(Json.obj("body" -> "anything"))
+
+          res should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
+        }
       }
 
+      "the Agent is NOT signed up for HMRC-AS-AGENT (unauthorised)" when {
+
+        "render the Agent Unauthorised page" in {
+
+          given.agent.isNotSignedUpToAgentServices
+          And("I stub a successful response from the Payments service")
+          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+
+          When("I submit the Client VRN page with valid data")
+          val res: WSResponse = postJSValueBody(
+            "/confirm-vat-return-dates",
+            sessionWithReturnFrequency
+          )(Json.obj("body" -> "anything"))
+
+          res should have(
+            httpStatus(FORBIDDEN),
+            pageTitle(Messages("unauthorised.agent.title"))
+          )
+        }
+      }
     }
   }
 
