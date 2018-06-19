@@ -19,7 +19,7 @@ package connectors
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
@@ -77,13 +77,25 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       }
     }
 
-    "calling .updateReturnFrequency" should {
+    "calling .updateReturnFrequency" when {
 
-      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
-        TestSubscriptionConnector.updateReturnFrequency("", Jan)
+      def result: Future[HttpPostResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector.updateReturnFrequency("999999999", Jan)
 
-      "return a SubscriptionUpdateResponseModel" in {
-        await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
+      "called with a Right SubscriptionUpdateResponseModel" should {
+
+        "return a SubscriptionUpdateResponseModel" in {
+          val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
+          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
+          await(result) shouldBe response
+        }
+      }
+
+      "given an error" should {
+
+        "return a Left with an ErrorModel" in {
+          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(errorModel)
+          await(result) shouldBe errorModel
+        }
       }
     }
   }
