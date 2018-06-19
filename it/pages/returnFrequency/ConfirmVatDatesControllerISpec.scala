@@ -76,7 +76,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         "render the ChangeReturnFrequencyConfirmation page" in {
           given.user.isAuthenticated
           And("I stub a successful response from the Payments service")
-          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+          ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
 
           When("I initiate a return frequency update journey")
           val res: WSResponse = postJSValueBody(
@@ -95,7 +95,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         "Render the Internal Server Error page" in {
           given.user.isAuthenticated
           And("I stub an error response from the Payments service")
-          ReturnFrequencyStub.postSubscriptionError()
+          ReturnFrequencyStub.putSubscriptionError()
 
           When("I initiate a return frequency update journey")
           val res = postJSValueBody(
@@ -117,7 +117,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         "render the ChangeReturnFrequencyConfirmation page" in {
           given.agent.isSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
-          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+          ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
 
           When("I initiate a return frequency update journey")
           val res: WSResponse = postJSValueBody(
@@ -136,7 +136,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
         "Render the Internal Server Error page" in {
           given.agent.isSignedUpToAgentServices
           And("I stub an error response from the Payments service")
-          ReturnFrequencyStub.postSubscriptionError()
+          ReturnFrequencyStub.putSubscriptionError()
 
           When("I initiate a return frequency update journey")
           val res = postJSValueBody(
@@ -156,7 +156,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
           given.agent.isNotSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
-          ReturnFrequencyStub.postSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+          ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
 
           When("I submit the Client VRN page with valid data")
           val res: WSResponse = postJSValueBody(

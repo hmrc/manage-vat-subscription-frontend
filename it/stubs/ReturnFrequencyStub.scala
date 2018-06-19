@@ -27,13 +27,13 @@ object ReturnFrequencyStub extends WireMockMethods {
 
   private val subscriptionUri: String => String = vrn => s"/vat-subscription/$vrn/return-period"
 
-  def postSubscriptionSuccess(response: SubscriptionUpdateResponseModel): StubMapping = {
-    when(method = POST, uri = subscriptionUri(VRN))
+  def putSubscriptionSuccess(response: SubscriptionUpdateResponseModel): StubMapping = {
+    when(method = PUT, uri = subscriptionUri(VRN))
       .thenReturn(status = OK, body = Json.toJson(response))
   }
 
-  def postSubscriptionError(): StubMapping = {
-    when(method = POST, uri = subscriptionUri(VRN))
+  def putSubscriptionError(): StubMapping = {
+    when(method = PUT, uri = subscriptionUri(VRN))
       .thenReturn(status = BAD_REQUEST, body = Json.obj("code" -> "Terry Bell Tings"))
   }
 

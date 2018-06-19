@@ -54,6 +54,6 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)
                            (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     val url = updateReturnPeriod(vrn)
-    http.POST[ReturnPeriod,HttpPostResult[SubscriptionUpdateResponseModel]](url, frequency)
+    http.PUT[ReturnPeriod,HttpPostResult[SubscriptionUpdateResponseModel]](url, frequency)
   }
 }
