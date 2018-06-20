@@ -41,7 +41,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         res should have(
           httpStatus(OK),
-          elementText("#page-heading")("We have received the new VAT Return dates")
+          elementText("#page-heading")(Messages("received_frequency.heading"))
         )
       }
     }
@@ -59,7 +59,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
           res should have(
             httpStatus(OK),
-            elementText("#page-heading")("We have received the new VAT Return dates")
+            elementText("#page-heading")(Messages("received_frequency.heading"))
           )
         }
       }
