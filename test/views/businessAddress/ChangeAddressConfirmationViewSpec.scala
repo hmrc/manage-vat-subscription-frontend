@@ -26,7 +26,7 @@ import assets.messages.BaseMessages
 
 class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
-  lazy val view: Html = views.change_address_confirmation()(request, messages, mockConfig)
+  lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
   lazy implicit val document: Document = Jsoup.parse(view.body)
 
   s"have the correct document title of '${viewMessages.title}'" in {

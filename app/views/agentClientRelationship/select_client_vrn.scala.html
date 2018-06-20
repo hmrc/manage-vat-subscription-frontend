@@ -27,7 +27,9 @@
 @views.html.main_template(
     title = messages("clients_vrn.title"),
     bodyClasses = None,
-    appConfig = appConfig) {
+    appConfig = appConfig,
+    serviceName = Some(messages("common.agentService"))
+) {
 
     @errorSummary("common.errorSummary.heading", form)
 

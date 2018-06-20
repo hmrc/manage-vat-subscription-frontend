@@ -26,7 +26,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
   "Rendering the Confirm Dates page" should {
 
-    lazy val view = views.html.returnFrequency.confirm_dates(Jan)(request, messages, mockConfig)
+    lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
@@ -44,25 +44,25 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
     s"have a the display the correct dates of" when {
 
       s"the current date is '${viewMessages.option1Jan}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Jan)(request, messages, mockConfig)
+        lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option1Jan}"
       }
 
       s"the current date is '${viewMessages.option2Feb}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Feb)(request, messages, mockConfig)
+        lazy val view = views.html.returnFrequency.confirm_dates(Feb)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option2Feb}"
       }
 
       s"the current date is '${viewMessages.option3Mar}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Mar)(request, messages, mockConfig)
+        lazy val view = views.html.returnFrequency.confirm_dates(Mar)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option3Mar}"
       }
 
       s"the current date is '${viewMessages.option4Monthly}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(request, messages, mockConfig)
+        lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option4Monthly}"
       }

@@ -39,7 +39,7 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       val backLink = ".link-back"
     }
 
-    lazy val view = views.html.businessName.change_business_name(orgName)(request, messages, mockConfig)
+    lazy val view = views.html.businessName.change_business_name(orgName)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {

@@ -36,6 +36,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
+      s"have the correct service name" in {
+        elementText(".header__menu__proposition-name") shouldBe BaseMessages.clientServiceName
+      }
+
       s"have a the correct page heading '${viewMessages.h1}'" in {
         elementText("h1") shouldBe viewMessages.h1
       }
@@ -193,6 +197,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       s"have the correct document title '${viewMessages.title}'" in {
         document.title shouldBe viewMessages.title
+      }
+
+      s"have the correct service name" in {
+        elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
       }
 
       s"have a the correct page heading '${viewMessages.h1}'" in {
