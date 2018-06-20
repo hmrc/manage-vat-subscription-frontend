@@ -30,7 +30,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
 
     val form: Form[ReturnDatesModel] = chooseDatesForm.datesForm
 
-    lazy val view = views.html.returnFrequency.chooseDates(form,Jan)(request, messages, mockConfig)
+    lazy val view = views.html.returnFrequency.chooseDates(form,Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
@@ -71,7 +71,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
 
     val form: Form[ReturnDatesModel] = chooseDatesForm.datesForm.bind(Map("period-option" -> ""))
 
-    lazy val view = views.html.returnFrequency.chooseDates(form,Monthly)(request, messages, mockConfig)
+    lazy val view = views.html.returnFrequency.chooseDates(form,Monthly)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {

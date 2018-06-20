@@ -33,6 +33,10 @@ class SelectClientVrnViewSpec extends ViewBaseSpec {
       document.title shouldBe viewMessages.title
     }
 
+    s"have the correct service name" in {
+      elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
+    }
+
     s"have the correct page heading of '${viewMessages.heading}'" in {
       elementText("h1") shouldBe viewMessages.heading
     }

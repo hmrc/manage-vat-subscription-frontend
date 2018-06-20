@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package assets.messages
+package views.utils
 
-object BaseMessages {
+import models.User
+import play.api.i18n.Messages
+import play.api.mvc.Request
 
-  val clientServiceName = "Business Tax Account"
-  val agentServiceName = "Update your client's VAT details"
+object ServiceNameUtil{
 
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val signOut = "Sign out"
-  val finish = "Finish"
-  val back = "Back"
-  val errorHeading = "You have one or more errors"
-
-  val breadcrumbBta = "Business tax account"
-  val breadcrumbVat = "Your VAT details"
-  val breadcrumbBizDeets = "Change of business details"
+  def generateHeader(implicit request: Request[_], messages: Messages): String = {
+    request match {
+      case user: User[_] => if (user.isAgent) messages("common.agentService") else messages("common.clientService")
+      case _ => messages("common.clientService")
+    }
+  }
 
 }

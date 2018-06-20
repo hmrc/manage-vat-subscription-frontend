@@ -20,7 +20,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.scalatest.Assertion
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import utils.TestUtil
+import _root_.utils.TestUtil
 
 import scala.collection.JavaConverters._
 

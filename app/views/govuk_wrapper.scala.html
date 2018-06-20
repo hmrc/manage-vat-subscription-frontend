@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import views.utils.ServiceNameUtil
+
 @(appConfig: config.AppConfig,
   title: String,
   mainClass: Option[String] = None,
@@ -24,7 +26,8 @@
   mainContent: Html = HtmlFormat.empty,
   serviceInfoContent: Html = HtmlFormat.empty,
   scriptElem: Option[Html] = None,
-  feedbackOnSignOut: Boolean = true)(implicit request: Request[_], messages: Messages)
+  feedbackOnSignOut: Boolean = true,
+  serviceName: Option[String] = None)(implicit request: Request[_], messages: Messages)
 
 @import layouts.{govuk_template => hmrcGovUkTemplate}
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
@@ -45,9 +48,17 @@
     </li>
 }
 
+@navTitle = @{
+    serviceName.fold{
+        ServiceNameUtil.generateHeader
+    }{
+        name => name
+    }
+}
+
 @insideHeader = {
     @uiLayouts.header_nav(
-      navTitle = Some("manage-vat-subscription-frontend"),
+      navTitle = Some(navTitle),
       navTitleLink = None,
       showBetaLink = false,
       navLinks = Some(headerNavLinks))

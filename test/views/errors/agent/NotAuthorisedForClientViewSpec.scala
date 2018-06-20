@@ -27,6 +27,7 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
   "Rendering the unauthorised page" should {
 
     object Selectors {
+      val serviceName = ".header__menu__proposition-name"
       val pageHeading = "#content h1"
       val instructions = "#content p:nth-of-type(1)"
       val instructionsLink = "#content p:nth-of-type(1) > a"
@@ -40,6 +41,10 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
 
     s"have the correct document title" in {
       document.title shouldBe Messages.title
+    }
+
+    s"have the correct service name" in {
+      elementText(Selectors.serviceName) shouldBe BaseMessages.agentServiceName
     }
 
     s"have a the correct page heading" in {
