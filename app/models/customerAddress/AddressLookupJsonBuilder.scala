@@ -16,30 +16,34 @@
 
 package models.customerAddress
 
+import models.User
 import play.api.libs.json._
+import play.api.i18n.Messages
+import views.utils.ServiceNameUtil
 
-case class AddressLookupJsonBuilder(continueUrl: String) {
+
+case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_], messages: Messages) {
 
   // general journey overrides
-  val navTitle = "Business tax account"
+  val navTitle: String = ServiceNameUtil.generateHeader
   val showPhaseBanner = true
   val ukMode = true
 
   // lookup page overrides
   val lookupPage = Map(
-    "title" -> "Changes in circumstances",
-    "heading" -> "What is the new business address?",
-    "filterLabel" -> "Property name or number",
-    "postcodeLabel" -> "Postcode"
+    "title" -> messages("address_lookupPage.title"),
+    "heading" -> messages("address_lookupPage.heading"),
+    "filterLabel" -> messages("address_lookupPage.filter"),
+    "postcodeLabel" -> messages("address_lookupPage.postcode")
   )
 
   val selectPage = Map(
-    "heading" -> "Select the new business address",
-    "submitLabel" -> "Save and continue"
+    "heading" -> messages("address_lookupPage.selectPage.heading"),
+    "submitLabel" -> messages("common.saveAndContinue")
   )
 
   val confirmPage = Map(
-    "heading" -> "Confirm the new business address"
+    "heading" -> messages("address_lookupPage.confirmPage.heading")
   )
 }
 

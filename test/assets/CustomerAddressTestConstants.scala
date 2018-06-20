@@ -16,8 +16,9 @@
 
 package assets
 
-import models.customerAddress.{AddressLookupJsonBuilder, AddressModel}
-import play.api.libs.json.Json
+import models.customerAddress.AddressModel
+import play.api.libs.json.{JsObject, Json}
+import assets.messages.{AddressLookupMessages, BaseMessages}
 
 
 object CustomerAddressTestConstants {
@@ -103,25 +104,43 @@ object CustomerAddressTestConstants {
     )
   )
 
-  val addressLookupBuilder = AddressLookupJsonBuilder("/lookup-address/confirmed")
-
-  val addressLookupJson = Json.obj(fields =
+  val clientAddressLookupJson: JsObject = Json.obj(fields =
     "continueUrl" -> "/lookup-address/confirmed",
-    "navTitle" -> "Business tax account",
+    "navTitle" -> BaseMessages.clientServiceName,
     "ukMode" -> true,
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
-      "title" -> "Changes in circumstances",
-      "heading" -> "What is the new business address?",
-      "filterLabel" -> "Property name or number",
-      "postcodeLabel" -> "Postcode"
+      "title" -> AddressLookupMessages.title,
+      "heading" -> AddressLookupMessages.startHeading,
+      "filterLabel" -> AddressLookupMessages.filter,
+      "postcodeLabel" -> AddressLookupMessages.postcode
     ),
     "selectPage" -> Json.obj(
-      "heading" -> "Select the new business address",
-      "submitLabel" -> "Save and continue"
+      "heading" -> AddressLookupMessages.selectHeading,
+      "submitLabel" -> BaseMessages.saveAndContinue
     ),
     "confirmPage" -> Json.obj(
-      "heading" -> "Confirm the new business address"
+      "heading" -> AddressLookupMessages.confirmHeading
+    )
+  )
+
+  val agentAddressLookupJson: JsObject = Json.obj(fields =
+    "continueUrl" -> "/lookup-address/confirmed",
+    "navTitle" -> BaseMessages.agentServiceName,
+    "ukMode" -> true,
+    "showPhaseBanner" -> true,
+    "lookupPage" -> Json.obj(
+      "title" -> AddressLookupMessages.title,
+      "heading" -> AddressLookupMessages.startHeading,
+      "filterLabel" -> AddressLookupMessages.filter,
+      "postcodeLabel" -> AddressLookupMessages.postcode
+    ),
+    "selectPage" -> Json.obj(
+      "heading" -> AddressLookupMessages.selectHeading,
+      "submitLabel" -> BaseMessages.saveAndContinue
+    ),
+    "confirmPage" -> Json.obj(
+      "heading" -> AddressLookupMessages.confirmHeading
     )
   )
 

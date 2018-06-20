@@ -50,7 +50,7 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
     "connector call is successful" should {
 
       lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = service.initialiseJourney
+      lazy val result = service.initialiseJourney(hc,ec,user,messages)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(AddressLookupOnRampModel("redirect-url"))

@@ -16,22 +16,12 @@
 
 package assets.messages
 
-object BaseMessages {
+object AddressLookupMessages {
 
-  val clientServiceName = "Business Tax Account"
-  val agentServiceName = "Update your client's VAT details"
-
-  val continue = "Continue"
-  val confirm = "Confirm"
-  val confirmAndContinue = "Confirm and continue"
-  val saveAndContinue = "Save and continue"
-  val signOut = "Sign out"
-  val finish = "Finish"
-  val back = "Back"
-  val errorHeading = "You have one or more errors"
-
-  val breadcrumbBta = "Business tax account"
-  val breadcrumbVat = "Your VAT details"
-  val breadcrumbBizDeets = "Change of business details"
-
+  val title = "Changes in circumstances"
+  val startHeading = "What is the new business address?"
+  val filter = "Property name or number"
+  val postcode = "Postcode"
+  val selectHeading = "Select the new business address"
+  val confirmHeading = "Confirm the new business address"
 }
