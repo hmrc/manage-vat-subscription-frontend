@@ -117,6 +117,10 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           "have removed the Clients VRN from session" in {
             session(result).get(SessionKeys.CLIENT_VRN) shouldBe None
           }
+
+          "have removed the ReturnFrequency from session" in {
+            session(result).get(SessionKeys.RETURN_FREQUENCY) shouldBe None
+          }
         }
       }
     }
