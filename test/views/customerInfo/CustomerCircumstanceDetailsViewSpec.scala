@@ -148,6 +148,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
     }
 
     "Viewing for an Organisation" should {
@@ -182,6 +186,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           }
         }
       }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
     }
 
     "Viewing a client's details as an agent" should {
@@ -211,6 +219,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#sub-heading") shouldBe viewMessages.agentSubheading
       }
 
+      "display the 'change another clients details' link" in {
+        elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
+        element("#change-client-link").attr("href") shouldBe
+          controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+      }
     }
   }
 }

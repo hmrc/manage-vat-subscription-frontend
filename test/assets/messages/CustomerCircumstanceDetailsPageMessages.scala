@@ -39,4 +39,6 @@ object CustomerCircumstanceDetailsPageMessages {
   val changeReturnFrequencyHidden = "your VAT Return dates"
   val bankAccountHidden = "your repayment Bank Account"
 
+  val changeClientDetails = "You can change another client’s details."
+
 }
