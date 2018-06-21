@@ -102,7 +102,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
 
         "a Clients VRN is held in Session" should {
 
-          lazy val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithClientsVRN)
+          lazy val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithVrnAndReturnFreq)
           lazy val document = Jsoup.parse(bodyOf(result))
 
           "return status redirect SEE_OTHER (303)" in {
