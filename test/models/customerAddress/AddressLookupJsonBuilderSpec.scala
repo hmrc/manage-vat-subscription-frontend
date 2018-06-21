@@ -17,19 +17,21 @@
 package models.customerAddress
 
 import assets.CustomerAddressTestConstants._
-import models.core.ErrorModel
-import play.api.http.Status
-import play.api.libs.json.{JsSuccess, Json}
-import uk.gov.hmrc.play.test.UnitSpec
+import play.api.libs.json.Json
+import utils.TestUtil
 
-class AddressLookupJsonBuilderSpec extends UnitSpec {
+class AddressLookupJsonBuilderSpec extends TestUtil {
 
   "AddressLookupJsonBuilder" should {
 
     "Serialize to JSON" when {
 
-      "the continueUrl is given" in {
-        Json.toJson(addressLookupBuilder) shouldBe addressLookupJson
+      "the continueUrl is given and the user is not an agent" in {
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user,messages)) shouldBe clientAddressLookupJson
+      }
+
+      "the continueUrl is given and the user is an agent" in {
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser,messages)) shouldBe agentAddressLookupJson
       }
 
     }

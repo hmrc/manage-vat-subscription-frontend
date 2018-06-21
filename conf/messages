@@ -9,6 +9,7 @@ common.dateError = Enter a valid date
 common.continue = Continue
 common.confirm = Confirm
 common.confirmAndContinue = Confirm and continue
+common.saveAndContinue = Save and continue
 common.fullStop = .
 common.errorSummary.heading = You have one or more errors
 common.finish = Finish
@@ -117,6 +118,13 @@ confirm_client_vrn.heading = Confirm your client’s VAT number
 confirm_client_vrn.name = Business name
 confirm_client_vrn.vrn = VAT number
 confirm_client_vrn.edit = Edit different client
+
+address_lookupPage.title = Changes in circumstances
+address_lookupPage.heading = What is the new business address?
+address_lookupPage.filter = Property name or number
+address_lookupPage.postcode = Postcode
+address_lookupPage.selectPage.heading = Select the new business address
+address_lookupPage.confirmPage.heading = Confirm the new business address
 
 breadcrumb.bta = Business tax account
 breadcrumb.yourVatDetails = Your VAT details
