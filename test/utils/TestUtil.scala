@@ -45,6 +45,8 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSuppor
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999")
+  implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999", SessionKeys.RETURN_FREQUENCY -> "Jan")
 
   implicit lazy val user = User[AnyContentAsEmpty.type]("999999999",true)(request)
   implicit lazy val agentUser = User[AnyContentAsEmpty.type]("999999999",true,Some("XAIT00000000000"))(fakeRequestWithClientsVRN)
