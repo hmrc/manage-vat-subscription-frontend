@@ -41,87 +41,96 @@
         </p>
     </header>
 
-    <dl class="govuk-check-your-answers cya-questions-short">
+    <div class="form-group">
+        <dl class="govuk-check-your-answers cya-questions-short">
 
-        @circumstances.customerDetails.organisationName.map { orgName =>
-            <div>
-                <dt id="business-name-text" class="cya-question">
-                    @messages("customer_details.businessName.heading")
-                </dt>
-                <dd id="business-name" class="cya-answer">
-                    @orgName
-                </dd>
-                <dd class="cya-change">
-                    <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
-                        @messages("customer_details.change")
-                        <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
-                    </a>
-                </dd>
-            </div>
-        }
-
-        @circumstances.ppob.map { ppob =>
-            @ppob.address.map { address =>
+            @circumstances.customerDetails.organisationName.map { orgName =>
                 <div>
-                    <dt id="businessAddressHeading" class="cya-question">
-                        @messages("customer_details.businessAddress.heading")
+                    <dt id="business-name-text" class="cya-question">
+                        @messages("customer_details.businessName.heading")
                     </dt>
-                    <dd id="businessAddress" class="cya-answer">
-                        @render_address(address)
+                    <dd id="business-name" class="cya-answer">
+                        @orgName
                     </dd>
                     <dd class="cya-change">
-                        <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                        <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                            <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
                         </a>
                     </dd>
                 </div>
             }
-        }
 
-        @circumstances.bankDetails.map { bankDetails =>
-            <div>
-                <dt id="bank-details-text" class="cya-question">
-                    @messages("customer_details.bankAccount.heading")
-                </dt>
-                <dd id="bank-details" class="cya-answer">
-                    <ol>
-                        @bankDetails.bankAccountNumber.map { accNum =>
-                            <li class="bold">@messages("customer_details.bankAccount.number")</li>
-                            <li>@accNum</li>
-                        }
-                        @bankDetails.sortCode.map { sortcode =>
-                            <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
-                            <li>@sortcode</li>
-                        }
-                    </ol>
-                </dd>
-                <dd class="cya-change">
-                    <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
-                        @messages("customer_details.change")
-                        <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
-                    </a>
-                </dd>
-            </div>
-        }
+            @circumstances.ppob.map { ppob =>
+                @ppob.address.map { address =>
+                    <div>
+                        <dt id="businessAddressHeading" class="cya-question">
+                            @messages("customer_details.businessAddress.heading")
+                        </dt>
+                        <dd id="businessAddress" class="cya-answer">
+                            @render_address(address)
+                        </dd>
+                        <dd class="cya-change">
+                            <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                                @messages("customer_details.change")
+                                <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            }
 
-        @circumstances.returnPeriod.map { period =>
-            <div>
-                <dt id="vat-return-dates-text" class="cya-question">
-                    @messages("customer_details.returnFrequency.heading")
-                </dt>
-                <dd id="vat-return-dates" class="cya-answer">
-                    @render_return_frequency(period)
-                </dd>
-                <dd class="cya-change">
-                    <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
-                        @messages("customer_details.change")
-                        <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
-                    </a>
-                </dd>
-            </div>
-        }
+            @circumstances.bankDetails.map { bankDetails =>
+                <div>
+                    <dt id="bank-details-text" class="cya-question">
+                        @messages("customer_details.bankAccount.heading")
+                    </dt>
+                    <dd id="bank-details" class="cya-answer">
+                        <ol>
+                            @bankDetails.bankAccountNumber.map { accNum =>
+                                <li class="bold">@messages("customer_details.bankAccount.number")</li>
+                                <li>@accNum</li>
+                            }
+                            @bankDetails.sortCode.map { sortcode =>
+                                <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
+                                <li>@sortcode</li>
+                            }
+                        </ol>
+                    </dd>
+                    <dd class="cya-change">
+                        <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
+                            @messages("customer_details.change")
+                            <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
+                        </a>
+                    </dd>
+                </div>
+            }
 
-    </dl>
+            @circumstances.returnPeriod.map { period =>
+                <div>
+                    <dt id="vat-return-dates-text" class="cya-question">
+                        @messages("customer_details.returnFrequency.heading")
+                    </dt>
+                    <dd id="vat-return-dates" class="cya-answer">
+                        @render_return_frequency(period)
+                    </dd>
+                    <dd class="cya-change">
+                        <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
+                            @messages("customer_details.change")
+                            <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+
+        </dl>
+    </div>
+
+    @if(user.isAgent){
+        <p id="change-client-text">
+            @messages("customer_details.agent.changeClient.youCan")
+            <a id="change-client-link" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("customer_details.agent.changeClient.link")</a>.
+        </p>
+    }
 
 }
