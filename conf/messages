@@ -68,7 +68,8 @@ customer_details.bankAccount.sortcode = Sort code
 customer_details.bankAccount.change.hidden = your repayment Bank Account
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = your VAT Return dates
-customer_details.agent.changeClient = You can <a id="change-client-link" href="{0}">change another client’s details</a>.
+customer_details.agent.changeClient.youCan = You can
+customer_details.agent.changeClient.link = change another client’s details
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
