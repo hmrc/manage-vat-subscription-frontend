@@ -84,6 +84,24 @@ class CustomerDetailsSpec extends UnitSpec {
       }
     }
 
+    "calling .clientName" when {
+      "Trading name is present" should {
+        "return Trading Name" in {
+          customerDetailsMax.clientName shouldBe Some(tradingName)
+        }
+      }
+      "Trading name is not present" should {
+        "return Business Name" in {
+          individual.clientName shouldBe Some(s"$firstName $lastName")
+        }
+      }
+      "Trading name and businessName are not present" should {
+        "return None" in {
+          customerDetailsMin.businessName shouldBe None
+        }
+      }
+    }
+
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
