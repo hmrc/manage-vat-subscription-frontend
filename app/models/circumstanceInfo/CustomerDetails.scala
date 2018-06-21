@@ -33,6 +33,7 @@ case class CustomerDetails(firstName: Option[String],
     if (name.isEmpty) None else Some(name)
   }
   val businessName: Option[String] = if(isOrg) organisationName else userName
+  val clientName: Option[String] = if(tradingName.isDefined) tradingName else businessName
 }
 
 object CustomerDetails extends JsonReadUtil {
