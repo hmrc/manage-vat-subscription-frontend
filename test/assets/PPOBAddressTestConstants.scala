@@ -16,7 +16,7 @@
 
 package assets
 
-import models.circumstanceInfo.{PPOB, PPOBAddress}
+import models.circumstanceInfo.{ContactDetails, PPOB, PPOBAddress}
 import play.api.libs.json.{JsValue, Json}
 
 object PPOBAddressTestConstants {
@@ -29,6 +29,15 @@ object PPOBAddressTestConstants {
   val postcode = "TE37 7AD"
   val countryCode = "GB"
 
+  val rlsIndicator = "0001"
+  val website = "www.test.com"
+
+  val phoneNumber = "01234 567890"
+  val mobileNumber = "07700 123456"
+  val faxNumber = "01234 098765"
+  val email = "test@test.com"
+  val emailVerified = true
+
 
   val ppobAddressModelMax = PPOBAddress(
     Some(addLine1),
@@ -39,7 +48,20 @@ object PPOBAddressTestConstants {
     Some(postcode),
     Some(countryCode)
   )
-  val ppobModelMax = PPOB(Some(ppobAddressModelMax))
+
+  val contactDetailsModelMax = ContactDetails(
+    Some(phoneNumber),
+    Some(mobileNumber),
+    Some(faxNumber),
+    Some(email),
+    Some(emailVerified)
+  )
+
+  val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
+
+  val ppobModelMax = PPOB(Some(ppobAddressModelMax), Some(rlsIndicator), Some(contactDetailsModelMax), Some(website))
+
+  val ppobModelMaxNoRls = PPOB(Some(ppobAddressModelMax), None, Some(contactDetailsModelMax), Some(website))
 
   val ppobJsonMax: JsValue = Json.obj(
     "address" -> Json.obj(
@@ -50,7 +72,16 @@ object PPOBAddressTestConstants {
       "line5" -> addLine5,
       "postCode" -> postcode,
       "countryCode" -> countryCode
-    )
+    ),
+    "RLS" -> rlsIndicator,
+    "contactDetails" -> Json.obj(
+      "primaryPhoneNumber" -> phoneNumber,
+      "mobileNumber" -> mobileNumber,
+      "faxNumber" -> faxNumber,
+      "emailAddress" -> email,
+      "emailVerified" -> emailVerified
+    ),
+    "websiteAddress" -> website
   )
 
 }

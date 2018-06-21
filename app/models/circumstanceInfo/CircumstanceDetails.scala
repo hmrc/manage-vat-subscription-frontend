@@ -26,7 +26,8 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
                                flatRateScheme: Option[FlatRateScheme],
                                ppob: Option[PPOB],
                                bankDetails:Option[BankDetails],
-                               returnPeriod: Option[ReturnPeriod])
+                               returnPeriod: Option[ReturnPeriod],
+                               pendingChanges: Option[PendingChanges])
 
 object CircumstanceDetails extends JsonReadUtil {
 
@@ -36,14 +37,16 @@ object CircumstanceDetails extends JsonReadUtil {
   private val ppobPath = __ \ "ppob"
   private val bankDetailsPath = __ \ "bankDetails"
   private val returnPeriodPath = __ \ "returnPeriod"
+  private val pendingChangesPath = __ \ "pendingChanges"
 
   implicit val reads: Reads[CircumstanceDetails] = (
     mandationStatusPath.read[MandationStatus] and
-    customerDetailsPath.read[CustomerDetails] and
+      customerDetailsPath.read[CustomerDetails] and
       flatRateSchemePath.readOpt[FlatRateScheme] and
       ppobPath.readOpt[PPOB] and
       bankDetailsPath.readOpt[BankDetails] and
-      returnPeriodPath.readOpt[ReturnPeriod]
+      returnPeriodPath.readOpt[ReturnPeriod] and
+      pendingChangesPath.readOpt[PendingChanges]
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Writes[CircumstanceDetails] = (
@@ -52,6 +55,7 @@ object CircumstanceDetails extends JsonReadUtil {
       flatRateSchemePath.writeNullable[FlatRateScheme] and
       ppobPath.writeNullable[PPOB] and
       bankDetailsPath.writeNullable[BankDetails] and
-      returnPeriodPath.writeNullable[ReturnPeriod]
+      returnPeriodPath.writeNullable[ReturnPeriod]  and
+      pendingChangesPath.writeNullable[PendingChanges]
     )(unlift(CircumstanceDetails.unapply))
 }
