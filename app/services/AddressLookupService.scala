@@ -19,6 +19,9 @@ package services
 import config.AppConfig
 import connectors.AddressLookupConnector
 import javax.inject.{Inject, Singleton}
+import play.api.i18n.Messages
+
+import models.User
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import models.core.ErrorModel
 import uk.gov.hmrc.http.HeaderCarrier
@@ -33,8 +36,9 @@ class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnec
     addressLookupConnector.getAddress(id)
   }
 
-  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
-    val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
-    addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
+  def initialiseJourney(implicit hc: HeaderCarrier, ec: ExecutionContext, user: User[_], messages: Messages):
+    Future[Either[ErrorModel, AddressLookupOnRampModel]] = {
+      val addressLookupJsonBuilder: AddressLookupJsonBuilder = AddressLookupJsonBuilder(appConfig.addressLookupCallbackUrl)
+      addressLookupConnector.initialiseJourney(addressLookupJsonBuilder)
   }
 }
