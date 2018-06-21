@@ -35,7 +35,34 @@ object CircumstanceDetailsTestConstants {
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsJsonMax,
     "returnPeriod" -> returnPeriodMCJson,
-    "mandationStatus" -> mandationStatus
+    "mandationStatus" -> mandationStatus,
+    "pendingChanges" -> Json.obj(
+      "PPOBDetails" -> Json.obj(
+        "address" -> Json.obj(
+          "line1" -> addLine1,
+          "line2" -> addLine2,
+          "line3" -> addLine3,
+          "line4" -> addLine4,
+          "line5" -> addLine5,
+          "postCode" -> postcode,
+          "countryCode" -> countryCode
+        ),
+        "contactDetails" -> Json.obj(
+          "primaryPhoneNumber" -> phoneNumber,
+          "mobileNumber" -> mobileNumber,
+          "faxNumber" -> faxNumber,
+          "emailAddress" -> email,
+          "emailVerified" -> emailVerified
+        ),
+        "websiteAddress" -> website
+      ),
+      "bankDetails" -> Json.obj(
+        "accountHolderName" -> accName,
+        "bankAccountNumber" -> accNum,
+        "sortCode" -> accSort
+      ),
+      "returnPeriod" -> returnPeriodMCJson
+    )
   )
 
   val customerInformationJsonMaxIndividual: JsValue = Json.obj(
@@ -44,7 +71,34 @@ object CircumstanceDetailsTestConstants {
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsModelMax,
     "returnPeriod" -> returnPeriodMCJson,
-    "mandationStatus" -> mandationStatus
+    "mandationStatus" -> mandationStatus,
+    "pendingChanges" -> Json.obj(
+      "PPOBDetails" -> Json.obj(
+        "address" -> Json.obj(
+          "line1" -> addLine1,
+          "line2" -> addLine2,
+          "line3" -> addLine3,
+          "line4" -> addLine4,
+          "line5" -> addLine5,
+          "postCode" -> postcode,
+          "countryCode" -> countryCode
+        ),
+        "contactDetails" -> Json.obj(
+          "primaryPhoneNumber" -> phoneNumber,
+          "mobileNumber" -> mobileNumber,
+          "faxNumber" -> faxNumber,
+          "emailAddress" -> email,
+          "emailVerified" -> emailVerified
+        ),
+        "websiteAddress" -> website
+      ),
+      "bankDetails" -> Json.obj(
+        "accountHolderName" -> accName,
+        "bankAccountNumber" -> accNum,
+        "sortCode" -> accSort
+      ),
+      "returnPeriod" -> returnPeriodMCJson
+    )
   )
 
   val customerInformationJsonMin: JsValue =
@@ -60,7 +114,12 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(Mar)
+    Some(Mar),
+    Some(PendingChanges(
+      Some(ppobModelMaxNoRls),
+      Some(bankDetailsModelMax),
+      Some(Mar)
+    ))
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -69,11 +128,16 @@ object CircumstanceDetailsTestConstants {
     Some(frsModelMax),
     Some(ppobModelMax),
     Some(bankDetailsModelMax),
-    Some(Mar)
+    Some(Mar),
+    Some(PendingChanges(
+      Some(ppobModelMaxNoRls),
+      Some(bankDetailsModelMax),
+      Some(Mar)
+    ))
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated, CustomerDetails(None, None, None, None), None, None, None, None
+    MTDfBMandated, CustomerDetails(None, None, None, None), None, None, None, None, None
   )
 
 }
