@@ -23,7 +23,7 @@ import assets.messages.{BaseMessages, ReturnFrequencyMessages => viewMessages}
 
 class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
-  "Rendering the Dates Received page" should {
+  "Rendering the Dates Received page for an individual" should {
 
     lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -54,6 +54,61 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
     s"have the correct p2 of '${viewMessages.ReceivedPage.bullet2}'" in {
       bullet(2) shouldBe viewMessages.ReceivedPage.bullet2
+    }
+
+    "not have a link to change client" in {
+      elementExtinct("#change-client-text")
+    }
+
+    s"have the correct finish button" which {
+
+      s"has the text '${BaseMessages.finish}'" in {
+        elementText("#finish") shouldBe BaseMessages.finish
+      }
+
+      s"has link back to customer details page" in {
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+      }
+    }
+  }
+
+  "Rendering the Dates Received page for an agent" should {
+
+    lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(agentUser, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    s"have the correct document title of '${viewMessages.title}'" in {
+      document.title shouldBe viewMessages.title
+    }
+
+    s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
+      elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
+    }
+
+    s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {
+      elementText("h2") shouldBe viewMessages.ReceivedPage.h2
+    }
+
+    s"have the correct p1 of '${viewMessages.ReceivedPage.p1}'" in {
+      paragraph(1) shouldBe viewMessages.ReceivedPage.p1
+    }
+
+    s"have the correct p2 of '${viewMessages.ReceivedPage.p2}'" in {
+      paragraph(2) shouldBe viewMessages.ReceivedPage.p2
+    }
+
+    s"have the correct bullet1 of '${viewMessages.ReceivedPage.bullet1}'" in {
+      bullet(1) shouldBe viewMessages.ReceivedPage.bullet1
+    }
+
+    s"have the correct p2 of '${viewMessages.ReceivedPage.bullet2}'" in {
+      bullet(2) shouldBe viewMessages.ReceivedPage.bullet2
+    }
+
+    "display the 'change another clients details' link" in {
+      elementText("#change-client-text") shouldBe viewMessages.ReceivedPage.changeClientDetails
+      element("#change-client-link").attr("href") shouldBe
+        controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
     }
 
     s"have the correct finish button" which {
