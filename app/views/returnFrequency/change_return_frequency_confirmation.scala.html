@@ -36,6 +36,13 @@
         <li>@messages("received_frequency.bullet2")</li>
     </ul>
 
+    @if(user.isAgent){
+        <p id="change-client-text">
+            @messages("common.agent.changeClient.youCan")
+            <a id="change-client-link" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+        </p>
+    }
+
     <a  id="finish"
         href="@controllers.routes.CustomerCircumstanceDetailsController.show().url"
         class="button"
