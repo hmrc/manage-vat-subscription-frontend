@@ -21,4 +21,5 @@ object ChangeAddressConfirmationPageMessages {
   val h2: String = "What happens next"
   val p1: String = "If this change is accepted, we will send a confirmation letter to the new business address."
   val p2: String = "We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately."
+  val changeClientDetails = "You can change another client’s details."
 }
