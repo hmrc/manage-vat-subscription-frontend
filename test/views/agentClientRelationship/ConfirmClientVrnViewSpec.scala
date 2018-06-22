@@ -26,7 +26,7 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
 
   "The Confirm Change Client VRN page" when {
 
-    "given an individial" should {
+    "given an individual with no trading name" should {
 
       lazy val view = views.html.agentClientRelationship.confirm_client_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.individual)(request, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -72,5 +72,24 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
       }
     }
 
+
+    "given an individual with a trading name" should {
+
+      lazy val view = views.html.agentClientRelationship.confirm_client_vrn(BaseTestConstants.vrn, CustomerDetailsTestConstants.customerDetailsMax)(request, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct document title of '${viewMessages.title}'" in {
+        document.title shouldBe viewMessages.title
+      }
+
+      s"have the correct page heading of '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
+      }
+
+      s"have the correct heading and text for the client name section" in {
+        elementText("h2") shouldBe viewMessages.name
+        elementText("article > p:nth-of-type(1)") shouldBe CustomerDetailsTestConstants.customerDetailsMax.tradingName.get
+      }
+    }
   }
 }

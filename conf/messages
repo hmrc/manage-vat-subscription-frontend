@@ -116,7 +116,7 @@ received_frequency.bullet2 = the business must submit this period''s return befo
 
 confirm_client_vrn.title = Changes in circumstances
 confirm_client_vrn.heading = Confirm your client’s VAT number
-confirm_client_vrn.name = Business name
+confirm_client_vrn.name = Client name
 confirm_client_vrn.vrn = VAT number
 confirm_client_vrn.edit = Edit different client
 

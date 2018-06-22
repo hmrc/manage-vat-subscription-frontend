@@ -51,7 +51,7 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
               res should have(
                 httpStatus(OK),
-                elementText("article p:nth-of-type(1)")(individual.firstName.get + " " + individual.lastName.get),
+                elementText("article p:nth-of-type(1)")(individual.tradingName.get),
                 elementText("article p:nth-of-type(2)")(clientVRN)
               )
             }
