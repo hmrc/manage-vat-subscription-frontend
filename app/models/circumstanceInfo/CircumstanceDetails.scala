@@ -27,7 +27,13 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
                                ppob: Option[PPOB],
                                bankDetails:Option[BankDetails],
                                returnPeriod: Option[ReturnPeriod],
-                               pendingChanges: Option[PendingChanges])
+                               pendingChanges: Option[PendingChanges]) {
+
+  val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.flatMap(_.address))
+  val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
+  val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
+
+}
 
 object CircumstanceDetails extends JsonReadUtil {
 

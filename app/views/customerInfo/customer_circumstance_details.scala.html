@@ -14,7 +14,8 @@
  * limitations under the License.
  *@
 
-@import models.circumstanceInfo.CircumstanceDetails
+@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
+@import models.returnFrequency.ReturnPeriod
 @import helpers.render_return_frequency
 @import helpers.render_address
 @import templates.breadcrumb
@@ -25,6 +26,112 @@
     @if(!user.isAgent){
         @breadcrumb()
     }
+}
+
+@customerName(orgName: String) = {
+    <div>
+        <dt id="business-name-text" class="cya-question">
+            @messages("customer_details.businessName.heading")
+        </dt>
+        <dd id="business-name" class="cya-answer">
+            @orgName
+        </dd>
+        <dd class="cya-change">
+            <a id="business-name-status"
+               href="@{controllers.routes.ChangeBusinessNameController.show().url}"
+               aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
+              @messages("customer_details.change")
+            </a>
+        </dd>
+    </div>
+}
+
+@customerAddress(address: PPOBAddress, pending: Boolean) = {
+    <div>
+        <dt id="businessAddressHeading" class="cya-question">
+            @messages("customer_details.businessAddress.heading")
+        </dt>
+        <dd id="businessAddress" class="cya-answer">
+            @render_address(address)
+        </dd>
+        <dd class="cya-change">
+            @if(pending){
+                <span id="place-of-business-status" class="bold">
+                    @messages("customer_details.pending")
+                    <span class="visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
+                </span>
+            } else {
+                <a id="place-of-business-status"
+                   href="@controllers.routes.BusinessAddressController.initialiseJourney()"
+                   aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1.get)">
+                  @messages("customer_details.change")
+                </a>
+            }
+        </dd>
+    </div>
+}
+
+@customerBankDetails(bankDetails: BankDetails, pending: Boolean) = {
+    <div>
+        <dt id="bank-details-text" class="cya-question">
+            @messages("customer_details.bankAccount.heading")
+        </dt>
+        <dd id="bank-details" class="cya-answer">
+            <ol>
+                @bankDetails.bankAccountNumber.map { accNum =>
+                <li class="bold">@messages("customer_details.bankAccount.number")</li>
+                <li>@accNum</li>
+                }
+                @bankDetails.sortCode.map { sortcode =>
+                <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
+                <li>@sortcode</li>
+                }
+            </ol>
+        </dd>
+        <dd class="cya-change">
+            @if(pending){
+                <span id="bank-details-status" class="bold">
+                    @messages("customer_details.pending")
+                    <span class="visually-hidden">@messages("customer_details.bankAccount.pending.hidden")</span>
+                </span>
+            } else {
+                <a id="bank-details-status"
+                   href="@controllers.routes.PaymentsController.sendToPayments()"
+                   aria-label="@messages("customer_details.bankAccount.change.hidden")">
+                @messages("customer_details.change")
+                </a>
+            }
+        </dd>
+    </div>
+}
+
+@customerReturnPeriod(period: ReturnPeriod, pending: Boolean) = {
+    <div>
+        <dt id="vat-return-dates-text" class="cya-question">
+            @messages("customer_details.returnFrequency.heading")
+        </dt>
+        <dd id="vat-return-dates" class="cya-answer">
+            @render_return_frequency(period)
+        </dd>
+        <dd class="cya-change">
+            @if(pending){
+                <span id="vat-return-dates-status" class="bold">
+                    @messages("customer_details.pending")
+                    <span class="visually-hidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
+                </span>
+            } else {
+                <a id="vat-return-dates-status"
+                   href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+                   aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
+                @messages("customer_details.change")
+                </a>
+            }
+        </dd>
+    </div>
+
+
+
+
 }
 
 @views.html.main_template(
@@ -44,87 +151,32 @@
     <div class="form-group">
         <dl class="govuk-check-your-answers cya-questions-short">
 
-            @circumstances.customerDetails.organisationName.map { orgName =>
-                <div>
-                    <dt id="business-name-text" class="cya-question">
-                        @messages("customer_details.businessName.heading")
-                    </dt>
-                    <dd id="business-name" class="cya-answer">
-                        @orgName
-                    </dd>
-                    <dd class="cya-change">
-                        <a id="business-name-status"
-                           href="@{controllers.routes.ChangeBusinessNameController.show().url}"
-                           aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
-                            @messages("customer_details.change")
-                        </a>
-                    </dd>
-                </div>
+            @circumstances.customerDetails.organisationName.map{ orgName =>
+                @customerName(orgName)
             }
 
-            @circumstances.ppob.map { ppob =>
-                @ppob.address.map { address =>
-                    <div>
-                        <dt id="businessAddressHeading" class="cya-question">
-                            @messages("customer_details.businessAddress.heading")
-                        </dt>
-                        <dd id="businessAddress" class="cya-answer">
-                            @render_address(address)
-                        </dd>
-                        <dd class="cya-change">
-                            <a id="place-of-business-status"
-                               href="@controllers.routes.BusinessAddressController.initialiseJourney()"
-                               aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1.get)">
-                                @messages("customer_details.change")
-                            </a>
-                        </dd>
-                    </div>
+            @circumstances.pendingPPOBAddress.fold {
+                @circumstances.ppob.flatMap(_.address.map{ address =>
+                    customerAddress(address,false)
+                })
+            }{ address =>
+                @customerAddress(address,true)
+            }
+
+            @circumstances.pendingBankDetails.fold {
+                @circumstances.bankDetails.map{ bankDetails =>
+                    @customerBankDetails(bankDetails,false)
                 }
+            }{ bankDetails =>
+                @customerBankDetails(bankDetails,true)
             }
 
-            @circumstances.bankDetails.map { bankDetails =>
-                <div>
-                    <dt id="bank-details-text" class="cya-question">
-                        @messages("customer_details.bankAccount.heading")
-                    </dt>
-                    <dd id="bank-details" class="cya-answer">
-                        <ol>
-                            @bankDetails.bankAccountNumber.map { accNum =>
-                                <li class="bold">@messages("customer_details.bankAccount.number")</li>
-                                <li>@accNum</li>
-                            }
-                            @bankDetails.sortCode.map { sortcode =>
-                                <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
-                                <li>@sortcode</li>
-                            }
-                        </ol>
-                    </dd>
-                    <dd class="cya-change">
-                        <a id="bank-details-status"
-                           href="@controllers.routes.PaymentsController.sendToPayments()"
-                           aria-label="@messages("customer_details.bankAccount.change.hidden")">
-                            @messages("customer_details.change")
-                        </a>
-                    </dd>
-                </div>
-            }
-
-            @circumstances.returnPeriod.map { period =>
-                <div>
-                    <dt id="vat-return-dates-text" class="cya-question">
-                        @messages("customer_details.returnFrequency.heading")
-                    </dt>
-                    <dd id="vat-return-dates" class="cya-answer">
-                        @render_return_frequency(period)
-                    </dd>
-                    <dd class="cya-change">
-                        <a id="vat-return-dates-status"
-                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
-                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-                            @messages("customer_details.change")
-                        </a>
-                    </dd>
-                </div>
+            @circumstances.pendingReturnPeriod.fold {
+                @circumstances.returnPeriod.map{ period =>
+                    @customerReturnPeriod(period,false)
+                }
+            }{ period =>
+                @customerReturnPeriod(period,true)
             }
 
         </dl>
