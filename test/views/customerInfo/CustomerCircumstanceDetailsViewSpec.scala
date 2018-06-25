@@ -17,6 +17,7 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
+import assets.{CustomerDetailsTestConstants, PPOBAddressTestConstants}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
@@ -77,7 +78,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#place-of-business-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden
+            elementText("#place-of-business-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
           }
 
           s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
@@ -140,7 +141,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-return-dates-status") shouldBe viewMessages.change + " " + viewMessages.changeReturnFrequencyHidden
+            elementText("#vat-return-dates-status") shouldBe viewMessages.change + " " + viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
           }
 
           s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
@@ -178,7 +179,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#business-name-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden
+            elementText("#business-name-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden(CustomerDetailsTestConstants.orgName)
           }
 
           s"has a link to '${controllers.routes.ChangeBusinessNameController.show().url}'" in {

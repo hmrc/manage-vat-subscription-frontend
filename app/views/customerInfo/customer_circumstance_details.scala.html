@@ -55,7 +55,7 @@
                     <dd class="cya-change">
                         <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.businessName.change.hidden")</span>
+                            <span class="visually-hidden">@messages("customer_details.businessName.change.hidden",orgName)</span>
                         </a>
                     </dd>
                 </div>
@@ -73,7 +73,7 @@
                         <dd class="cya-change">
                             <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
                                 @messages("customer_details.change")
-                                <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden")</span>
+                                <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden",address.line1.get)</span>
                             </a>
                         </dd>
                     </div>
@@ -117,7 +117,7 @@
                     <dd class="cya-change">
                         <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden")</span>
+                            <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))</span>
                         </a>
                     </dd>
                 </div>
