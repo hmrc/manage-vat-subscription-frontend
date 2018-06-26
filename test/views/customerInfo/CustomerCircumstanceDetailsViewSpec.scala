@@ -224,7 +224,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has Pending instead of a change link" which {
 
           s"has the wording '${viewMessages.pending}'" in {
-            elementText("#place-of-business-status") shouldBe viewMessages.pending + " " + viewMessages.pendingBusinessAddressHidden
+            elementText("#place-of-business-status") shouldBe viewMessages.pending
+          }
+
+          s"has the correct aria label text '${viewMessages.pendingBusinessAddressHidden}'" in {
+            element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.pendingBusinessAddressHidden
           }
 
           s"has no link" in {
@@ -264,7 +268,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has Pending instead of a change link" which {
 
           s"has the wording '${viewMessages.pending}'" in {
-            elementText("#bank-details-status") shouldBe viewMessages.pending + " " + viewMessages.pendingBankDetailsHidden
+            elementText("#bank-details-status") shouldBe viewMessages.pending
+          }
+
+          s"has the correct aria label text '${viewMessages.pendingBankDetailsHidden}'" in {
+            element("#bank-details-status").attr("aria-label") shouldBe viewMessages.pendingBankDetailsHidden
           }
 
           s"has no link" in {
@@ -287,7 +295,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has Pending instead of a change link" which {
 
           s"has the wording '${viewMessages.pending}'" in {
-            elementText("#vat-return-dates-status") shouldBe viewMessages.pending + " " + viewMessages.pendingReturnFrequencyHidden
+            elementText("#vat-return-dates-status") shouldBe viewMessages.pending
+          }
+
+          s"has the correct aria label text '${viewMessages.pendingReturnFrequencyHidden}'" in {
+            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.pendingReturnFrequencyHidden
           }
 
           s"has no link" in {

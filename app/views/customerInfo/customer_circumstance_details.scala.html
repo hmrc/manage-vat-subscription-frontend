@@ -56,9 +56,10 @@
         </dd>
         <dd class="cya-change">
             @if(pending){
-                <span id="place-of-business-status" class="bold">
+                <span id="place-of-business-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.businessAddress.pending.hidden")">
                     @messages("customer_details.pending")
-                    <span class="visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
                 </span>
             } else {
                 <a id="place-of-business-status"
@@ -90,9 +91,10 @@
         </dd>
         <dd class="cya-change">
             @if(pending){
-                <span id="bank-details-status" class="bold">
+                <span id="bank-details-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.bankAccount.pending.hidden")">
                     @messages("customer_details.pending")
-                    <span class="visually-hidden">@messages("customer_details.bankAccount.pending.hidden")</span>
                 </span>
             } else {
                 <a id="bank-details-status"
@@ -115,9 +117,10 @@
         </dd>
         <dd class="cya-change">
             @if(pending){
-                <span id="vat-return-dates-status" class="bold">
+                <span id="vat-return-dates-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
                     @messages("customer_details.pending")
-                    <span class="visually-hidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
                 </span>
             } else {
                 <a id="vat-return-dates-status"
