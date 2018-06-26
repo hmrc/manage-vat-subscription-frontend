@@ -78,7 +78,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#place-of-business-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
+            elementText("#place-of-business-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)}'" in {
+            element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
           }
 
           s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
@@ -118,7 +122,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#bank-details-status") shouldBe viewMessages.change + " " + viewMessages.changeBankDetailsHidden
+            elementText("#bank-details-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
+            element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
           }
 
           s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
@@ -141,7 +149,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-return-dates-status") shouldBe viewMessages.change + " " + viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
+            elementText("#vat-return-dates-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)}'" in {
+            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
           }
 
           s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
@@ -179,7 +191,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#business-name-status") shouldBe viewMessages.change + " " + viewMessages.changeBusinessHidden(CustomerDetailsTestConstants.orgName)
+            elementText("#business-name-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeBusinessHidden}'" in {
+            element("#business-name-status").attr("aria-label") shouldBe viewMessages.changeBusinessHidden(CustomerDetailsTestConstants.orgName)
           }
 
           s"has a link to '${controllers.routes.ChangeBusinessNameController.show().url}'" in {

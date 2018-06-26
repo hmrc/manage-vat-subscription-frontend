@@ -53,9 +53,10 @@
                         @orgName
                     </dd>
                     <dd class="cya-change">
-                        <a id="business-name-status" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+                        <a id="business-name-status"
+                           href="@{controllers.routes.ChangeBusinessNameController.show().url}"
+                           aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.businessName.change.hidden",orgName)</span>
                         </a>
                     </dd>
                 </div>
@@ -71,9 +72,10 @@
                             @render_address(address)
                         </dd>
                         <dd class="cya-change">
-                            <a id="place-of-business-status" href="@controllers.routes.BusinessAddressController.initialiseJourney()">
+                            <a id="place-of-business-status"
+                               href="@controllers.routes.BusinessAddressController.initialiseJourney()"
+                               aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1.get)">
                                 @messages("customer_details.change")
-                                <span class="visually-hidden">@messages("customer_details.businessAddress.change.hidden",address.line1.get)</span>
                             </a>
                         </dd>
                     </div>
@@ -98,9 +100,10 @@
                         </ol>
                     </dd>
                     <dd class="cya-change">
-                        <a id="bank-details-status" href="@controllers.routes.PaymentsController.sendToPayments()">
+                        <a id="bank-details-status"
+                           href="@controllers.routes.PaymentsController.sendToPayments()"
+                           aria-label="@messages("customer_details.bankAccount.change.hidden")">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
                         </a>
                     </dd>
                 </div>
@@ -115,9 +118,10 @@
                         @render_return_frequency(period)
                     </dd>
                     <dd class="cya-change">
-                        <a id="vat-return-dates-status" href="@controllers.returnFrequency.routes.ChooseDatesController.show()">
+                        <a id="vat-return-dates-status"
+                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
                             @messages("customer_details.change")
-                            <span class="visually-hidden">@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))</span>
                         </a>
                     </dd>
                 </div>
