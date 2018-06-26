@@ -32,12 +32,10 @@ object CustomerCircumstanceDetailsPageMessages {
   val returnFrequencyHeading = "VAT Return dates"
 
   val change = "Change"
-  val changeBusinessHidden = "your Business name"
-  val changeIndividualHidden = "your name"
-  val changeBusinessAddressHidden = "your Business address"
-  val changeBankDetailsHidden = "your repayment Bank Account"
-  val changeReturnFrequencyHidden = "your VAT Return dates"
-  val bankAccountHidden = "your repayment Bank Account"
+  val changeBusinessHidden: String => String = name => s"Change the business name from $name"
+  val changeBusinessAddressHidden: String => String = address => s"Change the business address from $address"
+  val changeBankDetailsHidden = "Change the bank account for repayments"
+  val changeReturnFrequencyHidden: String => String = dates => s"Change the VAT Return dates from $dates"
 
   val changeClientDetails = "You can change another client’s details."
 

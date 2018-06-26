@@ -16,6 +16,4 @@
 
 @import models.returnFrequency.ReturnPeriod
 
-@(frequency: ReturnPeriod)(implicit messages: Messages)
-
-@messages(s"return_frequency.${frequency.id}")
+@(frequency: ReturnPeriod)(implicit messages: Messages)@messages(s"return_frequency.${frequency.id}")
