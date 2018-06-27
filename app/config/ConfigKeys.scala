@@ -55,4 +55,7 @@ object ConfigKeys {
   val bankAccountCoc: String = "bank-account-coc"
 
   val host: String = "host"
+
+  val timeoutPeriod: String = "timeout.period"
+  val timeoutCountDown: String = "timeout.countDown"
 }

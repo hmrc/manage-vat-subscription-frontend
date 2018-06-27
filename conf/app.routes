@@ -27,3 +27,4 @@ GET         /initialise-payment-journey                  @controllers.PaymentsCo
 
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
+GET         /time-out                                    @controllers.SignOutController.timeout
