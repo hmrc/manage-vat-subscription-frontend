@@ -29,6 +29,10 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
 
     "return Some data" when {
 
+      "there is a current address" in {
+        customerInformationModelMaxOrganisation.ppobAddress shouldBe Some(ppobAddressModelMax)
+      }
+
       "there are pending address changes" in {
         customerInformationModelMaxOrganisation.pendingPPOBAddress shouldBe Some(ppobAddressModelMax)
       }
@@ -43,6 +47,10 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
     }
 
     "return None" when {
+
+      "there is no current address" in {
+        customerInformationModelMin.ppobAddress shouldBe None
+      }
 
       "there are pending address changes" in {
         customerInformationNoPending.pendingPPOBAddress shouldBe None

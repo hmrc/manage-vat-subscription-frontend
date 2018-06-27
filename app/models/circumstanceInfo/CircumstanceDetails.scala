@@ -29,6 +29,7 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
                                returnPeriod: Option[ReturnPeriod],
                                pendingChanges: Option[PendingChanges]) {
 
+  val ppobAddress: Option[PPOBAddress] = ppob.flatMap(_.address)
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.flatMap(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)

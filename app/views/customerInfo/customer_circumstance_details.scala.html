@@ -159,27 +159,27 @@
             }
 
             @circumstances.pendingPPOBAddress.fold {
-                @circumstances.ppob.flatMap(_.address.map{ address =>
-                    customerAddress(address,false)
-                })
-            }{ address =>
-                @customerAddress(address,true)
+                @circumstances.ppobAddress.map { address =>
+                    @customerAddress(address,false)
+                }
+            }{ pendingAddress =>
+                @customerAddress(pendingAddress,true)
             }
 
             @circumstances.pendingBankDetails.fold {
                 @circumstances.bankDetails.map{ bankDetails =>
                     @customerBankDetails(bankDetails,false)
                 }
-            }{ bankDetails =>
-                @customerBankDetails(bankDetails,true)
+            }{ pendingBankDetails =>
+                @customerBankDetails(pendingBankDetails,true)
             }
 
             @circumstances.pendingReturnPeriod.fold {
                 @circumstances.returnPeriod.map{ period =>
                     @customerReturnPeriod(period,false)
                 }
-            }{ period =>
-                @customerReturnPeriod(period,true)
+            }{ pendingPeriod =>
+                @customerReturnPeriod(pendingPeriod,true)
             }
 
         </dl>
