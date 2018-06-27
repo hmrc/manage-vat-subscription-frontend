@@ -26,13 +26,13 @@ class RenderAddressSpec extends ViewBaseSpec {
 
     "all lines of an address if all are populated" should {
       lazy val address = PPOBAddress(
-        Some("1"),
+        "1",
         Some("2"),
         Some("3"),
         Some("4"),
         Some("5"),
         Some("6"),
-        Some("GB")
+        "GB"
       )
 
       lazy val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
@@ -50,14 +50,18 @@ class RenderAddressSpec extends ViewBaseSpec {
       }
     }
 
-    "Render no lines of an address if none are populated" in {
-      val address = PPOBAddress(None, None, None, None, None, None, None)
+    "Render only lines of an address that are populated" should {
+      val address = PPOBAddress("1", None, None, None, None, None, "GB")
 
       val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
       val document = Jsoup.parse(view.body)
 
-      for (i <- 1 to 7) {
-        document.select(s"li:nth-child($i)").text shouldBe ""
+      "Render the first address line" in {
+        document.select(s"li:nth-child(1)").text shouldBe "1"
+      }
+
+      "Render the country code" in {
+        document.select(s"li:nth-child(2)").text shouldBe "United Kingdom"
       }
     }
   }

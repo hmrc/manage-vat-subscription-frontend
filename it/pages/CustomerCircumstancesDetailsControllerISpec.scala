@@ -56,14 +56,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#business-name")(organisation.businessName.get),
 
                 //Business Address
-                elementText("#businessAddress li:nth-of-type(1)")(ppob.address.get.line1.get),
-                elementText("#businessAddress li:nth-of-type(2)")(ppob.address.get.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppob.address.get.line3.get),
-                elementText("#businessAddress li:nth-of-type(4)")(ppob.address.get.line4.get),
-                elementText("#businessAddress li:nth-of-type(5)")(ppob.address.get.line5.get),
-                elementText("#businessAddress li:nth-of-type(6)")(ppob.address.get.postCode.get),
+                elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
+                elementText("#businessAddress li:nth-of-type(2)")(ppob.address.line2.get),
+                elementText("#businessAddress li:nth-of-type(3)")(ppob.address.line3.get),
+                elementText("#businessAddress li:nth-of-type(4)")(ppob.address.line4.get),
+                elementText("#businessAddress li:nth-of-type(5)")(ppob.address.line5.get),
+                elementText("#businessAddress li:nth-of-type(6)")(ppob.address.postCode.get),
                 elementText("#businessAddress li:nth-of-type(7)")(
-                  CountryCodes.getCountry(ppob.address.get.countryCode.get).get
+                  CountryCodes.getCountry(ppob.address.countryCode).get
                 ),
 
                 //Bank Details
@@ -95,7 +95,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#business-name")(organisation.businessName.get),
 
                 //Business Address
-                isElementVisible("#businessAddress")(isVisible = false),
+                isElementVisible("#businessAddress")(isVisible = true),
 
                 //Bank Details
                 isElementVisible("#bank-details")(isVisible = false),
@@ -125,14 +125,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 isElementVisible("#business-name")(isVisible = false),
 
                 //Business Address
-                elementText("#businessAddress li:nth-of-type(1)")(ppob.address.get.line1.get),
-                elementText("#businessAddress li:nth-of-type(2)")(ppob.address.get.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppob.address.get.line3.get),
-                elementText("#businessAddress li:nth-of-type(4)")(ppob.address.get.line4.get),
-                elementText("#businessAddress li:nth-of-type(5)")(ppob.address.get.line5.get),
-                elementText("#businessAddress li:nth-of-type(6)")(ppob.address.get.postCode.get),
+                elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
+                elementText("#businessAddress li:nth-of-type(2)")(ppob.address.line2.get),
+                elementText("#businessAddress li:nth-of-type(3)")(ppob.address.line3.get),
+                elementText("#businessAddress li:nth-of-type(4)")(ppob.address.line4.get),
+                elementText("#businessAddress li:nth-of-type(5)")(ppob.address.line5.get),
+                elementText("#businessAddress li:nth-of-type(6)")(ppob.address.postCode.get),
                 elementText("#businessAddress li:nth-of-type(7)")(
-                  CountryCodes.getCountry(ppob.address.get.countryCode.get).get
+                  CountryCodes.getCountry(ppob.address.countryCode).get
                 ),
 
                 //Bank Details
@@ -164,7 +164,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 isElementVisible("#business-name")(isVisible = false),
 
                 //Business Address
-                isElementVisible("#businessAddress")(isVisible = false),
+                isElementVisible("#businessAddress")(isVisible = true),
 
                 //Bank Details
                 isElementVisible("#bank-details")(isVisible = false),
@@ -251,14 +251,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             elementText("#business-name")(organisation.businessName.get),
 
             //Business Address
-            elementText("#businessAddress li:nth-of-type(1)")(ppob.address.get.line1.get),
-            elementText("#businessAddress li:nth-of-type(2)")(ppob.address.get.line2.get),
-            elementText("#businessAddress li:nth-of-type(3)")(ppob.address.get.line3.get),
-            elementText("#businessAddress li:nth-of-type(4)")(ppob.address.get.line4.get),
-            elementText("#businessAddress li:nth-of-type(5)")(ppob.address.get.line5.get),
-            elementText("#businessAddress li:nth-of-type(6)")(ppob.address.get.postCode.get),
+            elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
+            elementText("#businessAddress li:nth-of-type(2)")(ppob.address.line2.get),
+            elementText("#businessAddress li:nth-of-type(3)")(ppob.address.line3.get),
+            elementText("#businessAddress li:nth-of-type(4)")(ppob.address.line4.get),
+            elementText("#businessAddress li:nth-of-type(5)")(ppob.address.line5.get),
+            elementText("#businessAddress li:nth-of-type(6)")(ppob.address.postCode.get),
             elementText("#businessAddress li:nth-of-type(7)")(
-              CountryCodes.getCountry(ppob.address.get.countryCode.get).get
+              CountryCodes.getCountry(ppob.address.countryCode).get
             ),
 
             //Bank Details
@@ -290,7 +290,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             elementText("#business-name")(organisation.businessName.get),
 
             //Business Address
-            isElementVisible("#businessAddress")(isVisible = false),
+            isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
             isElementVisible("#bank-details")(isVisible = false),
@@ -320,14 +320,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#business-name")(isVisible = false),
 
             //Business Address
-            elementText("#businessAddress li:nth-of-type(1)")(ppob.address.get.line1.get),
-            elementText("#businessAddress li:nth-of-type(2)")(ppob.address.get.line2.get),
-            elementText("#businessAddress li:nth-of-type(3)")(ppob.address.get.line3.get),
-            elementText("#businessAddress li:nth-of-type(4)")(ppob.address.get.line4.get),
-            elementText("#businessAddress li:nth-of-type(5)")(ppob.address.get.line5.get),
-            elementText("#businessAddress li:nth-of-type(6)")(ppob.address.get.postCode.get),
+            elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
+            elementText("#businessAddress li:nth-of-type(2)")(ppob.address.line2.get),
+            elementText("#businessAddress li:nth-of-type(3)")(ppob.address.line3.get),
+            elementText("#businessAddress li:nth-of-type(4)")(ppob.address.line4.get),
+            elementText("#businessAddress li:nth-of-type(5)")(ppob.address.line5.get),
+            elementText("#businessAddress li:nth-of-type(6)")(ppob.address.postCode.get),
             elementText("#businessAddress li:nth-of-type(7)")(
-              CountryCodes.getCountry(ppob.address.get.countryCode.get).get
+              CountryCodes.getCountry(ppob.address.countryCode).get
             ),
 
             //Bank Details
@@ -359,7 +359,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#business-name")(isVisible = false),
 
             //Business Address
-            isElementVisible("#businessAddress")(isVisible = false),
+            isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
             isElementVisible("#bank-details")(isVisible = false),

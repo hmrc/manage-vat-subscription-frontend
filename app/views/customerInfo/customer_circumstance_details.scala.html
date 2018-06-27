@@ -64,7 +64,7 @@
             } else {
                 <a id="place-of-business-status"
                    href="@controllers.routes.BusinessAddressController.initialiseJourney()"
-                   aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1.get)">
+                   aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
                   @messages("customer_details.change")
                 </a>
             }
@@ -159,9 +159,7 @@
             }
 
             @circumstances.pendingPPOBAddress.fold {
-                @circumstances.ppobAddress.map { address =>
-                    @customerAddress(address,false)
-                }
+                @customerAddress(circumstances.ppobAddress,false)
             }{ pendingAddress =>
                 @customerAddress(pendingAddress,true)
             }

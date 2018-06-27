@@ -21,15 +21,14 @@
 @(address: PPOBAddress)(implicit messages: Messages, appConfig: AppConfig)
 
 
-@defining(Seq(address.line1, address.line2, address.line3, address.line4, address.line5, address.postCode).flatten) { addressLines =>
+@defining(Seq(address.line2, address.line3, address.line4, address.line5, address.postCode).flatten) { addressLines =>
     <ol>
+        <li>@address.line1</li>
         @addressLines.map { line =>
             <li>@line</li>
         }
-        @address.countryCode.map { code =>
-            @CountryCodes.getCountry(code).map { country =>
-                <li>@country</li>
-            }
+        @CountryCodes.getCountry(address.countryCode).map { country =>
+            <li>@country</li>
         }
     </ol>
 }

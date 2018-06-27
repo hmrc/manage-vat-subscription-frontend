@@ -29,7 +29,6 @@ object PPOBAddressTestConstants {
   val postcode = "TE37 7AD"
   val countryCode = "GB"
 
-  val rlsIndicator = "0001"
   val website = "www.test.com"
 
   val phoneNumber = "01234 567890"
@@ -40,13 +39,23 @@ object PPOBAddressTestConstants {
 
 
   val ppobAddressModelMax = PPOBAddress(
-    Some(addLine1),
+    addLine1,
     Some(addLine2),
     Some(addLine3),
     Some(addLine4),
     Some(addLine5),
     Some(postcode),
-    Some(countryCode)
+    countryCode
+  )
+
+  val ppobAddressModelMin = PPOBAddress(
+    addLine1,
+    None,
+    None,
+    None,
+    None,
+    None,
+    countryCode
   )
 
   val contactDetailsModelMax = ContactDetails(
@@ -59,9 +68,9 @@ object PPOBAddressTestConstants {
 
   val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
 
-  val ppobModelMax = PPOB(Some(ppobAddressModelMax), Some(rlsIndicator), Some(contactDetailsModelMax), Some(website))
+  val ppobModelMax = PPOB(ppobAddressModelMax,Some(contactDetailsModelMax), Some(website))
 
-  val ppobModelMaxNoRls = PPOB(Some(ppobAddressModelMax), None, Some(contactDetailsModelMax), Some(website))
+  val ppobModelMin = PPOB(ppobAddressModelMin,None,None)
 
   val ppobJsonMax: JsValue = Json.obj(
     "address" -> Json.obj(
@@ -73,7 +82,6 @@ object PPOBAddressTestConstants {
       "postCode" -> postcode,
       "countryCode" -> countryCode
     ),
-    "RLS" -> rlsIndicator,
     "contactDetails" -> Json.obj(
       "primaryPhoneNumber" -> phoneNumber,
       "mobileNumber" -> mobileNumber,
@@ -82,6 +90,13 @@ object PPOBAddressTestConstants {
       "emailVerified" -> emailVerified
     ),
     "websiteAddress" -> website
+  )
+
+  val ppobJsonMin: JsValue = Json.obj(
+    "address" -> Json.obj(
+      "line1" -> addLine1,
+      "countryCode" -> countryCode
+    )
   )
 
 }
