@@ -24,13 +24,13 @@ import play.api.libs.json.{Reads, Writes, __}
 case class CircumstanceDetails(mandationStatus: MandationStatus,
                                customerDetails: CustomerDetails,
                                flatRateScheme: Option[FlatRateScheme],
-                               ppob: Option[PPOB],
+                               ppob: PPOB,
                                bankDetails:Option[BankDetails],
                                returnPeriod: Option[ReturnPeriod],
                                pendingChanges: Option[PendingChanges]) {
 
-  val ppobAddress: Option[PPOBAddress] = ppob.flatMap(_.address)
-  val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.flatMap(_.address))
+  val ppobAddress: PPOBAddress = ppob.address
+  val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
 
@@ -50,7 +50,7 @@ object CircumstanceDetails extends JsonReadUtil {
     mandationStatusPath.read[MandationStatus] and
       customerDetailsPath.read[CustomerDetails] and
       flatRateSchemePath.readOpt[FlatRateScheme] and
-      ppobPath.readOpt[PPOB] and
+      ppobPath.read[PPOB] and
       bankDetailsPath.readOpt[BankDetails] and
       returnPeriodPath.readOpt[ReturnPeriod] and
       pendingChangesPath.readOpt[PendingChanges]
@@ -60,7 +60,7 @@ object CircumstanceDetails extends JsonReadUtil {
     mandationStatusPath.write[MandationStatus] and
       customerDetailsPath.write[CustomerDetails] and
       flatRateSchemePath.writeNullable[FlatRateScheme] and
-      ppobPath.writeNullable[PPOB] and
+      ppobPath.write[PPOB] and
       bankDetailsPath.writeNullable[BankDetails] and
       returnPeriodPath.writeNullable[ReturnPeriod]  and
       pendingChangesPath.writeNullable[PendingChanges]

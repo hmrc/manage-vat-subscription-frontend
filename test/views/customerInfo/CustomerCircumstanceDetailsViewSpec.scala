@@ -65,14 +65,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct address output" in {
-          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line1.get
-          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.postCode.get
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.address.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get)(frontendAppConfig).get
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(frontendAppConfig).get
         }
 
         "has a change link" which {
@@ -211,14 +211,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct address output" in {
-          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line1.get
-          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.get.address.get.postCode.get
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.address.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.get.address.get.countryCode.get)(frontendAppConfig).get
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(frontendAppConfig).get
         }
 
         "has Pending instead of a change link" which {

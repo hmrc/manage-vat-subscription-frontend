@@ -40,13 +40,23 @@ object PPOBAddressTestConstants {
 
 
   val ppobAddressModelMax = PPOBAddress(
-    Some(addLine1),
+    addLine1,
     Some(addLine2),
     Some(addLine3),
     Some(addLine4),
     Some(addLine5),
     Some(postcode),
-    Some(countryCode)
+    countryCode
+  )
+
+  val ppobAddressModelMin = PPOBAddress(
+    addLine1,
+    None,
+    None,
+    None,
+    None,
+    None,
+    countryCode
   )
 
   val contactDetailsModelMax = ContactDetails(
@@ -59,9 +69,11 @@ object PPOBAddressTestConstants {
 
   val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
 
-  val ppobModelMax = PPOB(Some(ppobAddressModelMax), Some(rlsIndicator), Some(contactDetailsModelMax), Some(website))
+  val ppobModelMax = PPOB(ppobAddressModelMax, Some(rlsIndicator), Some(contactDetailsModelMax), Some(website))
 
-  val ppobModelMaxNoRls = PPOB(Some(ppobAddressModelMax), None, Some(contactDetailsModelMax), Some(website))
+  val ppobModelMaxNoRls = PPOB(ppobAddressModelMax, None, Some(contactDetailsModelMax), Some(website))
+
+  val ppobModelMin = PPOB(ppobAddressModelMin,None,None,None)
 
   val ppobJsonMax: JsValue = Json.obj(
     "address" -> Json.obj(
@@ -82,6 +94,13 @@ object PPOBAddressTestConstants {
       "emailVerified" -> emailVerified
     ),
     "websiteAddress" -> website
+  )
+
+  val ppobJsonMin: JsValue = Json.obj(
+    "address" -> Json.obj(
+      "line1" -> addLine1,
+      "countryCode" -> countryCode
+    )
   )
 
 }

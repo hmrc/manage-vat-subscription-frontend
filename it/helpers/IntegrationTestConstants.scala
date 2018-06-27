@@ -60,30 +60,30 @@ object IntegrationTestConstants {
   )
 
   val ppob = PPOB(
-    Some(PPOBAddress(
-      Some("Add Line 1"),
+    PPOBAddress(
+      "Add Line 1",
       Some("Add Line 2"),
       Some("Add Line 3"),
       Some("Add Line 4"),
       Some("Add Line 5"),
       Some("TE3 3ST"),
-      Some("GB")
-    )),
+      "GB"
+    ),
     Some(rlsIndicator),
     Some(contactDetailsModelMax),
     Some(website)
   )
 
   val ppobNoRls = PPOB(
-    Some(PPOBAddress(
-      Some("Add Line 1"),
+    PPOBAddress(
+      "Add Line 1",
       Some("Add Line 2"),
       Some("Add Line 3"),
       Some("Add Line 4"),
       Some("Add Line 5"),
       Some("TE3 3ST"),
-      Some("GB")
-    )),
+      "GB"
+    ),
     None,
     Some(contactDetailsModelMax),
     Some(website)
@@ -99,7 +99,7 @@ object IntegrationTestConstants {
     MTDfBMandated,
     customerType,
     None,
-    Some(ppob),
+    ppob,
     Some(bankDetails),
     Some(Jan),
     Some(PendingChanges(
@@ -113,7 +113,7 @@ object IntegrationTestConstants {
     MTDfBMandated,
     customerType,
     None,
-    None,
+    ppob,
     None,
     None,
     None

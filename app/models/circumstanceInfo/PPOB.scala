@@ -19,7 +19,7 @@ package models.circumstanceInfo
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class PPOB(address: Option[PPOBAddress],
+case class PPOB(address: PPOBAddress,
                 rlsIndicator: Option[String],
                 contactDetails: Option[ContactDetails],
                 websiteAddress: Option[String])
@@ -32,14 +32,14 @@ object PPOB {
   private val websiteAddressPath = __ \ "websiteAddress"
 
   implicit val reads: Reads[PPOB] = (
-    addressPath.readNullable[PPOBAddress] and
+    addressPath.read[PPOBAddress] and
       rlsIndicatorPath.readNullable[String] and
       contactDetailsPath.readNullable[ContactDetails] and
       websiteAddressPath.readNullable[String]
     )(PPOB.apply _)
 
   implicit val writes: Writes[PPOB] = (
-    addressPath.writeNullable[PPOBAddress] and
+    addressPath.write[PPOBAddress] and
       rlsIndicatorPath.writeNullable[String] and
       contactDetailsPath.writeNullable[ContactDetails] and
       websiteAddressPath.writeNullable[String]

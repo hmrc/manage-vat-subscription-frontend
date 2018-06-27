@@ -20,13 +20,13 @@ import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-case class PPOBAddress(line1: Option[String],
+case class PPOBAddress(line1: String,
                        line2: Option[String],
                        line3: Option[String],
                        line4: Option[String],
                        line5: Option[String],
                        postCode: Option[String],
-                       countryCode: Option[String])
+                       countryCode: String)
 
 object PPOBAddress extends JsonReadUtil {
 
@@ -39,23 +39,23 @@ object PPOBAddress extends JsonReadUtil {
   private val countryCodePath = JsPath \ "countryCode"
 
   implicit val reads: Reads[PPOBAddress] = (
-    line1Path.readOpt[String] and
+    line1Path.read[String] and
       line2Path.readOpt[String] and
       line3Path.readOpt[String] and
       line4Path.readOpt[String] and
       line5Path.readOpt[String] and
       postCodePath.readOpt[String] and
-      countryCodePath.readOpt[String]
+      countryCodePath.read[String]
     )(PPOBAddress.apply _)
 
   implicit val writes: Writes[PPOBAddress] = (
-    line1Path.writeNullable[String] and
+    line1Path.write[String] and
       line2Path.writeNullable[String] and
       line3Path.writeNullable[String] and
       line4Path.writeNullable[String] and
       line5Path.writeNullable[String] and
       postCodePath.writeNullable[String] and
-      countryCodePath.writeNullable[String]
+      countryCodePath.write[String]
     )(unlift(PPOBAddress.unapply))
 }
 

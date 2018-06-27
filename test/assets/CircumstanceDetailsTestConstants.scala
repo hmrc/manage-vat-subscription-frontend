@@ -104,6 +104,7 @@ object CircumstanceDetailsTestConstants {
   val customerInformationJsonMin: JsValue =
     Json.obj(
       "customerDetails" -> customerDetailsJsonMin,
+      "ppob" -> ppobJsonMin,
       "mandationStatus" -> mandationStatus
     )
 
@@ -112,7 +113,7 @@ object CircumstanceDetailsTestConstants {
     MTDfBMandated,
     organisation,
     Some(frsModelMax),
-    Some(ppobModelMax),
+    ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
     Some(PendingChanges(
@@ -126,7 +127,7 @@ object CircumstanceDetailsTestConstants {
     MTDfBMandated,
     individual,
     Some(frsModelMax),
-    Some(ppobModelMax),
+    ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
     Some(PendingChanges(
@@ -140,14 +141,14 @@ object CircumstanceDetailsTestConstants {
     MTDfBMandated,
     individual,
     Some(frsModelMax),
-    Some(ppobModelMax),
+    ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
     None
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated, CustomerDetails(None, None, None, None), None, None, None, None, None
+    MTDfBMandated, CustomerDetails(None, None, None, None), None, ppobModelMin, None, None, None
   )
 
 }
