@@ -28,7 +28,6 @@ object IntegrationTestConstants {
   val clientVRN = "999999999"
   val VRN = "111111111"
 
-  val rlsIndicator = "0001"
   val website = "www.test.com"
 
   val phoneNumber = "01234 567890"
@@ -69,22 +68,6 @@ object IntegrationTestConstants {
       Some("TE3 3ST"),
       "GB"
     ),
-    Some(rlsIndicator),
-    Some(contactDetailsModelMax),
-    Some(website)
-  )
-
-  val ppobNoRls = PPOB(
-    PPOBAddress(
-      "Add Line 1",
-      Some("Add Line 2"),
-      Some("Add Line 3"),
-      Some("Add Line 4"),
-      Some("Add Line 5"),
-      Some("TE3 3ST"),
-      "GB"
-    ),
-    None,
     Some(contactDetailsModelMax),
     Some(website)
   )
@@ -103,7 +86,7 @@ object IntegrationTestConstants {
     Some(bankDetails),
     Some(Jan),
     Some(PendingChanges(
-      Some(ppobNoRls),
+      Some(ppob),
       Some(bankDetails),
       Some(Jan)
     ))

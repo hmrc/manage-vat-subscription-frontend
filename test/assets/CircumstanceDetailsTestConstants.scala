@@ -117,7 +117,7 @@ object CircumstanceDetailsTestConstants {
     Some(bankDetailsModelMax),
     Some(Mar),
     Some(PendingChanges(
-      Some(ppobModelMaxNoRls),
+      Some(ppobModelMax),
       Some(bankDetailsModelMax),
       Some(Mar)
     ))
@@ -131,7 +131,7 @@ object CircumstanceDetailsTestConstants {
     Some(bankDetailsModelMax),
     Some(Mar),
     Some(PendingChanges(
-      Some(ppobModelMaxNoRls),
+      Some(ppobModelMax),
       Some(bankDetailsModelMax),
       Some(Mar)
     ))
