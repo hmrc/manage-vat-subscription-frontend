@@ -32,10 +32,14 @@ object CustomerCircumstanceDetailsPageMessages {
   val returnFrequencyHeading = "VAT Return dates"
 
   val change = "Change"
+  val pending = "Pending"
   val changeBusinessHidden: String => String = name => s"Change the business name from $name"
   val changeBusinessAddressHidden: String => String = address => s"Change the business address from $address"
+  val pendingBusinessAddressHidden = "Change to business address is pending"
   val changeBankDetailsHidden = "Change the bank account for repayments"
   val changeReturnFrequencyHidden: String => String = dates => s"Change the VAT Return dates from $dates"
+  val pendingBankDetailsHidden = "Change to bank account for repayments is pending"
+  val pendingReturnFrequencyHidden = "Change to VAT Return dates is pending"
 
   val changeClientDetails = "You can change another client’s details."
 

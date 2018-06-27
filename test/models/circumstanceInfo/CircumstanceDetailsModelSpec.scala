@@ -17,10 +17,54 @@
 package models.circumstanceInfo
 
 import assets.CircumstanceDetailsTestConstants._
+import assets.PPOBAddressTestConstants.ppobAddressModelMax
+import assets.BankDetailsTestConstants.bankDetailsModelMax
+import models.returnFrequency.Mar
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
 class CircumstanceDetailsModelSpec extends UnitSpec {
+
+  "CircumstanceDetailsModel.pendingPPOBAddress" should{
+
+    "return Some data" when {
+
+      "there is a current address" in {
+        customerInformationModelMaxOrganisation.ppobAddress shouldBe Some(ppobAddressModelMax)
+      }
+
+      "there are pending address changes" in {
+        customerInformationModelMaxOrganisation.pendingPPOBAddress shouldBe Some(ppobAddressModelMax)
+      }
+
+      "there are pending bank changes" in {
+        customerInformationModelMaxOrganisation.pendingBankDetails shouldBe Some(bankDetailsModelMax)
+      }
+
+      "there are pending return period changes" in {
+        customerInformationModelMaxOrganisation.pendingReturnPeriod shouldBe Some(Mar)
+      }
+    }
+
+    "return None" when {
+
+      "there is no current address" in {
+        customerInformationModelMin.ppobAddress shouldBe None
+      }
+
+      "there are pending address changes" in {
+        customerInformationNoPending.pendingPPOBAddress shouldBe None
+      }
+
+      "there are pending bank changes" in {
+        customerInformationNoPending.pendingBankDetails shouldBe None
+      }
+
+      "there are pending return period changes" in {
+        customerInformationNoPending.pendingReturnPeriod shouldBe None
+      }
+    }
+  }
 
   "Deserialize from JSON" when {
 
