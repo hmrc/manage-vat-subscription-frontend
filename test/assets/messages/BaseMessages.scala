@@ -18,7 +18,7 @@ package assets.messages
 
 object BaseMessages {
 
-  val clientServiceName = "Business Tax Account"
+  val clientServiceName = "Business tax account"
   val agentServiceName = "Update your client's VAT details"
 
   val continue = "Continue"
