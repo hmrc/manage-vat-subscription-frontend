@@ -33,4 +33,8 @@ class SignOutController @Inject()(val messagesApi: MessagesApi,
     val redirectUrl: String = if(authorised) appConfig.signOutUrl else appConfig.unauthorisedSignOutUrl
     Future.successful(Redirect(redirectUrl))
   }
+
+  val timeout: Action[AnyContent] = Action.async { implicit request =>
+     Future.successful(Redirect(appConfig.unauthorisedSignOutUrl))
+  }
 }

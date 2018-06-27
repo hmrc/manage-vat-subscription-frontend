@@ -56,6 +56,8 @@ trait AppConfig extends ServicesConfig {
   val signInContinueBaseUrl: String
   val bankAccountCoc: String
   val host: String
+  val timeoutPeriod: Int
+  val timeoutCountdown: Int
 }
 
 @Singleton
@@ -123,5 +125,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   }
 
   override lazy val host: String = getString(Keys.host)
+
+  override lazy val timeoutPeriod: Int = getInt(Keys.timeoutPeriod)
+  override lazy val timeoutCountdown: Int = getInt(Keys.timeoutCountDown)
 
 }
