@@ -19,22 +19,25 @@ package services
 import mocks.connectors.MockSubscriptionConnector
 import models.core.SubscriptionUpdateResponseModel
 import assets.CustomerAddressTestConstants._
+import assets.BaseTestConstants.vrn
+import assets.CircumstanceDetailsTestConstants.customerInformationModelMaxOrganisation
 import utils.TestUtil
 
-class BusinessAddressServiceSpec extends TestUtil with MockSubscriptionConnector {
+class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector {
 
-  def setup(subscriptionResponse: UpdateBusinessAddressResponse): BusinessAddressService = {
+  def setup(subscriptionResponse: SubscriptionUpdateResponse): PPOBService = {
 
     setupMockUpdateBusinessAddress(subscriptionResponse)
-    new BusinessAddressService(mockSubscriptionConnector)
+    setupMockUserDetails(vrn)(Right(customerInformationModelMaxOrganisation))
+    new PPOBService(mockSubscriptionConnector)
   }
 
-  "Calling .updateBusinessAddress" should {
+  "Calling .updatePPOB" should {
 
     val subscriptionResult = SubscriptionUpdateResponseModel("formBundle")
 
     lazy val service = setup(Right(subscriptionResult))
-    lazy val result = service.updateBusinessAddress("", customerAddressMax)
+    lazy val result = service.updatePPOB(vrn, customerAddressMax)
 
     "return successful SubscriptionUpdateResponseModel" in {
       await(result) shouldBe Right(subscriptionResult)

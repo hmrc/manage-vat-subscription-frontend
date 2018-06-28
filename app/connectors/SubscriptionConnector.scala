@@ -16,15 +16,16 @@
 
 package connectors
 
+import javax.inject.{Inject, Singleton}
+
 import config.FrontendAppConfig
 import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
-import javax.inject.{Inject, Singleton}
-import models.circumstanceInfo.CircumstanceDetails
-import models.returnFrequency.ReturnPeriod
+import models.circumstanceInfo.{CircumstanceDetails, PPOB}
 import models.core.SubscriptionUpdateResponseModel
-import models.customerAddress.AddressModel
+import models.returnFrequency.ReturnPeriod
+import models.updatePPOB.UpdatePPOB
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -37,6 +38,8 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
+  private[connectors] def updateBusinessAddressUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/ppob"
+
   private[connectors] def updateReturnPeriod(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/return-period"
 
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
@@ -45,10 +48,9 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
     http.GET(url)(CustomerCircumstanceReads, headerCarrier, ec)
   }
 
-  def updateBusinessAddress(vrn: String, address: AddressModel)
-                           (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
-    // TODO: call vat-subscription
-    Future.successful(Right(SubscriptionUpdateResponseModel("12345")))
+  def updatePPOB(vrn: String, ppob: UpdatePPOB)
+                (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+    http.PUT[UpdatePPOB, HttpPostResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
   }
 
   def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)

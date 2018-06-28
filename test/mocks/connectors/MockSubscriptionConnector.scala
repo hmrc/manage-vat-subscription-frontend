@@ -33,7 +33,7 @@ trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAn
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
 
   type CustomerDetailsResponse = Either[ErrorModel, CustomerDetails]
-  type UpdateBusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
+  type SubscriptionUpdateResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -46,7 +46,7 @@ trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAn
   }
 
   def setupMockUpdateBusinessAddress(response: Either[ErrorModel, SubscriptionUpdateResponseModel]): Unit = {
-    when(mockSubscriptionConnector.updateBusinessAddress(anyString(), any())(any(), any()))
+    when(mockSubscriptionConnector.updatePPOB(anyString(), any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
 

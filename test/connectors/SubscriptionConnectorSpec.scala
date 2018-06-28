@@ -18,7 +18,7 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
-import assets.CustomerAddressTestConstants._
+import assets.UpdatePPOBAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
@@ -67,13 +67,25 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       }
     }
 
-    "calling .updateBusinessAddress" should {
+    "calling .updateBusinessAddress" when {
 
       def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
-        TestSubscriptionConnector.updateBusinessAddress("", customerAddressMax)
+        TestSubscriptionConnector.updatePPOB(vrn, updatePPOBModelMax)
 
-      "return a SubscriptionUpdateResponseModel" in {
-        await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
+      "called with a Right SubscriptionUpdateResponseModel" should {
+
+        "return a SubscriptionUpdateResponseModel" in {
+          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(Right(SubscriptionUpdateResponseModel("12345")))
+          await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
+        }
+      }
+
+      "given an error" should {
+
+        "return a Left with an ErrorModel" in {
+          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(errorModel)
+          await(result) shouldBe errorModel
+        }
       }
     }
 
