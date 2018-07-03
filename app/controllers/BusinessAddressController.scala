@@ -49,7 +49,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
       case Right(address) =>
         ppobService.updatePPOB(user.vrn, address) map {
           case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
-          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Errogit r Returned from Business Address Service, Rendering ISE.")
+          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")

@@ -22,21 +22,17 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 class UpdatePPOBSpec extends UnitSpec {
 
-  "CustomerAddressModel" should {
+  "UpdatePPOBModel" should {
 
-    "UpdatePPOBModel" should {
+    "Serialize to JSON" when {
 
-      "Serialize to JSON" when {
+      "all optional fields are populated" in {
+        Json.toJson(updatePPOBModelMax) shouldBe updatePPOBJsonMax
+      }
 
-        "all optional fields are populated" in {
-          Json.toJson(updatePPOBModelMax) shouldBe updatePPOBJsonMax
-        }
-
-        "no optional fields are returned" in {
-          Json.toJson(updatePPOBModelMin) shouldBe updatePPOBJsonMin
-        }
+      "no optional fields are returned" in {
+        Json.toJson(updatePPOBModelMin) shouldBe updatePPOBJsonMin
       }
     }
   }
-
 }
