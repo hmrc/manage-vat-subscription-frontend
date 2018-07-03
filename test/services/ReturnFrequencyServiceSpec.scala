@@ -23,7 +23,7 @@ import utils.TestUtil
 
 class ReturnFrequencyServiceSpec extends TestUtil with MockSubscriptionConnector {
 
-  def setup(subscriptionResponse: UpdateBusinessAddressResponse): ReturnFrequencyService = {
+  def setup(subscriptionResponse: SubscriptionUpdateResponse): ReturnFrequencyService = {
 
     setupMockUpdateReturnFrequency(subscriptionResponse)
     new ReturnFrequencyService(mockSubscriptionConnector)

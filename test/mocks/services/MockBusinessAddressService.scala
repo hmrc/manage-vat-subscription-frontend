@@ -22,14 +22,14 @@ import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
-import services.BusinessAddressService
+import services.PPOBService
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
 trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockBusinessAddressService: BusinessAddressService = mock[BusinessAddressService]
+  val mockBusinessAddressService: PPOBService = mock[PPOBService]
 
   type BusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
@@ -39,7 +39,7 @@ trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeA
   }
 
   def setupMockBusinessAddress(response: BusinessAddressResponse): OngoingStubbing[Future[BusinessAddressResponse]]  = {
-    when(mockBusinessAddressService.updateBusinessAddress(anyString(), any())(any(), any()))
+    when(mockBusinessAddressService.updatePPOB(anyString(), any())(any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

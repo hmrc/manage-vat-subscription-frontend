@@ -16,13 +16,14 @@
 
 package controllers
 
+import javax.inject.{Inject, Singleton}
+
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import services.{AddressLookupService, BusinessAddressService}
+import services.{AddressLookupService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -31,7 +32,7 @@ import scala.concurrent.Future
 class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthPredicate,
                                           addressLookupService: AddressLookupService,
-                                          businessAddressService: BusinessAddressService,
+                                          ppobService: PPOBService,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
@@ -45,10 +46,10 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
 
   val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
-      case Right(returnModel) =>
-        businessAddressService.updateBusinessAddress(user.vrn, returnModel) map {
+      case Right(address) =>
+        ppobService.updatePPOB(user.vrn, address) map {
           case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
-          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Errogit r Returned from Business Address Service, Rendering ISE.")
+          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
