@@ -19,29 +19,38 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.IntegrationTestConstants.VRN
 import helpers.WireMockMethods
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.customerAddress.AddressModel
-import play.api.http.Status.{BAD_REQUEST, OK}
-import play.api.libs.json.Json
+import models.customerAddress.AddressLookupOnRampModel
+import play.api.http.HeaderNames.LOCATION
+import play.api.http.Status.{ACCEPTED, BAD_REQUEST, OK}
+import play.api.libs.json.{JsObject, JsValue, Json}
 
 object BusinessAddressStub extends WireMockMethods {
 
   private val subscriptionUri: String => String = vrn => s"/vat-subscription/$vrn/ppob"
-  private val addressUri: String => String = vrn => s"/api/confirmed?id=$vrn"
+  private val addressUri = "/api/confirmed.*"
+  private val initUri = "/api/init"
+  private val fullAddressUri: String => String = vrn => s"/vat-subscription/$vrn/full-information"
 
-  def putSubscriptionSuccess(response: SubscriptionUpdateResponseModel): StubMapping = {
-    when(method = PUT, uri = subscriptionUri(VRN))
+  def postInitJourney(status: Int, response: AddressLookupOnRampModel): StubMapping = {
+    when(method = POST, uri = initUri)
+      .thenReturn(status = status, headers = Map(LOCATION -> response.redirectUrl))
+  }
+
+  def getAddress(status: Int, response: JsValue): StubMapping = {
+    when(method = GET, uri = addressUri)
+      .thenReturn(status = OK, body = response)
+  }
+
+  def getFullInformation(status: Int, response: JsValue): StubMapping = {
+    when(method = GET, uri = fullAddressUri(VRN))
       .thenReturn(status = OK, body = Json.toJson(response))
   }
 
-  def getAddress(response: AddressModel): StubMapping = {
-    when(method = GET, uri = addressUri(VRN))
-      .thenReturn(status = OK, body = Json.toJson(response))
-  }
-
-  def putSubscriptionError(): StubMapping = {
+  def putSubscription(status: Int, response: JsValue): StubMapping = {
     when(method = PUT, uri = subscriptionUri(VRN))
-      .thenReturn(status = BAD_REQUEST, body = Json.obj("code" -> "Terry Bell Tings"))
+      .thenReturn(status = status, body = response)
   }
 
 }

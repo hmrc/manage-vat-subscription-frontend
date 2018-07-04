@@ -17,19 +17,14 @@
 package models.circumstanceInfo
 
 import assets.CircumstanceDetailsTestConstants._
-<<<<<<< Updated upstream
 import assets.PPOBAddressTestConstants.ppobAddressModelMax
 import assets.BankDetailsTestConstants.bankDetailsModelMax
 import models.returnFrequency.Mar
-=======
-import assets.PPOBAddressTestConstants.ppobModelMaxNoRls
->>>>>>> Stashed changes
 import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
 class CircumstanceDetailsModelSpec extends UnitSpec {
 
-<<<<<<< Updated upstream
   "CircumstanceDetailsModel.pendingPPOBAddress" should{
 
     "return ppobAddress" in {
@@ -63,26 +58,10 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
 
       "there are pending return period changes" in {
         customerInformationNoPending.pendingReturnPeriod shouldBe None
-=======
-//  val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.flatMap(_.address))
-
-  "CircumstanceDetailsModel" when {
-
-    ".pendingPPOBAddress" should {
-
-      "" in {
-        customerInformationModelMaxOrganisation.pendingPPOBAddress shouldBe ppobModelMaxNoRls
->>>>>>> Stashed changes
       }
     }
   }
 
-<<<<<<< Updated upstream
-=======
-  //  val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
-//  val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
-
->>>>>>> Stashed changes
   "Deserialize from JSON" when {
 
     "succeeds when all registration fields are populated" in {

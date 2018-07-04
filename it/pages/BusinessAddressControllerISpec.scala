@@ -18,141 +18,207 @@ package pages
 
 import common.SessionKeys
 import helpers.IntegrationTestConstants.VRN
-import models.core.SubscriptionUpdateResponseModel
-import models.customerAddress.AddressModel
-import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER, OK}
-import play.api.i18n.Messages
+import models.circumstanceInfo._
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
+import models.customerAddress.AddressLookupOnRampModel
+import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
-import play.api.test.Helpers.FORBIDDEN
 import stubs.BusinessAddressStub
 
 class BusinessAddressControllerISpec extends BasePageISpec {
 
-  val path = "/change-business-address"
   val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
 
   "Calling BusinessAddressController.initialiseJourney" when {
 
-    def show(sessionVrn: String): WSResponse = get(path, session)
+    def show(sessionVrn: String): WSResponse = get("/change-business-address", session)
 
-    "A valid AddressLookupOnRampModel is returned" should {
+    "A valid AddressLookupOnRampModel is returned from Address Lookup" should {
 
       "render the page Redirect to AddressLookup" in {
+
         given.user.isAuthenticated
 
-        When("I call to show the Customer Circumstances page")
+        And("a url is returned from the Address Lookup Service")
+        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
+
+        When("I call to show the Business Address change page")
         val res = show(VRN)
 
         res should have(
-          httpStatus(SEE_OTHER)
+          httpStatus(SEE_OTHER),
+          redirectURI("redirect/url")
         )
       }
 
       "render the page for a agent signed up to agent services" in {
+
         given.agent.isSignedUpToAgentServices
+
+        And("a url is returned from the Address Lookup Service")
+        BusinessAddressStub.postInitJourney(ACCEPTED,AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
         val res = show(VRN)
 
         res should have(
-          httpStatus(SEE_OTHER)
+          httpStatus(SEE_OTHER),
+          redirectURI("redirect/url")
         )
       }
+    }
+
+    "An Error Model is returned from Address Lookup" should {
+
+      "show internal server error" in {
+        given.agent.isSignedUpToAgentServices
+
+        And("a url is returned from the Address Lookup Service")
+        BusinessAddressStub.postInitJourney(INTERNAL_SERVER_ERROR,AddressLookupOnRampModel("redirect/url"))
+
+        When("I call to show the Customer Circumstances page")
+        val res = show(VRN)
+
+        res should have(
+          httpStatus(INTERNAL_SERVER_ERROR)
+        )
+      }
+
     }
   }
 
   "Calling BusinessAddressController.callback" when {
 
+    val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
+      MTDfBMandated,
+      CustomerDetails(None, None, None, None),
+      None,
+      PPOB(PPOBAddress("add line 1",None,None,None,None,None,"GB"),None,None),
+      None,
+      None,
+      None
+    )
+
     "the user is an individual" should {
 
-      "Return a valid Address" should {
+      "render the ChangeAddressConfirmationPage page" in {
 
-        "render the ChangeReturnFrequencyConfirmation page" in {
-          given.user.isAuthenticated
+        given.user.isAuthenticated
 
-          BusinessAddressStub.getAddress(AddressModel("line1","line2"))
+        And("An address is returned address lookup service")
+        BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1","line2")))
 
-          BusinessAddressStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+        And("a valid CircumstanceDetails model is returned")
+        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
+
+        And("A response model is returned from the backend")
+        BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
+
+        When("I initiate a return frequency update journey")
+        val res: WSResponse = get("/change-business-address/confirmation?id=111111111",session)
+
+        res should have(
+          httpStatus(OK),
+          elementText("h1")("We have received the new business address"),
+          isElementVisible("#change-client-text")(isVisible = false)
+        )
+      }
+    }
+
+    "the user is an agent" should {
+
+      "render the ChangeAddressConfirmationPage page" in {
+
+        given.agent.isSignedUpToAgentServices
+
+        And("An address is returned address lookup service")
+        BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1","line2")))
+
+        And("a valid CircumstanceDetails model is returned")
+        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
+
+        And("A response model is returned from the backend")
+        BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
+
+        When("I initiate a return frequency update journey")
+        val res: WSResponse = get("/change-business-address/confirmation?id=111111111",session)
+
+        res should have(
+          httpStatus(OK),
+          elementText("h1")("We have received the new business address"),
+          isElementVisible("#change-client-text")(isVisible = true)
+        )
+      }
+    }
+
+    "the user is authenticated" should {
+
+      "show internal server error" when {
+
+        "vat-subscription does not return a SubscriptionUpdateResponseModel" in {
+
+          given.agent.isSignedUpToAgentServices
+
+          And("An address is returned address lookup service")
+          BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1", "line2")))
+
+          And("a valid CircumstanceDetails model is returned")
+          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
+
+          And("A response model is returned from the backend")
+          BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
 
           When("I initiate a return frequency update journey")
-          val res: WSResponse = get("/change-business-address/confirmation?id=111111111",session)
+          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
 
           res should have(
-            httpStatus(SEE_OTHER)
-//            redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
+        }
+
+        "vat-subscription does not return a CircumstanceDetails model" in {
+
+          given.agent.isSignedUpToAgentServices
+
+          And("An address is returned address lookup service")
+          BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1", "line2")))
+
+          And("a valid CircumstanceDetails model is returned")
+          BusinessAddressStub.getFullInformation(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
+
+          And("A response model is returned from the backend")
+          BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
+
+          When("I initiate a return frequency update journey")
+          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
+
+          res should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
+          )
+        }
+
+        "Address Lookup returns an ErrorModel" in {
+
+          given.agent.isSignedUpToAgentServices
+
+          And("An address is returned address lookup service")
+          BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
+
+          And("a valid CircumstanceDetails model is returned")
+          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
+
+          And("A response model is returned from the backend")
+          BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
+
+          When("I initiate a return frequency update journey")
+          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
+
+          res should have(
+            httpStatus(INTERNAL_SERVER_ERROR)
           )
         }
       }
-//      "An invalid model is posted" should {
-//
-//        "Render the Internal Server Error page" in {
-//          given.user.isAuthenticated
-//          And("I stub an error response from the Payments service")
-//          BusinessAddressStub.putSubscriptionError()
-//
-//          When("I initiate a return frequency update journey")
-//          val res: WSResponse = get("/change-business-address/confirmation",session)
-//
-//          res should have(
-//            httpStatus(INTERNAL_SERVER_ERROR)
-//          )
-//        }
-//      }
     }
-
-//    "the user is an agent" should {
-//
-//      "if a valid ReturnPeriod is returned" should {
-//
-//        "render the ChangeReturnFrequencyConfirmation page" in {
-//          given.agent.isSignedUpToAgentServices
-//          And("I stub a successful response from the Payments service")
-//          BusinessAddressStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
-//
-//          When("I initiate a return frequency update journey")
-//          val res: WSResponse = get("/change-business-address/confirmation",session)
-//
-//          res should have(
-//            httpStatus(SEE_OTHER),
-//            redirectURI(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show().url)
-//          )
-//        }
-//      }
-//      "if an invalid model is posted" should {
-//
-//        "Render the Internal Server Error page" in {
-//          given.agent.isSignedUpToAgentServices
-//          And("I stub an error response from the Payments service")
-//          BusinessAddressStub.putSubscriptionError()
-//
-//          When("I initiate a return frequency update journey")
-//          val res: WSResponse = get("/change-business-address/confirmation",session)
-//
-//          res should have(
-//            httpStatus(INTERNAL_SERVER_ERROR)
-//          )
-//        }
-//      }
-//
-//      "the Agent is NOT signed up for HMRC-AS-AGENT (unauthorised)" when {
-//
-//        "render the Agent Unauthorised page" in {
-//
-//          given.agent.isNotSignedUpToAgentServices
-//          And("I stub a successful response from the Payments service")
-//          BusinessAddressStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
-//
-//          When("I submit the Client VRN page with valid data")
-//          val res: WSResponse = get("/change-business-address/confirmation",session)
-//
-//          res should have(
-//            httpStatus(FORBIDDEN),
-//            pageTitle(Messages("unauthorised.agent.title"))
-//          )
-//        }
-//      }
-//    }
   }
-
 }
