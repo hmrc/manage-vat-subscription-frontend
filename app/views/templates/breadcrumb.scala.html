@@ -18,8 +18,8 @@
 
 <div id="breadcrumb" class="breadcrumbs soft--top">
     <ol class="push--top">
-        <li><a id="breadcrumb-bta" href="@{appConfig.btaUrl}">@messages("breadcrumb.bta")</a></li>
-        <li><a id="breadcrumb-vat" href="@{appConfig.vatSummaryUrl}">@messages("breadcrumb.yourVatDetails")</a></li>
+        <li><a id="breadcrumb-bta" data-journey-click="breadcrumbs:click:business-tax-account" href="@{appConfig.btaUrl}">@messages("breadcrumb.bta")</a></li>
+        <li><a id="breadcrumb-vat" data-journey-click="breadcrumbs:click:vat-overview" href="@{appConfig.vatSummaryUrl}">@messages("breadcrumb.yourVatDetails")</a></li>
         <li id="breadcrumb-biz-deets">@messages("breadcrumb.changeBizDeets")</li>
     </ol>
 </div>
