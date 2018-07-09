@@ -23,6 +23,7 @@ import play.api.Configuration
 
 @Singleton
 class Features @Inject()(config: Configuration) {
-  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature, config)
 
+  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature, config)
+  val agentAccess = new Feature(ConfigKeys.agentAccessFeature, config)
 }
