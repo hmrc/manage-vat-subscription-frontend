@@ -40,27 +40,31 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
 
     implicit val req = request
 
-    enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
-      case Some(affinityGroup) ~ allEnrolments => {
-        (isAgent(affinityGroup), allEnrolments) match {
-          case (true, _) =>
-            Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
-            checkAgentEnrolment(allEnrolments, f)
-          case (_, _) =>
-            Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
-            Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show()))
+    if(appConfig.features.agentAccess()) {
+      enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+        case Some(affinityGroup) ~ allEnrolments => {
+          (isAgent(affinityGroup), allEnrolments) match {
+            case (true, _) =>
+              Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
+              checkAgentEnrolment(allEnrolments, f)
+            case (_, _) =>
+              Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
+              Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show()))
+          }
         }
+        case _ =>
+          Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
+          Future.successful(serviceErrorHandler.showInternalServerError)
+      } recover {
+        case _: NoActiveSession =>
+          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, rendering Session Timeout view")
+          Unauthorized(views.html.errors.sessionTimeout())
+        case _: AuthorisationException =>
+          Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Unauthorised view")
+          Forbidden(views.html.errors.unauthorised())
       }
-      case _ =>
-        Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
-        Future.successful(serviceErrorHandler.showInternalServerError)
-    } recover {
-      case _: NoActiveSession =>
-        Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, rendering Session Timeout view")
-        Unauthorized(views.html.errors.sessionTimeout())
-      case _: AuthorisationException =>
-        Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Unauthorised view")
-        Forbidden(views.html.errors.unauthorised())
+    } else {
+      Future.successful(Unauthorized(views.html.errors.unauthorised()))
     }
   }
 

@@ -37,32 +37,90 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
 
   "Calling the .show action" when {
 
-    "the user is an authorised Agent" should {
+    "Agent access is enabled" when {
+
+      "the user is an authorised Agent" should {
+
+        lazy val result = TestClientVrnControllerSpec.show(request)
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          mockConfig.features.agentAccess(true)
+          mockAgentAuthorised()
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Client Vrn Page" in {
+          document.select("h1").text shouldBe Messages.heading
+        }
+      }
+
+      unauthenticatedCheck(TestClientVrnControllerSpec.show)
+    }
+
+    "Agent access is disabled" should {
 
       lazy val result = TestClientVrnControllerSpec.show(request)
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
+      "return 401" in {
+        mockConfig.features.agentAccess(false)
         mockAgentAuthorised()
-        status(result) shouldBe Status.OK
+        status(result) shouldBe Status.UNAUTHORIZED
       }
 
       "return HTML" in {
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
       }
-
-      "render the Client Vrn Page" in {
-        document.select("h1").text shouldBe Messages.heading
-      }
     }
-
-    unauthenticatedCheck(TestClientVrnControllerSpec.show)
   }
 
   "Calling the .submit action" when {
 
-    "the user is an authorised Agent" should {
+    "Agent access is enabled" when {
+
+      "the user is an authorised Agent" should {
+
+        "valid data is posted" should {
+
+          lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", "123456789"))
+          lazy val result = TestClientVrnControllerSpec.submit(request)
+
+          "return 303" in {
+            mockConfig.features.agentAccess(true)
+            mockAgentAuthorised()
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          "contain the correct location header" in {
+            redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          }
+
+          "contain the Clients VRN in the session" in {
+            session(result).get(SessionKeys.CLIENT_VRN) shouldBe Some("123456789")
+          }
+        }
+
+        "invalid data is posted" should {
+
+          lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", ""))
+          lazy val result = TestClientVrnControllerSpec.submit(request)
+
+          "return 400" in {
+            mockAgentAuthorised()
+            status(result) shouldBe Status.BAD_REQUEST
+          }
+        }
+      }
+    }
+
+    "Agent access is disabled" when {
 
       "valid data is posted" should {
 
@@ -70,27 +128,9 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
         lazy val result = TestClientVrnControllerSpec.submit(request)
 
         "return 303" in {
+          mockConfig.features.agentAccess(false)
           mockAgentAuthorised()
-          status(result) shouldBe Status.SEE_OTHER
-        }
-
-        "contain the correct location header" in {
-          redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-        }
-
-        "contain the Clients VRN in the session" in {
-          session(result).get(SessionKeys.CLIENT_VRN) shouldBe Some("123456789")
-        }
-      }
-
-      "invalid data is posted" should {
-
-        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("vrn", ""))
-        lazy val result = TestClientVrnControllerSpec.submit(request)
-
-        "return 400" in {
-          mockAgentAuthorised()
-          status(result) shouldBe Status.BAD_REQUEST
+          status(result) shouldBe Status.UNAUTHORIZED
         }
       }
     }
