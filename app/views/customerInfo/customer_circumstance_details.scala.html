@@ -38,6 +38,7 @@
         </dd>
         <dd class="cya-change">
             <a id="business-name-status"
+               onclick="clickToGA('business-name','change','change-business-details', @user.isAgent)"
                href="@{controllers.routes.ChangeBusinessNameController.show().url}"
                aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
               @messages("customer_details.change")
@@ -63,6 +64,7 @@
                 </span>
             } else {
                 <a id="place-of-business-status"
+                   onclick="clickToGA('business-address','change','change-business-details', @user.isAgent)"
                    href="@controllers.routes.BusinessAddressController.initialiseJourney()"
                    aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
                   @messages("customer_details.change")
@@ -98,6 +100,7 @@
                 </span>
             } else {
                 <a id="bank-details-status"
+                   onclick="clickToGA('bank-account','change','change-business-details', @user.isAgent)"
                    href="@controllers.routes.PaymentsController.sendToPayments()"
                    aria-label="@messages("customer_details.bankAccount.change.hidden")">
                 @messages("customer_details.change")
@@ -124,6 +127,7 @@
                 </span>
             } else {
                 <a id="vat-return-dates-status"
+                   onclick="clickToGA('return-frequency','change','change-business-details', @user.isAgent)"
                    href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
                    aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
                 @messages("customer_details.change")
@@ -131,9 +135,6 @@
             }
         </dd>
     </div>
-
-
-
 
 }
 
@@ -144,7 +145,7 @@
     appConfig = appConfig) {
 
     <header class="page-heading">
-        <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
+        <h1 id="page-heading" data-metrics="vat-overview:view:change-business-details;@user.isAgent" class="heading-xlarge">@messages("customer_details.h1")</h1>
         <h2 id="sub-heading" class="heading-secondary">
             @if(user.isAgent) {@messages("customer_details.agentSubheading")
             } else {@messages("customer_details.subheading")}
@@ -186,7 +187,7 @@
     @if(user.isAgent){
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+            <a id="change-client-link" data-journey-click="select-client:change:change-business-details" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
         </p>
     }
 
