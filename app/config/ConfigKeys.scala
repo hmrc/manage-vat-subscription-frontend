@@ -37,6 +37,7 @@ object ConfigKeys {
   val vatSubscription: String = "vat-subscription"
 
   val simpleAuthFeature: String = "features.simpleAuth.enabled"
+  val agentAccessFeature: String = "features.agentAccess.enabled"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
