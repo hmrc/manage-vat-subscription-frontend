@@ -43,7 +43,7 @@
 
   @helpers.form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
 
-      <div class="form-group" id="period-option">
+      <div class="form-group" data-metrics="return-frequency:view:change-vat-return-dates;@user.isAgent" id="period-option">
           @radioGroup(
               field = form("period-option"),
               choices = Seq(Jan, Feb, Mar, Monthly).filterNot(_ == current).map { option =>
@@ -54,7 +54,13 @@
           )
       </div>
 
-      <button class="button" type ="submit" id="continue">@messages("common.continue")</button>
+      <button
+              onclick="clickToGA('return-frequency','continue','change-vat-return-dates', @user.isAgent)"
+              class="button"
+              type ="submit"
+              id="continue">
+          @messages("common.continue")
+      </button>
 
   }
 

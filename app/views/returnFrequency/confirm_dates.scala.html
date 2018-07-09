@@ -28,14 +28,34 @@
 
   @headings(messages("confirm_return_frequency.heading"))
 
-  <p id="p1" class="form-group"><strong class="bold">@messages("confirm_return_frequency.newDates")</strong> @messages(s"return_frequency.${model.id}")</p>
+  <p id="p1"
+     data-metrics="return-frequency:view:confirm-vat-return-dates;@user.isAgent"
+     class="form-group">
+      <strong class="bold">
+          @messages("confirm_return_frequency.newDates")
+      </strong>
+      @messages(s"return_frequency.${model.id}")
+  </p>
 
-  <p class="form-group"><a id="change-vat-link" href="@controllers.returnFrequency.routes.ChooseDatesController.show()" type="submit">@messages("confirm_return_frequency.changeLink")</a></p>
+  <p class="form-group">
+      <a id="change-vat-link"
+         onclick="clickToGA('return-frequency','change','confirm-vat-return-dates', @user.isAgent)"
+         href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+         type="submit">
+          @messages("confirm_return_frequency.changeLink")
+      </a>
+  </p>
 
   <p id="p2">@messages("confirm_return_frequency.p2")</p>
 
   @form(action = controllers.returnFrequency.routes.ConfirmVatDatesController.submit()) {
-    <button class="button" type ="submit" id="continue-button">@messages("common.confirmAndContinue")</button>
+    <button
+            class="button"
+            onclick="clickToGA('return-frequency','confirm','confirm-vat-return-dates', @user.isAgent)"
+            type ="submit"
+            id="continue-button">
+        @messages("common.confirmAndContinue")
+    </button>
   }
 
 }

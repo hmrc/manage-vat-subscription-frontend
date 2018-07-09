@@ -5,9 +5,9 @@ $(document).ready($(function () {
         var splitOnUser = metrics.split(';');
         var parts = splitOnUser[0].split(':');
         if(splitOnUser[1] == "true"){
-            ga('send', 'event', "agent_" + parts[0], parts[1], parts[2]);
+            console.log("ga('send', 'event', " + 'agent_' + parts[0] + ", " + parts[1] + ", " + parts[2] + ")");
         } else {
-            ga('send', 'event', parts[0], parts[1], parts[2]);
+            console.log("ga('send', 'event'," + parts[0] + ", " + parts[1] + ", " + parts[2] + ")");
         }
     });
 
@@ -15,8 +15,8 @@ $(document).ready($(function () {
 
 function clickToGA(category, action, label, isAgent) {
     if (isAgent) {
-        ga('send', 'event', "agent_" + category, action, label);
+        console.log("ga('send', 'event', " + 'agent_' + category + ", " + action + ", " + label + ")");
     } else {
-        ga('send', 'event', category, action, label);
+        console.log("ga('send', 'event', " + category + ", " + action + ", " + label + ")");
     }
 }
