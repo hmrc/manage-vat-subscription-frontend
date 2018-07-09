@@ -16,4 +16,4 @@
 
 package models
 
-case class FeatureSwitchModel(simpleAuthEnabled: Boolean, agentAccessFeature: Boolean)
+case class FeatureSwitchModel(simpleAuthEnabled: Boolean, agentAccessEnabled: Boolean)
