@@ -92,7 +92,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
         "return a Right with an AddressLookupOnRampModel" in {
           val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
           setupMockHttpPost(s"${frontendAppConfig.addressLookupService}/api/init")(successfulResponse)
-          await(initaliseJourneyResult) shouldBe Right(AddressLookupOnRampModel(continueUrl))
+          await(initaliseJourneyResult) shouldBe successfulResponse
         }
       }
 
@@ -101,7 +101,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
         "return an Left with an ErrorModel" in {
           val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
           setupMockHttpPost(s"${frontendAppConfig.addressLookupService}/api/init")(failedResponse)
-          await(initaliseJourneyResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Downstream error returned from Address Lookup"))
+          await(initaliseJourneyResult) shouldBe failedResponse
         }
       }
     }

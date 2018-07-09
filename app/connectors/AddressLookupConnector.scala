@@ -20,13 +20,11 @@ import javax.inject.{Inject, Singleton}
 
 import config.FrontendAppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
-import connectors.httpParsers.ResponseHttpParser.{HttpGetResult,HttpPostResult}
-import models.core.ErrorModel
+import connectors.httpParsers.InitialiseAddressLookupHttpParser._
+import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.Logger
-import play.api.http.HeaderNames._
-import play.api.http.Status
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,20 +38,9 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
 
     val url = s"${config.addressLookupService}/api/init"
 
-    http.POST[AddressLookupJsonBuilder,HttpResponse](url,addressLookupJsonBuilder) map { resp =>
-      resp.status match {
-        case Status.ACCEPTED =>
-          resp.header(LOCATION) match {
-            case Some(redirectUrl) => Right(AddressLookupOnRampModel(redirectUrl))
-            case _ =>
-              Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Response Header did not contain location redirect")
-              Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
-          }
-        case status =>
-          Logger.warn(s"[AddressLookupConnector][initialiseJourney]: Unexpected Response, Status $status returned")
-          Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
-      }
-    }
+    http.POST[AddressLookupJsonBuilder, HttpPostResult[AddressLookupOnRampModel]](
+      url,addressLookupJsonBuilder
+    )(implicitly, InitialiseAddressLookupReads, hc, ec)
   }
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupService}/api/confirmed?id=$id"
