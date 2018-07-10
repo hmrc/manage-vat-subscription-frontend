@@ -18,7 +18,7 @@ package assets.messages
 
 object NotSignedUpPageMessages {
 
-  val title = "Change of business details"
+  val title = "You can’t use this service yet"
   val pageHeading = "You can’t use this service yet"
   val p1 = "This service is only available to some limited companies and sole traders."
   val p2= "You’ll be able to sign up for this service by April 2019."
