@@ -23,11 +23,16 @@
 
     @breadcrumb()
 
-    <h1 class="heading-large">@messages("not_signed_up.heading")</h1>
+    <h1 data-metrics="unauthorised:view:not-enrolled" class="heading-large">@messages("not_signed_up.heading")</h1>
 
     <p>@messages("not_signed_up.p1")</p>
 
     <p>@messages("not_signed_up.p2")</p>
 
-    <a href="@routes.SignOutController.signOut(true)" class="button" role="button">@messages("base.sign-out")</a>
+    <a data-journey-click="unauthorised:sign-out:not-enrolled"
+       href="@routes.SignOutController.signOut(true)"
+       class="button"
+       role="button">
+        @messages("base.sign-out")
+    </a>
 }

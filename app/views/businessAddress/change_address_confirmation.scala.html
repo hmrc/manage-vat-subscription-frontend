@@ -21,7 +21,7 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <div class="govuk-box-highlight">
+    <div data-metrics="business-address:view:change-business-address-confirmation;@user.isAgent" class="govuk-box-highlight">
         <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
     </div>
 
@@ -34,10 +34,19 @@
     @if(user.isAgent){
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+            <a data-journey-click="select-client:change:change-business-address-confirmation"
+               id="change-client-link"
+               href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+                @messages("common.agent.changeClient.link")</a>.
         </p>
     }
 
-    <a id="finish" href='@controllers.routes.CustomerCircumstanceDetailsController.show()' class="button" type="submit">@messages("common.finish")</a>
+    <a onclick="clickToGA('business-address','finish','change-business-address-confirmation', @user.isAgent)"
+       id="finish"
+       href='@controllers.routes.CustomerCircumstanceDetailsController.show()'
+       class="button"
+       type="submit">
+        @messages("common.finish")
+    </a>
 
 }

@@ -26,7 +26,10 @@
     appConfig = appConfig) {
 
     <header class="page-heading">
-        <h1 class="heading-large">@messages("confirm_client_vrn.heading")</h1>
+        <h1 data-metrics="select-client:view:confirm-client-vat-number"
+            class="heading-large">
+            @messages("confirm_client_vrn.heading")
+        </h1>
     </header>
 
     <h2 class="bold-medium">@messages("confirm_client_vrn.name")</h2>
@@ -35,8 +38,17 @@
     <h3 class="bold-medium">@messages("confirm_client_vrn.vrn")</h3>
     <p>@vrn</p>
 
-    <a href="@controllers.routes.CustomerCircumstanceDetailsController.show()" class="button form-group">@messages("common.confirmAndContinue")</a>
+    <a data-journey-click="select-client:change:confirm-client-vat-number"
+       href="@controllers.routes.CustomerCircumstanceDetailsController.show()"
+       class="button form-group">
+        @messages("common.confirmAndContinue")
+    </a>
 
-    <p><a href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("confirm_client_vrn.edit")</a></p>
+    <p>
+        <a data-journey-click="select-client:confirm:confirm-client-vat-number"
+           href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+            @messages("confirm_client_vrn.edit")
+        </a>
+    </p>
 
 }
