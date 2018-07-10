@@ -34,7 +34,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestPaymentsConnector extends PaymentsConnector(mockHttp,frontendAppConfig)
+  object TestPaymentsConnector extends PaymentsConnector(mockHttp,mockConfig)
 
   "PaymentsConnector" when {
 
@@ -48,7 +48,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
         "return a Right with a PaymentRedirectModel" in {
           val successfulResponse = Right(PaymentRedirectModel(continueUrl))
-          setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
+          setupMockHttpPost(s"${mockConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(successfulResponse)
           await(postPaymentsDetailsResult) shouldBe Right(PaymentRedirectModel(continueUrl))
         }
       }
@@ -57,7 +57,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
         "return an Left with an ErrorModel" in {
           val failedResponse = Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Bad things"))
-          setupMockHttpPost(s"${frontendAppConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(failedResponse)
+          setupMockHttpPost(s"${mockConfig.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account")(failedResponse)
           await(postPaymentsDetailsResult) shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Bad things"))
         }
       }

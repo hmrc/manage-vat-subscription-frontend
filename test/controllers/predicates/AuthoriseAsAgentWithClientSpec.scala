@@ -16,7 +16,6 @@
 
 package controllers.predicates
 
-import config.FrontendAppConfig
 import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.Results.Ok
@@ -33,8 +32,6 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
         Future.successful(Ok(s"test ${user.vrn}"))
     }
 
-  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
-
   "The AuthoriseAsAgentWithClientSpec" when {
 
     "Agent access is enabled" when {
@@ -42,7 +39,6 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
       "the agent is authorised with a Client VRN in session" should {
 
         "return 200" in {
-          mockAppConfig.features.agentAccess(true)
           mockAgentAuthorised()
           val result = target(fakeRequestWithClientsVRN)
           status(result) shouldBe Status.OK
@@ -54,7 +50,6 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
         lazy val result = target(request)
 
         "return 303 (SEE_OTHER) redirect" in {
-          mockAppConfig.features.agentAccess(true)
           mockAgentAuthorised()
           status(result) shouldBe Status.SEE_OTHER
         }
@@ -67,7 +62,6 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
       "the agent is not authenticated" should {
 
         "return 401 (Unauthorised)" in {
-          mockAppConfig.features.agentAccess(true)
           mockMissingBearerToken()
           val result = target(fakeRequestWithClientsVRN)
           status(result) shouldBe Status.UNAUTHORIZED
@@ -77,7 +71,6 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
       "the agent is not authorised" should {
 
         "return 403 (Forbidden)" in {
-          mockAppConfig.features.agentAccess(true)
           mockUnauthorised()
           val result = target(fakeRequestWithClientsVRN)
           status(result) shouldBe Status.FORBIDDEN
@@ -88,8 +81,8 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
     "Agent access is disabled" should {
 
       "show an error page" in {
-        mockAppConfig.features.agentAccess(false)
-        mockAgentAuthorised
+        mockConfig.features.agentAccess(false)
+        mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
       }

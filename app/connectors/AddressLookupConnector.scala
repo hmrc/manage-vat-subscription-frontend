@@ -16,12 +16,11 @@
 
 package connectors
 
-import javax.inject.{Inject, Singleton}
-
-import config.FrontendAppConfig
+import config.AppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
 import connectors.httpParsers.InitialiseAddressLookupHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
+import javax.inject.{Inject, Singleton}
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
@@ -31,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupConnector @Inject()(val http: HttpClient,
-                                       val config: FrontendAppConfig) {
+                                       val config: AppConfig) {
 
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {

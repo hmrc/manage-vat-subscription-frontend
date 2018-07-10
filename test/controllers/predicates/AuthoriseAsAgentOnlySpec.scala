@@ -17,7 +17,6 @@
 package controllers.predicates
 
 import assets.messages.AgentUnauthorisedPageMessages
-import config.FrontendAppConfig
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import org.jsoup.Jsoup
@@ -35,9 +34,6 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
     }
   }
 
-  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
-
-
   "The AuthoriseAsAgentOnlySpec" when {
 
     "Agent access is enabled" when {
@@ -47,7 +43,6 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
         "the Agent is signed up to HMRC-AS-AGENT" should {
 
           "return 200" in {
-            mockAppConfig.features.agentAccess(true)
             mockAgentAuthorised()
             val result = target(request)
             status(result) shouldBe Status.OK
@@ -110,8 +105,8 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
     "Agent access is disabled" should {
 
       "show an error page" in {
-        mockAppConfig.features.agentAccess(false)
-        mockAgentAuthorised
+        mockConfig.features.agentAccess(false)
+        mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
       }

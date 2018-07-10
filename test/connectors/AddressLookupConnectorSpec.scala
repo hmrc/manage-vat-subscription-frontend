@@ -49,7 +49,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestAddressLookupConnector extends AddressLookupConnector(mockHttp,frontendAppConfig)
+  object TestAddressLookupConnector extends AddressLookupConnector(mockHttp,mockConfig)
 
   "AddressLookupConnector" should {
 
@@ -58,7 +58,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
     "format the getAddressUrl correctly for" when {
       "calling getCustomerDetailsUrl" in {
         val testUrl = TestAddressLookupConnector.getAddressUrl(vrn)
-        testUrl shouldBe s"${frontendAppConfig.addressLookupService}/api/confirmed?id=$vrn"
+        testUrl shouldBe s"${mockConfig.addressLookupService}/api/confirmed?id=$vrn"
       }
     }
 
@@ -91,7 +91,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
         "return a Right with an AddressLookupOnRampModel" in {
           val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
-          setupMockHttpPost(s"${frontendAppConfig.addressLookupService}/api/init")(successfulResponse)
+          setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(successfulResponse)
           await(initaliseJourneyResult) shouldBe successfulResponse
         }
       }
@@ -100,7 +100,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
         "return an Left with an ErrorModel" in {
           val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
-          setupMockHttpPost(s"${frontendAppConfig.addressLookupService}/api/init")(failedResponse)
+          setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(failedResponse)
           await(initaliseJourneyResult) shouldBe failedResponse
         }
       }

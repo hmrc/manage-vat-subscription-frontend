@@ -32,8 +32,6 @@ class AuthPredicateSpec extends MockAuth {
     implicit request => Future.successful(Ok("test"))
   }
 
-  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
-
   "The AuthPredicateSpec" when {
 
     "Agent access is enabled" when {
@@ -41,7 +39,6 @@ class AuthPredicateSpec extends MockAuth {
       "the user does not have affinity group" should {
 
         "return ISE (500)" in {
-          mockAppConfig.features.agentAccess(true)
           mockUserWithoutAffinity()
           status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
         }
@@ -54,7 +51,6 @@ class AuthPredicateSpec extends MockAuth {
           "a successful authorisation result is returned from Auth" should {
 
             "return OK (200)" in {
-              mockAppConfig.features.agentAccess(true)
               mockAgentAuthorised()
               status(target(fakeRequestWithClientsVRN)) shouldBe Status.OK
             }
@@ -65,7 +61,6 @@ class AuthPredicateSpec extends MockAuth {
             lazy val result = await(target(fakeRequestWithClientsVRN))
 
             "return Forbidden (403)" in {
-              mockAppConfig.features.agentAccess(true)
               mockUnauthorised()
               status(result) shouldBe Status.FORBIDDEN
             }
@@ -81,7 +76,6 @@ class AuthPredicateSpec extends MockAuth {
           lazy val result = await(target(fakeRequestWithClientsVRN))
 
           "return Forbidden" in {
-            mockAppConfig.features.agentAccess(true)
             mockAgentWithoutEnrolment()
             status(result) shouldBe Status.FORBIDDEN
           }
@@ -98,7 +92,6 @@ class AuthPredicateSpec extends MockAuth {
         "they have an active HMRC-MTD-VAT enrolment" should {
 
           "return OK (200)" in {
-            mockAppConfig.features.agentAccess(true)
             mockIndividualAuthorised()
             status(target(request)) shouldBe Status.OK
           }
@@ -109,7 +102,6 @@ class AuthPredicateSpec extends MockAuth {
           lazy val result = await(target(request))
 
           "return Forbidden (403)" in {
-            mockAppConfig.features.agentAccess(true)
             mockIndividualWithoutEnrolment()
             status(result) shouldBe Status.FORBIDDEN
           }
@@ -124,8 +116,8 @@ class AuthPredicateSpec extends MockAuth {
     "Agent access is disabled" should {
 
       "show an error page" in {
-        mockAppConfig.features.agentAccess(false)
-        mockAgentAuthorised
+        mockConfig.features.agentAccess(false)
+        mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
       }

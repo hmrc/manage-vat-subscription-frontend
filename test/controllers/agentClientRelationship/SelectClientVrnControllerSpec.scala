@@ -45,7 +45,6 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
         lazy val document = Jsoup.parse(bodyOf(result))
 
         "return 200" in {
-          mockConfig.features.agentAccess(true)
           mockAgentAuthorised()
           status(result) shouldBe Status.OK
         }
@@ -93,7 +92,6 @@ class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
           lazy val result = TestClientVrnControllerSpec.submit(request)
 
           "return 303" in {
-            mockConfig.features.agentAccess(true)
             mockAgentAuthorised()
             status(result) shouldBe Status.SEE_OTHER
           }
