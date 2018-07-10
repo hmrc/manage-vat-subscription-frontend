@@ -64,7 +64,7 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
           Forbidden(views.html.errors.unauthorised())
       }
     } else {
-      Future.successful(Unauthorized(views.html.errors.unauthorised()))
+      Future.successful(Unauthorized(views.html.errors.agent.unauthorised()))
     }
   }
 

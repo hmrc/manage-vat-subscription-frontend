@@ -67,7 +67,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
           Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
       }
     } else {
-      Future.successful(Unauthorized(views.html.errors.unauthorised()))
+      Future.successful(Unauthorized(views.html.errors.agent.unauthorised()))
     }
   }
 }
