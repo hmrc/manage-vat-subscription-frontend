@@ -17,6 +17,7 @@
 package controllers.predicates
 
 import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, NotSignedUpPageMessages, UnauthorisedPageMessages}
+import config.FrontendAppConfig
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
@@ -31,80 +32,102 @@ class AuthPredicateSpec extends MockAuth {
     implicit request => Future.successful(Ok("test"))
   }
 
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
+
   "The AuthPredicateSpec" when {
 
-    "the user does not have affinity group" should {
+    "Agent access is enabled" when {
 
-      "return ISE (500)" in {
-        mockUserWithoutAffinity()
-        status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
+      "the user does not have affinity group" should {
+
+        "return ISE (500)" in {
+          mockAppConfig.features.agentAccess(true)
+          mockUserWithoutAffinity()
+          status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
+        }
       }
-    }
 
-    "the user is an Agent" when {
+      "the user is an Agent" when {
 
-      "the Agent has an Active HMRC-AS-AGENT enrolment" when {
+        "the Agent has an Active HMRC-AS-AGENT enrolment" when {
 
-        "a successful authorisation result is returned from Auth" should {
+          "a successful authorisation result is returned from Auth" should {
 
-          "return OK (200)" in {
-            mockAgentAuthorised()
-            status(target(fakeRequestWithClientsVRN)) shouldBe Status.OK
+            "return OK (200)" in {
+              mockAppConfig.features.agentAccess(true)
+              mockAgentAuthorised()
+              status(target(fakeRequestWithClientsVRN)) shouldBe Status.OK
+            }
+          }
+
+          "an unauthorised result is returned from Auth" should {
+
+            lazy val result = await(target(fakeRequestWithClientsVRN))
+
+            "return Forbidden (403)" in {
+              mockAppConfig.features.agentAccess(true)
+              mockUnauthorised()
+              status(result) shouldBe Status.FORBIDDEN
+            }
+
+            "render the Unauthorised page" in {
+              Jsoup.parse(bodyOf(result)).title shouldBe UnauthorisedPageMessages.title
+            }
           }
         }
 
-        "an unauthorised result is returned from Auth" should {
+        "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
           lazy val result = await(target(fakeRequestWithClientsVRN))
 
-          "return Forbidden (403)" in {
-            mockUnauthorised()
+          "return Forbidden" in {
+            mockAppConfig.features.agentAccess(true)
+            mockAgentWithoutEnrolment()
             status(result) shouldBe Status.FORBIDDEN
           }
 
-          "render the Unauthorised page" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe UnauthorisedPageMessages.title
+          "render the Unauthorised Agent page" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
           }
         }
       }
 
-      "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
-        lazy val result = await(target(fakeRequestWithClientsVRN))
+      "the user is an Individual (Principle Entity)" when {
 
-        "return Forbidden" in {
-          mockAgentWithoutEnrolment()
-          status(result) shouldBe Status.FORBIDDEN
+        "they have an active HMRC-MTD-VAT enrolment" should {
+
+          "return OK (200)" in {
+            mockAppConfig.features.agentAccess(true)
+            mockIndividualAuthorised()
+            status(target(request)) shouldBe Status.OK
+          }
         }
 
-        "render the Unauthorised Agent page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
+        "they do NOT have an active HMRC-MTD-VAT enrolment" should {
+
+          lazy val result = await(target(request))
+
+          "return Forbidden (403)" in {
+            mockAppConfig.features.agentAccess(true)
+            mockIndividualWithoutEnrolment()
+            status(result) shouldBe Status.FORBIDDEN
+          }
+
+          "render the Not Signed Up page" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe NotSignedUpPageMessages.title
+          }
         }
       }
     }
-  }
 
-  "the user is an Individual (Principle Entity)" when {
+    "Agent access is disabled" should {
 
-    "they have an active HMRC-MTD-VAT enrolment" should {
-
-      "return OK (200)" in {
-        mockIndividualAuthorised()
-        status(target(request)) shouldBe Status.OK
-      }
-    }
-
-    "they do NOT have an active HMRC-MTD-VAT enrolment" should {
-
-      lazy val result = await(target(request))
-
-      "return Forbidden (403)" in {
-        mockIndividualWithoutEnrolment()
-        status(result) shouldBe Status.FORBIDDEN
-      }
-
-      "render the Not Signed Up page" in {
-        Jsoup.parse(bodyOf(result)).title shouldBe NotSignedUpPageMessages.title
+      "show an error page" in {
+        mockAppConfig.features.agentAccess(false)
+        mockAgentAuthorised
+        val result = target(request)
+        status(result) shouldBe Status.UNAUTHORIZED
       }
     }
   }

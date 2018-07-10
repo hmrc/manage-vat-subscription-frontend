@@ -42,11 +42,15 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
     implicit val req = request
-
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
-          case (true, enrolments) => checkAgentEnrolment(enrolments, block)
+          case (true, enrolments) =>
+            if (appConfig.features.agentAccess()) {
+              checkAgentEnrolment(enrolments, block)
+            } else {
+              Future.successful(Unauthorized(views.html.errors.unauthorised()))
+            }
           case (_, enrolments) => checkVatEnrolment(enrolments, block)
         }
       case _ =>
@@ -61,6 +65,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
         Forbidden(views.html.errors.unauthorised())
     }
   }
+
 
   private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {

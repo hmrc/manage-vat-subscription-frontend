@@ -30,6 +30,7 @@ import stubs.BusinessAddressStub
 class BusinessAddressControllerISpec extends BasePageISpec {
 
   val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling BusinessAddressController.initialiseJourney" when {
 
@@ -55,6 +56,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the page for a agent signed up to agent services" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.agent.isSignedUpToAgentServices
 
         And("a url is returned from the Address Lookup Service")
@@ -74,6 +76,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "show internal server error" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.agent.isSignedUpToAgentServices
 
         And("a url is returned from the Address Lookup Service")
@@ -132,6 +135,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the ChangeAddressConfirmationPage page" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.agent.isSignedUpToAgentServices
 
         And("An address is returned address lookup service")
@@ -160,6 +164,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         "vat-subscription does not return a SubscriptionUpdateResponseModel" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")
@@ -181,6 +186,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         "vat-subscription does not return a CircumstanceDetails model" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")
@@ -202,6 +208,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         "Address Lookup returns an ErrorModel" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")

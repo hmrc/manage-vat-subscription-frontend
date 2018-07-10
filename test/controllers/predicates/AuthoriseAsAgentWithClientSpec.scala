@@ -16,11 +16,11 @@
 
 package controllers.predicates
 
+import config.FrontendAppConfig
 import mocks.MockAuth
-import models.User
 import play.api.http.Status
-import play.api.mvc.{Action, AnyContent, Result}
 import play.api.mvc.Results.Ok
+import play.api.mvc.{Action, AnyContent}
 import play.api.test.Helpers._
 
 import scala.concurrent.Future
@@ -33,48 +33,66 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
         Future.successful(Ok(s"test ${user.vrn}"))
     }
 
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
+
   "The AuthoriseAsAgentWithClientSpec" when {
 
-    "the agent is authorised with a Client VRN in session" should {
+    "Agent access is enabled" when {
 
-      "return 200" in {
-        mockAgentAuthorised()
-        val result = target(fakeRequestWithClientsVRN)
-        status(result) shouldBe Status.OK
+      "the agent is authorised with a Client VRN in session" should {
+
+        "return 200" in {
+          mockAppConfig.features.agentAccess(true)
+          mockAgentAuthorised()
+          val result = target(fakeRequestWithClientsVRN)
+          status(result) shouldBe Status.OK
+        }
+      }
+
+      "an agent has not selected their Client (No Client VRN in session)" should {
+
+        lazy val result = target(request)
+
+        "return 303 (SEE_OTHER) redirect" in {
+          mockAppConfig.features.agentAccess(true)
+          mockAgentAuthorised()
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the Select Your Client controller" in {
+          redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+        }
+      }
+
+      "the agent is not authenticated" should {
+
+        "return 401 (Unauthorised)" in {
+          mockAppConfig.features.agentAccess(true)
+          mockMissingBearerToken()
+          val result = target(fakeRequestWithClientsVRN)
+          status(result) shouldBe Status.UNAUTHORIZED
+        }
+      }
+
+      "the agent is not authorised" should {
+
+        "return 403 (Forbidden)" in {
+          mockAppConfig.features.agentAccess(true)
+          mockUnauthorised()
+          val result = target(fakeRequestWithClientsVRN)
+          status(result) shouldBe Status.FORBIDDEN
+        }
       }
     }
 
-    "an agent has not selected their Client (No Client VRN in session)" should {
+    "Agent access is disabled" should {
 
-      lazy val result = target(request)
-
-      "return 303 (SEE_OTHER) redirect" in {
-        mockAgentAuthorised()
-        status(result) shouldBe Status.SEE_OTHER
-      }
-
-      "redirect to the Select Your Client controller" in {
-        redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
-      }
-    }
-
-    "the agent is not authenticated" should {
-
-      "return 401 (Unauthorised)" in {
-        mockMissingBearerToken()
-        val result = target(fakeRequestWithClientsVRN)
+      "show an error page" in {
+        mockAppConfig.features.agentAccess(false)
+        mockAgentAuthorised
+        val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
       }
     }
-
-    "the agent is not authorised" should {
-
-      "return 403 (Forbidden)" in {
-        mockUnauthorised()
-        val result = target(fakeRequestWithClientsVRN)
-        status(result) shouldBe Status.FORBIDDEN
-      }
-    }
   }
-
 }

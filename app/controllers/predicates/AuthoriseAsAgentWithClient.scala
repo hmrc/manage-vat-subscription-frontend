@@ -47,23 +47,27 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
     implicit val req = request
-    request.session.get(SessionKeys.CLIENT_VRN) match {
-      case Some(vrn) =>
-        Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
-        enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
-          case _ ~ allEnrolments =>
-            block(User(vrn, active = true, arn(allEnrolments)))
-        } recover {
-          case _: NoActiveSession =>
-            Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, rendering Session Timeout")
-            Unauthorized(views.html.errors.sessionTimeout())
-          case _: AuthorisationException =>
-            Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
-            Forbidden(views.html.errors.agent.notAuthorisedForClient())
-        }
-      case _ =>
-        Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
-        Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
+    if(appConfig.features.agentAccess()) {
+      request.session.get(SessionKeys.CLIENT_VRN) match {
+        case Some(vrn) =>
+          Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
+          enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+            case _ ~ allEnrolments =>
+              block(User(vrn, active = true, arn(allEnrolments)))
+          } recover {
+            case _: NoActiveSession =>
+              Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, rendering Session Timeout")
+              Unauthorized(views.html.errors.sessionTimeout())
+            case _: AuthorisationException =>
+              Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
+              Forbidden(views.html.errors.agent.notAuthorisedForClient())
+          }
+        case _ =>
+          Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
+          Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
+      }
+    } else {
+      Future.successful(Unauthorized(views.html.errors.unauthorised()))
     }
   }
 }
