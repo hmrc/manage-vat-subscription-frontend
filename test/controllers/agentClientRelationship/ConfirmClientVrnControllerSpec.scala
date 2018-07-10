@@ -50,6 +50,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           lazy val document = Jsoup.parse(bodyOf(result))
 
           "return 200" in {
+            mockConfig.features.agentAccess(true)
             mockAgentAuthorised()
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             status(result) shouldBe Status.OK
@@ -71,6 +72,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           lazy val document = Jsoup.parse(bodyOf(result))
 
           "return 200" in {
+            mockConfig.features.agentAccess(true)
             mockAgentAuthorised()
             mockCustomerDetailsError()
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -106,6 +108,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           lazy val document = Jsoup.parse(bodyOf(result))
 
           "return status redirect SEE_OTHER (303)" in {
+            mockConfig.features.agentAccess(true)
             mockAgentAuthorised()
             status(result) shouldBe Status.SEE_OTHER
           }
@@ -128,6 +131,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     "the user is not authenticated" should {
 
       "return 401 (Unauthorised)" in {
+        mockConfig.features.agentAccess(true)
         mockMissingBearerToken()
         val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithClientsVRN)
         status(result) shouldBe Status.UNAUTHORIZED
