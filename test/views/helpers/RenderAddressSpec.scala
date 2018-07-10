@@ -35,7 +35,7 @@ class RenderAddressSpec extends ViewBaseSpec {
         "GB"
       )
 
-      lazy val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
+      lazy val view = views.html.helpers.render_address(address)(messages, mockConfig)
       lazy val document = Jsoup.parse(view.body)
 
 
@@ -53,7 +53,7 @@ class RenderAddressSpec extends ViewBaseSpec {
     "Render only lines of an address that are populated" should {
       val address = PPOBAddress("1", None, None, None, None, None, "GB")
 
-      val view = views.html.helpers.render_address(address)(messages, frontendAppConfig)
+      val view = views.html.helpers.render_address(address)(messages, mockConfig)
       val document = Jsoup.parse(view.body)
 
       "Render the first address line" in {

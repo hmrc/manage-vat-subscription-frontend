@@ -18,6 +18,7 @@ package pages.returnFrequency
 
 import assets.ReturnFrequencyIntegrationTestConstants._
 import common.SessionKeys
+import config.FrontendAppConfig
 import helpers.IntegrationTestConstants.VRN
 import models.core.SubscriptionUpdateResponseModel
 import pages.BasePageISpec
@@ -32,6 +33,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
   val path = "/confirm-vat-return-dates"
   val sessionWithReturnFrequency: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, SessionKeys.RETURN_FREQUENCY -> Jan)
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling ConfirmVatDatesController.show" when {
 
@@ -53,6 +55,8 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       }
 
       "render the page for a agent signed up to agent services" in {
+        mockAppConfig.features.agentAccess(true)
+
         given.agent.isSignedUpToAgentServices
 
         When("I call to show the Customer Circumstances page")
@@ -115,6 +119,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       "if a valid ReturnPeriod is returned" should {
 
         "render the ChangeReturnFrequencyConfirmation page" in {
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
           ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
@@ -134,6 +139,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       "if an invalid model is posted" should {
 
         "Render the Internal Server Error page" in {
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
           And("I stub an error response from the Payments service")
           ReturnFrequencyStub.putSubscriptionError()
@@ -154,6 +160,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
         "render the Agent Unauthorised page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
           ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))

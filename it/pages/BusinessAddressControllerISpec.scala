@@ -17,6 +17,7 @@
 package pages
 
 import common.SessionKeys
+import config.FrontendAppConfig
 import helpers.IntegrationTestConstants.VRN
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
@@ -29,6 +30,7 @@ import stubs.BusinessAddressStub
 class BusinessAddressControllerISpec extends BasePageISpec {
 
   val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling BusinessAddressController.initialiseJourney" when {
 
@@ -72,10 +74,11 @@ class BusinessAddressControllerISpec extends BasePageISpec {
     "An Error Model is returned from Address Lookup" should {
 
       "show internal server error" in {
+
         given.agent.isSignedUpToAgentServices
 
         And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(INTERNAL_SERVER_ERROR,AddressLookupOnRampModel("redirect/url"))
+        BusinessAddressStub.postInitJourney(BAD_REQUEST,AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
         val res = show(VRN)
@@ -130,6 +133,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the ChangeAddressConfirmationPage page" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.agent.isSignedUpToAgentServices
 
         And("An address is returned address lookup service")

@@ -58,6 +58,7 @@ trait AppConfig extends ServicesConfig {
   val host: String
   val timeoutPeriod: Int
   val timeoutCountdown: Int
+  val vatSubscriptionUrl: String
 }
 
 @Singleton
@@ -84,14 +85,14 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
 
-  lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
+  override lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String =
     ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.show().url).encodedUrl
 
   private lazy val signInOrigin = getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
-  lazy val vatSubscriptionUrl:String = baseUrl(Keys.vatSubscription)
+  override lazy val vatSubscriptionUrl:String = baseUrl(Keys.vatSubscription)
 
   override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
 
@@ -114,12 +115,12 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
 
-  lazy val bankAccountCoc: String = baseUrl(Keys.bankAccountCoc)
+  override lazy val bankAccountCoc: String = baseUrl(Keys.bankAccountCoc)
 
   override lazy val btaUrl: String = getString("business-tax-account.host") + "/business-account"
   override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
-  lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
+  override lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
     case _ => throw new Exception("Country codes file not found")
   }

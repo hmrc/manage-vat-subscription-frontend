@@ -53,6 +53,7 @@ featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
+features.agentAccess.enabled = Agent access
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details

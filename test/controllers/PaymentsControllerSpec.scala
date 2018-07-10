@@ -32,7 +32,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     mockAuthPredicate,
     serviceErrorHandler,
     mockPaymentsService,
-    frontendAppConfig
+    mockConfig
   )
 
   "Calling the sendToPayments method for an individual" when {

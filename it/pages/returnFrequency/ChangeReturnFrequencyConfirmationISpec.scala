@@ -16,6 +16,7 @@
 
 package pages.returnFrequency
 
+import config.FrontendAppConfig
 import helpers.IntegrationTestConstants.clientVRN
 import pages.BasePageISpec
 import play.api.i18n.Messages
@@ -25,6 +26,7 @@ import play.api.test.Helpers._
 class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
   val path = "/confirmation-vat-return-dates"
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling .show" when {
 
@@ -52,6 +54,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "render the return frequency confirmation page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
@@ -71,6 +74,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "redirect to Enter Client VRN page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
@@ -90,6 +94,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "render the unauthorised error page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
