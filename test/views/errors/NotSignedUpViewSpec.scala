@@ -32,7 +32,6 @@ class NotSignedUpViewSpec extends ViewBaseSpec {
       document.title shouldBe Messages.title
     }
 
- 
     "have a the correct page heading" in {
       elementText("#content h1") shouldBe Messages.pageHeading
     }
