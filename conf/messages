@@ -44,7 +44,7 @@ unauthorised.agentForClient.authoriseForClient = authorise you as their agent
 unauthorised.agentForClient.enterDetails = If you think you have entered the wrong details you can
 unauthorised.agentForClient.tryAgain = try again
 
-not_signed_up.title = Change of business details
+not_signed_up.title = You can’t use this service yet
 not_signed_up.heading = You can’t use this service yet
 not_signed_up.p1 = This service is only available to some limited companies and sole traders.
 not_signed_up.p2 = You’ll be able to sign up for this service by April 2019.
@@ -53,6 +53,7 @@ featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
+features.agentAccess.enabled = Agent access
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details

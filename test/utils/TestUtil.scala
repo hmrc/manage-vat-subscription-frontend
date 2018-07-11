@@ -20,6 +20,7 @@ import common.SessionKeys
 import config.{FrontendAppConfig, ServiceErrorHandler}
 import mocks.MockAppConfig
 import models.User
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.inject.Injector
@@ -32,14 +33,19 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with MaterializerSupport {
+trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach with MaterializerSupport {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    mockConfig.features.simpleAuth(false)
+    mockConfig.features.agentAccess(true)
+  }
 
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
   implicit lazy val mockConfig: MockAppConfig = new MockAppConfig(app.configuration)
-  implicit lazy val frontendAppConfig: FrontendAppConfig = injector.instanceOf[FrontendAppConfig]
   implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
 
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()

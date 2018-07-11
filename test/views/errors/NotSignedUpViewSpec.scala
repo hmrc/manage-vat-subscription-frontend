@@ -32,15 +32,6 @@ class NotSignedUpViewSpec extends ViewBaseSpec {
       document.title shouldBe Messages.title
     }
 
-    "display a breadcrumb trail which" in {
-      elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
-      elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
-      elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
-
-      element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
-      element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
-    }
-
     "have a the correct page heading" in {
       elementText("#content h1") shouldBe Messages.pageHeading
     }

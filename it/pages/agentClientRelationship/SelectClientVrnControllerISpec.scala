@@ -17,6 +17,7 @@
 package pages.agentClientRelationship
 
 import common.SessionKeys
+import config.FrontendAppConfig
 import forms.ClientVrnForm
 import helpers.IntegrationTestConstants._
 import helpers.SessionCookieCrumbler
@@ -29,6 +30,7 @@ import play.api.test.Helpers._
 class SelectClientVrnControllerISpec extends BasePageISpec {
 
   val path = "/client-vat-number"
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling the .show action" when {
 
@@ -40,6 +42,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         "Render the Select a Client page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           When("I call the show Select Client VRN page")
@@ -57,6 +60,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         "Render the Sign up for Agent Services unauthorised view" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call the show Select Client VRN page")
@@ -74,6 +78,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
       "Redirect to the Customer Details page" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.user.isAuthenticated
 
         When("I call the show Select Client VRN page")
@@ -101,6 +106,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
           "Redirect to the Confirm Client page and add vrn to session" in {
 
+            mockAppConfig.features.agentAccess(true)
             given.agent.isSignedUpToAgentServices
 
             When("I submit the Client VRN page with valid data")
@@ -119,6 +125,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
           "Return a Bad Request and render the view with errors" in {
 
+            mockAppConfig.features.agentAccess(true)
             given.agent.isSignedUpToAgentServices
 
             When("I submit the Client VRN page with invalid data")
@@ -145,6 +152,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         "render the Agent Unauthorised page" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I submit the Client VRN page with valid data")
@@ -162,6 +170,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
       "redirect to the Customer Details home page" in {
 
+        mockAppConfig.features.agentAccess(true)
         given.user.isAuthenticated
 
         When("I submit the Client VRN page with valid data")

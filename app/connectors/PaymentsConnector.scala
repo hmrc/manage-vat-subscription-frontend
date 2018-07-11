@@ -16,7 +16,7 @@
 
 package connectors
 
-import config.FrontendAppConfig
+import config.AppConfig
 import connectors.httpParsers.PaymentsHttpParser.PaymentsReads
 import connectors.httpParsers.ResponseHttpParser._
 import javax.inject.{Inject, Singleton}
@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PaymentsConnector @Inject()(val http: HttpClient,
-                                  val config: FrontendAppConfig) {
+                                  val config: AppConfig) {
 
   def postPaymentsDetails(paymentStart: PaymentStartModel)
                          (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[PaymentRedirectModel]] = {

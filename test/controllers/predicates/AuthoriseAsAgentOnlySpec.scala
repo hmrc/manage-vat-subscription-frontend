@@ -36,66 +36,79 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
   "The AuthoriseAsAgentOnlySpec" when {
 
-    "the user is an Agent" when {
+    "Agent access is enabled" when {
 
-      "the Agent is signed up to HMRC-AS-AGENT" should {
+      "the user is an Agent" when {
 
-        "return 200" in {
-          mockAgentAuthorised()
-          val result = target(request)
-          status(result) shouldBe Status.OK
-          await(bodyOf(result)) shouldBe "test"
+        "the Agent is signed up to HMRC-AS-AGENT" should {
+
+          "return 200" in {
+            mockAgentAuthorised()
+            val result = target(request)
+            status(result) shouldBe Status.OK
+            await(bodyOf(result)) shouldBe "test"
+          }
+        }
+
+        "the Agent is not signed up to HMRC_AS_AGENT" should {
+
+          lazy val result = target(request)
+
+          "return Forbidden (403)" in {
+            mockAgentWithoutEnrolment()
+            status(result) shouldBe Status.FORBIDDEN
+          }
+
+          "render the Unauthorised Agent page" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
+          }
         }
       }
 
-      "the Agent is not signed up to HMRC_AS_AGENT" should {
+      "the user is not an Agent" should {
 
-        lazy val result = target(request)
+        "redirect to the Customer Details Home Page SEE_OTHER (303)" in {
+          mockIndividualAuthorised()
+          val result = target(request)
+          status(result) shouldBe Status.SEE_OTHER
+        }
+      }
 
-        "return Forbidden (403)" in {
-          mockAgentWithoutEnrolment()
+      "the user does not have an affinity group" should {
+
+        "render an ISE (500)" in {
+          mockUserWithoutAffinity()
+          val result = target(request)
+          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        }
+      }
+
+      "a user with no active session" should {
+
+        "return 401 (Unauthorized)" in {
+          mockMissingBearerToken()
+          val result = target(request)
+          status(result) shouldBe Status.UNAUTHORIZED
+        }
+      }
+
+      "a user with an authorisation exception" should {
+
+        "return 403 (Forbidden)" in {
+          mockUnauthorised()
+          val result = target(request)
           status(result) shouldBe Status.FORBIDDEN
         }
-
-        "render the Unauthorised Agent page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
-        }
       }
     }
 
-    "the user is not an Agent" should {
+    "Agent access is disabled" should {
 
-      "redirect to the Customer Details Home Page SEE_OTHER (303)" in {
-        mockIndividualAuthorised()
-        val result = target(request)
-        status(result) shouldBe Status.SEE_OTHER
-      }
-    }
-
-    "the user does not have an affinity group" should {
-
-      "render an ISE (500)" in {
-        mockUserWithoutAffinity()
-        val result = target(request)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-    }
-
-    "a user with no active session" should {
-
-      "return 401 (Unauthorized)" in {
-        mockMissingBearerToken()
+      "show an error page" in {
+        mockConfig.features.agentAccess(false)
+        mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
-      }
-    }
-
-    "a user with an authorisation exception" should {
-
-      "return 403 (Forbidden)" in {
-        mockUnauthorised()
-        val result = target(request)
-        status(result) shouldBe Status.FORBIDDEN
       }
     }
   }

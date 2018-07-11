@@ -16,6 +16,7 @@
 
 package pages
 
+import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
 import models.customerAddress.CountryCodes
 import play.api.i18n.Messages
@@ -26,6 +27,7 @@ import stubs.VatSubscriptionStub
 class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
   val path = "/change-business-details"
+  lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling the .show action" when {
 
@@ -41,6 +43,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Customer Circumstances page with correct details shown" in {
 
+              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -80,6 +83,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Customer Circumstances page with only the business name shown" in {
 
+              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with minimum details returned for an Organisation")
@@ -110,6 +114,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Customer Circumstances page with correct details shown" in {
 
+              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -149,6 +154,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Customer Circumstances page with only the business name shown" in {
 
+              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -179,6 +185,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Internal Server Error page" in {
 
+              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -200,6 +207,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           "Redirect to the Select a Client page" in {
 
+            mockAppConfig.features.agentAccess(true)
             given.agent.isSignedUpToAgentServices
 
             When("I call to show the Customer Circumstances page without a VRN being in session for the Client")
@@ -217,6 +225,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
         "Render the unauthorised view asking them to sign up for Agent Services" in {
 
+          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call to show the Customer Circumstances page")

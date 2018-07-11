@@ -72,7 +72,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
           elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(frontendAppConfig).get
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
         }
 
         "has a change link" which {
@@ -218,7 +218,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
           elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(frontendAppConfig).get
+            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
         }
 
         "has Pending instead of a change link" which {

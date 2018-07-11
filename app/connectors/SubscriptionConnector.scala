@@ -16,13 +16,12 @@
 
 package connectors
 
-import javax.inject.{Inject, Singleton}
-
-import config.FrontendAppConfig
+import config.AppConfig
 import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
-import models.circumstanceInfo.{CircumstanceDetails, PPOB}
+import javax.inject.{Inject, Singleton}
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.ReturnPeriod
 import models.updatePPOB.UpdatePPOB
@@ -34,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SubscriptionConnector @Inject()(val http: HttpClient,
-                                      val config: FrontendAppConfig) {
+                                      val config: AppConfig) {
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 

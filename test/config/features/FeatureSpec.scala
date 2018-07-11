@@ -28,17 +28,21 @@ class FeaturesSpec extends PlaySpec with GuiceOneAppPerSuite with BeforeAndAfter
   override def beforeEach(): Unit = {
     super.beforeEach()
     features.simpleAuth(false)
+    features.agentAccess(true)
   }
 
-  "The Auth Feature" should {
+  "The Auth Features" should {
 
     "return its current state" in {
       features.simpleAuth() mustBe false
+      features.agentAccess() mustBe true
     }
 
     "switch to a new state" in {
       features.simpleAuth(true)
+      features.agentAccess(false)
       features.simpleAuth() mustBe true
+      features.agentAccess() mustBe false
     }
   }
 }

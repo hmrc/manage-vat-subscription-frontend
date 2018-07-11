@@ -29,8 +29,8 @@
               <legend>
                   <h1 class="heading-medium">@messages("featureSwitch.heading")</h1>
               </legend>
-
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.simpleAuthFeature), messages(ConfigKeys.simpleAuthFeature))
+              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.agentAccessFeature), messages(ConfigKeys.agentAccessFeature))
           </fieldset>
       </div>
 

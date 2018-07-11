@@ -22,10 +22,10 @@ class CountryCodesSpec extends TestUtil {
 
   "CountryCodeTest" should {
     "successfully convert a country code to a country" in {
-      CountryCodes.getCountry("GB")(frontendAppConfig) should be (Some("United Kingdom"))
+      CountryCodes.getCountry("GB")(mockConfig) should be (Some("United Kingdom"))
     }
     "return None if a country code is not found" in {
-      CountryCodes.getCountry("ZZ")(frontendAppConfig) should be (None)
+      CountryCodes.getCountry("ZZ")(mockConfig) should be (None)
     }
   }
 }

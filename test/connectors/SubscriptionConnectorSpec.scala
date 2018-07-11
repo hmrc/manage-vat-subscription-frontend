@@ -34,7 +34,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp,frontendAppConfig)
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp,mockConfig)
 
   "SubscriptionConnector" when {
 
@@ -42,7 +42,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
       "format the url correctly" in {
         val testUrl = TestSubscriptionConnector.getCustomerDetailsUrl(vrn)
-        testUrl shouldBe s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
+        testUrl shouldBe s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
       }
     }
 
@@ -75,7 +75,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       "called with a Right SubscriptionUpdateResponseModel" should {
 
         "return a SubscriptionUpdateResponseModel" in {
-          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(Right(SubscriptionUpdateResponseModel("12345")))
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(Right(SubscriptionUpdateResponseModel("12345")))
           await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
         }
       }
@@ -83,7 +83,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       "given an error" should {
 
         "return a Left with an ErrorModel" in {
-          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(errorModel)
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(errorModel)
           await(result) shouldBe errorModel
         }
       }
@@ -97,7 +97,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
         "return a SubscriptionUpdateResponseModel" in {
           val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
-          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
           await(result) shouldBe response
         }
       }
@@ -105,7 +105,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       "given an error" should {
 
         "return a Left with an ErrorModel" in {
-          setupMockHttpPut(s"${frontendAppConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(errorModel)
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(errorModel)
           await(result) shouldBe errorModel
         }
       }
