@@ -39,7 +39,7 @@
 
   <p class="form-group">
       <a id="change-vat-link"
-         onclick="clickToGA('return-frequency','change','confirm-vat-return-dates', @user.isAgent)"
+         onclick="sendGAEvent('return-frequency','change','confirm-vat-return-dates', @user.isAgent)"
          href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
          type="submit">
           @messages("confirm_return_frequency.changeLink")
@@ -51,7 +51,7 @@
   @form(action = controllers.returnFrequency.routes.ConfirmVatDatesController.submit()) {
     <button
             class="button"
-            onclick="clickToGA('return-frequency','confirm','confirm-vat-return-dates', @user.isAgent)"
+            onclick="sendGAEvent('return-frequency','confirm','confirm-vat-return-dates', @user.isAgent)"
             type ="submit"
             id="continue-button">
         @messages("common.confirmAndContinue")

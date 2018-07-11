@@ -47,7 +47,7 @@
     }
 
     <a  id="finish"
-        onclick="clickToGA('return-frequency','finish','confirmation-vat-return-dates', @user.isAgent)"
+        onclick="sendGAEvent('return-frequency','finish','confirmation-vat-return-dates', @user.isAgent)"
         href="@controllers.routes.CustomerCircumstanceDetailsController.show().url"
         class="button"
         type="submit">@messages("common.finish")</a>

@@ -38,14 +38,14 @@
     <h3 class="bold-medium">@messages("confirm_client_vrn.vrn")</h3>
     <p>@vrn</p>
 
-    <a data-journey-click="select-client:change:confirm-client-vat-number"
+    <a data-journey-click="select-client:confirm:confirm-client-vat-number"
        href="@controllers.routes.CustomerCircumstanceDetailsController.show()"
        class="button form-group">
         @messages("common.confirmAndContinue")
     </a>
 
     <p>
-        <a data-journey-click="select-client:confirm:confirm-client-vat-number"
+        <a data-journey-click="select-client:change:confirm-client-vat-number"
            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("confirm_client_vrn.edit")
         </a>

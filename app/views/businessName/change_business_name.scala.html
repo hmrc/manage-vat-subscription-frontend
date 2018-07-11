@@ -41,6 +41,6 @@
 
     <p>@messages("change_business_name.p4")</p>
 
-    <a onclick="clickToGA('business-name','click-companies-house','change-business-name', @user.isAgent)" id="continue" target="_blank" href="@appConfig.govUkCohoNameChangeUrl" type="submit">@messages("change_business_name.link")</a>
+    <a onclick="sendGAEvent('business-name','click-companies-house','change-business-name', @user.isAgent)" id="continue" target="_blank" href="@appConfig.govUkCohoNameChangeUrl" type="submit">@messages("change_business_name.link")</a>
 
 }

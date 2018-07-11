@@ -41,7 +41,7 @@
         </p>
     }
 
-    <a onclick="clickToGA('business-address','finish','change-business-address-confirmation', @user.isAgent)"
+    <a onclick="sendGAEvent('business-address','finish','change-business-address-confirmation', @user.isAgent)"
        id="finish"
        href='@controllers.routes.CustomerCircumstanceDetailsController.show()'
        class="button"
