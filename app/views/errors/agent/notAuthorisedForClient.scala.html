@@ -27,15 +27,23 @@
 
     @headings(Messages("unauthorised.agentForClient.title"))
 
-    <p>
+    <p data-metrics="agent_unauthorised:view:unauthorised-for-client">
         @Messages("unauthorised.agentForClient.useThisService")
-        <a href="@appConfig.agentAuthoriseForClient">@Messages("unauthorised.agentForClient.authoriseForClient")</a>@Messages("common.fullStop")
+        <a data-journey-click="agent_unauthorised:click-authorise-as-agent:unauthorised-for-client"
+           href="@appConfig.agentAuthoriseForClient">
+            @Messages("unauthorised.agentForClient.authoriseForClient")</a>@Messages("common.fullStop")
     </p>
 
     <p>
         @Messages("unauthorised.agentForClient.enterDetails")
-        <a href="@controllers.agentClientRelationship.routes.SelectClientVrnController.show()">@Messages("unauthorised.agentForClient.tryAgain")</a>@Messages("common.fullStop")
+        <a data-journey-click="agent_unauthorised:try-again:unauthorised-for-client"
+           href="@controllers.agentClientRelationship.routes.SelectClientVrnController.show()">
+            @Messages("unauthorised.agentForClient.tryAgain")</a>@Messages("common.fullStop")
     </p>
 
-    <a class="button" href="@controllers.routes.SignOutController.signOut(authorised = false)">@Messages("base.sign-out")</a>
+    <a data-journey-click="agent_unauthorised:sign-out:unauthorised-for-client"
+       class="button"
+       href="@controllers.routes.SignOutController.signOut(authorised = false)">
+        @Messages("base.sign-out")
+    </a>
 }

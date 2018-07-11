@@ -36,6 +36,10 @@
     }
 }
 
+@defaultScriptElem = {
+    <script type="text/javascript" src=@routes.Assets.at("javascripts/ga.js")></script>
+    @scriptElem.fold(HtmlFormat.empty)(x => x)
+}
 
 @govuk_wrapper(appConfig = appConfig,
                title = title,
@@ -45,7 +49,7 @@
                contentHeader = contentHeader,
                mainContent = layouts.article(mainContent),
                serviceInfoContent = serviceInfoContent,
-               scriptElem = scriptElem,
+               scriptElem = Some(defaultScriptElem),
                serviceName = serviceName,
                showSignOut = showSignOut
 )

@@ -27,10 +27,16 @@
 
     @headings(Messages("unauthorised.agent.title"))
 
-    <p>
+    <p data-metrics="agent_unauthorised:view:not-enrolled">
         @Messages("unauthorised.agent.useThisService")
-        <a href="@appConfig.agentServicesGovUkGuidance">@Messages("unauthorised.agent.setUpAccount")</a>@Messages("common.fullStop")
+        <a data-journey-click="agent_unauthorised:click-agent-services:not-enrolled"
+           href="@appConfig.agentServicesGovUkGuidance">
+            @Messages("unauthorised.agent.setUpAccount")</a>@Messages("common.fullStop")
     </p>
 
-    <a class="button" href="@controllers.routes.SignOutController.signOut(authorised = false)">@Messages("base.sign-out")</a>
+    <a data-journey-click="agent_unauthorised:sign-out:not-enrolled"
+       class="button"
+       href="@controllers.routes.SignOutController.signOut(authorised = false)">
+        @Messages("base.sign-out")
+    </a>
 }
