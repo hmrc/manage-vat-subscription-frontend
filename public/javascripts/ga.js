@@ -1,5 +1,5 @@
 function sendGAEvent(category, action, label, isAgent) {
-    if (isAgent || isAgent == "true") {
+    if (isAgent === true || isAgent === "true") {
         ga('send', 'event', 'agent_' + category, action, label);
     } else {
         ga('send', 'event', category, action, label);
