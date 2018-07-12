@@ -18,7 +18,6 @@ package assets.messages
 
 object ReturnFrequencyMessages {
 
-  val title = "Changes in circumstances"
   val option1Jan = "January, April, July and October"
   val option2Feb = "February, May, August and November"
   val option3Mar = "March, June, September and December"

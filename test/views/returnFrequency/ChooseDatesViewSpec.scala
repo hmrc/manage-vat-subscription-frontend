@@ -33,8 +33,8 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.chooseDates(form,Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
+    s"have the correct document title of '${viewMessages.ChoosePage.heading}'" in {
+      document.title shouldBe viewMessages.ChoosePage.heading
     }
 
     s"have a the correct page heading of '${viewMessages.ChoosePage.heading}'" in {
@@ -74,8 +74,8 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.chooseDates(form,Monthly)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
+    s"have the correct document title of '${viewMessages.ChoosePage.heading}'" in {
+      document.title shouldBe viewMessages.ChoosePage.heading
     }
 
     s"have a the correct page heading of '${viewMessages.ChoosePage.heading}'" in {
