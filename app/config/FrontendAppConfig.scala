@@ -66,6 +66,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override protected def mode: Mode = environment.mode
 
+  lazy val appName: String = runModeConfiguration.getString("appName").getOrElse(throw new Exception("Missing configuration key: appName"))
+
   private lazy val contactHost: String = getString(Keys.contactFrontendService)
   private lazy val contactFormServiceIdentifier: String = "VATVC"
 

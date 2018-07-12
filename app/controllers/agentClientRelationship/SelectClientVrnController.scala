@@ -16,14 +16,18 @@
 
 package controllers.agentClientRelationship
 
+import audit.AuditService
+import audit.models.AgentAuditing.AgentAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentOnly
 import forms.ClientVrnForm
 import javax.inject.{Inject, Singleton}
+import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -32,6 +36,7 @@ import scala.concurrent.Future
 class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthoriseAsAgentOnly,
                                           val serviceErrorHandler: ServiceErrorHandler,
+                                          val auditService: AuditService,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
@@ -45,13 +50,21 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
       ClientVrnForm.form.bindFromRequest().fold(
         error => {
           Logger.debug(s"[SelectClientVrnController][submit] Error")
+
           Future.successful(BadRequest(views.html.agentClientRelationship.select_client_vrn(error)))
         },
         data => { // success path
           Logger.debug(s"[SelectClientVrnController][submit] Success")
+          
           Future.successful(Redirect(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show())
             .addingToSession(SessionKeys.CLIENT_VRN -> data.vrn))
         }
       )
   }
+
+  private def auditEstimate(user: User[_], authorisedForClient: Boolean)(implicit hc: HeaderCarrier): Unit =
+    auditService.audit(
+      AgentAuditModel(user, authorisedForClient),
+      Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+    )
 }
