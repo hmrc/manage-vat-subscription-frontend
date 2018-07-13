@@ -17,7 +17,7 @@
 package views.templates.inputs
 
 import testOnly.forms.test.TextInputForm
-import play.api.data.Field
+import play.api.data.{Field, FormError}
 import play.twirl.api.Html
 import views.html.templates.inputs.radioGroup
 import views.templates.TemplateBaseSpec
@@ -40,104 +40,123 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
     s"""
        |  <div class="multiple-choice">
        |    <input type="radio" id="$fieldName-$value" name="$fieldName" value="$value"${if (checked) " checked" else ""}>
-       |    <label for="$fieldName-$value"> $display </label>
+       |    <label for="$fieldName-$value">$display</label>
        |  </div>
       """.stripMargin
 
-  "Calling the radio group helper with an choice pre-selected" should {
-
-    "render a list of radio options with one pre-checked" in {
-      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("value2"))
-      val expectedMarkup = Html(
-        s"""
-           |  <div class="form-group">
-           |    <div class="">
-           |      <fieldset class="inline">
-           |        <legend>
-           |          <p>
-           |            $labelText
-           |          </p>
-           |        </legend>
-           |        ${generateExpectedRadioMarkup("value1", "display1")}
-           |        ${generateExpectedRadioMarkup("value2", "display2", true)}
-           |        ${generateExpectedRadioMarkup("value3", "display3")}
-           |        ${generateExpectedRadioMarkup("value4", "display4")}
-           |        ${generateExpectedRadioMarkup("value5", "display5")}
-           |      </fieldset>
-           |    </div>
-           |  </div>
-        """.stripMargin
-      )
-
-      val markup = radioGroup(field, choices, Html(labelText))
-      formatHtml(markup) shouldBe formatHtml(expectedMarkup)
-    }
-  }
-
-  "Calling the radio helper with a list of available choices" should {
+  "Calling the radio helper with no choice pre-selected" should {
 
     "render the choices as radio buttons" in {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |  <div class="form-group">
-           |    <div class="">
-           |     <fieldset class="inline">
+           |  <div>
+           |    <fieldset>
+           |      <legend class="visuallyhidden">
+           |        <h1>$labelText</h1>
+           |      </legend>
            |
-           |       <legend>
-           |          <p>
-           |            $labelText
-           |          </p>
-           |        </legend>
+           |      ${generateExpectedRadioMarkup("value1", "display1")}
+           |      ${generateExpectedRadioMarkup("value2", "display2")}
+           |      ${generateExpectedRadioMarkup("value3", "display3")}
+           |      ${generateExpectedRadioMarkup("value4", "display4")}
+           |      ${generateExpectedRadioMarkup("value5", "display5")}
            |
-           |        ${generateExpectedRadioMarkup("value1", "display1")}
-           |        ${generateExpectedRadioMarkup("value2", "display2")}
-           |        ${generateExpectedRadioMarkup("value3", "display3")}
-           |        ${generateExpectedRadioMarkup("value4", "display4")}
-           |        ${generateExpectedRadioMarkup("value5", "display5")}
-           |
-           |      </fieldset>
-           |    </div>
+           |   </fieldset>
            |  </div>
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, Html(labelText))
+      val markup = radioGroup(field, choices, labelText, None)
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
 
-  "Calling the radio helper with the stacked option enabled" should {
+  "Calling the radio group helper with a choice pre-selected" should {
 
-    "render the choices as radio buttons in a stacked layout" in {
+    "render a list of radio options with one pre-checked" in {
+      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("value2"))
+      val expectedMarkup = Html(
+        s"""
+           |  <div>
+           |     <fieldset>
+           |      <legend class="visuallyhidden">
+           |        <h1>$labelText</h1>
+           |      </legend>
+           |
+           |      ${generateExpectedRadioMarkup("value1", "display1")}
+           |      ${generateExpectedRadioMarkup("value2", "display2", checked = true)}
+           |      ${generateExpectedRadioMarkup("value3", "display3")}
+           |      ${generateExpectedRadioMarkup("value4", "display4")}
+           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |    </fieldset>
+           |  </div>
+        """.stripMargin
+      )
+
+      val markup = radioGroup(field, choices, labelText, None)
+      formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+    }
+  }
+
+  "Calling the radio group helper with an error" should {
+
+    "render an error" in {
+      val errorMessage = "Error message"
+      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(FormError("text", errorMessage)), None)
+      val expectedMarkup = Html(
+        s"""
+           |  <div class="form-field--error">
+           |    <fieldset>
+           |      <legend class="visuallyhidden">
+           |        <h1>$labelText</h1>
+           |      </legend>
+           |
+           |      <span class="error-notification">$errorMessage</span>
+           |
+           |      ${generateExpectedRadioMarkup("value1", "display1")}
+           |      ${generateExpectedRadioMarkup("value2", "display2")}
+           |      ${generateExpectedRadioMarkup("value3", "display3")}
+           |      ${generateExpectedRadioMarkup("value4", "display4")}
+           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |    </fieldset>
+           |  </div>
+        """.stripMargin
+      )
+
+      val markup = radioGroup(field, choices, labelText, None)
+      formatHtml(markup) shouldBe formatHtml(expectedMarkup)
+    }
+  }
+
+  "Calling the radio helper with additional content" should {
+
+    "render the choices as radio buttons with additional content" in {
+      val additionalContent = Html("<p>Additional text</p>")
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |  <div class="form-group">
-           |    <div class="">
-           |      <fieldset class="">
+           |<div>
+           |    <fieldset>
+           |      <legend class="visuallyhidden">
+           |        <h1>$labelText</h1>
+           |      </legend>
            |
-           |        <legend>
-           |          <p>
-           |            $labelText
-           |          </p>
-           |        </legend>
+           |      $additionalContent
+
+           |      ${generateExpectedRadioMarkup("value1", "display1")}
+           |      ${generateExpectedRadioMarkup("value2", "display2")}
+           |      ${generateExpectedRadioMarkup("value3", "display3")}
+           |      ${generateExpectedRadioMarkup("value4", "display4")}
+           |      ${generateExpectedRadioMarkup("value5", "display5")}
            |
-           |        ${generateExpectedRadioMarkup("value1", "display1")}
-           |        ${generateExpectedRadioMarkup("value2", "display2")}
-           |        ${generateExpectedRadioMarkup("value3", "display3")}
-           |        ${generateExpectedRadioMarkup("value4", "display4")}
-           |        ${generateExpectedRadioMarkup("value5", "display5")}
-           |
-           |      </fieldset>
-           |    </div>
-           |  </div>
+           |    </fieldset>
+           |</div>
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, Html(labelText), stacked = true)
+      val markup = radioGroup(field, choices, labelText, Some(additionalContent))
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
-
 }
