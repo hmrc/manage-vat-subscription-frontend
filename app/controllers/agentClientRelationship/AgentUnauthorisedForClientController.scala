@@ -18,10 +18,13 @@ package controllers.agentClientRelationship
 
 import javax.inject.{Inject, Singleton}
 
+import audit.AuditService
+import audit.models.AuthenticateAgentModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentOnly
 import forms.ClientVrnForm
+import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -30,30 +33,22 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthoriseAsAgentOnly,
-                                          val serviceErrorHandler: ServiceErrorHandler,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+class AgentUnauthorisedForClientController @Inject()(val messagesApi: MessagesApi,
+                                                     val authenticate: AuthoriseAsAgentOnly,
+                                                     val serviceErrorHandler: ServiceErrorHandler,
+                                                     val auditService: AuditService,
+                                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))
-  }
-
-  val submit: Action[AnyContent] = authenticate.async {
-
     implicit agent =>
-      ClientVrnForm.form.bindFromRequest().fold(
-        error => {
-          Logger.debug(s"[SelectClientVrnController][submit] Error")
-          Future.successful(BadRequest(views.html.agentClientRelationship.select_client_vrn(error)))
-        },
-        data => { // success path
-          Logger.debug(s"[SelectClientVrnController][submit] Success")
-          Future.successful(Redirect(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show())
-            .addingToSession(SessionKeys.CLIENT_VRN -> data.vrn))
+      agent.session.get(SessionKeys.CLIENT_VRN) match {
+        case Some(vrn) => {
+          auditService.extendedAudit(
+            AuthenticateAgentModel(agent.arn, vrn, isAuthorisedForClient = false),
+            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          )
+          Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))
         }
-      )
+      }
   }
-
 }

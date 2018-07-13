@@ -110,8 +110,8 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
           val res = show(Some(clientVRN))
 
           res should have(
-            httpStatus(INTERNAL_SERVER_ERROR),
-            pageTitle(Messages("global.error.InternalServerError500.title"))
+            httpStatus(SEE_OTHER),
+            redirectURI(controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url)
           )
         }
       }

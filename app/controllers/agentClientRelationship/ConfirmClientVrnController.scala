@@ -16,11 +16,15 @@
 
 package controllers.agentClientRelationship
 
+import javax.inject.{Inject, Singleton}
+
+import audit.AuditService
+import audit.models.{AuthenticateAgentModel, GetClientBusinessNameModel}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
-import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.Json
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -32,12 +36,18 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
                                            val authenticate: AuthoriseAsAgentWithClient,
                                            val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
+                                           val auditService: AuditService,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   def show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
+        case Right(circumstances) =>
+          auditService.extendedAudit(
+            GetClientBusinessNameModel(user.isAgent, user.arn, user.vrn, circumstances.customerDetails.tradingName.get),
+            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          )
+          Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
@@ -49,4 +59,5 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
           .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.RETURN_FREQUENCY)
       )
   }
+
 }

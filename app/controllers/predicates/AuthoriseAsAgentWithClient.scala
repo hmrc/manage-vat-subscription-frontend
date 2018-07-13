@@ -17,9 +17,12 @@
 package controllers.predicates
 
 import javax.inject.{Inject, Singleton}
+
+import audit.AuditService
+import audit.models.AuthenticateAgentModel
 import common.{EnrolmentKeys, SessionKeys}
-import config.AppConfig
-import models.User
+import config.{AppConfig, ServiceErrorHandler}
+import models.{AgentUser, User}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -32,8 +35,11 @@ import scala.concurrent.Future
 
 @Singleton
 class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
+                                           val auditService: AuditService,
+                                           val serviceErrorHandler: ServiceErrorHandler,
                                            implicit val messagesApi: MessagesApi,
-                                           implicit val appConfig: AppConfig)
+                                           implicit val appConfig: AppConfig
+                                          )
   extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
 
   private def delegatedAuthRule(vrn: String): Enrolment =
@@ -41,9 +47,9 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
       .withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
       .withDelegatedAuthRule(EnrolmentKeys.mtdVatDelegatedAuthRule)
 
-  private val arn: Enrolments => Option[String] = _.getEnrolment(EnrolmentKeys.agentEnrolmentId) flatMap {
-    _.getIdentifier(EnrolmentKeys.agentIdentifierId).map(_.value)
-  }
+  private val arn: Enrolments => String = _.enrolments.collectFirst {
+    case Enrolment("HMRC-AS-AGENT", EnrolmentIdentifier(_, arnValue) :: _, _, _) => arnValue
+  }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
     implicit val req = request
@@ -52,15 +58,22 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
         case Some(vrn) =>
           Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
           enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+            case None ~ _ =>
+              Future.successful(serviceErrorHandler.showInternalServerError)
             case _ ~ allEnrolments =>
-              block(User(vrn, active = true, arn(allEnrolments)))
+              val user = User(vrn, active = true, Some(arn(allEnrolments)))
+              auditService.extendedAudit(
+                AuthenticateAgentModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
+                Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+              )
+              block(user)
           } recover {
             case _: NoActiveSession =>
               Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, rendering Session Timeout")
               Unauthorized(views.html.errors.sessionTimeout())
             case _: AuthorisationException =>
               Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
-              Forbidden(views.html.errors.agent.notAuthorisedForClient())
+              Redirect(controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show())
           }
         case _ =>
           Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")

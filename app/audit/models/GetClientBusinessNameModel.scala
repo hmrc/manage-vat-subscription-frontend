@@ -16,31 +16,22 @@
 
 package audit.models
 
-import models.User
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{Format, JsValue, Json}
 
-object AgentAuditing {
+case class GetClientBusinessNameModel(isAgent: Boolean,
+                                      agentReferenceNumber: Option[String],
+                                      requestedClientVrn: String,
+                                      businessName: String) extends ExtendedAuditModel {
+
+  override val transactionName: String = GetClientBusinessNameModel.agentTransactionName
+  override val detail: JsValue = Json.toJson(this)
+  override val auditType: String = GetClientBusinessNameModel.agentAuditType
+}
+
+object GetClientBusinessNameModel {
 
   val agentTransactionName = "authenticate-agent-for-client"
   val agentAuditType = "AuthenticateAgentForClient"
 
-  case class AgentAuditModel[A](user: User[A], authorisedForClient: Boolean) extends ExtendedAuditModel {
-    override val transactionName: String = agentTransactionName
-
-    private case class AuditDetail(isAgent: Boolean,
-                                   agentReferenceNumber: Option[String],
-                                   requestedClientVrn: String,
-                                   isAuthorisedForClient: Boolean)
-
-    override val detail: JsValue = Json.toJson(
-      AuditDetail(
-        user.isAgent,
-        user.arn,
-        user.vrn,
-        true
-      )
-    )
-    override val auditType: String = agentAuditType
-  }
-
+  implicit val format: Format[GetClientBusinessNameModel] = Json.format[GetClientBusinessNameModel]
 }

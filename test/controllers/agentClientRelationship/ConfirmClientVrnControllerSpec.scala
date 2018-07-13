@@ -16,8 +16,9 @@
 
 package controllers.agentClientRelationship
 
-import assets.messages.{ConfirmClientVrnPageMessages => Messages}
 import assets.CircumstanceDetailsTestConstants._
+import assets.messages.{ConfirmClientVrnPageMessages => Messages}
+import audit.AuditService
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -25,7 +26,6 @@ import mocks.MockAuth
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
 class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService {
@@ -35,6 +35,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     mockAuthAsAgentWithClient,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
+    app.injector.instanceOf[AuditService],
     mockConfig
   )
 
