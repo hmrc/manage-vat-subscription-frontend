@@ -31,18 +31,20 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
   // lookup page overrides
   val lookupPage = Map(
-    "title" -> messages("address_lookupPage.title"),
+    "title" -> messages("address_lookupPage.heading"),
     "heading" -> messages("address_lookupPage.heading"),
     "filterLabel" -> messages("address_lookupPage.filter"),
     "postcodeLabel" -> messages("address_lookupPage.postcode")
   )
 
   val selectPage = Map(
+    "title" -> messages("address_lookupPage.selectPage.heading"),
     "heading" -> messages("address_lookupPage.selectPage.heading"),
     "submitLabel" -> messages("common.saveAndContinue")
   )
 
   val confirmPage = Map(
+    "title" -> messages("address_lookupPage.confirmPage.heading"),
     "heading" -> messages("address_lookupPage.confirmPage.heading")
   )
 }

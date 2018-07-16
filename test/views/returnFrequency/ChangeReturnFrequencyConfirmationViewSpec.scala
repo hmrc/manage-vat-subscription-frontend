@@ -28,8 +28,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
+    s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
+      document.title shouldBe viewMessages.ReceivedPage.heading
     }
 
     s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
@@ -77,8 +77,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.change_return_frequency_confirmation()(agentUser, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
+    s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
+      document.title shouldBe viewMessages.ReceivedPage.heading
     }
 
     s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {

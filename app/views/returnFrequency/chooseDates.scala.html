@@ -22,12 +22,13 @@
 @import models.returnFrequency._
 @import views.html.helpers.back_to_business_details
 
-
 @(form: Form[ReturnDatesModel], current: ReturnPeriod)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
-@label = {
-  <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>
-  <span id="currently-set-period">@messages(s"return_frequency.${current.id}")</span>
+@additionalContent = {
+    <p>
+        <strong class="bold" id="currently-set-text">@messages("return_frequency.current")</strong>
+        <span id="currently-set-period">@messages(s"return_frequency.${current.id}")</span>
+    </p>
 }
 
 @views.html.main_template(
@@ -35,7 +36,7 @@
   bodyClasses = None,
   appConfig = appConfig) {
 
-    @back_to_business_details()
+  @back_to_business_details()
 
   @errorSummary("common.errorSummary.heading", form)
 
@@ -49,8 +50,8 @@
               choices = Seq(Jan, Feb, Mar, Monthly).filterNot(_ == current).map { option =>
                 (option.id, messages(s"return_frequency.${option.id}"))
               },
-              label = label,
-            stacked = true
+              question = messages("return_frequency.title"),
+              additionalContent = Some(additionalContent)
           )
       </div>
 

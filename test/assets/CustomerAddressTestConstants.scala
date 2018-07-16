@@ -110,16 +110,18 @@ object CustomerAddressTestConstants {
     "ukMode" -> true,
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
-      "title" -> AddressLookupMessages.title,
+      "title" -> AddressLookupMessages.startHeading,
       "heading" -> AddressLookupMessages.startHeading,
       "filterLabel" -> AddressLookupMessages.filter,
       "postcodeLabel" -> AddressLookupMessages.postcode
     ),
     "selectPage" -> Json.obj(
+      "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
       "submitLabel" -> BaseMessages.saveAndContinue
     ),
     "confirmPage" -> Json.obj(
+      "title" -> AddressLookupMessages.confirmHeading,
       "heading" -> AddressLookupMessages.confirmHeading
     )
   )
@@ -130,16 +132,18 @@ object CustomerAddressTestConstants {
     "ukMode" -> true,
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
-      "title" -> AddressLookupMessages.title,
+      "title" -> AddressLookupMessages.startHeading,
       "heading" -> AddressLookupMessages.startHeading,
       "filterLabel" -> AddressLookupMessages.filter,
       "postcodeLabel" -> AddressLookupMessages.postcode
     ),
     "selectPage" -> Json.obj(
+      "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
       "submitLabel" -> BaseMessages.saveAndContinue
     ),
     "confirmPage" -> Json.obj(
+      "title" -> AddressLookupMessages.confirmHeading,
       "heading" -> AddressLookupMessages.confirmHeading
     )
   )

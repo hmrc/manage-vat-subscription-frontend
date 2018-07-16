@@ -36,7 +36,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
   "Calling the .show action" when {
 
-    "the user is authorised and a CustomerDetailsModel" should {
+    "the user is authorised" should {
 
       lazy val result = TestChangeReturnFrequencyConfirmation.show(request)
       lazy val document = Jsoup.parse(bodyOf(result))
@@ -51,8 +51,8 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         charset(result) shouldBe Some("utf-8")
       }
 
-      "render the CustomerDetails Page" in {
-        document.title shouldBe Messages.title
+      "render the Change Return Frequency Confirmation Page" in {
+        document.title shouldBe Messages.ReceivedPage.heading
       }
     }
 
