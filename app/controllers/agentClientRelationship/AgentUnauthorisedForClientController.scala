@@ -33,11 +33,11 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class AgentUnauthorisedForClientController @Inject()(val messagesApi: MessagesApi,
-                                                     val authenticate: AuthoriseAsAgentOnly,
+class AgentUnauthorisedForClientController @Inject()(val authenticate: AuthoriseAsAgentOnly,
                                                      val serviceErrorHandler: ServiceErrorHandler,
                                                      val auditService: AuditService,
-                                                     implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                                     implicit val appConfig: AppConfig,
+                                                     implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit agent =>
@@ -47,8 +47,10 @@ class AgentUnauthorisedForClientController @Inject()(val messagesApi: MessagesAp
             AuthenticateAgentAuditModel(agent.arn, vrn, isAuthorisedForClient = false),
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
           )
-          Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))
+          Future.successful(Ok(views.html.errors.agent.notAuthorisedForClient()))
         }
+        case _ =>
+          Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
       }
   }
 }
