@@ -16,7 +16,7 @@
 
 package audit
 
-import audit.models.{AuditModel, ExtendedAuditModel}
+import audit.models.ExtendedAuditModel
 import config.FrontendAppConfig
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
@@ -37,20 +37,6 @@ class AuditService @Inject()(appConfig: FrontendAppConfig, auditConnector: Front
   implicit val extendedDataEventWrites: Writes[ExtendedDataEvent] = Json.writes[ExtendedDataEvent]
 
   val referrer: HeaderCarrier => String = _.headers.find(_._1 == HeaderNames.REFERER).map(_._2).getOrElse("-")
-
-  def audit(auditModel: AuditModel, path: Option[String] = None)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
-    val dataEvent = toDataEvent(appConfig.appName, auditModel, path.fold(referrer(hc))(x => x))
-    Logger.debug(s"Splunk Audit Event:\n\n${Json.toJson(dataEvent)}")
-    handleAuditResult(auditConnector.sendEvent(dataEvent))
-  }
-
-  def toDataEvent(appName: String, auditModel: AuditModel, path: String)(implicit hc: HeaderCarrier): DataEvent =
-    DataEvent(
-      auditSource = appName,
-      auditType = auditModel.auditType,
-      tags = AuditExtensions.auditHeaderCarrier(hc).toAuditTags(auditModel.transactionName, path),
-      detail = AuditExtensions.auditHeaderCarrier(hc).toAuditDetails(auditModel.detail: _*)
-    )
 
   def extendedAudit(auditModel: ExtendedAuditModel, path: Option[String] = None)(implicit hc: HeaderCarrier, ec: ExecutionContext): Unit = {
     val extendedDataEvent = toExtendedDataEvent(appConfig.appName, auditModel, path.fold(referrer(hc))(x => x))

@@ -19,7 +19,7 @@ package controllers.predicates
 import javax.inject.{Inject, Singleton}
 
 import audit.AuditService
-import audit.models.AuthenticateAgentModel
+import audit.models.AuthenticateAgentAuditModel
 import common.{EnrolmentKeys, SessionKeys}
 import config.{AppConfig, ServiceErrorHandler}
 import models.{AgentUser, User}
@@ -63,7 +63,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
             case _ ~ allEnrolments =>
               val user = User(vrn, active = true, Some(arn(allEnrolments)))
               auditService.extendedAudit(
-                AuthenticateAgentModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
+                AuthenticateAgentAuditModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
                 Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
               )
               block(user)

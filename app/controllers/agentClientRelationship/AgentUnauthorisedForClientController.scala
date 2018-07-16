@@ -19,7 +19,7 @@ package controllers.agentClientRelationship
 import javax.inject.{Inject, Singleton}
 
 import audit.AuditService
-import audit.models.AuthenticateAgentModel
+import audit.models.AuthenticateAgentAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentOnly
@@ -44,7 +44,7 @@ class AgentUnauthorisedForClientController @Inject()(val messagesApi: MessagesAp
       agent.session.get(SessionKeys.CLIENT_VRN) match {
         case Some(vrn) => {
           auditService.extendedAudit(
-            AuthenticateAgentModel(agent.arn, vrn, isAuthorisedForClient = false),
+            AuthenticateAgentAuditModel(agent.arn, vrn, isAuthorisedForClient = false),
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
           )
           Future.successful(Ok(views.html.agentClientRelationship.select_client_vrn(ClientVrnForm.form)))

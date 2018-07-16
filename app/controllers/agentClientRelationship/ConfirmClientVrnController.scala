@@ -16,15 +16,13 @@
 
 package controllers.agentClientRelationship
 
-import javax.inject.{Inject, Singleton}
-
 import audit.AuditService
-import audit.models.{AuthenticateAgentModel, GetClientBusinessNameModel}
+import audit.models.GetClientBusinessNameAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
+import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.libs.json.Json
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -44,7 +42,7 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
           auditService.extendedAudit(
-            GetClientBusinessNameModel(user.isAgent, user.arn, user.vrn, circumstances.customerDetails.tradingName.get),
+            GetClientBusinessNameAuditModel(user.arn.get, user.vrn, circumstances.customerDetails.clientName.get),
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
           )
           Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
