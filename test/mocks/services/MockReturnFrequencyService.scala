@@ -24,6 +24,7 @@ import org.scalatest.BeforeAndAfterEach
 import org.scalatest.mockito.MockitoSugar
 import services.ReturnFrequencyService
 import uk.gov.hmrc.play.test.UnitSpec
+import assets.BaseTestConstants.formBundle
 
 import scala.concurrent.Future
 
@@ -44,7 +45,7 @@ trait MockReturnFrequencyService extends UnitSpec with MockitoSugar with BeforeA
   }
 
   def setupMockReturnFrequencyServiceWithSuccess(): OngoingStubbing[Future[ServiceResponse]] = {
-    setupMockReturnFrequencyService(Right(SubscriptionUpdateResponseModel("12345")))
+    setupMockReturnFrequencyService(Right(SubscriptionUpdateResponseModel(formBundle)))
   }
 
   def setupMockReturnFrequencyServiceWithFailure(): OngoingStubbing[Future[ServiceResponse]] = {

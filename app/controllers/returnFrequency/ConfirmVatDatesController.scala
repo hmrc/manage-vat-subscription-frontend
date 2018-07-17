@@ -16,6 +16,8 @@
 
 package controllers.returnFrequency
 
+import audit.AuditService
+import audit.models.UpdateReturnFrequencyAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
@@ -29,28 +31,35 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class ConfirmVatDatesController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthPredicate,
+class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           returnFrequencyService: ReturnFrequencyService,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                          val auditService: AuditService,
+                                          implicit val appConfig: AppConfig,
+                                          implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
-    ReturnPeriod(user.session(SessionKeys.RETURN_FREQUENCY)) match {
-      case Some(frequency) => Future.successful(Ok(views.html.returnFrequency.confirm_dates(frequency)))
+    ReturnPeriod(user.session(SessionKeys.NEW_RETURN_FREQUENCY)) match {
+      case Some(newFrequency) => Future.successful(Ok(views.html.returnFrequency.confirm_dates(newFrequency)))
       case None => Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 
   val submit: Action[AnyContent] = authenticate.async { implicit user =>
-    ReturnPeriod(user.session(SessionKeys.RETURN_FREQUENCY)) match {
-      case Some(frequency) =>
-        returnFrequencyService.updateReturnFrequency(user.vrn, frequency).map {
-          case Right(_) => Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show())
-            .withSession(user.session - SessionKeys.RETURN_FREQUENCY)
+    (ReturnPeriod(user.session(SessionKeys.CURRENT_RETURN_FREQUENCY)), ReturnPeriod(user.session(SessionKeys.NEW_RETURN_FREQUENCY))) match {
+      case (Some(currentFrequency), Some(newFrequency)) =>
+        returnFrequencyService.updateReturnFrequency(user.vrn, newFrequency).map {
+          case Right(success) => {
+            auditService.extendedAudit(
+              UpdateReturnFrequencyAuditModel(user.arn, user.vrn, currentFrequency, newFrequency, success.formBundle),
+              Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
+            )
+            Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show())
+              .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
+          }
           case _ => serviceErrorHandler.showInternalServerError
         }
-      case None => Future.successful(serviceErrorHandler.showInternalServerError)
+      case _ => Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 }

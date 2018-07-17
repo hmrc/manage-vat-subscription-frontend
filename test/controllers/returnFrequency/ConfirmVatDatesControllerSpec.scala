@@ -16,33 +16,44 @@
 
 package controllers.returnFrequency
 
+import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
+import audit.mocks.MockAuditingService
+import audit.models.{AuthenticateAgentAuditModel, UpdateReturnFrequencyAuditModel}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.services.{MockCustomerCircumstanceDetailsService, MockReturnFrequencyService}
+import models.returnFrequency.{Jan, Monthly}
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.ExecutionContext
 
 class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
   with MockCustomerCircumstanceDetailsService
-  with MockReturnFrequencyService {
+  with MockReturnFrequencyService
+  with MockAuditingService {
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
-    messagesApi,
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
     mockReturnFrequencyService,
-    mockConfig
+    mockAuditingService,
+    mockConfig,
+    messagesApi
   )
 
   "Calling the .show action" when {
 
     "the user is authorised and a Return Frequency is in session" should {
 
-      val session = SessionKeys.RETURN_FREQUENCY -> "January"
+      val session = SessionKeys.NEW_RETURN_FREQUENCY -> "January"
       lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
       lazy val document = Jsoup.parse(bodyOf(result))
 
@@ -63,7 +74,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
     "the user is authorised and an Error is returned" should {
 
-      val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
+      val session = SessionKeys.NEW_RETURN_FREQUENCY -> "unknown"
       lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
 
       "return 500" in {
@@ -84,12 +95,23 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
     "the user is authorised and a the session contains valid data" should {
 
-      val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+        SessionKeys.NEW_RETURN_FREQUENCY -> "January",
+        SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
+      ))
 
       "return 303" in {
         setupMockReturnFrequencyServiceWithSuccess()
         status(result) shouldBe Status.SEE_OTHER
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(None, vrn, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
       }
 
       "return a location to the received dates view" in {
@@ -100,8 +122,10 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
     "the user is authorised but submitting the changes to the backend fails" should {
 
-      val session = SessionKeys.RETURN_FREQUENCY -> "Monthly"
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+        SessionKeys.NEW_RETURN_FREQUENCY -> "Monthly",
+        SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
+      ))
 
       "return 500" in {
         setupMockReturnFrequencyServiceWithFailure()
@@ -111,8 +135,10 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
     "the user is authorised and a the session contains invalid data" should {
 
-      val session = SessionKeys.RETURN_FREQUENCY -> "unknown"
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(session))
+      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+        SessionKeys.NEW_RETURN_FREQUENCY -> "unknown",
+        SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
+      ))
 
       "return 500" in {
         setupMockReturnFrequencyServiceWithSuccess()
