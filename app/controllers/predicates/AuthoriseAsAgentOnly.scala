@@ -16,9 +16,11 @@
 
 package controllers.predicates
 
+import javax.inject.{Inject, Singleton}
+
 import common.EnrolmentKeys
 import config.{AppConfig, ServiceErrorHandler}
-import javax.inject.{Inject, Singleton}
+import models.AgentUser
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -34,9 +36,9 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
                                      val messagesApi: MessagesApi,
                                      val serviceErrorHandler: ServiceErrorHandler,
                                      implicit val appConfig: AppConfig)
-  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[Request] with ActionFunction[Request, Request] {
+  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[AgentUser] with ActionFunction[Request, AgentUser] {
 
-  override def invokeBlock[A](request: Request[A], f: Request[A] => Future[Result]): Future[Result] = {
+  override def invokeBlock[A](request: Request[A], f: AgentUser[A] => Future[Result]): Future[Result] = {
 
     implicit val req = request
 
@@ -68,10 +70,10 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
     }
   }
 
-  private def checkAgentEnrolment[A](enrolments: Enrolments, f: Request[A] => Future[Result])(implicit request: Request[A]) =
+  private def checkAgentEnrolment[A](enrolments: Enrolments, f: AgentUser[A] => Future[Result])(implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
       Logger.debug("[AuthoriseAsAgentOnly][checkAgentEnrolment] - Authenticated as agent")
-      f(request)
+      f(AgentUser(enrolments))
     }
     else {
       Logger.debug(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")

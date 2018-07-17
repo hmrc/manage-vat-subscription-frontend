@@ -16,11 +16,12 @@
 
 package controllers.agentClientRelationship
 
+import javax.inject.{Inject, Singleton}
+
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentOnly
 import forms.ClientVrnForm
-import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -41,7 +42,7 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
 
   val submit: Action[AnyContent] = authenticate.async {
 
-    implicit user =>
+    implicit agent =>
       ClientVrnForm.form.bindFromRequest().fold(
         error => {
           Logger.debug(s"[SelectClientVrnController][submit] Error")
@@ -54,4 +55,5 @@ class SelectClientVrnController @Inject()(val messagesApi: MessagesApi,
         }
       )
   }
+
 }

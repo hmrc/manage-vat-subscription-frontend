@@ -16,25 +16,34 @@
 
 package controllers.agentClientRelationship
 
-import assets.messages.{ConfirmClientVrnPageMessages => Messages}
+import assets.BaseTestConstants.{arn, vrn}
 import assets.CircumstanceDetailsTestConstants._
+import assets.messages.{ConfirmClientVrnPageMessages => Messages}
+import audit.AuditService
+import audit.mocks.MockAuditingService
+import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
-import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
 
-class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService {
+import scala.concurrent.ExecutionContext
+
+class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService with MockAuditingService {
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
     mockAuthAsAgentWithClient,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
+    mockAuditingService,
     mockConfig
   )
 
@@ -53,6 +62,24 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
             mockAgentAuthorised()
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             status(result) shouldBe Status.OK
+
+            verify(mockAuditingService)
+              .extendedAudit(
+                ArgumentMatchers.eq(AuthenticateAgentAuditModel(arn, vrn, isAuthorisedForClient = true)),
+                ArgumentMatchers.any()
+              )(
+                ArgumentMatchers.any[HeaderCarrier],
+                ArgumentMatchers.any[ExecutionContext]
+              )
+
+            verify(mockAuditingService)
+              .extendedAudit(
+                ArgumentMatchers.eq(GetClientBusinessNameAuditModel(arn, vrn, customerInformationModelMaxOrganisation.customerDetails.clientName.get)),
+                ArgumentMatchers.any()
+              )(
+                ArgumentMatchers.any[HeaderCarrier],
+                ArgumentMatchers.any[ExecutionContext]
+              )
           }
 
           "return HTML" in {

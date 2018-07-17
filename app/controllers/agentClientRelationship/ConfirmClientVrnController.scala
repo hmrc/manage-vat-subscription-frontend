@@ -16,6 +16,8 @@
 
 package controllers.agentClientRelationship
 
+import audit.AuditService
+import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
@@ -32,12 +34,22 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
                                            val authenticate: AuthoriseAsAgentWithClient,
                                            val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
+                                           val auditService: AuditService,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   def show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) => Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
+        case Right(circumstances) =>
+          auditService.extendedAudit(
+            AuthenticateAgentAuditModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
+            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          )
+          auditService.extendedAudit(
+            GetClientBusinessNameAuditModel(user.arn.get, user.vrn, circumstances.customerDetails.clientName.get),
+            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          )
+          Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }
@@ -49,4 +61,5 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
           .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.RETURN_FREQUENCY)
       )
   }
+
 }
