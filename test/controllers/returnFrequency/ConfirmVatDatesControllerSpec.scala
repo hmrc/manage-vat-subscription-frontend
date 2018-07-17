@@ -40,7 +40,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
   "Calling the .show action" when {
 
-    "the user is authorised and a CustomerDetailsModel" should {
+    "the user is authorised and a Return Frequency is in session" should {
 
       val session = SessionKeys.RETURN_FREQUENCY -> "January"
       lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
@@ -56,8 +56,8 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
         charset(result) shouldBe Some("utf-8")
       }
 
-      "render the CustomerDetails Page" in {
-        document.title shouldBe Messages.title
+      "render the Confirm Dates Page" in {
+        document.title shouldBe Messages.ConfirmPage.heading
       }
     }
 

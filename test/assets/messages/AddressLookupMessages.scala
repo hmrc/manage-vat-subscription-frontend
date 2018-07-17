@@ -18,7 +18,6 @@ package assets.messages
 
 object AddressLookupMessages {
 
-  val title = "Changes in circumstances"
   val startHeading = "What is the new business address?"
   val filter = "Property name or number"
   val postcode = "Postcode"

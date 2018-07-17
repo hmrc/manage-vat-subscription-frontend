@@ -56,7 +56,7 @@ val compile: Seq[ModuleID] = Seq(
   "uk.gov.hmrc" %% "bootstrap-play-25" % "1.7.0",
   "uk.gov.hmrc" %% "play-partials" % "6.1.0",
   "uk.gov.hmrc" %% "play-whitelist-filter" % "2.0.0",
-  "uk.gov.hmrc" %% "govuk-template" % "5.19.0",
+  "uk.gov.hmrc" %% "govuk-template" % "5.22.0",
   "uk.gov.hmrc" %% "play-ui" % "7.17.0",
   "org.typelevel" %% "cats" % "0.9.0"
 )
@@ -70,7 +70,7 @@ def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % scope,
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % scope,
   "com.github.tomakehurst" % "wiremock" % "2.6.0" % scope,
-  "org.mockito" % "mockito-core" % "2.7.17" % scope
+  "org.mockito" % "mockito-core" % "2.13.0" % scope
 )
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {

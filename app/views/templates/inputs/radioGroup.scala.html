@@ -14,23 +14,39 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.play.views.html.helpers
+@import views.html.helper._
 
 @(field: Field,
-        choices: Seq[(String, String)],
-        label: Html,
-        stacked: Boolean = false)(implicit messages: Messages)
+  choices: Seq[(String, String)],
+  question: String,
+  additionalContent: Option[Html] = None)(implicit messages: Messages)
 
-@question = {
-  <p> @label </p>
-}
+@elements = @{ FieldElements(field.id, field, null, Map(), messages) }
 
-@defining({
-  val defaultArgs: Map[Symbol, Any] = Map('_legend -> question)
-  if (stacked) defaultArgs else defaultArgs + ('_groupClass -> "inline")
-}) { args =>
+<div @if(elements.hasErrors){ class="form-field--error"}>
 
-  <div class="form-group">
-    @helpers.inputRadioGroup(field, choices, args.toSeq: _*)
-  </div>
-}
+    <fieldset>
+        <legend class="visuallyhidden">
+            <h1>@question</h1>
+        </legend>
+
+        @additionalContent.map { content => @content }
+
+        @elements.errors.map { error => <span class="error-notification">@messages(error)</span> }
+
+        @choices.map { case (value, label) =>
+
+            @defining(s"${elements.field.name}-${value.toLowerCase}") { inputId =>
+                <div class="multiple-choice">
+                    <input
+                        type="radio"
+                        id="@inputId"
+                        name="@elements.field.name"
+                        value="@value"
+                        @field.value.filter( _ == value).map{_ => checked="checked"}/>
+                    <label for="@inputId">@label</label>
+                </div>
+            }
+        }
+    </fieldset>
+</div>

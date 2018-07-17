@@ -53,7 +53,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
           }
 
           s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
-            Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ReturnFrequencyMessages.ChoosePage.heading
+            Jsoup.parse(bodyOf(result)).title shouldBe ReturnFrequencyMessages.ChoosePage.heading
           }
         }
 

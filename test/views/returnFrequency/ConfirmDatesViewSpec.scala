@@ -29,8 +29,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
+    s"have the correct document title of '${viewMessages.ConfirmPage.heading}'" in {
+      document.title shouldBe viewMessages.ConfirmPage.heading
     }
     s"have a the back link with correct text and url '${BaseMessages.back}'" in {
       elementText(".link-back") shouldBe BaseMessages.back

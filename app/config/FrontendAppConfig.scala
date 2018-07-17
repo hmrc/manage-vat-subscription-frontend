@@ -69,7 +69,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   lazy val appName: String = runModeConfiguration.getString("appName").getOrElse(throw new Exception("Missing configuration key: appName"))
 
   private lazy val contactHost: String = getString(Keys.contactFrontendService)
-  private lazy val contactFormServiceIdentifier: String = "VATVC"
+  private lazy val contactFormServiceIdentifier: String = "VATC"
 
   override lazy val analyticsToken: String = getString(Keys.googleAnalyticsToken)
   override lazy val analyticsHost: String = getString(Keys.googleAnalyticsHost)
