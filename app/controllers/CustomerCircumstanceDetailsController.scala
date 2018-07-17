@@ -16,6 +16,8 @@
 
 package controllers
 
+import audit.AuditService
+import audit.models.ViewVatSubscriptionAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
@@ -26,17 +28,20 @@ import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
-class CustomerCircumstanceDetailsController @Inject()(val messagesApi: MessagesApi,
-                                                      val authenticate: AuthPredicate,
+class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPredicate,
                                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                       val serviceErrorHandler: ServiceErrorHandler,
-                                                      implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                                      val auditService: AuditService,
+                                                      implicit val appConfig: AppConfig,
+                                                      implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) => Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
+        case Right(circumstances) =>
+          auditService.extendedAudit(ViewVatSubscriptionAuditModel(user.vrn, user.arn, circumstances))
+          Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           serviceErrorHandler.showInternalServerError

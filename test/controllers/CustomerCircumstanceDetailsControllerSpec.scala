@@ -16,22 +16,31 @@
 
 package controllers
 
+import assets.BaseTestConstants.{arn, vrn}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import assets.CircumstanceDetailsTestConstants._
+import audit.mocks.MockAuditingService
+import audit.models.{AuthenticateAgentAuditModel, ViewVatSubscriptionAuditModel}
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
 
-class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
+import scala.concurrent.ExecutionContext
+
+class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockAuditingService {
 
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
-    messagesApi,
     mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockConfig
+    mockAuditingService,
+    mockConfig,
+    messagesApi
   )
 
   "Calling the .show action" when {
@@ -44,6 +53,15 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       "return 200" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(ViewVatSubscriptionAuditModel(vrn, None, customerInformationModelMaxOrganisation)),
+            ArgumentMatchers.any()
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
       }
 
       "return HTML" in {
