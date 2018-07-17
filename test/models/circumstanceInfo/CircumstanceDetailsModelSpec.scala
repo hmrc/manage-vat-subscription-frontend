@@ -49,15 +49,15 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
     "return None" when {
 
       "there are pending address changes" in {
-        customerInformationNoPending.pendingPPOBAddress shouldBe None
+        customerInformationNoPendingIndividual.pendingPPOBAddress shouldBe None
       }
 
       "there are pending bank changes" in {
-        customerInformationNoPending.pendingBankDetails shouldBe None
+        customerInformationNoPendingIndividual.pendingBankDetails shouldBe None
       }
 
       "there are pending return period changes" in {
-        customerInformationNoPending.pendingReturnPeriod shouldBe None
+        customerInformationNoPendingIndividual.pendingReturnPeriod shouldBe None
       }
     }
   }

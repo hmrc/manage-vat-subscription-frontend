@@ -17,7 +17,7 @@
 package models.returnFrequency
 
 import play.api.Logger
-import play.api.libs.json.{Json, Reads, Writes, __}
+import play.api.libs.json._
 
 sealed trait ReturnPeriod {
   def id: String
@@ -70,5 +70,18 @@ object ReturnPeriod {
 
   implicit val writes: Writes[ReturnPeriod] = Writes {
     period => Json.obj("stdReturnPeriod" -> period.internalId)
+  }
+
+  val auditWrites: Writes[Option[ReturnPeriod]] = Writes {
+    case Some(period) => {
+      val auditValue = period.internalId match {
+        case Jan.internalId => "January, April, July and October"
+        case Feb.internalId => "February, May, August and November"
+        case Mar.internalId => "March, June, September and December"
+        case Monthly.internalId => Monthly.id
+      }
+      Json.obj("vatReturnFrequency" -> auditValue)
+    }
+    case _ => JsNull
   }
 }
