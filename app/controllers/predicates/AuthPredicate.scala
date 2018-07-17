@@ -41,13 +41,13 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
-    implicit val req: Request[A] = request
+    implicit val req = request
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
           case (true, enrolments) =>
             if (appConfig.features.agentAccess()) {
-              checkAgentEnrolment(enrolments, block)(req)
+              checkAgentEnrolment(enrolments, block)
             } else {
               Future.successful(Unauthorized(views.html.errors.agent.unauthorised()))
             }
