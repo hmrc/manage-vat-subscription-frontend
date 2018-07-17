@@ -16,8 +16,7 @@
 
 package audit.models
 
-import models.circumstanceInfo.{BankDetails, CircumstanceDetails, PPOB, PendingChanges}
-import models.returnFrequency.ReturnPeriod
+import models.circumstanceInfo.{BankDetails, CircumstanceDetails, PendingChanges}
 import play.api.libs.json._
 
 case class ViewVatSubscriptionAuditModel(vrn: String,
@@ -26,7 +25,6 @@ case class ViewVatSubscriptionAuditModel(vrn: String,
 
   override val transactionName: String = "view-vat-subscription-details"
   override val auditType: String = "GetVatSubscriptionDetails"
-
   override val detail: JsValue = Json.toJson(this)
 
 }
@@ -41,7 +39,7 @@ object ViewVatSubscriptionAuditModel {
       "businessName" -> model.vatDetails.customerDetails.organisationName,
       "businessAddress" -> Json.toJson(model.vatDetails.pendingPPOBAddress.fold(model.vatDetails.ppobAddress)(x => x)),
       "repaymentBankDetails" -> Json.toJson(model.vatDetails.pendingBankDetails.fold(model.vatDetails.bankDetails)(x => Some(x)))(BankDetails.auditWrites),
-      "vatReturnFrequency" -> Json.toJson(model.vatDetails.returnPeriod.fold(model.vatDetails.returnPeriod)(x => Some(x)))(ReturnPeriod.auditWrites),
+      "vatReturnFrequency" -> model.vatDetails.pendingReturnPeriod.fold(model.vatDetails.returnPeriod.map(_.auditValue).orNull)(x => x.auditValue),
       "inFlightChanges" -> Json.toJson(model.vatDetails.pendingChanges)(PendingChanges.auditWrites)
     ).fields.filterNot(_._2 == JsNull)
 
