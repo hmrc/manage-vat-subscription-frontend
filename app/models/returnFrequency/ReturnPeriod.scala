@@ -17,31 +17,36 @@
 package models.returnFrequency
 
 import play.api.Logger
-import play.api.libs.json.{Json, Reads, Writes, __}
+import play.api.libs.json._
 
 sealed trait ReturnPeriod {
   def id: String
   def internalId: String
+  def auditValue: String
 }
 
 case object Jan extends ReturnPeriod {
   override val internalId: String = "MA"
   override val id: String = "January"
+  override val auditValue: String = "January, April, July and October"
 }
 
 case object Feb extends ReturnPeriod {
   override val internalId: String = "MB"
   override val id: String = "February"
+  override val auditValue: String = "February, May, August and November"
 }
 
 case object Mar extends ReturnPeriod {
   override val internalId: String = "MC"
   override val id: String = "March"
+  override val auditValue: String = "March, June, September and December"
 }
 
 case object Monthly extends ReturnPeriod {
   override val internalId: String = "MM"
   override val id: String = "Monthly"
+  override val auditValue: String = "Every month"
 }
 
 

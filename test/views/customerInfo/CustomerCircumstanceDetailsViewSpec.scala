@@ -30,7 +30,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for any user (in this case Individual) without any pending changes" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPending)(user, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title '${viewMessages.title}'" in {

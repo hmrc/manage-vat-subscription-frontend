@@ -18,7 +18,7 @@ package models.circumstanceInfo
 
 import models.JsonReadUtil
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Reads, Writes, __}
+import play.api.libs.json._
 
 case class BankDetails(accountHolderName:Option[String],bankAccountNumber:Option[String],sortCode:Option[String])
 
@@ -39,5 +39,14 @@ object BankDetails extends JsonReadUtil {
       bankAccountNumberPath.writeNullable[String] and
       sortCodePath.writeNullable[String]
     )(unlift(BankDetails.unapply))
+
+  val auditWrites: Writes[Option[BankDetails]] = Writes {
+    case Some(bankDetails) =>
+      Json.obj(
+        "accountNumber" -> bankDetails.bankAccountNumber,
+        "sortCode" -> bankDetails.sortCode
+      )
+    case _ => JsNull
+  }
 
 }
