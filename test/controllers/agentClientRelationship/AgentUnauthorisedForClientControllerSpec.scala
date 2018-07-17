@@ -18,12 +18,19 @@ package controllers.agentClientRelationship
 
 import assets.messages.{AgentUnauthorisedForClientPageMessages => Messages}
 import audit.mocks.MockAuditingService
+import audit.models.AuthenticateAgentAuditModel
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
+import assets.BaseTestConstants._
+
+import scala.concurrent.ExecutionContext
 
 class AgentUnauthorisedForClientControllerSpec extends ControllerBaseSpec with MockAuth with MockAuditingService {
 
@@ -45,6 +52,17 @@ class AgentUnauthorisedForClientControllerSpec extends ControllerBaseSpec with M
       "return 200" in {
         mockAgentAuthorised()
         status(result) shouldBe Status.OK
+
+        val expectedAuditModel = AuthenticateAgentAuditModel(arn, vrn, isAuthorisedForClient = false)
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(expectedAuditModel),
+            ArgumentMatchers.any()
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
       }
 
       "return HTML" in {

@@ -28,6 +28,7 @@ import config.ServiceErrorHandler
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
+import assets.BaseTestConstants._
 
 import scala.concurrent.Future
 
@@ -80,7 +81,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(Some(AffinityGroup.Individual),
         Enrolments(Set(Enrolment("HMRC-MTD-VAT",
-          Seq(EnrolmentIdentifier("VRN", "999999999")),
+          Seq(EnrolmentIdentifier("VRN", vrn)),
           "Activated"
         )))
       )
@@ -90,7 +91,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(Some(AffinityGroup.Agent),
         Enrolments(Set(Enrolment("HMRC-AS-AGENT",
-          Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
+          Seq(EnrolmentIdentifier("AgentReferenceNumber", arn)),
           "Activated",
           Some("mtd-vat-auth")
         )))
@@ -121,7 +122,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(None,
         Enrolments(Set(Enrolment("HMRC-MTD-VAT",
-          Seq(EnrolmentIdentifier("VRN", "999999999")),
+          Seq(EnrolmentIdentifier("VRN", vrn)),
           "Activated"
         )))
       )
@@ -131,7 +132,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
     setupAuthResponse(Future.successful(
       new ~(None,
         Enrolments(Set(Enrolment("HMRC-AS-AGENT",
-          Seq(EnrolmentIdentifier("AgentReferenceNumber", "123456789")),
+          Seq(EnrolmentIdentifier("AgentReferenceNumber", arn)),
           "Activated",
           Some("mtd-vat-auth")
         )))
