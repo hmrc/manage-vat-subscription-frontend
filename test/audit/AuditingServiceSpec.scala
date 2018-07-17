@@ -21,6 +21,8 @@ import config.FrontendAppConfig
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito._
 import org.scalatest.mockito.MockitoSugar
+import play.api.http.HeaderNames
+import play.api.test.FakeRequest
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.http.connector.AuditResult.Success
 import utils.TestUtil
@@ -39,7 +41,19 @@ class AuditingServiceSpec extends TestUtil with MockitoSugar {
     reset(mockAuditConnector, mockConfiguration)
   }
 
-  "AuditService" when {
+  "AuditService" should {
+
+    "when calling the referer method" should {
+
+      "extract the referer if there is one" in {
+        val testPath = "/test/path"
+        testAuditingService.referrer(HeaderCarrier().withExtraHeaders(HeaderNames.REFERER -> testPath)) shouldBe testPath
+      }
+
+      "default to hyphen '-' if there is no referrer" in {
+        testAuditingService.referrer(HeaderCarrier()) shouldBe "-"
+      }
+    }
 
     "given an ExtendedAuditModel" should {
 

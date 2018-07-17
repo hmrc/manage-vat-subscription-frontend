@@ -61,11 +61,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
             case None ~ _ =>
               Future.successful(serviceErrorHandler.showInternalServerError)
             case _ ~ allEnrolments =>
-              val user = User(vrn, active = true, Some(arn(allEnrolments)))
-              auditService.extendedAudit(
-                AuthenticateAgentAuditModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
-                Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-              )
+              val user = User(vrn, active = true, Some(arn(allEnrolments)))gi
               block(user)
           } recover {
             case _: NoActiveSession =>

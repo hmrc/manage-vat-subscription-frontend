@@ -17,7 +17,7 @@
 package controllers.agentClientRelationship
 
 import audit.AuditService
-import audit.models.GetClientBusinessNameAuditModel
+import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
@@ -41,6 +41,10 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
+          auditService.extendedAudit(
+            AuthenticateAgentAuditModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
+            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
+          )
           auditService.extendedAudit(
             GetClientBusinessNameAuditModel(user.arn.get, user.vrn, circumstances.customerDetails.clientName.get),
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
