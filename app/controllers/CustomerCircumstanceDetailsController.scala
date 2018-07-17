@@ -40,7 +40,10 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
-          auditService.extendedAudit(ViewVatSubscriptionAuditModel(user.vrn, user.arn, circumstances))
+          auditService.extendedAudit(
+            ViewVatSubscriptionAuditModel(user.vrn, user.arn, circumstances),
+            Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
+          )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")

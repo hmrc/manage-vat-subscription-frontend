@@ -66,7 +66,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
             verify(mockAuditingService)
               .extendedAudit(
                 ArgumentMatchers.eq(AuthenticateAgentAuditModel(arn, vrn, isAuthorisedForClient = true)),
-                ArgumentMatchers.any()
+                ArgumentMatchers.eq[Option[String]](Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url))
               )(
                 ArgumentMatchers.any[HeaderCarrier],
                 ArgumentMatchers.any[ExecutionContext]
@@ -75,7 +75,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
             verify(mockAuditingService)
               .extendedAudit(
                 ArgumentMatchers.eq(GetClientBusinessNameAuditModel(arn, vrn, customerInformationModelMaxOrganisation.customerDetails.clientName.get)),
-                ArgumentMatchers.any()
+                ArgumentMatchers.eq[Option[String]](Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url))
               )(
                 ArgumentMatchers.any[HeaderCarrier],
                 ArgumentMatchers.any[ExecutionContext]
