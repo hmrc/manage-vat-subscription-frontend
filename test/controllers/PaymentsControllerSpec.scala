@@ -19,19 +19,26 @@ package controllers
 import mocks.services.MockPaymentsService
 import assets.BaseTestConstants._
 import assets.PaymentsTestConstants._
-import models.payments.PaymentStartModel
+import audit.mocks.MockAuditingService
+import audit.models.BankAccountHandOffAuditModel
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers.redirectLocation
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
+
+import scala.concurrent.ExecutionContext
 
 
-class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService {
+class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService with MockAuditingService {
 
   object TestPaymentController extends PaymentsController(
     messagesApi,
     mockAuthPredicate,
     serviceErrorHandler,
     mockPaymentsService,
+    mockAuditingService,
     mockConfig
   )
 
@@ -52,6 +59,15 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
       "return 303 (Redirect)" in {
         status(result) shouldBe Status.SEE_OTHER
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(BankAccountHandOffAuditModel(vrn, None, successPaymentsResponse)),
+            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.PaymentsController.sendToPayments().url))
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
       }
 
       "redirect to the correct url" in {
@@ -67,9 +83,6 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
       "return 500 (ISE)" in {
         status(result) shouldBe INTERNAL_SERVER_ERROR
       }
-
     }
-
   }
-
 }

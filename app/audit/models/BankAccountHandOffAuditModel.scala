@@ -16,7 +16,7 @@
 
 package audit.models
 
-import play.api.libs.json.{JsValue, Json, Writes}
+import play.api.libs.json._
 
 case class BankAccountHandOffAuditModel(vrn: String,
                                         agentReferenceNumber: Option[String],
@@ -29,12 +29,14 @@ case class BankAccountHandOffAuditModel(vrn: String,
 
 object BankAccountHandOffAuditModel {
   implicit val writes: Writes[BankAccountHandOffAuditModel] = Writes { model =>
-    Json.obj(
+    val filteredJson = Json.obj(
       "isAgent" -> model.agentReferenceNumber.isDefined,
       "agentReferenceNumber" -> model.agentReferenceNumber,
       "vrn" -> model.vrn,
       "repaymentsRedirectUrl" -> model.repaymentsRedirectUrl
-    )
+    ).fields.filterNot(_._2 == JsNull)
+
+    JsObject(filteredJson)
   }
 }
 

@@ -16,7 +16,7 @@
 
 package audit.models
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.Json
 import utils.TestUtil
 
 class BankAccountHandOffAuditModelSpec extends TestUtil {
@@ -51,9 +51,20 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
       "have the correct details for the audit event" in {
         agentHandOff.detail shouldBe Json.obj(
           "isAgent" -> true,
-          "agentReferenceNumber" -> "XAIT00000000",
-          "vrn" -> "999999999",
-          "repaymentsRedirectUrl" -> "/redirect-url"
+          "agentReferenceNumber" -> agentHandOff.agentReferenceNumber.get,
+          "vrn" -> agentHandOff.vrn,
+          "repaymentsRedirectUrl" -> agentHandOff.repaymentsRedirectUrl
+        )
+      }
+    }
+
+    "user is a non-Agent" should {
+
+      "have the correct details for the audit event" in {
+        userHandOff.detail shouldBe Json.obj(
+          "isAgent" -> false,
+          "vrn" -> userHandOff.vrn,
+          "repaymentsRedirectUrl" -> userHandOff.repaymentsRedirectUrl
         )
       }
     }
