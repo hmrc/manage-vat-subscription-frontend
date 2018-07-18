@@ -146,7 +146,11 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           }
 
           "have removed the ReturnFrequency from session" in {
-            session(result).get(SessionKeys.RETURN_FREQUENCY) shouldBe None
+            session(result).get(SessionKeys.NEW_RETURN_FREQUENCY) shouldBe None
+          }
+
+          "have removed the CurrentReturnFrequency from session" in {
+            session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe None
           }
         }
       }

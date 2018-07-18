@@ -58,7 +58,7 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
     implicit user =>
       Future.successful(
         Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show())
-          .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.RETURN_FREQUENCY)
+          .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
       )
   }
 

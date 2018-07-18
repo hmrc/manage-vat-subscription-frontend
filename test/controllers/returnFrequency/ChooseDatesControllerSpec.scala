@@ -59,7 +59,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
         "a value is already held in session for the Return Frequency = January" should {
 
-          lazy val result = TestChooseDatesController.show(request.withSession(SessionKeys.RETURN_FREQUENCY -> returnPeriodJan))
+          lazy val result = TestChooseDatesController.show(request.withSession(SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan))
 
           "return OK (200)" in {
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
@@ -114,6 +114,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
       lazy val result = TestChooseDatesController.submit(request)
 
       "return 303" in {
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.SEE_OTHER
       }
     }
