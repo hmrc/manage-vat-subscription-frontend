@@ -16,6 +16,8 @@
 
 package controllers
 
+import audit.AuditService
+import audit.models.{AuthenticateAgentAuditModel, BankAccountHandOffAuditModel}
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
@@ -30,11 +32,17 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
                                    val authenticate: AuthPredicate,
                                    val serviceErrorHandler: ServiceErrorHandler,
                                    val paymentsService: PaymentsService,
+                                   val auditService: AuditService,
                                    implicit val config: AppConfig) extends FrontendController with I18nSupport {
 
   val sendToPayments: Action[AnyContent] = authenticate.async { implicit user =>
     paymentsService.postPaymentDetails(user) map {
-      case Right(response) => Redirect(response.nextUrl)
+      case Right(response) =>
+        auditService.extendedAudit(
+          BankAccountHandOffAuditModel(user.vrn, user.arn, response.nextUrl),
+          Some(routes.PaymentsController.sendToPayments().url)
+        )
+        Redirect(response.nextUrl)
       case _ =>
         Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
