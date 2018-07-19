@@ -24,17 +24,8 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
   val transactionName: String = "start-change-repayment-bank-account-journey"
   val auditType: String = "StartChangeOfRepaymentBankAccount"
 
-  val agentHandOff = BankAccountHandOffAuditModel(
-    "999999999",
-    Some("XAIT00000000"),
-    "/redirect-url"
-  )
-
-  val userHandOff = BankAccountHandOffAuditModel(
-    "999999999",
-    None,
-    "/redirect-url"
-  )
+  lazy val agentHandOff = BankAccountHandOffAuditModel(agentUser, "/redirect-url")
+  lazy val userHandOff = BankAccountHandOffAuditModel(user, "/redirect-url")
 
   "BankAccountHandOffAuditModel" should {
 
@@ -51,8 +42,8 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
       "have the correct details for the audit event" in {
         agentHandOff.detail shouldBe Json.obj(
           "isAgent" -> true,
-          "agentReferenceNumber" -> agentHandOff.agentReferenceNumber.get,
-          "vrn" -> agentHandOff.vrn,
+          "agentReferenceNumber" -> agentHandOff.user.arn.get,
+          "vrn" -> agentHandOff.user.vrn,
           "repaymentsRedirectUrl" -> agentHandOff.repaymentsRedirectUrl
         )
       }
@@ -63,7 +54,7 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
       "have the correct details for the audit event" in {
         userHandOff.detail shouldBe Json.obj(
           "isAgent" -> false,
-          "vrn" -> userHandOff.vrn,
+          "vrn" -> userHandOff.user.vrn,
           "repaymentsRedirectUrl" -> userHandOff.repaymentsRedirectUrl
         )
       }

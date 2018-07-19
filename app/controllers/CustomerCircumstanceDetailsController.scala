@@ -41,7 +41,7 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
           auditService.extendedAudit(
-            ViewVatSubscriptionAuditModel(user.vrn, user.arn, circumstances),
+            ViewVatSubscriptionAuditModel(user, circumstances),
             Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
           )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))

@@ -17,7 +17,7 @@
 package controllers
 
 import audit.AuditService
-import audit.models.{AuthenticateAgentAuditModel, BankAccountHandOffAuditModel}
+import audit.models.BankAccountHandOffAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
@@ -39,7 +39,7 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
     paymentsService.postPaymentDetails(user) map {
       case Right(response) =>
         auditService.extendedAudit(
-          BankAccountHandOffAuditModel(user.vrn, user.arn, response.nextUrl),
+          BankAccountHandOffAuditModel(user, response.nextUrl),
           Some(routes.PaymentsController.sendToPayments().url)
         )
         Redirect(response.nextUrl)

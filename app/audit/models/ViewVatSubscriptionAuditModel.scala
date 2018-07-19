@@ -16,13 +16,12 @@
 
 package audit.models
 
+import models.User
 import models.circumstanceInfo.{BankDetails, CircumstanceDetails, PendingChanges}
 import play.api.libs.json._
 import utils.JsonObjectSugar
 
-case class ViewVatSubscriptionAuditModel(vrn: String,
-                                         agentReferenceNumber: Option[String],
-                                         vatDetails: CircumstanceDetails) extends ExtendedAuditModel {
+case class ViewVatSubscriptionAuditModel(user: User[_], vatDetails: CircumstanceDetails) extends ExtendedAuditModel {
 
   override val transactionName: String = "view-vat-subscription-details"
   override val auditType: String = "GetVatSubscriptionDetails"
@@ -34,9 +33,9 @@ object ViewVatSubscriptionAuditModel extends JsonObjectSugar {
 
   implicit val writes: Writes[ViewVatSubscriptionAuditModel] = Writes { model =>
     jsonObjNoNulls(
-      "isAgent" -> model.agentReferenceNumber.isDefined,
-      "agentReferenceNumber" -> model.agentReferenceNumber,
-      "vrn" -> model.vrn,
+      "isAgent" -> model.user.arn.isDefined,
+      "agentReferenceNumber" -> model.user.arn,
+      "vrn" -> model.user.vrn,
       "businessName" -> model.vatDetails.customerDetails.organisationName,
       "businessAddress" -> Json.toJson(model.vatDetails.pendingPPOBAddress.fold(model.vatDetails.ppobAddress)(x => x)),
       "repaymentBankDetails" -> Json.toJson(model.vatDetails.pendingBankDetails.fold(model.vatDetails.bankDetails)(x => Some(x)))(BankDetails.auditWrites),
