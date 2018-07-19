@@ -47,7 +47,7 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
             Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
           )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
-            .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY)
+            .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           serviceErrorHandler.showInternalServerError
