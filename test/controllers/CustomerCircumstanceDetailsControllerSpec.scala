@@ -16,11 +16,13 @@
 
 package controllers
 
-import assets.BaseTestConstants.{arn, vrn}
-import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
+import assets.BaseTestConstants.vrn
+import assets.ReturnPeriodTestConstants.{returnPeriodJan,returnPeriodFeb}
 import assets.CircumstanceDetailsTestConstants._
+import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.mocks.MockAuditingService
-import audit.models.{AuthenticateAgentAuditModel, ViewVatSubscriptionAuditModel}
+import audit.models.ViewVatSubscriptionAuditModel
+import common.SessionKeys
 import config.ServiceErrorHandler
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
@@ -47,7 +49,10 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestCustomerCircumstanceDetailsController.show(request)
+      lazy val result = TestCustomerCircumstanceDetailsController.show(request.withSession(
+        SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan ,
+        SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodFeb
+      ))
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -71,6 +76,11 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
       "render the CustomerDetails Page" in {
         document.title shouldBe Messages.title
+      }
+
+      "remove the data" in {
+        session(result).get(SessionKeys.NEW_RETURN_FREQUENCY) shouldBe None
+        session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe None
       }
     }
 

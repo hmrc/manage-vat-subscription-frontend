@@ -16,11 +16,13 @@
 
 package controllers
 
+import javax.inject.{Inject, Singleton}
+
 import audit.AuditService
 import audit.models.ViewVatSubscriptionAuditModel
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -45,6 +47,7 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
             Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
           )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
+            .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           serviceErrorHandler.showInternalServerError
