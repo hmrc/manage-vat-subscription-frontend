@@ -19,6 +19,7 @@ package assets
 object ReturnFrequencyIntegrationTestConstants {
 
   val Jan = "January"
+  val Monthly = "Monthly"
   val MA = "January, April, July and October"
   val MB = "February, May, August and November"
   val MC = "March, June, September and December"

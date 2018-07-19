@@ -41,7 +41,7 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
 
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
       case Right(details) if details.returnPeriod.isDefined =>
-        val form: Form[ReturnDatesModel] = user.session.get(SessionKeys.RETURN_FREQUENCY) match {
+        val form: Form[ReturnDatesModel] = user.session.get(SessionKeys.NEW_RETURN_FREQUENCY) match {
           case Some(value) => datesForm.fill(ReturnDatesModel(value))
           case _ => datesForm
         }
@@ -50,23 +50,23 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
     }
   }
 
-  val submit: Action[AnyContent] = authenticate.async { implicit user =>
-
-    datesForm.bindFromRequest().fold(
-      errors => {
-        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-          case Right(details) if details.returnPeriod.isDefined =>
-            BadRequest(views.html.returnFrequency.chooseDates(errors, details.returnPeriod.get))
-          case _ => serviceErrorHandler.showInternalServerError
+  val submit: Action[AnyContent] = authenticate.async {
+    implicit user => {
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+        case Right(details) if details.returnPeriod.isDefined => {
+          datesForm.bindFromRequest().fold(
+            errors =>
+              BadRequest(views.html.returnFrequency.chooseDates(errors, details.returnPeriod.get)),
+            success =>
+              Redirect(controllers.returnFrequency.routes.ConfirmVatDatesController.show())
+                .addingToSession(
+                  SessionKeys.NEW_RETURN_FREQUENCY -> success.current,
+                  SessionKeys.CURRENT_RETURN_FREQUENCY -> details.returnPeriod.get.id
+                )
+          )
         }
-      },
-      success => {
-        Future.successful(
-          Redirect(controllers.returnFrequency.routes.ConfirmVatDatesController.show())
-            .withSession(user.session + (SessionKeys.RETURN_FREQUENCY -> success.current))
-        )
+        case _ => serviceErrorHandler.showInternalServerError
       }
-    )
+    }
   }
-
 }

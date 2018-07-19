@@ -52,7 +52,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999")
   implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999", SessionKeys.RETURN_FREQUENCY -> "Jan")
+    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999", SessionKeys.NEW_RETURN_FREQUENCY -> "Jan", SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly")
 
   implicit lazy val user = User[AnyContentAsEmpty.type]("999999999",true)(request)
   implicit lazy val agentUser = User[AnyContentAsEmpty.type]("999999999",true,Some("XAIT00000000000"))(fakeRequestWithClientsVRN)

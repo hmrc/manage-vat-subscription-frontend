@@ -58,7 +58,7 @@ class AgentUnauthorisedForClientControllerSpec extends ControllerBaseSpec with M
         verify(mockAuditingService)
           .extendedAudit(
             ArgumentMatchers.eq(expectedAuditModel),
-            ArgumentMatchers.any()
+            ArgumentMatchers.eq[Option[String]](Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
             ArgumentMatchers.any[ExecutionContext]

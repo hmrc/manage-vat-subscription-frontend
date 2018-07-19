@@ -137,9 +137,19 @@ object CircumstanceDetailsTestConstants {
     ))
   )
 
-  val customerInformationNoPending: CircumstanceDetails = CircumstanceDetails(
+  val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated,
     individual,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    None
+  )
+
+  val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    organisation,
     Some(frsModelMax),
     ppobModelMax,
     Some(bankDetailsModelMax),

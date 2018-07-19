@@ -18,7 +18,7 @@ package models.circumstanceInfo
 
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Reads, Writes, __}
+import play.api.libs.json.{Json, Reads, Writes, __}
 
 case class PendingChanges(ppob: Option[PPOB],
                           bankDetails: Option[BankDetails],
@@ -41,4 +41,19 @@ object PendingChanges {
       bankDetailsPath.writeNullable[BankDetails] and
       returnPeriodPath.writeNullable[ReturnPeriod]
     )(unlift(PendingChanges.unapply))
+
+  val auditWrites: Writes[Option[PendingChanges]] = Writes {
+    case Some(pending) =>
+      Json.obj(
+        "businessAddress" -> pending.ppob.isDefined,
+        "repaymentBankDetails" -> pending.bankDetails.isDefined,
+        "vatReturnDates" -> pending.returnPeriod.isDefined
+      )
+    case _ =>
+      Json.obj(
+        "businessAddress" -> false,
+        "repaymentBankDetails" -> false,
+        "vatReturnDates" -> false
+      )
+  }
 }

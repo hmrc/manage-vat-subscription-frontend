@@ -32,7 +32,11 @@ import stubs.ReturnFrequencyStub
 class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
   val path = "/confirm-vat-return-dates"
-  val sessionWithReturnFrequency: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, SessionKeys.RETURN_FREQUENCY -> Jan)
+  val sessionWithReturnFrequency: Map[String, String] = Map(
+    SessionKeys.CLIENT_VRN -> VRN,
+    SessionKeys.NEW_RETURN_FREQUENCY -> Jan,
+    SessionKeys.CURRENT_RETURN_FREQUENCY -> Monthly
+  )
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling ConfirmVatDatesController.show" when {
