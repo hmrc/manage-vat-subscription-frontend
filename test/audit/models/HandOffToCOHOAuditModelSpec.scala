@@ -18,16 +18,17 @@ package audit.models
 
 import play.api.libs.json.Json
 import utils.TestUtil
+import assets.CustomerDetailsTestConstants._
 
-class BankAccountHandOffAuditModelSpec extends TestUtil {
+class HandOffToCOHOAuditModelSpec extends TestUtil {
 
-  val transactionName: String = "start-change-repayment-bank-account-journey"
-  val auditType: String = "StartChangeOfRepaymentBankAccount"
+  val transactionName: String = "handoff-to-companies-house"
+  val auditType: String = "StartChangeBusinessNameJourney"
 
-  lazy val agentHandOff = BankAccountHandOffAuditModel(agentUser, "/redirect-url")
-  lazy val userHandOff = BankAccountHandOffAuditModel(user, "/redirect-url")
+  lazy val agentHandOff = HandOffToCOHOAuditModel(agentUser, organisation.organisationName.get)
+  lazy val userHandOff = HandOffToCOHOAuditModel(user, organisation.organisationName.get)
 
-  "BankAccountHandOffAuditModel" should {
+  "HandOffToCOHOAuditModel" should {
 
     s"have the correct transaction name $transactionName" in {
       agentHandOff.transactionName shouldBe transactionName
@@ -42,9 +43,9 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
       "have the correct details for the audit event" in {
         agentHandOff.detail shouldBe Json.obj(
           "isAgent" -> true,
-          "agentReferenceNumber" -> agentHandOff.user.arn.get,
-          "vrn" -> agentHandOff.user.vrn,
-          "repaymentsRedirectUrl" -> agentHandOff.repaymentsRedirectUrl
+          "agentReferenceNumber" -> agentUser.arn.get,
+          "vrn" -> agentUser.vrn,
+          "currentBusinessName" -> organisation.organisationName.get
         )
       }
     }
@@ -54,8 +55,8 @@ class BankAccountHandOffAuditModelSpec extends TestUtil {
       "have the correct details for the audit event" in {
         userHandOff.detail shouldBe Json.obj(
           "isAgent" -> false,
-          "vrn" -> userHandOff.user.vrn,
-          "repaymentsRedirectUrl" -> userHandOff.repaymentsRedirectUrl
+          "vrn" -> user.vrn,
+          "currentBusinessName" -> organisation.organisationName.get
         )
       }
     }

@@ -61,7 +61,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(ViewVatSubscriptionAuditModel(vrn, None, customerInformationModelMaxOrganisation)),
+            ArgumentMatchers.eq(ViewVatSubscriptionAuditModel(user, customerInformationModelMaxOrganisation)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.routes.CustomerCircumstanceDetailsController.show().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
