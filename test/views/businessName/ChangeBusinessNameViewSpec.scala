@@ -86,7 +86,7 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       }
 
       "has a URL to the Gov.UK guidance page for changing name via COHO" in {
-        element(Selectors.link).attr("href") shouldBe mockConfig.govUkCohoNameChangeUrl
+        element(Selectors.link).attr("href") shouldBe controllers.routes.ChangeBusinessNameController.handOffToCOHO().url
       }
     }
   }
