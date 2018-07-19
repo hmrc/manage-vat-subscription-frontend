@@ -18,6 +18,7 @@ package audit.models
 
 import models.circumstanceInfo.{BankDetails, CircumstanceDetails, PendingChanges}
 import play.api.libs.json._
+import utils.JsonObjectSugar
 
 case class ViewVatSubscriptionAuditModel(vrn: String,
                                          agentReferenceNumber: Option[String],
@@ -29,10 +30,10 @@ case class ViewVatSubscriptionAuditModel(vrn: String,
 
 }
 
-object ViewVatSubscriptionAuditModel {
+object ViewVatSubscriptionAuditModel extends JsonObjectSugar {
 
   implicit val writes: Writes[ViewVatSubscriptionAuditModel] = Writes { model =>
-    val filteredJson = Json.obj(
+    jsonObjNoNulls(
       "isAgent" -> model.agentReferenceNumber.isDefined,
       "agentReferenceNumber" -> model.agentReferenceNumber,
       "vrn" -> model.vrn,
@@ -41,9 +42,6 @@ object ViewVatSubscriptionAuditModel {
       "repaymentBankDetails" -> Json.toJson(model.vatDetails.pendingBankDetails.fold(model.vatDetails.bankDetails)(x => Some(x)))(BankDetails.auditWrites),
       "vatReturnFrequency" -> model.vatDetails.pendingReturnPeriod.fold(model.vatDetails.returnPeriod.map(_.auditValue).orNull)(x => x.auditValue),
       "inFlightChanges" -> Json.toJson(model.vatDetails.pendingChanges)(PendingChanges.auditWrites)
-    ).fields.filterNot(_._2 == JsNull)
-
-    JsObject(filteredJson)
+    )
   }
-
 }

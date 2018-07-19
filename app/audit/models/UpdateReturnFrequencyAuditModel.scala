@@ -18,6 +18,7 @@ package audit.models
 
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.json._
+import utils.JsonObjectSugar
 
 case class UpdateReturnFrequencyAuditModel(agentReferenceNumber: Option[String],
                                            vrn: String,
@@ -30,19 +31,16 @@ case class UpdateReturnFrequencyAuditModel(agentReferenceNumber: Option[String],
   override val auditType: String = "ChangeVatSubscriptionDetails"
 }
 
-object UpdateReturnFrequencyAuditModel {
+object UpdateReturnFrequencyAuditModel extends JsonObjectSugar {
 
   implicit val writes: Writes[UpdateReturnFrequencyAuditModel] = Writes { model =>
-
-    val filteredJson = Json.obj(
+    jsonObjNoNulls(
       "isAgent" -> model.agentReferenceNumber.isDefined,
       "agentReferenceNumber" -> model.agentReferenceNumber,
       "vrn" -> model.vrn,
       "currentReturnFrequency" -> model.currentReturnFrequency.auditValue,
       "requestedReturnFrequency" -> model.requestedReturnFrequency.auditValue,
       "formBundle" -> model.formBundle
-    ).fields.filterNot(_._2 == JsNull)
-
-    JsObject(filteredJson)
+    )
   }
 }
