@@ -4,8 +4,15 @@
 [![Build Status](https://travis-ci.org/hmrc/manage-vat-subscription-frontend.svg)](https://travis-ci.org/hmrc/manage-vat-subscription-frontend) 
 [![Download](https://api.bintray.com/packages/hmrc/releases/manage-vat-subscription-frontend/images/download.svg)](https://bintray.com/hmrc/releases/manage-vat-subscription-frontend/_latestVersion)
 
-## Summary 
+## Summary
+This is the repository for the Manage Vat Subscription frontend.
+
 This service provides end users with a mechanism to manage their VAT subscription.
+It allows the users to both view and change their Business name, Business address, bank account details (for repayments) and their VAT return dates.
+
+Backend: https://github.com/hmrc/vat-subscription
+
+Stub: https://github.com/hmrc/manage-vat-subscription-dynamic-stub
 
 ## Requirements
 
