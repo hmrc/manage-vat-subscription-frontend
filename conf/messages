@@ -49,6 +49,10 @@ unauthorised.agentForClient.authoriseForClient = authorise you as their agent
 unauthorised.agentForClient.enterDetails = If you think you have entered the wrong details you can
 unauthorised.agentForClient.tryAgain = try again
 
+unauthorised.agentJourneyDisabled.title = You cannot change your client’s business details yet
+unauthorised.agentJourneyDisabled.p1 = Agents cannot change their client’s business details yet.
+unauthorised.agentJourneyDisabled.p2 = If your client needs to change their business details, they need to sign in using their own Government Gateway details.
+
 not_signed_up.title = You can’t use this service yet
 not_signed_up.heading = You can’t use this service yet
 not_signed_up.p1 = This service is only available to some limited companies and sole traders.
