@@ -65,15 +65,25 @@ class FeedbackController @Inject()(implicit val config: FrontendAppConfig,
   protected def loadPartial(url: String)(implicit request: RequestHeader): HtmlPartial = ???
 
 
-  private def feedbackFormPartialUrl(implicit request: Request[AnyContent]) =
-    s"${config.contactFrontendService}/contact/beta-feedback/form/?submitUrl=${urlEncode(localSubmitUrl)}" +
+  private def feedbackFormPartialUrl(implicit request: Request[AnyContent]) = {
+    val url = s"${config.contactFrontendService}/contact/beta-feedback/form/?submitUrl=${urlEncode(localSubmitUrl)}" +
       s"&service=${urlEncode(config.contactFormServiceIdentifier)}&referer=${urlEncode(contactFormReferer)}"
+    Logger.debug(s"[FeedbackController][feedbackFormPartialUrl] URL: $url")
+    url
+  }
 
-  private def feedbackHmrcSubmitPartialUrl(implicit request: Request[AnyContent]) =
-    s"${config.contactFrontendService}/contact/beta-feedback/form?resubmitUrl=${urlEncode(localSubmitUrl)}"
 
-  private def feedbackThankYouPartialUrl(ticketId: String)(implicit request: Request[AnyContent]) =
-    s"${config.contactFrontendService}/contact/beta-feedback/form/confirmation?ticketId=${urlEncode(ticketId)}"
+  private def feedbackHmrcSubmitPartialUrl(implicit request: Request[AnyContent]) = {
+    val url = s"${config.contactFrontendService}/contact/beta-feedback/form?resubmitUrl=${urlEncode(localSubmitUrl)}"
+    Logger.debug(s"[FeedbackController][feedbackHmrcSubmitPartialUrl] URL: $url")
+    url
+  }
+
+  private def feedbackThankYouPartialUrl(ticketId: String)(implicit request: Request[AnyContent]) = {
+    val url = s"${config.contactFrontendService}/contact/beta-feedback/form/confirmation?ticketId=${urlEncode(ticketId)}"
+    Logger.debug(s"[FeedbackController][feedbackThankYouPartialUrl] URL: $url")
+    url
+  }
 
   def show: Action[AnyContent] = UnauthorisedAction {
     implicit request =>
