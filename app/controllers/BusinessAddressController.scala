@@ -16,8 +16,9 @@
 
 package controllers
 
+import audit.AuditService
+import audit.models.{AddressLookupAuditModel, ChangeAddressAuditModel}
 import javax.inject.{Inject, Singleton}
-
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import play.api.Logger
@@ -34,11 +35,17 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           addressLookupService: AddressLookupService,
                                           ppobService: PPOBService,
                                           val serviceErrorHandler: ServiceErrorHandler,
+                                          val auditService: AuditService,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val initialiseJourney: Action[AnyContent] = authenticate.async { implicit user =>
     addressLookupService.initialiseJourney map {
-      case Right(response) => Redirect(response.redirectUrl)
+      case Right(response) =>
+        auditService.extendedAudit(
+          AddressLookupAuditModel(user, response.redirectUrl),
+          Some(controllers.routes.BusinessAddressController.initialiseJourney().url)
+        )
+        Redirect(response.redirectUrl)
       case Left(_) => Logger.debug(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
     }
@@ -47,8 +54,9 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
-        ppobService.updatePPOB(user.vrn, address) map {
-          case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
+        ppobService.updatePPOB(user, address, id) map {
+          case Right(_) =>
+            Ok(views.html.businessAddress.change_address_confirmation())
           case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
