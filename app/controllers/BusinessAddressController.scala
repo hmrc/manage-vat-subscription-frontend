@@ -42,7 +42,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         auditService.extendedAudit(
-          AddressLookupAuditModel(user.arn, user.vrn, response.redirectUrl, user.isAgent),
+          AddressLookupAuditModel(user, response.redirectUrl),
           Some(controllers.routes.BusinessAddressController.initialiseJourney().url)
         )
         Redirect(response.redirectUrl)

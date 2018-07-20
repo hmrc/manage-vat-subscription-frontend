@@ -20,6 +20,7 @@ import models.User
 import models.circumstanceInfo.PPOBAddress
 import models.customerAddress.AddressModel
 import play.api.libs.json._
+import utils.JsonObjectSugar
 
 case class ChangeAddressAuditModel(user: User[_],
                               currentAddress: PPOBAddress,
@@ -32,21 +33,18 @@ case class ChangeAddressAuditModel(user: User[_],
 
 }
 
-object ChangeAddressAuditModel {
+object ChangeAddressAuditModel extends JsonObjectSugar {
 
   implicit val writes: Writes[ChangeAddressAuditModel] = Writes { model =>
 
-    JsObject(
-      Json.obj(
-        "isAgent" -> model.user.arn.isDefined,
-        "agentReferenceNumber" -> model.user.arn,
-        "vrn" -> model.user.vrn,
-        "currentBusinessAddress" -> Json.toJson(model.currentAddress),
-        "requestedBusinessAddress" -> Json.toJson(model.requestedAddress),
-        "formBundle" -> model.formBundle
-      ).fields.filterNot(_._2 == JsNull)
+    jsonObjNoNulls(
+      "isAgent" -> model.user.arn.isDefined,
+      "agentReferenceNumber" -> model.user.arn,
+      "vrn" -> model.user.vrn,
+      "currentBusinessAddress" -> Json.toJson(model.currentAddress),
+      "requestedBusinessAddress" -> Json.toJson(model.requestedAddress),
+      "formBundle" -> model.formBundle
     )
-
   }
 
 }

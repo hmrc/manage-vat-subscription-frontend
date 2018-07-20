@@ -16,24 +16,29 @@
 
 package audit.models
 
-import play.api.libs.json.{Format, JsValue, Json}
+import models.User
+import play.api.libs.json._
+import utils.JsonObjectSugar
 
-case class AddressLookupAuditModel(agentReferenceNumber: Option[String],
-                                   vrn: String,
-                                   addressLookupRedirectUrl: String,
-                                   isAgent: Boolean) extends ExtendedAuditModel {
+case class AddressLookupAuditModel(user: User[_],
+                                   addressLookupRedirectUrl: String) extends ExtendedAuditModel {
 
-  override val transactionName: String = AddressLookupAuditModel.transactionName
+  override val transactionName: String = "start-change-address-journey"
   override val detail: JsValue = Json.toJson(this)
-  override val auditType: String = AddressLookupAuditModel.auditType
+  override val auditType: String = "StartChangeOfAddressJourney"
 
 }
 
-object AddressLookupAuditModel {
+object AddressLookupAuditModel extends JsonObjectSugar {
 
-  val transactionName = "start-change-address-journey"
-  val auditType = "StartChangeOfAddressJourney"
+  implicit val writes: Writes[AddressLookupAuditModel] = Writes { model =>
 
-  implicit val format: Format[AddressLookupAuditModel] = Json.format[AddressLookupAuditModel]
+    jsonObjNoNulls(
+      "isAgent" -> model.user.arn.isDefined,
+      "agentReferenceNumber" -> model.user.arn,
+      "vrn" -> model.user.vrn,
+      "addressLookupRedirectUrl" -> model.addressLookupRedirectUrl
+    )
+  }
 
 }

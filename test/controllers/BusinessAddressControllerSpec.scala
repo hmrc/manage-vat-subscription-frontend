@@ -25,7 +25,6 @@ import mocks.services.MockBusinessAddressService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import assets.BaseTestConstants._
-import audit.models.AddressLookupAuditModel
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.mockito.ArgumentMatchers
