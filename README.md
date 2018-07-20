@@ -12,6 +12,15 @@ This service provides end users with a mechanism to manage their VAT subscriptio
 This service is written in [Scala](http://www.scala-lang.org/) and [Play](http://playframework.com/), so needs at least a [JRE] to run.
 
 ## Running
+
+To update from Nexus and start all services from the RELEASE version instead of snapshot
+
+```
+sm --start ITVC_ALL -f
+```
+
+### To run the application locally execute the following:
+Kill the service ```sm --stop MANAGE_VAT_SUBSCRIPTION_FRONTEND``` and run:
 `sbt "run 9150 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes"`
 
 ## Testing
