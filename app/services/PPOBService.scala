@@ -16,19 +16,23 @@
 
 package services
 
+import audit.AuditService
+import audit.models.ChangeAddressAuditModel
 import javax.inject.{Inject, Singleton}
-
 import connectors.SubscriptionConnector
-import models.circumstanceInfo.CircumstanceDetails
+import models.User
+import models.circumstanceInfo.{CircumstanceDetails, PPOBAddress}
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressModel
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
+import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector) {
+class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
+                            val auditService: AuditService) {
 
 
   private def buildPPOBUpdateModel(addressModel: AddressModel, circumstanceDetails: CircumstanceDetails) = {
@@ -45,12 +49,20 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector) {
   }
 
 
-  def updatePPOB(vrn: String, address: AddressModel)
-                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
+  def updatePPOB(user: User[_], address: AddressModel, id: String)
+                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, (SubscriptionUpdateResponseModel, PPOBAddress)]] = {
 
-    subscriptionConnector.getCustomerCircumstanceDetails(vrn).flatMap {
+    subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(customerDetails) =>
-        subscriptionConnector.updatePPOB(vrn, buildPPOBUpdateModel(address, customerDetails))
+        subscriptionConnector.updatePPOB(user.vrn, buildPPOBUpdateModel(address, customerDetails)) map {
+          case Right(success) =>
+            auditService.extendedAudit(
+              ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, success.formBundle),
+              Some(controllers.routes.BusinessAddressController.callback(id).url)
+            )
+            Right(success, customerDetails.ppobAddress)
+          case Left(error) => Left(error)
+        }
       case Left(error) => Future.successful(Left(error))
     }
   }

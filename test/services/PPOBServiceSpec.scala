@@ -19,28 +19,45 @@ package services
 import mocks.connectors.MockSubscriptionConnector
 import models.core.SubscriptionUpdateResponseModel
 import assets.CustomerAddressTestConstants._
-import assets.BaseTestConstants.vrn
+import assets.BaseTestConstants.{vrn, formBundle}
+import assets.PPOBAddressTestConstants._
 import assets.CircumstanceDetailsTestConstants.customerInformationModelMaxOrganisation
+import audit.mocks.MockAuditingService
+import audit.models.ChangeAddressAuditModel
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
+import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUtil
 
-class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector {
+import scala.concurrent.ExecutionContext
+
+class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockAuditingService {
 
   def setup(subscriptionResponse: SubscriptionUpdateResponse): PPOBService = {
 
     setupMockUpdateBusinessAddress(subscriptionResponse)
     setupMockUserDetails(vrn)(Right(customerInformationModelMaxOrganisation))
-    new PPOBService(mockSubscriptionConnector)
+    new PPOBService(mockSubscriptionConnector, mockAuditingService)
   }
 
   "Calling .updatePPOB" should {
 
-    val subscriptionResult = SubscriptionUpdateResponseModel("formBundle")
+    val subscriptionResult = SubscriptionUpdateResponseModel(formBundle)
 
     lazy val service = setup(Right(subscriptionResult))
-    lazy val result = service.updatePPOB(vrn, customerAddressMax)
+    lazy val result = service.updatePPOB(user, customerAddressMax, "")
 
     "return successful SubscriptionUpdateResponseModel" in {
-      await(result) shouldBe Right(subscriptionResult)
+      await(result) shouldBe Right(subscriptionResult, ppobAddressModelMax)
+
+      verify(mockAuditingService)
+        .extendedAudit(
+          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, formBundle)),
+          ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
+        )(
+          ArgumentMatchers.any[HeaderCarrier],
+          ArgumentMatchers.any[ExecutionContext]
+        )
     }
   }
 }

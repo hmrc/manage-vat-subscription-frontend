@@ -18,6 +18,7 @@ package controllers
 
 import assets.messages.ChangeAddressConfirmationPageMessages
 import assets.CustomerAddressTestConstants._
+import assets.PPOBAddressTestConstants._
 import audit.mocks.MockAuditingService
 import mocks.services.MockAddressLookupService
 import mocks.services.MockBusinessAddressService
@@ -61,7 +62,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
-          businessAddressResponse = Right(SubscriptionUpdateResponseModel("")))
+          businessAddressResponse = Right(SubscriptionUpdateResponseModel(""), ppobAddressModelMax)
+        )
         lazy val result = controller.callback("12345")(request)
 
         "return ok" in {

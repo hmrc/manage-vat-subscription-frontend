@@ -17,7 +17,7 @@
 package controllers
 
 import audit.AuditService
-import audit.models.AddressLookupAuditModel
+import audit.models.{AddressLookupAuditModel, ChangeAddressAuditModel}
 import javax.inject.{Inject, Singleton}
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
@@ -54,8 +54,9 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
-        ppobService.updatePPOB(user.vrn, address) map {
-          case Right(_) => Ok(views.html.businessAddress.change_address_confirmation())
+        ppobService.updatePPOB(user, address, id) map {
+          case Right(_) =>
+            Ok(views.html.businessAddress.change_address_confirmation())
           case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
