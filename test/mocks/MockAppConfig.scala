@@ -58,5 +58,5 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val timeoutCountdown: Int = 20
   override val vatSubscriptionUrl: String = "/subscription"
   override val contactFormServiceIdentifier: String = "VATC"
-  override val contactFrontendPartialBaseUrl: String = "/feedback/partial"
+  override val contactFrontendService: String = "/contact-frontend"
 }
