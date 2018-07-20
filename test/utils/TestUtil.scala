@@ -30,6 +30,7 @@ import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
+import assets.BaseTestConstants._
 
 import scala.concurrent.ExecutionContext
 
@@ -50,12 +51,12 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
 
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999")
+    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> vrn)
   implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> "999999999", SessionKeys.NEW_RETURN_FREQUENCY -> "Jan", SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly")
+    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> vrn, SessionKeys.NEW_RETURN_FREQUENCY -> "Jan", SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly")
 
-  implicit lazy val user = User[AnyContentAsEmpty.type]("999999999",true)(request)
-  implicit lazy val agentUser = User[AnyContentAsEmpty.type]("999999999",true,Some("XAIT00000000000"))(fakeRequestWithClientsVRN)
+  implicit lazy val user = User[AnyContentAsEmpty.type](vrn,true)(request)
+  implicit lazy val agentUser = User[AnyContentAsEmpty.type](vrn,true, Some(arn))(fakeRequestWithClientsVRN)
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = injector.instanceOf[ExecutionContext]
 

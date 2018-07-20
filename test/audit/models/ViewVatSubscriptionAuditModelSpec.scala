@@ -27,32 +27,24 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
   val transactionName = "view-vat-subscription-details"
   val auditType = "GetVatSubscriptionDetails"
 
-  val agentPending = ViewVatSubscriptionAuditModel(
-    vrn,
-    Some(arn),
-    customerInformationModelMaxIndividual
-  )
+  lazy val agentNoPendingIndividual = ViewVatSubscriptionAuditModel(agentUser, customerInformationNoPendingIndividual)
+  lazy val agentPendingIndividual = ViewVatSubscriptionAuditModel(agentUser, customerInformationModelMaxIndividual)
+  lazy val agentNoPendingOrganisation = ViewVatSubscriptionAuditModel(agentUser, customerInformationNoPendingOrganisation)
+  lazy val agentPendingOrganisation = ViewVatSubscriptionAuditModel(agentUser, customerInformationModelMaxOrganisation)
 
-  val userNoPending = ViewVatSubscriptionAuditModel(
-    vrn,
-    None,
-    customerInformationNoPendingIndividual
-  )
-
-  val userPending = ViewVatSubscriptionAuditModel(
-    vrn,
-    None,
-    customerInformationModelMaxIndividual
-  )
+  lazy val userNoPendingIndividual = ViewVatSubscriptionAuditModel(user, customerInformationNoPendingIndividual)
+  lazy val userPendingIndividual = ViewVatSubscriptionAuditModel(user, customerInformationModelMaxIndividual)
+  lazy val userNoPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationNoPendingOrganisation)
+  lazy val userPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationModelMaxOrganisation)
 
   "The ViewVatSubscriptionAuditModel" should {
 
     s"Have the correct transaction name of '$transactionName'" in {
-      agentPending.transactionName shouldBe transactionName
+      agentNoPendingIndividual.transactionName shouldBe transactionName
     }
 
     s"Have the correct audit event type of '$auditType'" in {
-      agentPending.auditType shouldBe auditType
+      agentNoPendingIndividual.auditType shouldBe auditType
     }
 
     "For an Agent acting on behalf of a Client" when {
@@ -60,12 +52,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
       "the Client is an Individual" when {
 
         "there are no pending changes" should {
-
-          val agentNoPendingIndividual = ViewVatSubscriptionAuditModel(
-            vrn,
-            Some(arn),
-            customerInformationNoPendingIndividual
-          )
 
           "Have the correct details for the audit event" in {
             agentNoPendingIndividual.detail shouldBe Json.obj(
@@ -96,12 +82,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
         }
 
         "there are pending changes" should {
-
-          val agentPendingIndividual = ViewVatSubscriptionAuditModel(
-            vrn,
-            Some(arn),
-            customerInformationModelMaxIndividual
-          )
 
           "Have the correct details for the audit event" in {
             agentPendingIndividual.detail shouldBe Json.obj(
@@ -137,12 +117,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
 
         "there are no pending changes" should {
 
-          val agentNoPendingOrganisation = ViewVatSubscriptionAuditModel(
-            vrn,
-            Some(arn),
-            customerInformationNoPendingOrganisation
-          )
-
           "Have the correct details for the audit event" in {
             agentNoPendingOrganisation.detail shouldBe Json.obj(
               "isAgent" -> true,
@@ -173,12 +147,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
         }
 
         "there are pending changes" should {
-
-          val agentPendingOrganisation = ViewVatSubscriptionAuditModel(
-            vrn,
-            Some(arn),
-            customerInformationModelMaxOrganisation
-          )
 
           "Have the correct details for the audit event" in {
             agentPendingOrganisation.detail shouldBe Json.obj(
@@ -217,12 +185,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
 
         "there are no pending changes" should {
 
-          val userNoPendingIndividual = ViewVatSubscriptionAuditModel(
-            vrn,
-            None,
-            customerInformationNoPendingIndividual
-          )
-
           "Have the correct details for the audit event" in {
             userNoPendingIndividual.detail shouldBe Json.obj(
               "isAgent" -> false,
@@ -251,12 +213,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
         }
 
         "there are pending changes" should {
-
-          val userPendingIndividual = ViewVatSubscriptionAuditModel(
-            vrn,
-            None,
-            customerInformationModelMaxIndividual
-          )
 
           "Have the correct details for the audit event" in {
             userPendingIndividual.detail shouldBe Json.obj(
@@ -291,12 +247,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
 
         "there are no pending changes" should {
 
-          val userNoPendingOrganisation = ViewVatSubscriptionAuditModel(
-            vrn,
-            None,
-            customerInformationNoPendingOrganisation
-          )
-
           "Have the correct details for the audit event" in {
             userNoPendingOrganisation.detail shouldBe Json.obj(
               "isAgent" -> false,
@@ -326,12 +276,6 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
         }
 
         "there are pending changes" should {
-
-          val userPendingOrganisation = ViewVatSubscriptionAuditModel(
-            vrn,
-            None,
-            customerInformationModelMaxOrganisation
-          )
 
           "Have the correct details for the audit event" in {
             userPendingOrganisation.detail shouldBe Json.obj(

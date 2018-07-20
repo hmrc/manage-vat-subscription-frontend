@@ -9,6 +9,7 @@ GET         /change-business-details                     @controllers.CustomerCi
 GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
 
 GET         /change-business-name                        @controllers.ChangeBusinessNameController.show
+GET         /change-business-name/coho-handoff           @controllers.ChangeBusinessNameController.handOffToCOHO
 
 GET         /change-business-address/confirmation        @controllers.BusinessAddressController.callback(id: String)
 
@@ -34,3 +35,8 @@ GET         /initialise-payment-journey                  @controllers.PaymentsCo
 #Sign Out Routes
 GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
 GET         /time-out                                    @controllers.SignOutController.timeout
+
+#Feedback Routes
+GET         /feedback                                    @controllers.feedback.FeedbackController.show
+POST        /feedback                                    @controllers.feedback.FeedbackController.submit
+GET         /thankyou                                    @controllers.feedback.FeedbackController.thankyou

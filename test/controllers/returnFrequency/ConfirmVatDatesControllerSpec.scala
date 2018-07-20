@@ -20,7 +20,7 @@ import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import audit.mocks.MockAuditingService
-import audit.models.{AuthenticateAgentAuditModel, UpdateReturnFrequencyAuditModel}
+import audit.models.UpdateReturnFrequencyAuditModel
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
@@ -106,7 +106,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(None, vrn, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, formBundle)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
