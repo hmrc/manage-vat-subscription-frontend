@@ -51,7 +51,7 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
         returnFrequencyService.updateReturnFrequency(user.vrn, newFrequency).map {
           case Right(success) => {
             auditService.extendedAudit(
-              UpdateReturnFrequencyAuditModel(user.arn, user.vrn, currentFrequency, newFrequency, success.formBundle),
+              UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency, success.formBundle),
               Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
             )
             Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show())

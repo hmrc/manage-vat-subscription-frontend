@@ -16,6 +16,8 @@
 
 package controllers
 
+import audit.AuditService
+import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
@@ -25,11 +27,12 @@ import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 @Singleton
-class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
-                                             val authenticate: AuthPredicate,
+class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
-                                             implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                             val auditService: AuditService,
+                                             implicit val appConfig: AppConfig,
+                                             implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
 
   val show: Action[AnyContent] = authenticate.async {
@@ -37,6 +40,20 @@ class ChangeBusinessNameController @Inject()(val messagesApi: MessagesApi,
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
           Ok(views.html.businessName.change_business_name(circumstances.customerDetails.organisationName.get))
+        case _ => serviceErrorHandler.showInternalServerError
+      }
+  }
+
+
+  val handOffToCOHO: Action[AnyContent] = authenticate.async {
+    implicit user =>
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+        case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
+          auditService.extendedAudit(
+            HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
+            Some(controllers.routes.ChangeBusinessNameController.show().url)
+          )
+          Redirect(appConfig.govUkCohoNameChangeUrl)
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

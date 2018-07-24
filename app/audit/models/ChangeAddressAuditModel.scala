@@ -17,24 +17,34 @@
 package audit.models
 
 import models.User
+import models.circumstanceInfo.PPOBAddress
+import models.customerAddress.AddressModel
 import play.api.libs.json._
 import utils.JsonObjectSugar
 
-case class BankAccountHandOffAuditModel(user: User[_], repaymentsRedirectUrl: String) extends ExtendedAuditModel {
+case class ChangeAddressAuditModel(user: User[_],
+                              currentAddress: PPOBAddress,
+                              requestedAddress: AddressModel,
+                              formBundle: String) extends ExtendedAuditModel {
 
-  override val transactionName: String = "start-change-repayment-bank-account-journey"
+  override val transactionName: String = "change-vat-business-address"
   override val detail: JsValue = Json.toJson(this)
-  override val auditType: String = "StartChangeOfRepaymentBankAccount"
+  override val auditType: String = "ChangeVatSubscriptionDetails"
+
 }
 
-object BankAccountHandOffAuditModel extends JsonObjectSugar {
-  implicit val writes: Writes[BankAccountHandOffAuditModel] = Writes { model =>
+object ChangeAddressAuditModel extends JsonObjectSugar {
+
+  implicit val writes: Writes[ChangeAddressAuditModel] = Writes { model =>
+
     jsonObjNoNulls(
       "isAgent" -> model.user.arn.isDefined,
       "agentReferenceNumber" -> model.user.arn,
       "vrn" -> model.user.vrn,
-      "repaymentsRedirectUrl" -> model.repaymentsRedirectUrl
+      "currentBusinessAddress" -> Json.toJson(model.currentAddress),
+      "requestedBusinessAddress" -> Json.toJson(model.requestedAddress),
+      "formBundle" -> model.formBundle
     )
   }
-}
 
+}
