@@ -27,7 +27,7 @@
 
     @headings(Messages("unauthorised.agentJourneyDisabled.title"))
 
-    <p>
+    <p data-metrics="agent_unauthorised:view:agent-journey-disabled">
         @Messages("unauthorised.agentJourneyDisabled.p1")
     </p>
 
@@ -36,8 +36,8 @@
     </p>
 
 
-    <a class="button"
-       href="@controllers.routes.SignOutController.signOut(authorised = false)">
+    <a data-journey-click="agent_unauthorised:sign-out:agent-journey-disabled"
+       class="button" href="@controllers.routes.SignOutController.signOut(authorised = true)">
         @Messages("base.sign-out")
     </a>
 }
