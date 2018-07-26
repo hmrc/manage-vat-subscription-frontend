@@ -18,6 +18,8 @@ package controllers
 
 import assets.messages.ChangeAddressConfirmationPageMessages
 import assets.CustomerAddressTestConstants._
+import assets.PPOBAddressTestConstants._
+import audit.mocks.MockAuditingService
 import mocks.services.MockAddressLookupService
 import mocks.services.MockBusinessAddressService
 import org.jsoup.Jsoup
@@ -25,10 +27,15 @@ import play.api.http.Status
 import assets.BaseTestConstants._
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
+import org.mockito.ArgumentMatchers
 import play.api.test.Helpers.redirectLocation
 import play.api.test.Helpers._
+import org.mockito.Mockito.verify
+import uk.gov.hmrc.http.HeaderCarrier
 
-class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService {
+import scala.concurrent.ExecutionContext
+
+class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService with MockAuditingService {
 
   "Calling .callback" when {
 
@@ -44,6 +51,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
+        mockAuditingService,
         mockConfig)
     }
 
@@ -53,7 +61,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
-          businessAddressResponse = Right(SubscriptionUpdateResponseModel("")))
+          businessAddressResponse = Right(SubscriptionUpdateResponseModel(""), ppobAddressModelMax)
+        )
         lazy val result = controller.callback("12345")(request)
 
         "return ok" in {
@@ -115,6 +124,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
+        mockAuditingService,
         mockConfig)
     }
 
@@ -125,6 +135,15 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return redirect to the url returned" in {
         status(result) shouldBe Status.SEE_OTHER
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any()
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
       }
 
       "redirect to url returned" in {
