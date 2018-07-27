@@ -38,7 +38,7 @@
     <p>@messages("clients_vrn.p1")</p>
 
     @helpers.form(action = controllers.agentClientRelationship.routes.SelectClientVrnController.submit) {
-      <div data-metrics="select-client:view:client-vat-number" class="form-group">
+      <div data-metrics="agent_select-client:view:client-vat-number" class="form-group">
           @text(
               form("vrn"),
               messages("clients_vrn.label"),
@@ -46,7 +46,8 @@
           )
       </div>
 
-      <button data-journey-click="select-client:submit:client-vat-number" class="button" type="submit">@messages("common.continue")</button>
+      <button onclick="sendGAEvent('select-client','submit','client-vat-number', true)"
+              class="button" type="submit">@messages("common.continue")</button>
     }
 
 }

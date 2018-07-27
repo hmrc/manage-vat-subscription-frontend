@@ -11,7 +11,7 @@ GET         /change-business-address                     @controllers.BusinessAd
 GET         /change-business-name                        @controllers.ChangeBusinessNameController.show
 GET         /change-business-name/coho-handoff           @controllers.ChangeBusinessNameController.handOffToCOHO
 
-GET         /change-business-address/confirmation        @controllers.BusinessAddressController.callback(id: String)
+GET         /change-business-address/confirmation        @controllers.BusinessAddressController.callback(id: String, isAgent: Boolean)
 
 GET         /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.show
 POST        /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.submit

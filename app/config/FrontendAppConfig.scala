@@ -76,7 +76,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val analyticsToken: String = getString(Keys.googleAnalyticsToken)
   override lazy val analyticsHost: String = getString(Keys.googleAnalyticsHost)
-  override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
+  override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem _reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 
   private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
