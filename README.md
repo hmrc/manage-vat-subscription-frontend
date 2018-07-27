@@ -23,7 +23,7 @@ This service is written in [Scala](http://www.scala-lang.org/) and [Play](http:/
 To update from Nexus and start all services from the RELEASE version instead of snapshot
 
 ```
-sm --start ITVC_ALL -f
+sm --start VATC_ALL -f
 ```
 
 ### To run the application locally execute the following:
@@ -32,6 +32,9 @@ Kill the service ```sm --stop MANAGE_VAT_SUBSCRIPTION_FRONTEND``` and run:
 
 ## Testing
 `sbt clean coverage test it:test coverageReport`
+
+## Populating Stub
+Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resources/stubData`. The script takes 1 argument - the name of the environment to populate the stub in.
 
 ## License 
 
