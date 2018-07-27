@@ -24,7 +24,7 @@ case class HandOffToCOHOAuditModel(user: User[_], businessName: String) extends 
 
   override val transactionName: String = "handoff-to-companies-house"
   override val detail: JsValue = Json.toJson(this)
-  override val auditType: String = "StartChangeBusinessNameJourney"
+  override val auditType: String = "StartChangeBusinessName"
 }
 
 object HandOffToCOHOAuditModel extends JsonObjectSugar {

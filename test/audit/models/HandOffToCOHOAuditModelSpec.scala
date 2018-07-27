@@ -23,7 +23,7 @@ import assets.CustomerDetailsTestConstants._
 class HandOffToCOHOAuditModelSpec extends TestUtil {
 
   val transactionName: String = "handoff-to-companies-house"
-  val auditType: String = "StartChangeBusinessNameJourney"
+  val auditType: String = "StartChangeBusinessName"
 
   lazy val agentHandOff = HandOffToCOHOAuditModel(agentUser, organisation.organisationName.get)
   lazy val userHandOff = HandOffToCOHOAuditModel(user, organisation.organisationName.get)
