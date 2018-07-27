@@ -34,7 +34,7 @@ Kill the service ```sm --stop MANAGE_VAT_SUBSCRIPTION_FRONTEND``` and run:
 `sbt clean coverage test it:test coverageReport`
 
 ## Populating Stub
-Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resources/stubData`. The script takes 1 argument - the name of the environment to populate the stub in.
+Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resources/stubData`. The script takes 1 argument - the name of the environment to populate the stub in. e.g. `./src/test/resources/stubData/setup.sh local`
 
 ## License 
 
