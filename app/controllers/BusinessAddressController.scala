@@ -17,10 +17,9 @@
 package controllers
 
 import audit.AuditService
-import audit.models.{AddressLookupAuditModel, ChangeAddressAuditModel}
-import javax.inject.{Inject, Singleton}
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
+import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
@@ -41,10 +40,6 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   val initialiseJourney: Action[AnyContent] = authenticate.async { implicit user =>
     addressLookupService.initialiseJourney map {
       case Right(response) =>
-        auditService.extendedAudit(
-          AddressLookupAuditModel(user, response.redirectUrl),
-          Some(controllers.routes.BusinessAddressController.initialiseJourney().url)
-        )
         Redirect(response.redirectUrl)
       case Left(_) => Logger.debug(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
         serviceErrorHandler.showInternalServerError

@@ -135,15 +135,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return redirect to the url returned" in {
         status(result) shouldBe Status.SEE_OTHER
-
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.any(),
-            ArgumentMatchers.any()
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
       }
 
       "redirect to url returned" in {

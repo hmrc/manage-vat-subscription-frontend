@@ -30,7 +30,7 @@ case class GetClientBusinessNameAuditModel(agentReferenceNumber: String,
 
 object GetClientBusinessNameAuditModel {
 
-  val agentTransactionName = "authenticate-agent-for-client-confirmation"
+  val agentTransactionName = "agent-authenticated-for-client-confirmation"
   val agentAuditType = "AuthenticateAgentForClientConfirmation"
 
   implicit val format: Format[GetClientBusinessNameAuditModel] = Json.format[GetClientBusinessNameAuditModel]

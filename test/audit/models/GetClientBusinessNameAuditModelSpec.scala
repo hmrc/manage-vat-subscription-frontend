@@ -23,7 +23,7 @@ import utils.TestUtil
 
 class GetClientBusinessNameAuditModelSpec extends TestUtil {
 
-  val transactionName = "authenticate-agent-for-client-confirmation"
+  val transactionName = "agent-authenticated-for-client-confirmation"
   val auditEvent = "AuthenticateAgentForClientConfirmation"
 
   "The AuthenticationAgentAuditModelSpec" should {
