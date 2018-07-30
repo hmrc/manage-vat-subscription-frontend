@@ -29,12 +29,13 @@ sm --start VATC_ALL -f
 ### To run the application locally execute the following:
 Kill the service ```sm --stop MANAGE_VAT_SUBSCRIPTION_FRONTEND``` and run:
 `sbt "run 9150 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes"`
+or alternatively navigate to the cloned frontend repo and run `./run.sh`
 
 ## Testing
 `sbt clean coverage test it:test coverageReport`
 
 ## Populating Stub
-Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resources/stubData`. The script takes 1 argument - the name of the environment to populate the stub in. e.g. `./src/test/resources/stubData/setup.sh local`
+Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resources/stubData`. The script takes 2 arguments - the name of the environment to populate the stub in. e.g. `./src/test/resources/stubData/setup.sh local` and, if populating the local environment, the port number.
 
 ## License 
 
