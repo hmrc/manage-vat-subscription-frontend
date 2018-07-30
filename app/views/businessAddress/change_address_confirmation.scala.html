@@ -34,7 +34,7 @@
     @if(user.isAgent){
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a data-journey-click="select-client:change:change-business-address-confirmation"
+            <a onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
                id="change-client-link"
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
                 @messages("common.agent.changeClient.link")</a>.

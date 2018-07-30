@@ -29,19 +29,19 @@
 
     <p data-metrics="agent_unauthorised:view:unauthorised-for-client">
         @Messages("unauthorised.agentForClient.useThisService")
-        <a data-journey-click="agent_unauthorised:click-authorise-as-agent:unauthorised-for-client"
+        <a onclick="sendGAEvent('unauthorised','click-authorise-as-agent','unauthorised-for-client', true)"
            href="@appConfig.agentAuthoriseForClient">
             @Messages("unauthorised.agentForClient.authoriseForClient")</a>@Messages("common.fullStop")
     </p>
 
     <p>
         @Messages("unauthorised.agentForClient.enterDetails")
-        <a data-journey-click="agent_unauthorised:try-again:unauthorised-for-client"
+        <a onclick="sendGAEvent('unauthorised','try-again','unauthorised-for-client', true)"
            href="@controllers.agentClientRelationship.routes.SelectClientVrnController.show()">
             @Messages("unauthorised.agentForClient.tryAgain")</a>@Messages("common.fullStop")
     </p>
 
-    <a data-journey-click="agent_unauthorised:sign-out:unauthorised-for-client"
+    <a onclick="sendGAEvent('unauthorised','sign-out','unauthorised-for-client', true)"
        class="button"
        href="@controllers.routes.SignOutController.signOut(authorised = false)">
         @Messages("base.sign-out")

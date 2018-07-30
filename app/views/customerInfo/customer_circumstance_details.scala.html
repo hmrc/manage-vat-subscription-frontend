@@ -187,7 +187,9 @@
     @if(user.isAgent){
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link" data-journey-click="select-client:change:change-business-details" href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+            <a id="change-client-link"
+               onclick="sendGAEvent('select-client','change','change-business-details', true)"
+               href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
         </p>
     }
 

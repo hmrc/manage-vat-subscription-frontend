@@ -40,7 +40,7 @@
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
             <a id="change-client-link"
-               data-journey-click="select-client:change:confirmation-vat-return-dates"
+               onclick="sendGAEvent('select-client','change','confirmation-vat-return-dates', true)"
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
                 @messages("common.agent.changeClient.link")</a>.
         </p>
