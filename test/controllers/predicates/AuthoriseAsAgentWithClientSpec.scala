@@ -16,7 +16,9 @@
 
 package controllers.predicates
 
+import assets.messages.AgentJourneyDisabledPageMessages
 import mocks.MockAuth
+import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
@@ -85,11 +87,12 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
     "Agent access is disabled" should {
 
-      "show an error page" in {
+      "show agent journey disabled page" in {
         mockConfig.features.agentAccess(false)
         mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
+        Jsoup.parse(bodyOf(result)).title shouldBe AgentJourneyDisabledPageMessages.title
       }
     }
   }

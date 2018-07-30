@@ -16,7 +16,7 @@
 
 package controllers.predicates
 
-import assets.messages.{AgentUnauthorisedForClientPageMessages, AgentUnauthorisedPageMessages, NotSignedUpPageMessages, UnauthorisedPageMessages}
+import assets.messages._
 import config.FrontendAppConfig
 import mocks.MockAuth
 import org.jsoup.Jsoup
@@ -115,11 +115,12 @@ class AuthPredicateSpec extends MockAuth {
 
     "Agent access is disabled" should {
 
-      "show an error page" in {
+      "show agent journey disabled page" in {
         mockConfig.features.agentAccess(false)
         mockAgentAuthorised()
         val result = target(request)
         status(result) shouldBe Status.UNAUTHORIZED
+        Jsoup.parse(bodyOf(result)).title shouldBe AgentJourneyDisabledPageMessages.title
       }
     }
   }
