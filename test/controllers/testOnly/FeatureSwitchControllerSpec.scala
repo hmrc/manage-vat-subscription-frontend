@@ -43,7 +43,7 @@ class FeatureSwitchControllerSpec extends TestUtil {
     }
   }
 
-  "Calling the .submitFeatureSwitch action" should {
+  "Calling the .submitFeatureSwitch action where simple Auth enabled" should {
 
     lazy val result = target.submitFeatureSwitch(request.addToken
       .withFormUrlEncodedBody("features.simpleAuth.enabled" -> "true"))
@@ -56,5 +56,20 @@ class FeatureSwitchControllerSpec extends TestUtil {
       redirectLocation(result) shouldBe Some(testOnly.controllers.routes.FeatureSwitchController.featureSwitch().url)
     }
   }
+
+  "Calling the .submitFeatureSwitch action where registration Status enabled" should {
+
+    lazy val result = target.submitFeatureSwitch(request.addToken
+      .withFormUrlEncodedBody("features.registrationStatus.enabled" -> "true"))
+
+    "return 303" in {
+      status(result) shouldBe Status.SEE_OTHER
+    }
+
+    "redirect the user to the feature switch page" in {
+      redirectLocation(result) shouldBe Some(testOnly.controllers.routes.FeatureSwitchController.featureSwitch().url)
+    }
+  }
+
 
 }

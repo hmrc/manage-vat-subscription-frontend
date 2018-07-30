@@ -26,7 +26,8 @@ object FeatureSwitchForm {
   val form: Form[FeatureSwitchModel] = Form(
     mapping(
       ConfigKeys.simpleAuthFeature -> boolean,
-      ConfigKeys.agentAccessFeature -> boolean
+      ConfigKeys.agentAccessFeature -> boolean,
+      ConfigKeys.registrationStatusFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

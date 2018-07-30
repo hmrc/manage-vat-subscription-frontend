@@ -33,7 +33,8 @@ class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit v
     Ok(testOnly.views.html.featureSwitch(FeatureSwitchForm.form.fill(
       FeatureSwitchModel(
         simpleAuthEnabled = appConfig.features.simpleAuth(),
-        agentAccessEnabled = appConfig.features.agentAccess())
+        agentAccessEnabled = appConfig.features.agentAccess(),
+        registrationStatusEnabled = appConfig.features.registrationStatus())
     )))
   }
 
@@ -47,6 +48,7 @@ class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit v
   def handleSuccess(model: FeatureSwitchModel): Result = {
     appConfig.features.simpleAuth(model.simpleAuthEnabled)
     appConfig.features.agentAccess(model.agentAccessEnabled)
+    appConfig.features.registrationStatus(model.registrationStatusEnabled)
     Redirect(routes.FeatureSwitchController.featureSwitch())
   }
 }
