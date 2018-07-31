@@ -39,6 +39,44 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
         "a clients VRN is held in session cookie" when {
 
+          "the Registration Status Feature is enabled" should {
+
+            "Render the Customer Circumstances page with the Registration section visible" in {
+              mockAppConfig.features.registrationStatus(true)
+              given.agent.isSignedUpToAgentServices
+
+              And("A successful response with all details is returned for an Organisation")
+              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMax(organisation))
+
+              When("I call to show the Customer Circumstances page")
+              val res = show(Some(clientVRN))
+
+              res should have(
+                httpStatus(OK),
+                isElementVisible("#registration-status-text")(isVisible = true)
+              )
+            }
+          }
+
+          "the Registration Status Feature is disabled" should {
+
+            "Render the Customer Circumstances page without the Registration section visible" in {
+              mockAppConfig.features.registrationStatus(false)
+              given.agent.isSignedUpToAgentServices
+
+              And("A successful response with all details is returned for an Organisation")
+              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMax(organisation))
+
+              When("I call to show the Customer Circumstances page")
+              val res = show(Some(clientVRN))
+
+              res should have(
+                httpStatus(OK),
+                isElementVisible("#registration-status-text")(isVisible = false)
+              )
+            }
+          }
+
           "a success response is received for the Customer Details with all details (Organisation)" should {
 
             "Render the Customer Circumstances page with correct details shown" in {
@@ -240,6 +278,44 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
     }
 
     "the user is a Principle Entity and not an Agent" when {
+
+      "the Registration Status Feature is enabled" should {
+
+        "Render the Customer Circumstances page with the Registration section visible" in {
+          mockAppConfig.features.registrationStatus(true)
+          given.user.isAuthenticated
+
+          And("A successful response with all details is returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation))
+
+          When("I call to show the Customer Circumstances page")
+          val res = show(Some(VRN))
+
+          res should have(
+            httpStatus(OK),
+            isElementVisible("#registration-status-text")(isVisible = true)
+          )
+        }
+      }
+
+      "the Registration Status Feature is disabled" should {
+
+        "Render the Customer Circumstances page without the Registration section visible" in {
+          mockAppConfig.features.registrationStatus(false)
+          given.user.isAuthenticated
+
+          And("A successful response with all details is returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation))
+
+          When("I call to show the Customer Circumstances page")
+          val res = show(Some(VRN))
+
+          res should have(
+            httpStatus(OK),
+            isElementVisible("#registration-status-text")(isVisible = false)
+          )
+        }
+      }
 
       "a success response is received for the Customer Details with all details (Organisation)" should {
 
