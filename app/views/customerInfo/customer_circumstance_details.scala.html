@@ -28,6 +28,24 @@
     }
 }
 
+@registrationStatus() ={
+    <div>
+        <dt id="registration-status-text" class="cya-question">
+            @messages("customer_details.registrationStatus.heading")
+        </dt>
+        <dd id="registration-status" class="cya-answer">
+            Registered
+        </dd>
+        <dd class="cya-change">
+            <a id="registration-status-link"
+               href="#"
+               aria-label="@messages("customer_details.registration.deregister.hidden")">
+            @messages("customer_details.deregister")
+            </a>
+        </dd>
+    </div>
+}
+
 @customerName(orgName: String) = {
     <div>
         <dt id="business-name-text" class="cya-question">
@@ -152,9 +170,30 @@
         </h2>
     </header>
 
-    <div class="form-group">
-        <dl class="govuk-check-your-answers cya-questions-short">
 
+    @if(appConfig.features.registrationStatus()){
+        <div class="form-group">
+            <div class="bold-medium">@messages("customer_details.registration.heading")</div>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                <div>
+                    <dt></dt>
+                    <dd></dd>
+                    <dd></dd>
+                </div>
+                @registrationStatus()
+            </dl>
+        </div>
+    }
+
+
+    <div class="form-group">
+        <div class="bold-medium">@messages("customer_details.about.heading")</div>
+        <dl class="govuk-check-your-answers cya-questions-short">
+            <div>
+                <dt></dt>
+                <dd></dd>
+                <dd></dd>
+            </div>
             @circumstances.customerDetails.organisationName.map{ orgName =>
                 @customerName(orgName)
             }
