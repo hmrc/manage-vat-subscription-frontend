@@ -63,7 +63,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for registration status" which {
 
         "has a registration header" in {
-          elementText("#content > article > div:nth-child(2) > div") shouldBe viewMessages.registrationStatusHeading
+          elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.registrationStatusHeading
         }
 
         "has a registration status header" in {
@@ -81,7 +81,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
 
       "has an about header" in {
-        elementText("#content > article > div:nth-child(3) > div") shouldBe viewMessages.aboutHeading
+        elementText("#content > article > div:nth-child(3) > h2") shouldBe viewMessages.aboutHeading
       }
 
       "have a section for business address" which {
@@ -380,7 +380,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       "not have a registration section" in {
         mockConfig.features.registrationStatus(false)
-        elementText("#content > article > div:nth-child(2) > div") shouldBe viewMessages.aboutHeading
+        elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
         document.select("#registration-status-text").isEmpty shouldBe true
         document.select("#registration-status").isEmpty shouldBe true
         document.select("#registration-status-link").isEmpty shouldBe true

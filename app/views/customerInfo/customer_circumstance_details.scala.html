@@ -173,13 +173,8 @@
 
     @if(appConfig.features.registrationStatus()){
         <div class="form-group">
-            <div class="bold-medium">@messages("customer_details.registration.heading")</div>
+            <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
-                <div>
-                    <dt></dt>
-                    <dd></dd>
-                    <dd></dd>
-                </div>
                 @registrationStatus()
             </dl>
         </div>
@@ -187,13 +182,8 @@
 
 
     <div class="form-group">
-        <div class="bold-medium">@messages("customer_details.about.heading")</div>
+        <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-check-your-answers cya-questions-short">
-            <div>
-                <dt></dt>
-                <dd></dd>
-                <dd></dd>
-            </div>
             @circumstances.customerDetails.organisationName.map{ orgName =>
                 @customerName(orgName)
             }
