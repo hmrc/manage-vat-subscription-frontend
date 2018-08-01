@@ -131,7 +131,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     "address lookup service returns success" should {
 
       lazy val controller = setup(addressLookupResponse = Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = controller.initialiseJourney(request)
+      lazy val result = controller.initialiseJourney(false)(request)
 
       "return redirect to the url returned" in {
         status(result) shouldBe Status.SEE_OTHER
@@ -139,16 +139,27 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "redirect to url returned" in {
         redirectLocation(result) shouldBe Some("redirect-url")
+
       }
     }
 
     "address lookup service returns an error" should {
 
       lazy val controller = setup(addressLookupResponse = Left(errorModel))
-      lazy val result = controller.initialiseJourney(request)
+      lazy val result = controller.initialiseJourney(false)(request)
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+  }
+
+  "The reverse route for the .initialiseJourney method" when {
+
+    "called by an Agent" should {
+      "be /change-business-address?isAgent=true" in {
+        controllers.routes.BusinessAddressController.initialiseJourney(isAgent = true) shouldBe
+          "/vat-through-software/account/change-business-address?isAgent=true"
       }
     }
   }

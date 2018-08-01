@@ -6,7 +6,7 @@ GET         /assets/*file                                @controllers.Assets.at(
 # Pages
 GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show
 
-GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
+GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney(isAgent: Boolean)
 
 GET         /change-business-name                        @controllers.ChangeBusinessNameController.show
 GET         /change-business-name/coho-handoff           @controllers.ChangeBusinessNameController.handOffToCOHO
