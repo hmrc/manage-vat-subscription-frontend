@@ -166,6 +166,22 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
       }
     }
 
+    "the agent does NOT have the correct credential strength (strong)" when {
+
+      "render some page" in {
+
+        mockAppConfig.features.agentAccess(true)
+        given.agent.hasWeakCredentialStrength
+
+        When("I submit the Client VRN page with valid data")
+        val res = submit(validData)
+
+        res should have{
+          httpStatus(SEE_OTHER)
+        }
+      }
+    }
+
     "the user is a Principle Entity and not an Agent" should {
 
       "redirect to the Customer Details home page" in {

@@ -98,6 +98,12 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
       AuthStub.insufficientEnrolments()
       builder
     }
+
+    def hasWeakCredentialStrength: PreconditionBuilder = {
+      Given("I stub an Agent with weak credential strength")
+      AuthStub.insufficientCredentialStrength()
+      builder
+    }
   }
 
   def servicesConfig: Map[String, String] = Map(
