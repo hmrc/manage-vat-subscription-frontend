@@ -62,7 +62,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     }
     s"have a the back link with correct text and url '${BaseMessages.back}'" in {
       elementText(".link-back") shouldBe BaseMessages.back
-      element(".link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+      element(".link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.isAgent).url
     }
   }
 

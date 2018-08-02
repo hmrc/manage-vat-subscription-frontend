@@ -57,8 +57,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         elementText("#finish") shouldBe BaseMessages.finish
       }
 
-      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show().url}'" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false).url}'" in {
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false).url
       }
     }
   }
@@ -96,8 +96,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         elementText("#finish") shouldBe BaseMessages.finish
       }
 
-      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show().url}'" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true).url}'" in {
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true).url
       }
     }
   }

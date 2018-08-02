@@ -43,7 +43,7 @@
 
     <a onclick="sendGAEvent('business-address','finish','change-business-address-confirmation', @user.isAgent)"
        id="finish"
-       href='@controllers.routes.CustomerCircumstanceDetailsController.show()'
+       href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.isAgent)'
        class="button"
        type="submit">
         @messages("common.finish")
