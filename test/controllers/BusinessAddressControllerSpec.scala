@@ -158,7 +158,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
     "called by an Agent" should {
       "be /change-business-address?isAgent=true" in {
-        controllers.routes.BusinessAddressController.initialiseJourney(isAgent = true) shouldBe
+        controllers.routes.BusinessAddressController.initialiseJourney(isAgent = true).url shouldBe
           "/vat-through-software/account/change-business-address?isAgent=true"
       }
     }
