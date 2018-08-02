@@ -43,14 +43,14 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
       line3 = addressModel.line3,
       line4 = addressModel.line4,
       postCode = addressModel.postcode,
-      nonUkCountryCode = addressModel.countryCode.filterNot(_ == "GB")
+      countryCode = addressModel.countryCode
     )
     UpdatePPOB(updateAddress, circumstanceDetails.ppob.contactDetails, circumstanceDetails.ppob.websiteAddress)
   }
 
 
   def updatePPOB(user: User[_], address: AddressModel, id: String)
-                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, (SubscriptionUpdateResponseModel, PPOBAddress)]] = {
+                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
 
     subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(customerDetails) =>
@@ -60,7 +60,7 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
               ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, success.formBundle),
               Some(controllers.routes.BusinessAddressController.callback(id).url)
             )
-            Right(success, customerDetails.ppobAddress)
+            Right(success)
           case Left(error) => Left(error)
         }
       case Left(error) => Future.successful(Left(error))

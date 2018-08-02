@@ -110,7 +110,13 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         given.user.isAuthenticated
 
         And("An address is returned address lookup service")
-        BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1","line2")))
+        BusinessAddressStub.getAddress(OK, Json.obj(
+          "lines" -> Json.arr("line1","line2"),
+          "country" -> Json.obj(
+            "name" -> "United Kingdom",
+            "code" -> "GB"
+          )
+        ))
 
         And("a valid CircumstanceDetails model is returned")
         BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
@@ -137,7 +143,13 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         given.agent.isSignedUpToAgentServices
 
         And("An address is returned address lookup service")
-        BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1","line2")))
+        BusinessAddressStub.getAddress(OK, Json.obj(
+          "lines" -> Json.arr("line1","line2"),
+          "country" -> Json.obj(
+            "name" -> "United Kingdom",
+            "code" -> "GB"
+          )
+        ))
 
         And("a valid CircumstanceDetails model is returned")
         BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
@@ -165,7 +177,13 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")
-          BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1", "line2")))
+          BusinessAddressStub.getAddress(OK, Json.obj(
+            "lines" -> Json.arr("line1", "line2"),
+            "country" -> Json.obj(
+              "name" -> "United Kingdom",
+              "code" -> "GB"
+            )
+          ))
 
           And("a valid CircumstanceDetails model is returned")
           BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin))
@@ -186,7 +204,13 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")
-          BusinessAddressStub.getAddress(OK, Json.obj("lines" -> Json.arr("line1", "line2")))
+          BusinessAddressStub.getAddress(OK, Json.obj(
+            "lines" -> Json.arr("line1", "line2"),
+            "country" -> Json.obj(
+              "name" -> "United Kingdom",
+              "code" -> "GB"
+            )
+          ))
 
           And("a valid CircumstanceDetails model is returned")
           BusinessAddressStub.getFullInformation(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))

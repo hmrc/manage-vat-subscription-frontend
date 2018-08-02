@@ -16,7 +16,6 @@
 
 package mocks.services
 
-import models.circumstanceInfo.PPOBAddress
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
@@ -32,7 +31,7 @@ trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeA
 
   val mockBusinessAddressService: PPOBService = mock[PPOBService]
 
-  type BusinessAddressResponse = Either[ErrorModel, (SubscriptionUpdateResponseModel, PPOBAddress)]
+  type BusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()

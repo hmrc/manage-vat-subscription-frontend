@@ -48,7 +48,7 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
     lazy val result = service.updatePPOB(user, customerAddressMax, "")
 
     "return successful SubscriptionUpdateResponseModel" in {
-      await(result) shouldBe Right(subscriptionResult, ppobAddressModelMax)
+      await(result) shouldBe Right(subscriptionResult)
 
       verify(mockAuditingService)
         .extendedAudit(
