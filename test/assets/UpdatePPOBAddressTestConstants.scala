@@ -44,7 +44,7 @@ object UpdatePPOBAddressTestConstants {
     Some(addLine3),
     Some(addLine4),
     Some(postcode),
-    Some(countryCode)
+    countryCode
   )
 
   val updatePPOBAddressModelMin = UpdatePPOBAddress(
@@ -53,7 +53,7 @@ object UpdatePPOBAddressTestConstants {
     None,
     None,
     None,
-    Some(countryCode)
+    countryCode
   )
 
   val contactDetailsModelMax = ContactDetails(
@@ -77,7 +77,7 @@ object UpdatePPOBAddressTestConstants {
       "line3" -> addLine3,
       "line4" -> addLine4,
       "postCode" -> postcode,
-      "nonUKCountryCode" -> countryCode
+      "countryCode" -> countryCode
     ),
     "contactDetails" -> Json.obj(
       "primaryPhoneNumber" -> phoneNumber,
@@ -93,7 +93,7 @@ object UpdatePPOBAddressTestConstants {
     "address" -> Json.obj(
       "line1" -> addLine1,
       "line2" -> addLine2,
-      "nonUKCountryCode" -> countryCode
+      "countryCode" -> countryCode
     )
   )
 

@@ -61,7 +61,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
-          businessAddressResponse = Right(SubscriptionUpdateResponseModel(""), ppobAddressModelMax)
+          businessAddressResponse = Right(SubscriptionUpdateResponseModel(""))
         )
         lazy val result = controller.callback("12345")(request)
 

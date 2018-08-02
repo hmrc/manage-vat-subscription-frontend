@@ -52,7 +52,8 @@ class ChangeAddressAuditModelSpec extends TestUtil {
           ),
           "requestedBusinessAddress" -> Json.obj(
             "line1" -> customerAddressMin.line1,
-            "line2" -> customerAddressMin.line2
+            "line2" -> customerAddressMin.line2,
+            "countryCode" -> customerAddressMin.countryCode
           ),
           "formBundle" -> formBundle
         )

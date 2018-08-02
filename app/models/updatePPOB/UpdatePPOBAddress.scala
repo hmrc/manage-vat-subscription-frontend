@@ -25,7 +25,7 @@ case class UpdatePPOBAddress(line1: String,
                              line3: Option[String],
                              line4: Option[String],
                              postCode: Option[String],
-                             nonUkCountryCode: Option[String])
+                             countryCode: String)
 
 object UpdatePPOBAddress extends JsonReadUtil {
 
@@ -34,7 +34,7 @@ object UpdatePPOBAddress extends JsonReadUtil {
   private val line3Path = JsPath \ "line3"
   private val line4Path = JsPath \ "line4"
   private val postCodePath = JsPath \ "postCode"
-  private val nonUkCountryCodePath = JsPath \ "nonUKCountryCode"
+  private val countryCodePath = JsPath \ "countryCode"
 
   implicit val writes: Writes[UpdatePPOBAddress] = (
     line1Path.write[String] and
@@ -42,7 +42,7 @@ object UpdatePPOBAddress extends JsonReadUtil {
       line3Path.writeNullable[String] and
       line4Path.writeNullable[String] and
       postCodePath.writeNullable[String] and
-      nonUkCountryCodePath.writeNullable[String]
+      countryCodePath.write[String]
     )(unlift(UpdatePPOBAddress.unapply))
 }
 

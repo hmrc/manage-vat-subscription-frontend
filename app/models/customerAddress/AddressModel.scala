@@ -26,7 +26,7 @@ case class AddressModel(line1: String,
                         line3: Option[String] = None,
                         line4: Option[String] = None,
                         postcode: Option[String] = None,
-                        countryCode: Option[String] = None)
+                        countryCode: String)
 
 object AddressModel {
 
@@ -36,7 +36,7 @@ object AddressModel {
     (__ \\ "lines")(2).readNullable[String] and
     (__ \\ "lines")(3).readNullable[String] and
     (__ \\ "postcode").readNullable[String] and
-    (__ \\ "code").readNullable[String]
+    (__ \\ "code").read[String]
   )(AddressModel.apply _)
 
   implicit val format: Format[AddressModel] = Json.format[AddressModel]
