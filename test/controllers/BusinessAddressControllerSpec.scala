@@ -59,18 +59,36 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "and business address service returns success" should {
 
-        lazy val controller = setup(
+        def controller: BusinessAddressController = setup(
           addressLookupResponse = Right(customerAddressMax),
           businessAddressResponse = Right(SubscriptionUpdateResponseModel(""))
         )
-        lazy val result = controller.callback("12345")(request)
 
-        "return ok" in {
-          status(result) shouldBe Status.OK
+        "for an Individual" should {
+
+          lazy val result = controller.callback("12345")(request)
+
+          "return See Other (303)" in {
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          "Redirect to the confirmation page" in {
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation(isAgent = false).url)
+          }
         }
 
-        "return the confirmation page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+        "for an Agent" should {
+
+          lazy val result = controller.callback("12345")(fakeRequestWithClientsVRN)
+
+          "return See Other (303)" in {
+            mockAgentAuthorised()
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          "Redirect to the confirmation page" in {
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation(isAgent = true).url)
+          }
         }
       }
     }
@@ -150,6 +168,28 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
+    }
+  }
+
+  "calling .confirmation" should {
+
+    lazy val controller = new BusinessAddressController(
+      messagesApi,
+      mockAuthPredicate,
+      mockAddressLookupService,
+      mockBusinessAddressService,
+      serviceErrorHandler,
+      mockAuditingService,
+      mockConfig)
+
+    lazy val result = controller.confirmation(false)(request)
+
+    "Return status 200 (OK)" in {
+      status(result) shouldBe Status.OK
+    }
+
+    "render the Business Address confirmation view" in {
+      Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
     }
   }
 }

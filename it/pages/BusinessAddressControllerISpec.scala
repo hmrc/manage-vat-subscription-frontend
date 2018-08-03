@@ -105,7 +105,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
     "the user is an individual" should {
 
-      "render the ChangeAddressConfirmationPage page" in {
+      "redirect to the ChangeAddressConfirmationPage page" in {
 
         given.user.isAuthenticated
 
@@ -125,19 +125,18 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
         When("I initiate a return frequency update journey")
-        val res: WSResponse = get("/change-business-address/confirmation?id=111111111",session)
+        val res: WSResponse = get("/change-business-address/callback?id=111111111",session)
 
         res should have(
-          httpStatus(OK),
-          elementText("h1")("We have received the new business address"),
-          isElementVisible("#change-client-text")(isVisible = false)
+          httpStatus(SEE_OTHER),
+          redirectURI("/vat-through-software/account/change-business-address/confirmation?isAgent=false")
         )
       }
     }
 
     "the user is an agent" should {
 
-      "render the ChangeAddressConfirmationPage page" in {
+      "redirect to the ChangeAddressConfirmationPage page" in {
 
         mockAppConfig.features.agentAccess(true)
         given.agent.isSignedUpToAgentServices
@@ -158,12 +157,11 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
         When("I initiate a return frequency update journey")
-        val res: WSResponse = get("/change-business-address/confirmation?id=111111111",session)
+        val res: WSResponse = get("/change-business-address/callback?id=111111111",session)
 
         res should have(
-          httpStatus(OK),
-          elementText("h1")("We have received the new business address"),
-          isElementVisible("#change-client-text")(isVisible = true)
+          httpStatus(SEE_OTHER),
+          redirectURI("/vat-through-software/account/change-business-address/confirmation?isAgent=true")
         )
       }
     }
@@ -192,7 +190,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
 
           When("I initiate a return frequency update journey")
-          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
+          val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
@@ -219,7 +217,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
           When("I initiate a return frequency update journey")
-          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
+          val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
@@ -240,7 +238,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
           When("I initiate a return frequency update journey")
-          val res: WSResponse = get("/change-business-address/confirmation?id=111111111", session)
+          val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
