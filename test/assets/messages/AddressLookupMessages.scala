@@ -23,4 +23,5 @@ object AddressLookupMessages {
   val postcode = "Postcode"
   val selectHeading = "Select the new business address"
   val confirmHeading = "Confirm the new business address"
+  val confirmChangeText = "By confirming this change, you agree that the information you have given is complete and correct."
 }

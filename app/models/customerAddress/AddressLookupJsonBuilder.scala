@@ -43,9 +43,11 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
     "submitLabel" -> messages("common.saveAndContinue")
   )
 
-  val confirmPage = Map(
+  val confirmPage = Json.obj(
     "title" -> messages("address_lookupPage.confirmPage.heading"),
-    "heading" -> messages("address_lookupPage.confirmPage.heading")
+    "heading" -> messages("address_lookupPage.confirmPage.heading"),
+    "showConfirmChangeText" -> true,
+    "confirmChangeText" ->  messages("address_lookupPage.confirmPage.confirmChangeText")
   )
 }
 
