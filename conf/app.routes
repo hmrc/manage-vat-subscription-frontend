@@ -19,7 +19,7 @@ POST        /change-vat-return-dates                     @controllers.returnFreq
 GET         /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.show
 POST        /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.submit
 
-GET         /confirmation-vat-return-dates               @controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show
+GET         /confirmation-vat-return-dates               @controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(isAgent: Boolean)
 
 GET         /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.show
 POST        /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.submit
