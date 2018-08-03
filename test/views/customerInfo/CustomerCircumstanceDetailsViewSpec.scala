@@ -111,8 +111,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
             element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
           }
 
-          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney(false).url}" in {
-            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney(false).url
+          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
+            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
           }
         }
       }
@@ -182,7 +182,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
             element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
           }
 
-          s"has a link to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
             element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
           }
         }

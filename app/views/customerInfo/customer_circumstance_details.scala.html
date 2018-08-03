@@ -83,7 +83,7 @@
             } else {
                 <a id="place-of-business-status"
                    onclick="sendGAEvent('business-address','change','change-business-details', @user.isAgent)"
-                   href="@controllers.routes.BusinessAddressController.initialiseJourney(user.isAgent)"
+                   href="@controllers.routes.BusinessAddressController.initialiseJourney()"
                    aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
                   @messages("customer_details.change")
                 </a>
