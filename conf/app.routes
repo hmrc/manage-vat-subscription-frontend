@@ -4,7 +4,7 @@
 GET         /assets/*file                                @controllers.Assets.at(path="/public", file)
 
 # Pages
-GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show
+GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show(isAgent: Boolean ?= false)
 
 GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
 

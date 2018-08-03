@@ -37,14 +37,14 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
                                                       implicit val appConfig: AppConfig,
                                                       implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async {
+  val show: Boolean => Action[AnyContent] = isAgent => authenticate.async {
     implicit user =>
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
           auditService.extendedAudit(
             ViewVatSubscriptionAuditModel(user, circumstances),
-            Some(controllers.routes.CustomerCircumstanceDetailsController.show().url)
+            Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.isAgent).url)
           )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
             .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)

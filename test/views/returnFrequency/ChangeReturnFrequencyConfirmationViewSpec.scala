@@ -67,7 +67,7 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"has link back to customer details page" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false).url
       }
     }
   }
@@ -118,7 +118,7 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"has link back to customer details page" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show().url
+        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true).url
       }
     }
   }

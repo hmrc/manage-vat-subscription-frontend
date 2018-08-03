@@ -25,16 +25,16 @@ object PaymentsTestConstants {
   val principlePaymentStart: PaymentStartModel = PaymentStartModel(
     vrn,
     isAgent = false,
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show()
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = false)
   )
 
   val agentPaymentStart: PaymentStartModel = PaymentStartModel(
     vrn,
     isAgent = true,
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true),
     "/manage-vat-subscription-frontend" + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
   )
 
