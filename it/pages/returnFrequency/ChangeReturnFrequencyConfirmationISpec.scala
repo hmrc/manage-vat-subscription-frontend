@@ -25,12 +25,12 @@ import play.api.test.Helpers._
 
 class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
-  val path = "/confirmation-vat-return-dates"
+  val path = "/confirmation-vat-return-dates?isAgent"
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling .show" when {
 
-    def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
+    def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path=true", formatSessionVrn(sessionVrn))
 
     "the user is a Principle Entity and not an Agent" should {
 

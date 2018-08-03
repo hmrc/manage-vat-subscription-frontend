@@ -38,7 +38,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
     "the user is authorised" should {
 
-      lazy val result = TestChangeReturnFrequencyConfirmation.show(request)
+      lazy val result = TestChangeReturnFrequencyConfirmation.show(user.isAgent)(request)
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
@@ -56,6 +56,6 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
       }
     }
 
-    unauthenticatedCheck(TestChangeReturnFrequencyConfirmation.show)
+    unauthenticatedCheck(TestChangeReturnFrequencyConfirmation.show(user.isAgent))
   }
 }
