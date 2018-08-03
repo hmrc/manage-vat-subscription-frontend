@@ -61,6 +61,7 @@ trait AppConfig extends ServicesConfig {
   val vatSubscriptionUrl: String
   val contactFormServiceIdentifier: String
   val contactFrontendService: String
+  val agentInvitationsFrontendService: String
 }
 
 @Singleton
@@ -134,5 +135,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val timeoutPeriod: Int = getInt(Keys.timeoutPeriod)
   override lazy val timeoutCountdown: Int = getInt(Keys.timeoutCountDown)
+
+  override lazy val agentInvitationsFrontendService: String = baseUrl(Keys.agentInvitationsFrontend)
 
 }

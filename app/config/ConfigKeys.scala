@@ -60,4 +60,6 @@ object ConfigKeys {
 
   val timeoutPeriod: String = "timeout.period"
   val timeoutCountDown: String = "timeout.countDown"
+
+  val agentInvitationsFrontend: String = "agent-invitations-frontend"
 }
