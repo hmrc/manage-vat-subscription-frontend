@@ -116,7 +116,37 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        redirectLocation(result) shouldBe Some("/vat-through-software/account/confirmation-vat-return-dates")
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=false"
+        redirectLocation(result) shouldBe Some(test)
+      }
+    }
+
+    "the user is an Agent and authorised and a the session contains valid data" should {
+
+      lazy val result = TestConfirmVatDatesController.submit(fakeRequestWithClientsVRN.withSession(
+        SessionKeys.NEW_RETURN_FREQUENCY -> "January",
+        SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
+      ))
+
+      "return 303" in {
+        mockAgentAuthorised()
+        setupMockReturnFrequencyServiceWithSuccess()
+        status(result) shouldBe Status.SEE_OTHER
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
+      }
+
+      "return a location to the received dates view" in {
+        setupMockReturnFrequencyServiceWithSuccess()
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=true"
+        redirectLocation(result) shouldBe Some(test)
       }
     }
 
