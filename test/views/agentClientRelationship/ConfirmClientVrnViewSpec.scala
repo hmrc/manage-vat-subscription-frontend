@@ -55,8 +55,8 @@ class ConfirmClientVrnViewSpec extends ViewBaseSpec {
           elementText("a.button") shouldBe BaseMessages.confirmAndContinue
         }
 
-        s"has a link to '${controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true).url}'" in {
-          element("a.button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = true).url
+        s"has a link to '${controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = Some(true)).url}'" in {
+          element("a.button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = Some(true)).url
         }
       }
 
