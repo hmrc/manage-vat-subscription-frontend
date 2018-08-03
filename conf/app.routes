@@ -4,14 +4,15 @@
 GET         /assets/*file                                @controllers.Assets.at(path="/public", file)
 
 # Pages
-GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show(isAgent: Boolean ?= false)
+GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show(isAgent: Option[Boolean])
 
 GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
 
 GET         /change-business-name                        @controllers.ChangeBusinessNameController.show
 GET         /change-business-name/coho-handoff           @controllers.ChangeBusinessNameController.handOffToCOHO
 
-GET         /change-business-address/confirmation        @controllers.BusinessAddressController.callback(id: String)
+GET         /change-business-address/callback            @controllers.BusinessAddressController.callback(id: String)
+GET         /change-business-address/confirmation        @controllers.BusinessAddressController.confirmation(isAgent: Boolean)
 
 GET         /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.show
 POST        /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.submit

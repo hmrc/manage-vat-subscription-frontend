@@ -39,7 +39,7 @@
     <p>@vrn</p>
 
     <a onclick="sendGAEvent('select-client','confirm','confirm-client-vat-number', true)"
-       href="@controllers.routes.CustomerCircumstanceDetailsController.show(true)"
+       href="@controllers.routes.CustomerCircumstanceDetailsController.show(Some(true))"
        class="button form-group">
         @messages("common.confirmAndContinue")
     </a>
