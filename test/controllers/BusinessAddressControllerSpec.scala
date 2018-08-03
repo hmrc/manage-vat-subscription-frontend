@@ -156,6 +156,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
   "The reverse route for the .initialiseJourney method" when {
 
+    "called by an individual" should {
+      "be /change-business-address?isAgent=false" in {
+        controllers.routes.BusinessAddressController.initialiseJourney(isAgent = false).url shouldBe
+          "/vat-through-software/account/change-business-address?isAgent=false"
+      }
+    }
+
     "called by an Agent" should {
       "be /change-business-address?isAgent=true" in {
         controllers.routes.BusinessAddressController.initialiseJourney(isAgent = true).url shouldBe
