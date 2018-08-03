@@ -34,7 +34,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
   "Calling BusinessAddressController.initialiseJourney" when {
 
-    def show(sessionVrn: String): WSResponse = get("/change-business-address?isAgent=false", session)
+    def show(sessionVrn: String): WSResponse = get("/change-business-address", session)
 
     "A valid AddressLookupOnRampModel is returned from Address Lookup" should {
 
