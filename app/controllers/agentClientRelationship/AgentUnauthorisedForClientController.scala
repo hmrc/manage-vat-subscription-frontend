@@ -47,7 +47,7 @@ class AgentUnauthorisedForClientController @Inject()(val authenticate: Authorise
             AuthenticateAgentAuditModel(agent.arn, vrn, isAuthorisedForClient = false),
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
           )
-          Future.successful(Ok(views.html.errors.agent.notAuthorisedForClient()))
+          Future.successful(Ok(views.html.errors.agent.notAuthorisedForClient(vrn)))
         }
         case _ =>
           Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
