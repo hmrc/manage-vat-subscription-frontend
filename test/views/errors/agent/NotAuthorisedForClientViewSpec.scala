@@ -16,11 +16,15 @@
 
 package views.errors.agent
 
+import java.net.URLEncoder
+
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 import assets.messages.BaseMessages
 import assets.messages.{AgentUnauthorisedForClientPageMessages => Messages}
+import assets.BaseTestConstants.vrn
+import common.EnrolmentKeys
 
 class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
 
@@ -29,14 +33,18 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
     object Selectors {
       val serviceName = ".header__menu__proposition-name"
       val pageHeading = "#content h1"
-      val instructions = "#content p:nth-of-type(1)"
-      val instructionsLink = "#content p:nth-of-type(1) > a"
-      val tryAgain = "#content p:nth-of-type(2)"
-      val tryAgainLink = "#content p:nth-of-type(2) > a"
+      val instructions = "#content form > p"
+      val instructionsLink = "#content form > p > a"
+      val tryAgain = "#content article > p"
+      val tryAgainLink = "#content article > p > a"
+      val form = "#agentInviteForm"
+      val hiddenService = s"$form input[name=service]"
+      val hiddenIdentifierType = s"$form input[name=clientIdentifierType]"
+      val hiddenIdentifier = s"$form input[name=clientIdentifier]"
       val button = "#content .button"
     }
 
-    lazy val view = views.html.errors.agent.notAuthorisedForClient()(request, messages, mockConfig)
+    lazy val view = views.html.errors.agent.notAuthorisedForClient(vrn)(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title" in {
@@ -55,16 +63,45 @@ class NotAuthorisedForClientViewSpec extends ViewBaseSpec {
       elementText(Selectors.instructions) shouldBe Messages.instructions
     }
 
-    s"have a link to GOV.UK guidance" in {
-      element(Selectors.instructionsLink).attr("href") shouldBe "agent-subscription/start"
-    }
-
     s"have the correct content for trying again" in {
       elementText(Selectors.tryAgain) shouldBe Messages.tryAgain
     }
 
     s"have a link to '${controllers.agentClientRelationship.routes.SelectClientVrnController.show().url}'" in {
       element(Selectors.tryAgainLink).attr("href") shouldBe controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
+    }
+
+    "have a form" which {
+
+      s"has a POST action to ${mockConfig.agentInvitationsFastTrack}" in {
+        val form = element(Selectors.form)
+        form.attr("method") shouldBe "POST"
+        form.attr("action") shouldBe s"${mockConfig.agentInvitationsFastTrack}?continue=" +
+          s"${URLEncoder.encode(s"${mockConfig.host}${controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url}", "UTF-8")}"
+      }
+
+      "has a hidden field for the VAT service enrolment id" in {
+        val input = element(Selectors.hiddenService)
+        input.attr("value") shouldBe EnrolmentKeys.vatEnrolmentId
+        input.attr("type") shouldBe "hidden"
+      }
+
+      "has a hidden field for the VAT service identifier id" in {
+        val input = element(Selectors.hiddenIdentifierType)
+        input.attr("value") shouldBe EnrolmentKeys.vatIdentifierId.toLowerCase
+        input.attr("type") shouldBe "hidden"
+      }
+
+      "has a hidden field for the VRN" in {
+        val input = element(Selectors.hiddenIdentifier)
+        input.attr("value") shouldBe vrn
+        input.attr("type") shouldBe "hidden"
+      }
+
+      "has a link which submits the form" in {
+        val input = element(Selectors.instructionsLink)
+        input.attr("onClick").contains("document.getElementById('agentInviteForm').submit();") shouldBe true
+      }
     }
 
     s"have a Sign out button" in {

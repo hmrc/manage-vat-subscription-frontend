@@ -59,5 +59,5 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val vatSubscriptionUrl: String = "/subscription"
   override val contactFormServiceIdentifier: String = "VATC"
   override val contactFrontendService: String = "/contact-frontend"
-  override val agentInvitationsFrontendService: String = "/agent-invitations-frontend"
+  override val agentInvitationsFastTrack: String = "/agent-invitations-frontend"
 }
