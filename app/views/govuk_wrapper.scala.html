@@ -38,12 +38,11 @@
 @scriptElement = {
     <script>
         @if(showSignOut) {
-            $.timeoutDialog({
+            window.GOVUK.timeoutDialog({
               timeout: @appConfig.timeoutPeriod,
               countdown: @appConfig.timeoutCountdown,
-              keep_alive_url: '/vat-through-software/account/change-business-details',
-              logout_url: '/vat-through-software/account/time-out',
-              sign_out_button_text: '@messages("base.sign-out")'
+              keepAliveUrl: '/vat-through-software/account/change-business-details',
+              signOutUrl: '/vat-through-software/account/time-out'
             });
             var dialogOpen;
         }
