@@ -40,4 +40,3 @@ Run `setup.sh` located in `change-vat-acceptance-tests` under `src/test/resource
 ## License 
 
 This code is open source software licensed under the [Apache 2.0 License]("http://www.apache.org/licenses/LICENSE-2.0.html")
-
