@@ -62,4 +62,6 @@ object ConfigKeys {
   val timeoutCountDown: String = "timeout.countDown"
 
   val agentInvitationsFastTrack: String = "agent-invitations-fast-track.url"
+
+  val deregistrationForVat: String = "deregister-vat-frontend.url"
 }

@@ -62,6 +62,7 @@ trait AppConfig extends ServicesConfig {
   val contactFormServiceIdentifier: String
   val contactFrontendService: String
   val agentInvitationsFastTrack: String
+  val deregisterForVat: String
 }
 
 @Singleton
@@ -137,5 +138,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val timeoutCountdown: Int = getInt(Keys.timeoutCountDown)
 
   override lazy val agentInvitationsFastTrack: String = getString(Keys.agentInvitationsFastTrack)
+
+  override lazy val deregisterForVat: String = getString(Keys.deregistrationForVat)
 
 }

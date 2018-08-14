@@ -76,7 +76,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
         "has the deregister link" in {
           elementText("#registration-status-link") shouldBe viewMessages.deregister
-          element("#registration-status-link").attr("href") shouldBe "#"
+          element("#registration-status-link").attr("href") shouldBe "ye-olde-deregister-url"
         }
       }
 
