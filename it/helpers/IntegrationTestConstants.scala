@@ -78,6 +78,19 @@ object IntegrationTestConstants {
     Some("12****")
   )
 
+  val changeIndicators = ChangeIndicators(
+    ppob = true,
+    bankDetails = true,
+    returnPeriod = true,
+    deregister = true
+  )
+
+  val deregModel = Deregistration(
+    Some("just coz"),
+    Some("2018-10-02"),
+    Some("2018-10-01")
+  )
+
   def customerCircumstancesDetailsMax(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated,
     customerType,
@@ -85,6 +98,8 @@ object IntegrationTestConstants {
     ppob,
     Some(bankDetails),
     Some(Jan),
+    Some(deregModel),
+    Some(changeIndicators),
     Some(PendingChanges(
       Some(ppob),
       Some(bankDetails),
@@ -97,6 +112,8 @@ object IntegrationTestConstants {
     customerType,
     None,
     ppob,
+    None,
+    None,
     None,
     None,
     None
