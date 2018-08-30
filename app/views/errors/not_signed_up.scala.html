@@ -14,13 +14,15 @@
  * limitations under the License.
  *@
 
+@import templates.headings
+
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(title = messages("not_signed_up.title"), bodyClasses = None, appConfig = appConfig) {
 
-    <h1 data-metrics="unauthorised:view:not-enrolled" class="heading-large">@messages("not_signed_up.heading")</h1>
+    @headings(messages("not_signed_up.heading"))
 
-    <p>@messages("not_signed_up.p1")</p>
+    <p data-metrics="unauthorised:view:not-enrolled">@messages("not_signed_up.p1")</p>
 
     <p>@messages("not_signed_up.p2")</p>
 

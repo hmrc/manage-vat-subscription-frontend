@@ -16,7 +16,7 @@
 
 @import models.circumstanceInfo.CustomerDetails
 @import uk.gov.hmrc.play.views.html.helpers.form
-
+@import templates.headings
 
 @(vrn: String, customerDetails: CustomerDetails)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -25,14 +25,9 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <header class="page-heading">
-        <h1 data-metrics="agent_select-client:view:confirm-client-vat-number"
-            class="heading-large">
-            @messages("confirm_client_vrn.heading")
-        </h1>
-    </header>
+    @headings(messages("confirm_client_vrn.heading"))
 
-    <h2 class="bold-medium">@messages("confirm_client_vrn.name")</h2>
+    <h2 class="bold-medium" data-metrics="agent_select-client:view:confirm-client-vat-number">@messages("confirm_client_vrn.name")</h2>
     <p>@customerDetails.clientName</p>
 
     <h3 class="bold-medium">@messages("confirm_client_vrn.vrn")</h3>
