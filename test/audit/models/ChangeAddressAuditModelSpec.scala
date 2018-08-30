@@ -27,8 +27,8 @@ class ChangeAddressAuditModelSpec extends TestUtil {
   val transactionName = "change-vat-business-address"
   val auditType = "ChangeVatSubscriptionDetails"
 
-  lazy val changeAddressMaxModel = ChangeAddressAuditModel(agentUser, ppobAddressModelMax, customerAddressMax, formBundle)
-  lazy val changeAddressMinModel = ChangeAddressAuditModel(user, ppobAddressModelMin, customerAddressMin, formBundle)
+  lazy val changeAddressMaxModel = ChangeAddressAuditModel(agentUser, ppobAddressModelMax, customerAddressMax)
+  lazy val changeAddressMinModel = ChangeAddressAuditModel(user, ppobAddressModelMin, customerAddressMin)
 
   "The ChangeAddressAuditModel" should {
 
@@ -54,8 +54,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
             "line1" -> customerAddressMin.line1,
             "line2" -> customerAddressMin.line2,
             "countryCode" -> customerAddressMin.countryCode
-          ),
-          "formBundle" -> formBundle
+          )
         )
       }
     }
@@ -83,8 +82,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
             "line4" -> customerAddressMax.line4,
             "postcode" -> customerAddressMax.postcode,
             "countryCode" -> customerAddressMax.countryCode
-          ),
-          "formBundle" -> formBundle
+          )
         )
       }
     }
