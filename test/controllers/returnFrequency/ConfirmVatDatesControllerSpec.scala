@@ -116,7 +116,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=false"
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates/non-agent"
         redirectLocation(result) shouldBe Some(test)
       }
     }
@@ -145,7 +145,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=true"
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates/agent"
         redirectLocation(result) shouldBe Some(test)
       }
     }

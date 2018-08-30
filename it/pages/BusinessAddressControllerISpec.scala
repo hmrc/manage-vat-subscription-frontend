@@ -129,7 +129,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI("/vat-through-software/account/change-business-address/confirmation?isAgent=false")
+          redirectURI("/vat-through-software/account/change-business-address/confirmation/non-agent")
         )
       }
     }
@@ -161,7 +161,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI("/vat-through-software/account/change-business-address/confirmation?isAgent=true")
+          redirectURI("/vat-through-software/account/change-business-address/confirmation/agent")
         )
       }
     }

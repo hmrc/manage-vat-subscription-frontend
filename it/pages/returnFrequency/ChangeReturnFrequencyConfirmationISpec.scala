@@ -25,14 +25,14 @@ import play.api.test.Helpers._
 
 class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
-  val path = "/confirmation-vat-return-dates?isAgent"
+  val path = "/confirmation-vat-return-dates"
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling .show" when {
 
-    def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path=true", formatSessionVrn(sessionVrn))
-
     "the user is a Principle Entity and not an Agent" should {
+
+      def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path/non-agent", formatSessionVrn(sessionVrn))
 
       "render the return frequency confirmation page" in {
 
@@ -50,6 +50,8 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
     "the user is an Agent" when {
 
+      def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path/agent", formatSessionVrn(sessionVrn))
+
       "a valid VRN is being stored" should {
 
         "render the return frequency confirmation page" in {
@@ -66,9 +68,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
           )
         }
       }
-    }
-
-    "the user is an Agent" when {
 
       "no VRN is being stored" should {
 
@@ -86,9 +85,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
           )
         }
       }
-    }
-
-    "the user is an Agent" when {
 
       "who is unauthorised" should {
 

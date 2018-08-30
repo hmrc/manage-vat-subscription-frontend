@@ -86,7 +86,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = Some(false)).url)
+          redirectURI(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url)
         )
       }
     }
@@ -178,7 +178,7 @@ class SelectClientVrnControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI(controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = Some(false)).url)
+          redirectURI(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url)
         )
       }
     }
