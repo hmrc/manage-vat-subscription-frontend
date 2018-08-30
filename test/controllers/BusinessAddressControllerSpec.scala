@@ -73,7 +73,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
 
           "Redirect to the confirmation page" in {
-            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation(isAgent = false).url)
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation("non-agent").url)
           }
         }
 
@@ -87,7 +87,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
 
           "Redirect to the confirmation page" in {
-            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation(isAgent = true).url)
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation("agent").url)
           }
         }
       }
@@ -182,7 +182,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockAuditingService,
       mockConfig)
 
-    lazy val result = controller.confirmation(false)(request)
+    lazy val result = controller.confirmation("non-agent")(request)
 
     "Return status 200 (OK)" in {
       status(result) shouldBe Status.OK

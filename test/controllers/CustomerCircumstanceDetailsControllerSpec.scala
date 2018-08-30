@@ -49,7 +49,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
     "the user is authorised and a CustomerDetailsModel" should {
 
-      lazy val result = TestCustomerCircumstanceDetailsController.show(Some(false))(request.withSession(
+      lazy val result = TestCustomerCircumstanceDetailsController.show("non-agent")(request.withSession(
         SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan ,
         SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodFeb
       ))
@@ -62,7 +62,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
         verify(mockAuditingService)
           .extendedAudit(
             ArgumentMatchers.eq(ViewVatSubscriptionAuditModel(user, customerInformationModelMaxOrganisation)),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.CustomerCircumstanceDetailsController.show(Some(false)).url))
+            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
             ArgumentMatchers.any[ExecutionContext]
@@ -86,7 +86,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
     "the user is authorised and an Error is returned" should {
 
-      lazy val result = TestCustomerCircumstanceDetailsController.show(Some(false))(request)
+      lazy val result = TestCustomerCircumstanceDetailsController.show("non-agent")(request)
 
       "return 500" in {
         mockCustomerDetailsError()
@@ -103,12 +103,34 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
       "called by an Agent" should {
         "be //change-business-details?isAgent=true" in {
-          controllers.routes.CustomerCircumstanceDetailsController.show(isAgent = Some(true)).url shouldBe
-            "/vat-through-software/account/change-business-details?isAgent=true"
+          controllers.routes.CustomerCircumstanceDetailsController.show("agent").url shouldBe
+            "/vat-through-software/account/change-business-details/agent"
         }
       }
     }
 
-    unauthenticatedCheck(TestCustomerCircumstanceDetailsController.show(Some(false)))
+    unauthenticatedCheck(TestCustomerCircumstanceDetailsController.show("non-agent"))
+  }
+
+  "calling the .redirect action" when {
+
+    "the user is an Agent" should {
+
+      "redirect to the 'agent' endpoint" in {
+        mockAgentAuthorised()
+        lazy val result = TestCustomerCircumstanceDetailsController.redirect()(agentUser)
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show(agentUser.redirectSuffix).url)
+      }
+    }
+
+    "the user is a Principal entity" should {
+
+      "redirect to the 'non-agent' endpoint" in {
+        lazy val result = TestCustomerCircumstanceDetailsController.redirect()(user)
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+      }
+    }
+
+    unauthenticatedCheck(TestCustomerCircumstanceDetailsController.redirect())
   }
 }

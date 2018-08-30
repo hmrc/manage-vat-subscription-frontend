@@ -17,7 +17,6 @@
 package controllers
 
 import javax.inject.{Inject, Singleton}
-
 import audit.AuditService
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
@@ -29,6 +28,8 @@ import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.Future
+
 @Singleton
 class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPredicate,
                                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
@@ -37,14 +38,19 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
                                                       implicit val appConfig: AppConfig,
                                                       implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
-  val show: Option[Boolean] => Action[AnyContent] = _ => authenticate.async {
+  val redirect: Action[AnyContent] = authenticate.async {
+    implicit user =>
+      Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)))
+  }
+
+  val show: String => Action[AnyContent] = _ => authenticate.async {
     implicit user =>
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>
           auditService.extendedAudit(
             ViewVatSubscriptionAuditModel(user, circumstances),
-            Some(controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent)).url)
+            Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
           )
           Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
             .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)

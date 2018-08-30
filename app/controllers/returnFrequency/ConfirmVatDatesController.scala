@@ -54,7 +54,7 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
               UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency, success.formBundle),
               Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
             )
-            Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show(user.isAgent))
+            Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show(if(user.isAgent) "agent" else "non-agent"))
               .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
           }
           case _ => serviceErrorHandler.showInternalServerError

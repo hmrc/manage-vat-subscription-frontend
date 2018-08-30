@@ -36,15 +36,15 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
       if(user.isAgent) {
         config.host + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
       } else {
-        config.host + controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent))
+        config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)
       }
     }
 
     val paymentDetails: PaymentStartModel = PaymentStartModel(
       user.vrn,
       user.isAgent,
-      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent)),
-      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent)),
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
       convenienceUrl
     )
 

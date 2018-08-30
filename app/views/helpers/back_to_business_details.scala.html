@@ -15,4 +15,4 @@
  *@
 
 @()(implicit messages: Messages, user : User[_])
-<a class="link-back" href="@controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent))">@messages("base.back")</a>
+<a class="link-back" href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'>@messages("base.back")</a>

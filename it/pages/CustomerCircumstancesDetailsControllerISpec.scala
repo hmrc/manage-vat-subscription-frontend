@@ -31,9 +31,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
   "Calling the .show action" when {
 
-    def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
-
     "the user is an Agent" when {
+
+      def show(sessionVrn: Option[String] = None): WSResponse = get(path + "/agent", formatSessionVrn(sessionVrn))
 
       "the Agent is signed up for HMRC-AS-AGENT (authorised)" when {
 
@@ -279,6 +279,8 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
     "the user is a Principle Entity and not an Agent" when {
 
+      def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path/non-agent", formatSessionVrn(sessionVrn))
+
       "the Registration Status Feature is enabled" should {
 
         "Render the Customer Circumstances page with the Registration section visible" in {
@@ -477,6 +479,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
     }
 
-    getAuthenticationTests(path)
+    getAuthenticationTests(s"$path/non-agent")
   }
 }
