@@ -52,7 +52,7 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
 
       verify(mockAuditingService)
         .extendedAudit(
-          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, formBundle)),
+          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax)),
           ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
         )(
           ArgumentMatchers.any[HeaderCarrier],
