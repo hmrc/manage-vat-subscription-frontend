@@ -30,6 +30,7 @@
 
 @registrationStatus() ={
     <div>
+        @if(appConfig.features.registrationStatus()){
         <dt id="registration-status-text" class="cya-question">
             @messages("customer_details.registrationStatus.heading")
         </dt>
@@ -40,9 +41,17 @@
             <a id="registration-status-link"
                href=@{appConfig.deregisterForVat}
                aria-label="@messages("customer_details.registration.deregister.hidden")">
-            @messages("customer_details.deregister")
             </a>
         </dd>
+        }
+
+        else{
+
+        @messages("customer_details.registration.deregister.deregistration_date")
+
+
+        }
+
     </div>
 }
 
