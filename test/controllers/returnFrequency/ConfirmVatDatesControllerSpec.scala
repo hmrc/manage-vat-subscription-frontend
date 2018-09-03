@@ -106,7 +106,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
@@ -135,7 +135,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],

@@ -24,8 +24,7 @@ import utils.JsonObjectSugar
 
 case class ChangeAddressAuditModel(user: User[_],
                               currentAddress: PPOBAddress,
-                              requestedAddress: AddressModel,
-                              formBundle: String) extends ExtendedAuditModel {
+                              requestedAddress: AddressModel) extends ExtendedAuditModel {
 
   override val transactionName: String = "change-vat-business-address"
   override val detail: JsValue = Json.toJson(this)
@@ -43,7 +42,7 @@ object ChangeAddressAuditModel extends JsonObjectSugar {
       "vrn" -> model.user.vrn,
       "currentBusinessAddress" -> Json.toJson(model.currentAddress),
       "requestedBusinessAddress" -> Json.toJson(model.requestedAddress)(AddressModel.auditWrites),
-      "formBundle" -> model.formBundle
+      "requestedBusinessAddress" -> Json.toJson(model.requestedAddress)
     )
   }
 

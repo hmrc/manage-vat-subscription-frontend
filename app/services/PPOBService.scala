@@ -54,12 +54,13 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
 
     subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(customerDetails) =>
+        auditService.extendedAudit(
+          ChangeAddressAuditModel(user, customerDetails.ppobAddress, address),
+          Some(controllers.routes.BusinessAddressController.callback(id).url)
+        )
         subscriptionConnector.updatePPOB(user.vrn, buildPPOBUpdateModel(address, customerDetails)) map {
           case Right(success) =>
-            auditService.extendedAudit(
-              ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, success.formBundle),
-              Some(controllers.routes.BusinessAddressController.callback(id).url)
-            )
+
             Right(success)
           case Left(error) => Left(error)
         }
