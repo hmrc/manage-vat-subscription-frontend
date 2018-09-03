@@ -42,7 +42,7 @@ object ChangeAddressAuditModel extends JsonObjectSugar {
       "agentReferenceNumber" -> model.user.arn,
       "vrn" -> model.user.vrn,
       "currentBusinessAddress" -> Json.toJson(model.currentAddress),
-      "requestedBusinessAddress" -> Json.toJson(model.requestedAddress),
+      "requestedBusinessAddress" -> Json.toJson(model.requestedAddress)(AddressModel.auditWrites),
       "formBundle" -> model.formBundle
     )
   }
