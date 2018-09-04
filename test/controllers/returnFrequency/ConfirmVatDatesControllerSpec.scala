@@ -106,7 +106,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
@@ -116,7 +116,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=false"
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates/non-agent"
         redirectLocation(result) shouldBe Some(test)
       }
     }
@@ -135,7 +135,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan, formBundle)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan)),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
@@ -145,7 +145,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return a location to the received dates view" in {
         setupMockReturnFrequencyServiceWithSuccess()
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates?isAgent=true"
+        val test = s"/vat-through-software/account/confirmation-vat-return-dates/agent"
         redirectLocation(result) shouldBe Some(test)
       }
     }

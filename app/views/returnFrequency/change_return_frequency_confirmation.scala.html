@@ -48,7 +48,7 @@
 
     <a  id="finish"
         onclick="sendGAEvent('return-frequency','finish','confirmation-vat-return-dates', @user.isAgent)"
-        href="@controllers.routes.CustomerCircumstanceDetailsController.show(Some(user.isAgent))"
+        href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'
         class="button"
         type="submit">@messages("common.finish")</a>
 }

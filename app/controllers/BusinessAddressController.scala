@@ -51,7 +51,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
       case Right(address) =>
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
-            Redirect(controllers.routes.BusinessAddressController.confirmation(user.isAgent))
+            Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
           case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
@@ -60,7 +60,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
     }
   }
 
-  val confirmation: Boolean => Action[AnyContent] = _ => authenticate.async { implicit user =>
+  val confirmation: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
     Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
   }
 }

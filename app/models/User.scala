@@ -21,6 +21,7 @@ import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments, Intern
 
 case class User[A](vrn: String, active: Boolean = true, arn: Option[String] = None) (implicit request: Request[A]) extends WrappedRequest[A](request) {
   val isAgent: Boolean = arn.isDefined
+  val redirectSuffix: String = if(isAgent) "agent" else "non-agent"
 }
 
 object User {

@@ -48,13 +48,13 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
   val submit: Action[AnyContent] = authenticate.async { implicit user =>
     (ReturnPeriod(user.session(SessionKeys.CURRENT_RETURN_FREQUENCY)), ReturnPeriod(user.session(SessionKeys.NEW_RETURN_FREQUENCY))) match {
       case (Some(currentFrequency), Some(newFrequency)) =>
+        auditService.extendedAudit(
+          UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency),
+          Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
+        )
         returnFrequencyService.updateReturnFrequency(user.vrn, newFrequency).map {
           case Right(success) => {
-            auditService.extendedAudit(
-              UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency, success.formBundle),
-              Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
-            )
-            Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show(user.isAgent))
+            Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show(if(user.isAgent) "agent" else "non-agent"))
               .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
           }
           case _ => serviceErrorHandler.showInternalServerError

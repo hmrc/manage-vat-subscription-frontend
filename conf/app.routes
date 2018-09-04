@@ -1,43 +1,45 @@
 # microservice specific routes
 
 # Assets
-GET         /assets/*file                                @controllers.Assets.at(path="/public", file)
+GET         /assets/*file                                    @controllers.Assets.at(path="/public", file)
 
 # Pages
-GET         /change-business-details                     @controllers.CustomerCircumstanceDetailsController.show(isAgent: Option[Boolean])
 
-GET         /change-business-address                     @controllers.BusinessAddressController.initialiseJourney
+GET         /change-business-details                         @controllers.CustomerCircumstanceDetailsController.redirect
+GET         /change-business-details/:userType               @controllers.CustomerCircumstanceDetailsController.show(userType: String)
 
-GET         /change-business-name                        @controllers.ChangeBusinessNameController.show
-GET         /change-business-name/coho-handoff           @controllers.ChangeBusinessNameController.handOffToCOHO
+GET         /change-business-address                         @controllers.BusinessAddressController.initialiseJourney
 
-GET         /change-business-address/callback            @controllers.BusinessAddressController.callback(id: String)
-GET         /change-business-address/confirmation        @controllers.BusinessAddressController.confirmation(isAgent: Boolean)
+GET         /change-business-name                            @controllers.ChangeBusinessNameController.show
+GET         /change-business-name/coho-handoff               @controllers.ChangeBusinessNameController.handOffToCOHO
 
-GET         /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.show
-POST        /change-vat-return-dates                     @controllers.returnFrequency.ChooseDatesController.submit
+GET         /change-business-address/callback                @controllers.BusinessAddressController.callback(id: String)
+GET         /change-business-address/confirmation/:userType  @controllers.BusinessAddressController.confirmation(userType: String)
 
-GET         /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.show
-POST        /confirm-vat-return-dates                    @controllers.returnFrequency.ConfirmVatDatesController.submit
+GET         /change-vat-return-dates                         @controllers.returnFrequency.ChooseDatesController.show
+POST        /change-vat-return-dates                         @controllers.returnFrequency.ChooseDatesController.submit
 
-GET         /confirmation-vat-return-dates               @controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(isAgent: Boolean)
+GET         /confirm-vat-return-dates                        @controllers.returnFrequency.ConfirmVatDatesController.show
+POST        /confirm-vat-return-dates                        @controllers.returnFrequency.ConfirmVatDatesController.submit
 
-GET         /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.show
-POST        /client-vat-number                           @controllers.agentClientRelationship.SelectClientVrnController.submit
+GET         /confirmation-vat-return-dates/:userType         @controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(userType: String)
 
-GET         /unauthorised-for-client                     @controllers.agentClientRelationship.AgentUnauthorisedForClientController.show
+GET         /client-vat-number                               @controllers.agentClientRelationship.SelectClientVrnController.show
+POST        /client-vat-number                               @controllers.agentClientRelationship.SelectClientVrnController.submit
 
-GET         /change-client-vat-number                    @controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
+GET         /unauthorised-for-client                         @controllers.agentClientRelationship.AgentUnauthorisedForClientController.show
 
-GET         /confirm-client-vat-number                   @controllers.agentClientRelationship.ConfirmClientVrnController.show
+GET         /change-client-vat-number                        @controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
 
-GET         /initialise-payment-journey                  @controllers.PaymentsController.sendToPayments
+GET         /confirm-client-vat-number                       @controllers.agentClientRelationship.ConfirmClientVrnController.show
+
+GET         /initialise-payment-journey                      @controllers.PaymentsController.sendToPayments
 
 #Sign Out Routes
-GET         /sign-out                                    @controllers.SignOutController.signOut(authorised: Boolean)
-GET         /time-out                                    @controllers.SignOutController.timeout
+GET         /sign-out                                        @controllers.SignOutController.signOut(authorised: Boolean)
+GET         /time-out                                        @controllers.SignOutController.timeout
 
 #Feedback Routes
-GET         /feedback                                    @controllers.feedback.FeedbackController.show
-POST        /feedback                                    @controllers.feedback.FeedbackController.submit
-GET         /thankyou                                    @controllers.feedback.FeedbackController.thankyou
+GET         /feedback                                        @controllers.feedback.FeedbackController.show
+POST        /feedback                                        @controllers.feedback.FeedbackController.submit
+GET         /thankyou                                        @controllers.feedback.FeedbackController.thankyou

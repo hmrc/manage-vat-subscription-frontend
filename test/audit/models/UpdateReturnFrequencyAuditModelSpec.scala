@@ -26,8 +26,8 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
   val transactionName = "change-vat-return-frequency"
   val auditEvent = "ChangeVatSubscriptionDetails"
 
-  lazy val testUpdateReturnFrequencyAgent = UpdateReturnFrequencyAuditModel(agentUser, Jan, Monthly, formBundle)
-  lazy val testUpdateReturnFrequencyPrincipal = UpdateReturnFrequencyAuditModel(user, Jan, Monthly, formBundle)
+  lazy val testUpdateReturnFrequencyAgent = UpdateReturnFrequencyAuditModel(agentUser, Jan, Monthly)
+  lazy val testUpdateReturnFrequencyPrincipal = UpdateReturnFrequencyAuditModel(user, Jan, Monthly)
 
   "The UpdateReturnFrequencyAuditModel" should {
 
@@ -47,8 +47,7 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
           "agentReferenceNumber" -> arn,
           "vrn" -> vrn,
           "currentReturnFrequency" -> "January, April, July and October",
-          "requestedReturnFrequency" -> "Every month",
-          "formBundle" -> formBundle
+          "requestedReturnFrequency" -> "Every month"
         )
       }
     }
@@ -60,8 +59,7 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
           "isAgent" -> false,
           "vrn" -> vrn,
           "currentReturnFrequency" -> "January, April, July and October",
-          "requestedReturnFrequency" -> "Every month",
-          "formBundle" -> formBundle
+          "requestedReturnFrequency" -> "Every month"
         )
       }
     }

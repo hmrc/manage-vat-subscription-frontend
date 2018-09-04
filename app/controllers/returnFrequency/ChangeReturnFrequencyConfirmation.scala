@@ -31,7 +31,7 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val serviceErrorHandler: ServiceErrorHandler,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Boolean => Action[AnyContent] = isAgent => authenticate.async { implicit user =>
+  val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
     Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
   }
 }
