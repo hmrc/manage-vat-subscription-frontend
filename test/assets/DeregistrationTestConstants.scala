@@ -16,14 +16,26 @@
 
 package assets
 
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle.FULL
+import java.util.Locale.UK
+
 import models.circumstanceInfo.Deregistration
 
 object DeregistrationTestConstants {
 
-  val reason = "just coz"
-  val cancellationDate = "2018-10-02"
-  val lastReturnDate = "2018-10-01"
+  def toLongDate(d: LocalDate): String = d.getDayOfMonth + " " + d.getMonth.getDisplayName(FULL, UK) + " " + d.getYear
 
-  val deregModel = Deregistration(Some(reason), Some(cancellationDate), Some(lastReturnDate))
+  def formatDate(d: LocalDate): String = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+  val currentDate: LocalDate = LocalDate.now()
+  val futureDate: LocalDate = LocalDate.now().plusDays(1)
+  val pastDate: LocalDate = LocalDate.now().minusDays(1)
+
+  val reason = "just coz"
+
+  val deregModel = Deregistration(Some(reason), Some(formatDate(pastDate)), Some(formatDate(pastDate)))
+  val futureDeregModel = Deregistration(Some(reason), Some(formatDate(futureDate)), Some(formatDate(futureDate)))
 
 }

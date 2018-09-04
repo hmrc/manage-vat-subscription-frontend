@@ -190,6 +190,30 @@ object CircumstanceDetailsTestConstants {
     None
   )
 
+  val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    individual,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    Some(futureDeregModel),
+    None,
+    None
+  )
+
+  val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    individual,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    None,
+    Some(ChangeIndicators(ppob = false, bankDetails = false, returnPeriod = false, deregister = true)),
+    None
+  )
+
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated, CustomerDetails(None, None, None, None), None, ppobModelMin, None, None, None, None, None
   )

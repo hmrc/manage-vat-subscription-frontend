@@ -18,7 +18,9 @@
 @import models.returnFrequency.ReturnPeriod
 @import helpers.render_return_frequency
 @import helpers.render_address
+@import helpers.deregistration_helper
 @import templates.breadcrumb
+@import views.utils.DeregUtil._
 
 @(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -29,21 +31,7 @@
 }
 
 @registrationStatus() ={
-    <div>
-        <dt id="registration-status-text" class="cya-question">
-            @messages("customer_details.registrationStatus.heading")
-        </dt>
-        <dd id="registration-status" class="cya-answer">
-            Registered
-        </dd>
-        <dd class="cya-change">
-            <a id="registration-status-link"
-               href=@{appConfig.deregisterForVat}
-               aria-label="@messages("customer_details.registration.deregister.hidden")">
-            @messages("customer_details.deregister")
-            </a>
-        </dd>
-    </div>
+    @deregistration_helper(circumstances, findDeregStatus(circumstances))
 }
 
 @customerName(orgName: String) = {
