@@ -21,6 +21,7 @@
 @import helpers.deregistration_helper
 @import templates.breadcrumb
 @import views.utils.DeregUtil._
+@import utils.ImplicitDateFormatter._
 
 @(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -162,16 +163,22 @@
         </h2>
     </header>
 
-@if(appConfig.features.registrationStatus()==false){
-<div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;">
-    <p>
-
-        @messages("customer_details.registration.deregister.deregistration_date","4/09/2108")
 
 
-    </p>
-</div>
-}
+    @findDeregStatus(circumstances) match {
+        case futureDate: FutureDereg => {
+            <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;"><p>
+                @messages("customer_details.registration.deregister.choose_deregistration_date", futureDate.date.toLongDate)
+            </p></div>
+        }
+        case pastDate: PastDereg => {
+            <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;">
+                <p>@messages("customer_details.registration.deregister.deregistration_date", pastDate.date.toLongDate) </p>
+            </div>
+        }
+    }
+
+
     <div class="form-group">
         <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-check-your-answers cya-questions-short">

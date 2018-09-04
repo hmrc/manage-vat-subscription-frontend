@@ -44,7 +44,6 @@ object DeregUtil {
     }
   }
 
-
   def deregMessage(status: DeregStatus)(implicit messages: Messages): String = {
     status match {
       case f:FutureDereg => messages("customer_details.registrationStatus.futureDereg", f.date.toLongDate)
