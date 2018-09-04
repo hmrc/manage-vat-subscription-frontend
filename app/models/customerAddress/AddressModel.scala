@@ -17,18 +17,18 @@
 package models.customerAddress
 
 
+import models.JsonReadUtil
 import play.api.libs.functional.syntax._
-import play.api.libs.json._
-import play.api.libs.json.ConstraintReads
+import play.api.libs.json.{Writes, _}
 
 case class AddressModel(line1: String,
                         line2: String,
-                        line3: Option[String] = None,
-                        line4: Option[String] = None,
-                        postcode: Option[String] = None,
+                        line3: Option[String],
+                        line4: Option[String],
+                        postcode: Option[String],
                         countryCode: String)
 
-object AddressModel {
+object AddressModel extends JsonReadUtil {
 
   val customerAddressReads: Reads[AddressModel] = (
     (__ \\ "lines")(0).read[String] and
@@ -40,5 +40,22 @@ object AddressModel {
   )(AddressModel.apply _)
 
   implicit val format: Format[AddressModel] = Json.format[AddressModel]
+
+  private val line1Path = JsPath \ "line1"
+  private val line2Path =  JsPath \ "line2"
+  private val line3Path = JsPath \ "line3"
+  private val line4Path = JsPath \ "line4"
+  private val postCodePath = JsPath \ "postCode"
+  private val countryCodePath = JsPath \ "countryCode"
+
+  val auditWrites: Writes[AddressModel] = (
+    line1Path.write[String] and
+      line2Path.write[String] and
+      line3Path.writeNullable[String] and
+      line4Path.writeNullable[String] and
+      postCodePath.writeNullable[String] and
+      countryCodePath.write[String]
+  )(unlift(AddressModel.unapply))
+
 }
 
