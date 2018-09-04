@@ -17,6 +17,7 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
+import assets.DeregistrationTestConstants._
 import assets.{CustomerDetailsTestConstants, PPOBAddressTestConstants}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import models.customerAddress.CountryCodes
@@ -71,12 +72,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "displays the correct registration status" in {
-          elementText("#registration-status") shouldBe viewMessages.registrationStatus
+          elementText("#registration-status") shouldBe viewMessages.deregStatus(toLongDate(pastDate))
         }
 
-        "has the deregister link" in {
-          elementText("#registration-status-link") shouldBe viewMessages.deregister
-          element("#registration-status-link").attr("href") shouldBe "ye-olde-deregister-url"
+        "has the 'how to register' link" in {
+          elementText("#registration-status-link") shouldBe viewMessages.howToRegister
+          element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
         }
       }
 
@@ -190,6 +191,41 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
+      }
+    }
+
+    "for a user with a future deregistration date" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelFutureDereg)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a section for registration status" which {
+
+        "displays the correct registration status" in {
+          elementText("#registration-status") shouldBe viewMessages.futureDereg(toLongDate(futureDate))
+        }
+
+        "has the 'how to register' link" in {
+          elementText("#registration-status-link") shouldBe viewMessages.howToRegister
+          element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
+        }
+      }
+    }
+
+    "for a user with a pending deregistration" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelDeregPending)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a section for registration status" which {
+
+        "displays the correct registration status" in {
+          elementText("#registration-status") shouldBe viewMessages.deregPending
+        }
+
+        "states that the decision is 'pending'" in {
+          elementText("#registration-status-link") shouldBe viewMessages.pending
+        }
       }
     }
 

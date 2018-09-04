@@ -21,6 +21,7 @@ import assets.CustomerDetailsTestConstants._
 import assets.FlatRateSchemeTestConstants._
 import assets.PPOBAddressTestConstants._
 import assets.ReturnPeriodTestConstants._
+import assets.DeregistrationTestConstants._
 import models.circumstanceInfo._
 import models.returnFrequency._
 import play.api.libs.json.{JsValue, Json}
@@ -36,6 +37,13 @@ object CircumstanceDetailsTestConstants {
     "bankDetails" -> bankDetailsJsonMax,
     "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus,
+    "deregistration" -> deregModel,
+    "changeIndicators" -> Json.obj(
+      "PPOBDetails" -> true,
+      "bankDetails" -> true,
+      "returnPeriod" -> true,
+      "deregister" -> true
+    ),
     "pendingChanges" -> Json.obj(
       "PPOBDetails" -> Json.obj(
         "address" -> Json.obj(
@@ -72,6 +80,13 @@ object CircumstanceDetailsTestConstants {
     "bankDetails" -> bankDetailsModelMax,
     "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus,
+    "deregistration" -> deregModel,
+    "changeIndicators" -> Json.obj(
+      "PPOBDetails" -> true,
+      "bankDetails" -> true,
+      "returnPeriod" -> true,
+      "deregister" -> true
+    ),
     "pendingChanges" -> Json.obj(
       "PPOBDetails" -> Json.obj(
         "address" -> Json.obj(
@@ -116,6 +131,13 @@ object CircumstanceDetailsTestConstants {
     ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
+    Some(deregModel),
+    Some(ChangeIndicators(
+      ppob = true,
+      bankDetails = true,
+      returnPeriod = true,
+      deregister = true
+    )),
     Some(PendingChanges(
       Some(ppobModelMax),
       Some(bankDetailsModelMax),
@@ -130,6 +152,13 @@ object CircumstanceDetailsTestConstants {
     ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
+    Some(deregModel),
+    Some(ChangeIndicators(
+      ppob = true,
+      bankDetails = true,
+      returnPeriod = true,
+      deregister = true
+    )),
     Some(PendingChanges(
       Some(ppobModelMax),
       Some(bankDetailsModelMax),
@@ -144,6 +173,8 @@ object CircumstanceDetailsTestConstants {
     ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
+    Some(deregModel),
+    None,
     None
   )
 
@@ -154,11 +185,37 @@ object CircumstanceDetailsTestConstants {
     ppobModelMax,
     Some(bankDetailsModelMax),
     Some(Mar),
+    Some(deregModel),
+    None,
+    None
+  )
+
+  val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    individual,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    Some(futureDeregModel),
+    None,
+    None
+  )
+
+  val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    individual,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    None,
+    Some(ChangeIndicators(ppob = false, bankDetails = false, returnPeriod = false, deregister = true)),
     None
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated, CustomerDetails(None, None, None, None), None, ppobModelMin, None, None, None
+    MTDfBMandated, CustomerDetails(None, None, None, None), None, ppobModelMin, None, None, None, None, None
   )
 
 }
