@@ -80,7 +80,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
             "line2" -> customerAddressMax.line2,
             "line3" -> customerAddressMax.line3,
             "line4" -> customerAddressMax.line4,
-            "postcode" -> customerAddressMax.postcode,
+            "postCode" -> customerAddressMax.postcode,
             "countryCode" -> customerAddressMax.countryCode
           )
         )
