@@ -48,9 +48,12 @@
                onclick="sendGAEvent('business-name','change','change-business-details', @user.isAgent)"
                href="@{controllers.routes.ChangeBusinessNameController.show().url}"
                aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
-            @if(appConfig.features.registrationStatus()){
-            @messages("customer_details.change")
-            }else{}
+
+            @findDeregStatus(circumstances) match {
+            case futureDate: FutureDereg => {}
+            case pastDate: PastDereg => {}
+            case _ => {@messages("customer_details.change")}
+            }
             </a>
         </dd>
     </div>
@@ -139,9 +142,13 @@
                    onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
                    href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
                    aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-            @if(appConfig.features.registrationStatus()){
-                @messages("customer_details.change")
-            }else{}
+
+            @findDeregStatus(circumstances) match {
+            case futureDate: FutureDereg => {}
+            case pastDate: PastDereg => {}
+            case _ => {@messages("customer_details.change")}
+            }
+
                 </a>
             }
         </dd>
@@ -163,20 +170,20 @@
         </h2>
     </header>
 
-
-
     @findDeregStatus(circumstances) match {
         case futureDate: FutureDereg => {
             <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;"><p>
-                @messages("customer_details.registration.deregister.choose_deregistration_date", futureDate.date.toLongDate)
-            </p></div>
+                @messages("customer_details.registration.deregister.choose_deregistration_date", futureDate.date.toLongDate)</p>
+            </div>
         }
         case pastDate: PastDereg => {
             <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;">
                 <p>@messages("customer_details.registration.deregister.deregistration_date", pastDate.date.toLongDate) </p>
             </div>
         }
+        case _ =>{}
     }
+
 
 
     <div class="form-group">
