@@ -18,12 +18,13 @@ package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.DeregistrationTestConstants._
-import assets.{CustomerDetailsTestConstants, PPOBAddressTestConstants}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
+import assets.{CustomerDetailsTestConstants, PPOBAddressTestConstants}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import utils.ImplicitDateFormatter._
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
@@ -64,7 +65,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for registration status" which {
 
         "has a registration header" in {
-          elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.registrationStatusHeading
+          elementText("div.form-group:nth-child(4) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
         }
 
         "has a registration status header" in {
@@ -162,32 +163,32 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-
-      "have a section for return frequency" which {
-
-        "has the heading" in {
-          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
-        }
-
-        "has the correct value output for the current frequency" in {
-          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-return-dates-status") shouldBe viewMessages.change
-          }
-
-          s"has the correct aria label text '${viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)}'" in {
-            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
-          }
-
-          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
-            element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
-          }
-        }
-      }
+//
+//      "have a section for return frequency" which {
+//
+//        "has the heading" in {
+//          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+//        }
+//
+//        "has the correct value output for the current frequency" in {
+//          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+//        }
+//
+//        "has a change link" which {
+//
+//          s"has the wording '${viewMessages.change}'" in {
+//            elementText("#vat-return-dates-status") shouldBe viewMessages.change
+//          }
+//
+//          s"has the correct aria label text '${viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)}'" in {
+//            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
+//          }
+//
+//          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
+//            element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+//          }
+//        }
+//      }
 
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
@@ -416,11 +417,85 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       "not have a registration section" in {
         mockConfig.features.registrationStatus(false)
-        elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
+        elementText("div.form-group:nth-child(3) > h2:nth-child(1)") shouldBe viewMessages.aboutHeading
         document.select("#registration-status-text").isEmpty shouldBe true
         document.select("#registration-status").isEmpty shouldBe true
         document.select("#registration-status-link").isEmpty shouldBe true
       }
     }
+
+
+    "the registration status is true" should {
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationRegisteredIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a section for return frequency" which {
+
+        "has the heading" in {
+          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+        }
+
+        "has the correct value output for the current frequency" in {
+          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#vat-return-dates-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)}'" in {
+            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
+          }
+
+          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
+            element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+          }
+        }
+      }
+    }
+
+    "the registration status is false deregistration set to a future date " should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelFutureDereg)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not have a registration section" in {
+        mockConfig.features.registrationStatus(true)
+        elementText(".panel > p:nth-child(1)") shouldBe viewMessages.futureDeregDateText(futureDate.toLongDate)
+
+      }
+    }
+
+    "the registration status is false - deregistration set to a past date " should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "registration section displays the following" in {
+        mockConfig.features.registrationStatus(true)
+        elementText(".panel > p:nth-child(1)") shouldBe viewMessages.pastDeregDateText(pastDate.toLongDate)
+        elementText("#registration-status")
+        elementText("#registration-status-link") shouldBe viewMessages.howToRegister
+        elementText("#registration-status-text") shouldBe viewMessages.registrationStatusText
+        elementText("div.form-group:nth-child(4) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+      }
+    }
+
+
+    "the registration status is false deregistration set to a pending " should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelDeregPending)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "registration section displays the following" in {
+        mockConfig.features.registrationStatus(true)
+        elementText("#registration-status-link") shouldBe viewMessages.pending
+        elementText("#registration-status") shouldBe viewMessages.deregPending
+      }
+    }
+
+
   }
 }
