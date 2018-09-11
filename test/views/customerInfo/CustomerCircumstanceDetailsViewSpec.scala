@@ -254,7 +254,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#business-name-status") shouldBe viewMessages.change
+            elementText("#business-name-status").isEmpty shouldBe true
           }
 
           s"has the correct aria label text '${viewMessages.changeBusinessHidden}'" in {
