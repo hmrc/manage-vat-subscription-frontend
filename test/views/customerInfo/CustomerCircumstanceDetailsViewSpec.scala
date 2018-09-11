@@ -163,32 +163,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-//
-//      "have a section for return frequency" which {
-//
-//        "has the heading" in {
-//          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
-//        }
-//
-//        "has the correct value output for the current frequency" in {
-//          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
-//        }
-//
-//        "has a change link" which {
-//
-//          s"has the wording '${viewMessages.change}'" in {
-//            elementText("#vat-return-dates-status") shouldBe viewMessages.change
-//          }
-//
-//          s"has the correct aria label text '${viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)}'" in {
-//            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.changeReturnFrequencyHidden(ReturnFrequencyMessages.option3Mar)
-//          }
-//
-//          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
-//            element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
-//          }
-//        }
-//      }
 
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
