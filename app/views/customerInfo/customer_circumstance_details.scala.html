@@ -52,6 +52,7 @@
             @findDeregStatus(circumstances) match {
             case futureDate: FutureDereg => {}
             case pastDate: PastDereg => {}
+            case PendingDereg => {}
             case _ => {@messages("customer_details.change")}
             }
             </a>
@@ -146,6 +147,7 @@
             @findDeregStatus(circumstances) match {
             case futureDate: FutureDereg => {}
             case pastDate: PastDereg => {}
+            case PendingDereg => {}
             case _ => {@messages("customer_details.change")}
             }
 
