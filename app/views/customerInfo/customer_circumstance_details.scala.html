@@ -220,12 +220,16 @@
 
 
 
+@if(appConfig.features.registrationStatus()){
 <div class="form-group">
     <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
     <dl class="govuk-check-your-answers cya-questions-short">
         @registrationStatus()
     </dl>
 </div>
+}
+
+
 
 
     @if(user.isAgent){
