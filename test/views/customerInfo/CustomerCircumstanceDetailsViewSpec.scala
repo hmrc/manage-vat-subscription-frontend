@@ -321,11 +321,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
         }
 
-        "has Pending instead of a change link" which {
-
-          s"has the wording '${viewMessages.pending}'" in {
-            document.select("#vat-return-dates-status")
-          }
+        "has no change link or pending status" in {
+          document.select("#vat-return-dates-status").isEmpty shouldBe true
         }
       }
 
