@@ -94,6 +94,9 @@ customer_details.bankAccount.pending.hidden = Change to bank account for repayme
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = Change the VAT Return dates from {0}
 customer_details.returnFrequency.pending.hidden = Change to VAT Return dates is pending
+customer_details.registration.deregister.choose_deregistration_date = Your deregistration for VAT is set for {0}
+customer_details.registration.deregister.deregistration_date = You successfully deregistered for VAT on {0}
+customer_details.register = How to register
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
