@@ -18,13 +18,13 @@ package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.DeregistrationTestConstants._
+import assets.PPOBAddressTestConstants
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
-import assets.{CustomerDetailsTestConstants, PPOBAddressTestConstants}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.ViewBaseSpec
 import utils.ImplicitDateFormatter._
+import views.ViewBaseSpec
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
@@ -228,15 +228,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has a change link" which {
 
           s"has the wording '${viewMessages.change}'" in {
-            elementText("#business-name-status").isEmpty shouldBe true
-          }
-
-          s"has the correct aria label text '${viewMessages.changeBusinessHidden}'" in {
-            element("#business-name-status").attr("aria-label") shouldBe viewMessages.changeBusinessHidden(CustomerDetailsTestConstants.orgName)
-          }
-
-          s"has a link to '${controllers.routes.ChangeBusinessNameController.show().url}'" in {
-            element("#business-name-status").attr("href") shouldBe controllers.routes.ChangeBusinessNameController.show().url
+            document.select("#business-name-status").isEmpty shouldBe true
           }
         }
       }
@@ -332,15 +324,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has Pending instead of a change link" which {
 
           s"has the wording '${viewMessages.pending}'" in {
-            elementText("#vat-return-dates-status") shouldBe viewMessages.pending
-          }
-
-          s"has the correct aria label text '${viewMessages.pendingReturnFrequencyHidden}'" in {
-            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.pendingReturnFrequencyHidden
-          }
-
-          s"has no link" in {
-            element("#vat-return-dates-status").attr("href").isEmpty shouldBe true
+            document.select("#vat-return-dates-status")
           }
         }
       }
@@ -467,6 +451,22 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         mockConfig.features.registrationStatus(true)
         elementText("#registration-status-link") shouldBe viewMessages.pending
         elementText("#registration-status") shouldBe viewMessages.deregPending
+      }
+    }
+
+
+    "the registration status is true" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingChangeOfCert)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "registration section displays the following" in {
+        mockConfig.features.registrationStatus(true)
+        elementText("#registration-status-link") shouldBe viewMessages.deregister
+        elementText("#business-name-status") shouldBe viewMessages.change
+        elementText("#place-of-business-status") shouldBe viewMessages.change
+        elementText("#bank-details-status") shouldBe viewMessages.change
+        elementText("#vat-return-dates-status") shouldBe viewMessages.change
       }
     }
 

@@ -44,18 +44,17 @@
             @orgName
         </dd>
         <dd class="cya-change">
-            <a id="business-name-status"
-               onclick="sendGAEvent('business-name','change','change-business-details', @user.isAgent)"
-               href="@{controllers.routes.ChangeBusinessNameController.show().url}"
-               aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
-
             @findDeregStatus(circumstances) match {
-            case futureDate: FutureDereg => {}
-            case pastDate: PastDereg => {}
-            case PendingDereg => {}
-            case _ => {@messages("customer_details.change")}
+            case Registered => {
+                    <a id="business-name-status"
+                       onclick="sendGAEvent('business-name','change','change-business-details', @user.isAgent)"
+                       href="@{controllers.routes.ChangeBusinessNameController.show().url}"
+                       aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
+                       @messages("customer_details.change")
+                    </a>
             }
-            </a>
+            case _ => {}
+            }
         </dd>
     </div>
 }
@@ -132,26 +131,24 @@
             @render_return_frequency(period)
         </dd>
         <dd class="cya-change">
-            @if(pending){
-                <span id="vat-return-dates-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
-            } else {
-                <a id="vat-return-dates-status"
-                   onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
-                   href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
-                   aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-
             @findDeregStatus(circumstances) match {
-            case futureDate: FutureDereg => {}
-            case pastDate: PastDereg => {}
-            case PendingDereg => {}
-            case _ => {@messages("customer_details.change")}
-            }
-
-                </a>
+                case Registered => {
+                    @if(pending){
+                        <span id="vat-return-dates-status"
+                              class="bold"
+                              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
+                        @messages("customer_details.pending")
+                        </span>
+                    } else {
+                        <a id="vat-return-dates-status"
+                           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
+                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
+                        @messages("customer_details.change")
+                        </a>
+                    }
+                }
+                case _ => {}
             }
         </dd>
     </div>
