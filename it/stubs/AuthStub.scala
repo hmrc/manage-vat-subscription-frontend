@@ -65,6 +65,11 @@ object AuthStub extends WireMockMethods {
       .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="InsufficientEnrolments""""))
   }
 
+  def insufficientCredentialStrength(): StubMapping = {
+    when(method = POST, uri = authoriseUri)
+      .thenReturn(status = UNAUTHORIZED, headers = Map("WWW-Authenticate" -> """MDTP detail="IncorrectCredentialStrength""""))
+  }
+
   private val mtdVatEnrolment = Json.obj(
     "key" -> SERVICE_ENROLMENT_KEY,
     "identifiers" -> Json.arr(

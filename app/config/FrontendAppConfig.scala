@@ -96,7 +96,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   private lazy val signInContinueUrl: String =
     ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect.url).encodedUrl
 
-  private lazy val signInOrigin = getString(Keys.appName)
+  private lazy val signInOrigin = "coc"
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
   override lazy val vatSubscriptionUrl:String = baseUrl(Keys.vatSubscription)

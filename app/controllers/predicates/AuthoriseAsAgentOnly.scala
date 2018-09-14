@@ -43,7 +43,7 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
     implicit val req = request
 
     if(appConfig.features.agentAccess()) {
-      enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+      enrolmentsAuthService.authorised(CredentialStrength(CredentialStrength.strong)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
         case Some(affinityGroup) ~ allEnrolments => {
           (isAgent(affinityGroup), allEnrolments) match {
             case (true, _) =>
@@ -58,6 +58,9 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
           Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
           Future.successful(serviceErrorHandler.showInternalServerError)
       } recover {
+        case _: IncorrectCredentialStrength =>
+          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Insufficient Credential Strength")
+          Redirect(appConfig.signInUrl)
         case _: NoActiveSession =>
           Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, rendering Session Timeout view")
           Unauthorized(views.html.errors.sessionTimeout())
