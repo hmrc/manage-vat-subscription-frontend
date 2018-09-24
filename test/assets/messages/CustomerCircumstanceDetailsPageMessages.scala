@@ -25,7 +25,7 @@ object CustomerCircumstanceDetailsPageMessages {
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
-  val businessAddressHeading = "Business address"
+  val businessAddressHeading = "Principal place of business"
   val bankDetailsHeading = "Bank account for repayments only"
   val accountNumberHeading = "Account number"
   val sortcodeHeading = "Sort code"
@@ -38,7 +38,7 @@ object CustomerCircumstanceDetailsPageMessages {
 
   val registrationStatusHeading = "Your registration"
   val aboutHeading = "About the business"
-  val registrationStatusText = "Registration status"
+  val registrationStatusText = "Status"
   val registeredStatus = "Registered"
   val deregPending = "Deregistration requested"
   val futureDereg: String => String = date => s"Deregistration set for $date"
