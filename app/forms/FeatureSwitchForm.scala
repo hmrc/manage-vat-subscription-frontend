@@ -27,7 +27,8 @@ object FeatureSwitchForm {
     mapping(
       ConfigKeys.simpleAuthFeature -> boolean,
       ConfigKeys.agentAccessFeature -> boolean,
-      ConfigKeys.registrationStatusFeature -> boolean
+      ConfigKeys.registrationStatusFeature -> boolean,
+      ConfigKeys.contactDetailsSectionFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

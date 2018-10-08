@@ -27,4 +27,5 @@ class Features @Inject()(config: Configuration) {
   val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature, config)
   val agentAccess = new Feature(ConfigKeys.agentAccessFeature, config)
   val registrationStatus = new Feature(ConfigKeys.registrationStatusFeature, config)
+  val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature, config)
 }
