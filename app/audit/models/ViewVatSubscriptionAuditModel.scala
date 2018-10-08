@@ -40,6 +40,7 @@ object ViewVatSubscriptionAuditModel extends JsonObjectSugar {
       "businessAddress" -> Json.toJson(model.vatDetails.pendingPPOBAddress.fold(model.vatDetails.ppobAddress)(x => x)),
       "repaymentBankDetails" -> Json.toJson(model.vatDetails.pendingBankDetails.fold(model.vatDetails.bankDetails)(x => Some(x)))(BankDetails.auditWrites),
       "vatReturnFrequency" -> model.vatDetails.pendingReturnPeriod.fold(model.vatDetails.returnPeriod.map(_.auditValue).orNull)(x => x.auditValue),
+      "email" -> model.vatDetails.ppob.contactDetails.map(_.emailAddress.map(x => x)),
       "inFlightChanges" -> Json.toJson(model.vatDetails.pendingChanges)(PendingChanges.auditWrites)
     )
   }
