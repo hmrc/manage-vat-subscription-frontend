@@ -16,6 +16,8 @@
 
 package views.customerInfo
 
+import java.util.NoSuchElementException
+
 import assets.CircumstanceDetailsTestConstants._
 import assets.DeregistrationTestConstants._
 import assets.PPOBAddressTestConstants
@@ -65,7 +67,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for registration status" which {
 
         "has a registration header" in {
-          elementText("div.form-group:nth-child(4) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+          elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
         }
 
         "has a registration status header" in {
@@ -163,6 +165,38 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
+      "have a section for contact details if there is an email address" which {
+
+        "has a contact details header" in {
+          elementText("#content > article > div:nth-child(4) > h2") shouldBe viewMessages.contactDetailsHeading
+        }
+
+        "has the heading" in {
+          elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
+        }
+
+        "has the correct value for the email address" in {
+          elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
+        }
+      }
+
+      "not have a section for contact details if there is not an email address" which {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "does not have a contact details header" in {
+          elementExtinct("#content > article > div:nth-child(4) > h2")
+        }
+
+        "does not have the heading" in {
+          elementExtinct("#vat-email-address-text")
+        }
+
+        "does not have a value for email address" in {
+          elementExtinct("#vat-email-address")
+        }
+      }
 
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
@@ -326,6 +360,39 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
+      "have a section for contact details if there is an email address" which {
+
+        "has a contact details header" in {
+          elementText("#content > article > div:nth-child(3) > h2") shouldBe viewMessages.contactDetailsHeading
+        }
+
+        "has the heading" in {
+          elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
+        }
+
+        "has the correct value for the email address" in {
+          elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
+        }
+      }
+
+      "not have a section for contact details if there is not an email address" which {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "does not have a contact details header" in {
+          elementExtinct("#content > article > div:nth-child(4) > h2")
+        }
+
+        "does not have the heading" in {
+          elementExtinct("#vat-email-address-text")
+        }
+
+        "does not have a value for email address" in {
+          elementExtinct("#vat-email-address")
+        }
+      }
+
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
       }
@@ -434,7 +501,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#registration-status")
         elementText("#registration-status-link") shouldBe viewMessages.howToRegister
         elementText("#registration-status-text") shouldBe viewMessages.registrationStatusText
-        elementText("div.form-group:nth-child(4) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+        elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
       }
     }
 

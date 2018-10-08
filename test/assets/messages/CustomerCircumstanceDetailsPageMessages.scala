@@ -28,6 +28,7 @@ object CustomerCircumstanceDetailsPageMessages {
   val businessAddressHeading = "Principal place of business"
   val bankDetailsHeading = "Bank account for repayments only"
   val accountNumberHeading = "Account number"
+  val emailAddressHeading = "Email address"
   val sortcodeHeading = "Sort code"
   val returnFrequencyHeading = "VAT Return dates"
 
@@ -38,6 +39,7 @@ object CustomerCircumstanceDetailsPageMessages {
 
   val registrationStatusHeading = "Your registration"
   val aboutHeading = "About the business"
+  val contactDetailsHeading = "Contact details"
   val registrationStatusText = "Status"
   val registeredStatus = "Registered"
   val deregPending = "Deregistration requested"

@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
+@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress, ContactDetails}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.render_return_frequency
 @import helpers.render_address
@@ -127,33 +127,45 @@
 }
 
 @customerReturnPeriod(period: ReturnPeriod, pending: Boolean) = {
+<div>
+    <dt id="vat-return-dates-text" class="cya-question">
+        @messages("customer_details.returnFrequency.heading")
+    </dt>
+    <dd id="vat-return-dates" class="cya-answer">
+        @render_return_frequency(period)
+    </dd>
+    <dd class="cya-change">
+        @findDeregStatus(circumstances) match {
+        case Registered => {
+        @if(pending){
+        <span id="vat-return-dates-status"
+              class="bold"
+              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
+        @messages("customer_details.pending")
+        </span>
+        } else {
+        <a id="vat-return-dates-status"
+           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
+           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
+        @messages("customer_details.change")
+        </a>
+        }
+        }
+        case _ => {}
+        }
+    </dd>
+</div>
+
+}
+
+@customerContactDetails(emailAddress: String) = {
     <div>
-        <dt id="vat-return-dates-text" class="cya-question">
-            @messages("customer_details.returnFrequency.heading")
+        <dt id="vat-email-address-text" class="cya-question">
+            @messages("customer_details.contactDetails.emailAddress")
         </dt>
-        <dd id="vat-return-dates" class="cya-answer">
-            @render_return_frequency(period)
-        </dd>
-        <dd class="cya-change">
-            @findDeregStatus(circumstances) match {
-                case Registered => {
-                    @if(pending){
-                        <span id="vat-return-dates-status"
-                              class="bold"
-                              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
-                        @messages("customer_details.pending")
-                        </span>
-                    } else {
-                        <a id="vat-return-dates-status"
-                           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
-                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
-                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-                        @messages("customer_details.change")
-                        </a>
-                    }
-                }
-                case _ => {}
-            }
+        <dd id="vat-email-address" class="cya-answer">
+            @emailAddress
         </dd>
     </div>
 
@@ -221,19 +233,24 @@
         </dl>
     </div>
 
+    @for(contactDetails <- circumstances.ppob.contactDetails;
+        email <- contactDetails.emailAddress) {
+        <div class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                @customerContactDetails(email)
+            </dl>
+        </div>
+    }
 
-
-@if(appConfig.features.registrationStatus()){
-<div class="form-group">
-    <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
-    <dl class="govuk-check-your-answers cya-questions-short">
-        @registrationStatus()
-    </dl>
-</div>
-}
-
-
-
+    @if(appConfig.features.registrationStatus()){
+        <div class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                @registrationStatus()
+            </dl>
+        </div>
+    }
 
     @if(user.isAgent){
         <p id="change-client-text">
