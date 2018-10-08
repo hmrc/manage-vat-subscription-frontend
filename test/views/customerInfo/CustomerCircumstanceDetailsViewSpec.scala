@@ -16,8 +16,6 @@
 
 package views.customerInfo
 
-import java.util.NoSuchElementException
-
 import assets.CircumstanceDetailsTestConstants._
 import assets.DeregistrationTestConstants._
 import assets.PPOBAddressTestConstants
@@ -33,6 +31,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
   "Rendering the Customer Details page" when {
 
         mockConfig.features.registrationStatus(true)
+        mockConfig.features.contactDetailsSection(true)
 
     "Viewing for any user (in this case Individual) without any pending changes" should {
 
@@ -531,6 +530,17 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#place-of-business-status") shouldBe viewMessages.change
         elementText("#bank-details-status") shouldBe viewMessages.change
         elementText("#vat-return-dates-status") shouldBe viewMessages.change
+      }
+    }
+
+    "the contact details feature switch is false" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "contact details section is hidden" in {
+        mockConfig.features.contactDetailsSection(false)
+        elementExtinct("#content > article > div:nth-child(4) > h2")
       }
     }
 

@@ -127,35 +127,35 @@
 }
 
 @customerReturnPeriod(period: ReturnPeriod, pending: Boolean) = {
-<div>
-    <dt id="vat-return-dates-text" class="cya-question">
-        @messages("customer_details.returnFrequency.heading")
-    </dt>
-    <dd id="vat-return-dates" class="cya-answer">
-        @render_return_frequency(period)
-    </dd>
-    <dd class="cya-change">
-        @findDeregStatus(circumstances) match {
-        case Registered => {
-        @if(pending){
-        <span id="vat-return-dates-status"
-              class="bold"
-              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
-        @messages("customer_details.pending")
-        </span>
-        } else {
-        <a id="vat-return-dates-status"
-           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
-           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
-           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-        @messages("customer_details.change")
-        </a>
-        }
-        }
-        case _ => {}
-        }
-    </dd>
-</div>
+    <div>
+        <dt id="vat-return-dates-text" class="cya-question">
+            @messages("customer_details.returnFrequency.heading")
+        </dt>
+        <dd id="vat-return-dates" class="cya-answer">
+            @render_return_frequency(period)
+        </dd>
+        <dd class="cya-change">
+            @findDeregStatus(circumstances) match {
+                case Registered => {
+                    @if(pending){
+                        <span id="vat-return-dates-status"
+                              class="bold"
+                              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
+                        @messages("customer_details.pending")
+                        </span>
+                    } else {
+                        <a id="vat-return-dates-status"
+                           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
+                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
+                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
+                        @messages("customer_details.change")
+                        </a>
+                    }
+                }
+                case _ => {}
+            }
+        </dd>
+    </div>
 
 }
 
@@ -168,7 +168,6 @@
             @emailAddress
         </dd>
     </div>
-
 }
 
 @views.html.main_template(
@@ -233,14 +232,16 @@
         </dl>
     </div>
 
-    @for(contactDetails <- circumstances.ppob.contactDetails;
-        email <- contactDetails.emailAddress) {
-        <div class="form-group">
-            <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
-            <dl class="govuk-check-your-answers cya-questions-short">
-                @customerContactDetails(email)
-            </dl>
-        </div>
+    @if(appConfig.features.contactDetailsSection()){
+        @for(contactDetails <- circumstances.ppob.contactDetails;
+            email <- contactDetails.emailAddress) {
+            <div class="form-group">
+                <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
+                <dl class="govuk-check-your-answers cya-questions-short">
+                    @customerContactDetails(email)
+                </dl>
+            </div>
+        }
     }
 
     @if(appConfig.features.registrationStatus()){
@@ -260,5 +261,4 @@
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
         </p>
     }
-
 }
