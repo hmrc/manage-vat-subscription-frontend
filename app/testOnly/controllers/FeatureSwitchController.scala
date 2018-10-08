@@ -34,7 +34,8 @@ class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit v
       FeatureSwitchModel(
         simpleAuthEnabled = appConfig.features.simpleAuth(),
         agentAccessEnabled = appConfig.features.agentAccess(),
-        registrationStatusEnabled = appConfig.features.registrationStatus())
+        registrationStatusEnabled = appConfig.features.registrationStatus(),
+        contactDetailsSectionEnabled = appConfig.features.contactDetailsSection())
     )))
   }
 
@@ -49,6 +50,7 @@ class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit v
     appConfig.features.simpleAuth(model.simpleAuthEnabled)
     appConfig.features.agentAccess(model.agentAccessEnabled)
     appConfig.features.registrationStatus(model.registrationStatusEnabled)
+    appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
     Redirect(routes.FeatureSwitchController.featureSwitch())
   }
 }
