@@ -64,7 +64,7 @@ featureSwitch.submit = Submit
 features.simpleAuth.enabled = Simple auth
 features.agentAccess.enabled = Agent access
 features.registrationStatus.enabled = Registration status
-features.contactDetailsStatus.enabled = Contact details section
+features.contactDetailsSection.enabled = Contact details section
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details
@@ -96,6 +96,8 @@ customer_details.bankAccount.pending.hidden = Change to bank account for repayme
 customer_details.returnFrequency.heading = VAT Return dates
 customer_details.returnFrequency.change.hidden = Change the VAT Return dates from {0}
 customer_details.returnFrequency.pending.hidden = Change to VAT Return dates is pending
+customer_details.contactDetails.heading = Contact details
+customer_details.contactDetails.emailAddress = Email address
 customer_details.registration.deregister.choose_deregistration_date = Your deregistration for VAT is set for {0}
 customer_details.registration.deregister.deregistration_date = You successfully deregistered for VAT on {0}
 customer_details.register = How to register
