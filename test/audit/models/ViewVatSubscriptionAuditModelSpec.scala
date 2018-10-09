@@ -72,6 +72,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationNoPendingIndividual.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
@@ -102,6 +103,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
@@ -137,6 +139,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationNoPendingOrganisation.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
@@ -168,6 +171,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationModelMaxOrganisation.pendingBankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
@@ -203,6 +207,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationNoPendingIndividual.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
@@ -232,6 +237,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
@@ -266,6 +272,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationNoPendingOrganisation.bankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
@@ -296,6 +303,7 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "sortCode" -> customerInformationModelMaxOrganisation.pendingBankDetails.get.sortCode.get
               ),
               "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
