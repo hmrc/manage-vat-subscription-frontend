@@ -185,7 +185,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "does not have a contact details header" in {
-          elementExtinct("#content > article > div:nth-child(4) > h2")
+          elementExtinct("#content > article > div:nth-child(5) > h2")
         }
 
         "does not have the heading" in {
@@ -239,7 +239,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "Viewing for an Organisation with pending changes" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisation)(user, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisationPending)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a breadcrumb trail" in {
@@ -254,8 +254,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
         }
 
-        s"has the value '${customerInformationModelMaxOrganisation.customerDetails.organisationName.get}'" in {
-          elementText("#business-name") shouldBe customerInformationModelMaxOrganisation.customerDetails.organisationName.get
+        s"has the value '${customerInformationModelMaxOrganisationPending.customerDetails.organisationName.get}'" in {
+          elementText("#business-name") shouldBe customerInformationModelMaxOrganisationPending.customerDetails.organisationName.get
         }
 
         "has a change link" which {
@@ -273,12 +273,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct address output" in {
-          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
-          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.address.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line1
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
             CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
         }
@@ -316,7 +316,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           }
         }
 
-        "has a the correct Sort Code" which {
+        "has the correct Sort Code" which {
 
           "has the correct heading for the Sort Code" in {
             elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
@@ -370,7 +370,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct value for the email address" in {
-          elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
+          elementText("#vat-email-address") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.
+            get.ppob.get.contactDetails.get.emailAddress.get
+        }
+
+        s"has the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+          element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.pendingEmailAddressHidden
         }
       }
 
