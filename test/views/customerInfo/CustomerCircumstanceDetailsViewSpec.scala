@@ -164,7 +164,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-      "have a section for contact details if there is an email address" which {
+      "have a section for contact details" which {
 
         "has a contact details header" in {
           elementText("#content > article > div:nth-child(4) > h2") shouldBe viewMessages.contactDetailsHeading
@@ -176,24 +176,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
         "has the correct value for the email address" in {
           elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
-        }
-      }
-
-      "not have a section for contact details if there is not an email address" which {
-
-        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "does not have a contact details header" in {
-          elementExtinct("#content > article > div:nth-child(5) > h2")
-        }
-
-        "does not have the heading" in {
-          elementExtinct("#vat-email-address-text")
-        }
-
-        "does not have a value for email address" in {
-          elementExtinct("#vat-email-address")
         }
       }
 
@@ -359,7 +341,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-      "have a section for contact details if there is an email address" which {
+      "have a section for contact details" which {
 
         "has a contact details header" in {
           elementText("#content > article > div:nth-child(3) > h2") shouldBe viewMessages.contactDetailsHeading
@@ -376,24 +358,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
         s"has the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
           element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.pendingEmailAddressHidden
-        }
-      }
-
-      "not have a section for contact details if there is not an email address" which {
-
-        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "does not have a contact details header" in {
-          elementExtinct("#content > article > div:nth-child(4) > h2")
-        }
-
-        "does not have the heading" in {
-          elementExtinct("#vat-email-address-text")
-        }
-
-        "does not have a value for email address" in {
-          elementExtinct("#vat-email-address")
         }
       }
 
