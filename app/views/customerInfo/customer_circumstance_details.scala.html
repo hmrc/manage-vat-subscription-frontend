@@ -31,6 +31,16 @@
     }
 }
 
+@pendingEmailAddress = @{
+    circumstances.pendingChanges.flatMap{
+        _.ppob.flatMap{
+            _.contactDetails.flatMap{
+                _.emailAddress
+            }
+        }
+    }
+}
+
 @registrationStatus() ={
     @deregistration_helper(circumstances, findDeregStatus(circumstances))
 }
@@ -159,13 +169,22 @@
 
 }
 
-@customerContactDetails(emailAddress: String) = {
+@customerEmailAddress(emailAddress: String, emailPending: Boolean) = {
     <div>
         <dt id="vat-email-address-text" class="cya-question">
             @messages("customer_details.contactDetails.emailAddress")
         </dt>
         <dd id="vat-email-address" class="cya-answer">
             @emailAddress
+        </dd>
+        <dd class="cya-change">
+            @if(emailPending){
+                <span id="vat-email-address-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.contactDetails.emailAddress.pending.hidden")">
+                    @messages("customer_details.pending")
+                </span>
+            }
         </dd>
     </div>
 }
@@ -198,8 +217,6 @@
         case _ =>{}
     }
 
-
-
     <div class="form-group">
         <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-check-your-answers cya-questions-short">
@@ -207,10 +224,10 @@
                 @customerName(orgName)
             }
 
-            @circumstances.pendingPPOBAddress.fold {
-                @customerAddress(circumstances.ppobAddress,false)
-            }{ pendingAddress =>
-                @customerAddress(pendingAddress,true)
+            @{circumstances.pendingPPOBAddress match {
+                case Some(pendingPPOB) if(pendingPPOB != circumstances.ppob.address) =>  customerAddress(pendingPPOB, true)
+                case _  =>  customerAddress(circumstances.ppob.address, false)
+                }
             }
 
             @circumstances.pendingBankDetails.fold {
@@ -233,15 +250,22 @@
     </div>
 
     @if(appConfig.features.contactDetailsSection()){
-        @for(contactDetails <- circumstances.ppob.contactDetails;
-            email <- contactDetails.emailAddress) {
-            <div class="form-group">
-                <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
-                <dl class="govuk-check-your-answers cya-questions-short">
-                    @customerContactDetails(email)
-                </dl>
-            </div>
-        }
+        <div class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                @{
+                    for{
+                        contactDetails <- circumstances.ppob.contactDetails
+                        email <- contactDetails.emailAddress
+                        } yield {
+                            pendingEmailAddress match {
+                                case Some(pendingEmail) if(!pendingEmail.equals(email)) => customerEmailAddress(pendingEmail, true)
+                                case _ => customerEmailAddress(email, false)
+                            }
+                        }
+                }
+            </dl>
+        </div>
     }
 
     @if(appConfig.features.registrationStatus()){

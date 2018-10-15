@@ -22,6 +22,7 @@ import play.api.libs.json.{JsValue, Json}
 object PPOBAddressTestConstants {
 
   val addLine1 = "Add Line 1"
+  val addLine1Pending = "Changed Line 1"
   val addLine2 = "Add Line 2"
   val addLine3 = "Add Line 3"
   val addLine4 = "Add Line 4"
@@ -37,9 +38,23 @@ object PPOBAddressTestConstants {
   val email = "test@test.com"
   val emailVerified = true
 
+  val phoneNumberPending = "01234 345234"
+  val mobileNumberPending = "07700 345234"
+  val faxNumberPending = "01234 123564"
+  val emailPending = "pending@test.com"
 
   val ppobAddressModelMax = PPOBAddress(
     addLine1,
+    Some(addLine2),
+    Some(addLine3),
+    Some(addLine4),
+    Some(addLine5),
+    Some(postcode),
+    countryCode
+  )
+
+  val ppobAddressModelMaxPending = PPOBAddress(
+    addLine1Pending,
     Some(addLine2),
     Some(addLine3),
     Some(addLine4),
@@ -66,9 +81,19 @@ object PPOBAddressTestConstants {
     Some(emailVerified)
   )
 
+  val contactDetailsModelMaxPending = ContactDetails(
+    Some(phoneNumberPending),
+    Some(mobileNumberPending),
+    Some(faxNumberPending),
+    Some(emailPending),
+    Some(emailVerified)
+  )
+
   val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
 
   val ppobModelMax = PPOB(ppobAddressModelMax,Some(contactDetailsModelMax), Some(website))
+
+  val ppobModelMaxPending = PPOB(ppobAddressModelMaxPending,Some(contactDetailsModelMaxPending), Some(website))
 
   val ppobModelMin = PPOB(ppobAddressModelMin,None,None)
 

@@ -145,6 +145,27 @@ object CircumstanceDetailsTestConstants {
     ))
   )
 
+  val customerInformationModelMaxOrganisationPending: CircumstanceDetails = CircumstanceDetails(
+    MTDfBMandated,
+    organisation,
+    Some(frsModelMax),
+    ppobModelMax,
+    Some(bankDetailsModelMax),
+    Some(Mar),
+    Some(deregModel),
+    Some(ChangeIndicators(
+      ppob = true,
+      bankDetails = true,
+      returnPeriod = true,
+      deregister = true
+    )),
+    Some(PendingChanges(
+      Some(ppobModelMaxPending),
+      Some(bankDetailsModelMax),
+      Some(Mar)
+    ))
+  )
+
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
     MTDfBMandated,
     individual,
