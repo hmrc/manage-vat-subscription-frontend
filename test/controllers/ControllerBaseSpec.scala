@@ -29,7 +29,7 @@ trait ControllerBaseSpec extends MockAuth {
       "return 401 (Unauthorised)" in {
         mockMissingBearerToken()
         val result = controllerAction(request)
-        status(result) shouldBe Status.UNAUTHORIZED
+        status(result) shouldBe Status.SEE_OTHER
       }
     }
   }

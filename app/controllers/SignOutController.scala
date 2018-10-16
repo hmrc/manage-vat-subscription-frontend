@@ -35,6 +35,6 @@ class SignOutController @Inject()(val messagesApi: MessagesApi,
   }
 
   val timeout: Action[AnyContent] = Action.async { implicit request =>
-     Future.successful(Redirect(appConfig.unauthorisedSignOutUrl))
+     Future.successful(Unauthorized(views.html.errors.sessionTimeout()))
   }
 }

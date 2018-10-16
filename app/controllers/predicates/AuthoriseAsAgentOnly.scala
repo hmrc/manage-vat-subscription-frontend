@@ -59,8 +59,8 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
           Future.successful(serviceErrorHandler.showInternalServerError)
       } recover {
         case _: NoActiveSession =>
-          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, rendering Session Timeout view")
-          Unauthorized(views.html.errors.sessionTimeout())
+          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, redirect to GG Sign In")
+          Redirect(appConfig.signInUrl)
         case _: AuthorisationException =>
           Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Unauthorised view")
           Forbidden(views.html.errors.unauthorised())

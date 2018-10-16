@@ -63,10 +63,15 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
       "the agent is not authenticated" should {
 
-        "return 401 (Unauthorised)" in {
+        lazy val result = target(fakeRequestWithClientsVRN)
+
+        "return 303 (Redirect)" in {
           mockMissingBearerToken()
-          val result = target(fakeRequestWithClientsVRN)
-          status(result) shouldBe Status.UNAUTHORIZED
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the session-timout view" in {
+          redirectLocation(result) shouldBe Some(mockConfig.signInUrl)
         }
       }
 

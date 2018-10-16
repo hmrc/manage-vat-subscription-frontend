@@ -58,8 +58,8 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
         Future.successful(serviceErrorHandler.showInternalServerError)
     } recover {
       case _: NoActiveSession =>
-        Logger.debug("[AuthPredicate][invokeBlock] - No active session, rendering Session Timeout view")
-        Unauthorized(views.html.errors.sessionTimeout())
+        Logger.debug("[AuthPredicate][invokeBlock] - No active session, redirect to GG sign in")
+        Redirect(appConfig.signInUrl)
       case _: AuthorisationException =>
         Logger.warn("[AuthPredicate][invokeBlock] - Unauthorised exception, rendering Unauthorised view")
         Forbidden(views.html.errors.unauthorised())
