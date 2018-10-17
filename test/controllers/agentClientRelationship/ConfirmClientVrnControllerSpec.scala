@@ -116,7 +116,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
       "return 401 (Unauthorised)" in {
         mockMissingBearerToken()
         val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
-        status(result) shouldBe Status.UNAUTHORIZED
+        status(result) shouldBe Status.SEE_OTHER
       }
     }
   }
@@ -161,7 +161,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
       "return 401 (Unauthorised)" in {
         mockMissingBearerToken()
         val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithClientsVRN)
-        status(result) shouldBe Status.UNAUTHORIZED
+        status(result) shouldBe Status.SEE_OTHER
       }
     }
   }

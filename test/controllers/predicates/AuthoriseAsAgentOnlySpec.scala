@@ -25,6 +25,7 @@ import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
 
 import scala.concurrent.Future
+import play.api.test.Helpers._
 
 class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
@@ -85,10 +86,15 @@ class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
 
       "a user with no active session" should {
 
-        "return 401 (Unauthorized)" in {
+        lazy val result = target(request)
+
+        "return 303 (Redirect)" in {
           mockMissingBearerToken()
-          val result = target(request)
-          status(result) shouldBe Status.UNAUTHORIZED
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the session-timout view" in {
+          redirectLocation(result) shouldBe Some(mockConfig.signInUrl)
         }
       }
 
