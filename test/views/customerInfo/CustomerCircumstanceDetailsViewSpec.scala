@@ -177,6 +177,22 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         "has the correct value for the email address" in {
           elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
         }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#vat-email-address-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)}'" in {
+            element("#vat-email-address-status").attr("aria-label") shouldBe
+              viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
+          }
+
+          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+            element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+          }
+        }
       }
 
       "not display the 'change another clients details' link" in {

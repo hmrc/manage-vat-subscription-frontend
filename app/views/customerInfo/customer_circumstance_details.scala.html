@@ -184,6 +184,13 @@
                       aria-label="@messages("customer_details.contactDetails.emailAddress.pending.hidden")">
                     @messages("customer_details.pending")
                 </span>
+            } else {
+                <a id="vat-email-address-status"
+                   onclick="sentGAEvent('email-address','change','change-email-address', @user.isAgent)"
+                   href="@appConfig.vatCorrespondenceChangeEmailUrl"
+                   aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",emailAddress)">
+                    @messages("customer_details.change")
+                </a>
             }
         </dd>
     </div>
@@ -257,12 +264,12 @@
                     for{
                         contactDetails <- circumstances.ppob.contactDetails
                         email <- contactDetails.emailAddress
-                        } yield {
-                            pendingEmailAddress match {
-                                case Some(pendingEmail) if(!pendingEmail.equals(email)) => customerEmailAddress(pendingEmail, true)
-                                case _ => customerEmailAddress(email, false)
-                            }
+                    } yield {
+                        pendingEmailAddress match {
+                            case Some(pendingEmail) if(!pendingEmail.equals(email)) => customerEmailAddress(pendingEmail, true)
+                            case _ => customerEmailAddress(email, false)
                         }
+                    }
                 }
             </dl>
         </div>
