@@ -66,7 +66,5 @@ object ConfigKeys {
 
   val deregistrationForVat: String = "deregister-vat-frontend.url"
 
-  val platformHost: String = "platform.host"
-
   val vatCorrespondenceChangeEmailUrl: String = "vat-correspondence-details-frontend.changeEmailUrl"
 }
