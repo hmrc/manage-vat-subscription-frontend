@@ -65,6 +65,7 @@ trait AppConfig extends ServicesConfig {
   val deregisterForVat: String
   val feedbackUrl: String
   val platformHost: String
+  val vatCorrespondenceChangeEmailUrl: String
 }
 
 @Singleton
@@ -147,4 +148,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
     s"&backUrl=${ContinueUrl(platformHost + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
 
   override lazy val platformHost: String = getString(Keys.platformHost)
+
+  override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
 }
