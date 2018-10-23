@@ -414,6 +414,17 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         element("#change-client-link").attr("href") shouldBe
           controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
       }
+
+      "have a blank field where the 'Change' link would be for email address" which {
+
+        "displays no text" in {
+          elementText("#vat-email-address-status") shouldBe ""
+        }
+
+        s"has the correct aria-label text '${viewMessages.changeEmailAddressAgentHidden}'" in {
+          element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.changeEmailAddressAgentHidden
+        }
+      }
     }
 
     "the registration feature switch is disabled" should {

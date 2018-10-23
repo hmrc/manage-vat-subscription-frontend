@@ -178,19 +178,28 @@
             @emailAddress
         </dd>
         <dd class="cya-change">
-            @if(emailPending){
-                <span id="vat-email-address-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.contactDetails.emailAddress.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
-            } else {
-                <a id="vat-email-address-status"
-                   onclick="sentGAEvent('email-address','change','change-email-address', @user.isAgent)"
-                   href="@appConfig.vatCorrespondenceChangeEmailUrl"
-                   aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",emailAddress)">
-                    @messages("customer_details.change")
-                </a>
+            @(emailPending, user.isAgent) match {
+
+                case (true, _) => {
+                    <span id="vat-email-address-status"
+                          class="bold"
+                          aria-label="@messages("customer_details.contactDetails.emailAddress.pending.hidden")">
+                        @messages("customer_details.pending")
+                    </span>
+                }
+                case (false, true) => {
+                    <span id="vat-email-address-status"
+                          aria-label="@messages("customer_details.contactDetails.emailAddress.agent.change.hidden")">
+                    </span>
+                }
+                case (false, false) => {
+                    <a id="vat-email-address-status"
+                       onclick="sentGAEvent('email-address','change','change-email-address', false)"
+                       href="@appConfig.vatCorrespondenceChangeEmailUrl"
+                       aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",emailAddress)">
+                        @messages("customer_details.change")
+                    </a>
+                }
             }
         </dd>
     </div>
