@@ -61,4 +61,5 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val contactFrontendService: String = "/contact-frontend"
   override val agentInvitationsFastTrack: String = "/agent-invitations-frontend"
   override val deregisterForVat: String = "ye-olde-deregister-url"
+  override val vatCorrespondenceChangeEmailUrl: String = "mock-change-email-url"
 }

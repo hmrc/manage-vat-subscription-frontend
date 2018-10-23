@@ -50,6 +50,8 @@ object CustomerCircumstanceDetailsPageMessages {
   val pendingBusinessAddressHidden = "Change to business address is pending"
   val changeBankDetailsHidden = "Change the bank account for repayments"
   val changeReturnFrequencyHidden: String => String = dates => s"Change the VAT Return dates from $dates"
+  val changeEmailAddressHidden: String => String = email => s"Change the business email address from $email"
+  val changeEmailAddressAgentHidden: String = "You are not permitted to change your client’s email address"
   val pendingBankDetailsHidden = "Change to bank account for repayments is pending"
   val pendingReturnFrequencyHidden = "Change to VAT Return dates is pending"
   val pendingEmailAddressHidden = "Change to business email address is pending"

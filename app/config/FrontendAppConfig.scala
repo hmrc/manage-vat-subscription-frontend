@@ -63,6 +63,7 @@ trait AppConfig extends ServicesConfig {
   val contactFrontendService: String
   val agentInvitationsFastTrack: String
   val deregisterForVat: String
+  val vatCorrespondenceChangeEmailUrl: String
 }
 
 @Singleton
@@ -141,4 +142,5 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val deregisterForVat: String = getString(Keys.deregistrationForVat)
 
+  override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
 }
