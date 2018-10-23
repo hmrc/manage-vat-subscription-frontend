@@ -63,6 +63,8 @@ trait AppConfig extends ServicesConfig {
   val contactFrontendService: String
   val agentInvitationsFastTrack: String
   val deregisterForVat: String
+  val feedbackUrl: String
+  val platformHost: String
 }
 
 @Singleton
@@ -141,4 +143,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val deregisterForVat: String = getString(Keys.deregistrationForVat)
 
+  override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
+    s"&backUrl=${ContinueUrl(platformHost + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
+
+  override lazy val platformHost: String = getString(Keys.platformHost)
 }
