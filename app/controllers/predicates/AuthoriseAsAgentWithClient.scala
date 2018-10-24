@@ -65,8 +65,8 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
               block(user)
           } recover {
             case _: NoActiveSession =>
-              Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, rendering Session Timeout")
-              Unauthorized(views.html.errors.sessionTimeout())
+              Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, redirect to GG Sign In")
+              Redirect(appConfig.signInUrl)
             case _: AuthorisationException =>
               Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
               Redirect(controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show())

@@ -20,7 +20,7 @@ import common.SessionKeys
 import helpers.BaseIntegrationSpec
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
-import play.api.test.Helpers.{INTERNAL_SERVER_ERROR, UNAUTHORIZED}
+import play.api.test.Helpers.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 
 trait BasePageISpec extends BaseIntegrationSpec {
 
@@ -36,7 +36,7 @@ trait BasePageISpec extends BaseIntegrationSpec {
 
     "the user is timed out (not authenticated)" should {
 
-      "Render the session timeout view" in {
+      "redirect to GG Sign In" in {
 
         given.user.isNotAuthenticated
 
@@ -44,8 +44,8 @@ trait BasePageISpec extends BaseIntegrationSpec {
         val res = method
 
         res should have(
-          httpStatus(UNAUTHORIZED),
-          pageTitle(Messages("sessionTimeout.title"))
+          httpStatus(SEE_OTHER),
+          redirectURI(appConfig.signInUrl)
         )
       }
     }
