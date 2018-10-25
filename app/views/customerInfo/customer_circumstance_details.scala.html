@@ -20,6 +20,7 @@
 @import helpers.render_address
 @import helpers.deregistration_helper
 @import templates.breadcrumb
+@import templates.openInNewTab
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
@@ -303,9 +304,17 @@
     }
 
     <details>
-        <summary><span class="summary">The change I want to make is not listed</span></summary>
+        <summary>
+            <span class="summary" data-journey-click="change-not-listed:click:reveal-help">@messages("customer_details.changeNotListed")</span>
+        </summary>
         <div class="panel-indent">
-            <p>You can <a href="https://www.gov.uk/government/publications/vat-changes-to-registration-details-vat484" target="_blank">make any other changes (opens in a new tab)</a> using a form. You must print and complete this form before posting it to HMRC.</p>
+            <p>@messages("customer_details.changeNotListed.youCan")
+                @openInNewTab(
+                    appConfig.govUkChangeVatRegistrationDetails,
+                    messages("customer_details.changeNotListed.makeOtherChanges"),
+                    Some("change-not-listed:click:gov-uk-vat-484-form")
+                )
+            @messages("customer_details.changeNotListed.useAForm")</p>
         </div>
     </details>
 }

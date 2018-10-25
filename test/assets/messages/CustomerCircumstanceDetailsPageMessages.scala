@@ -59,5 +59,7 @@ object CustomerCircumstanceDetailsPageMessages {
   val pastDeregDateText: String => String = date => s"You successfully deregistered for VAT on $date"
   val changeClientDetails = "You can change another client’s details."
   val deregText: String => String = date => s"Deregistered on $date"
+  val changeNotListed: String = "The change I want to make is not listed"
+  val helpText: String = "You can make any other changes (opens in a new tab) using a form. You must print and complete this form before posting it to HMRC."
 
 }

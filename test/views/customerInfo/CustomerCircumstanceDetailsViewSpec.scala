@@ -30,8 +30,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
   "Rendering the Customer Details page" when {
 
-        mockConfig.features.registrationStatus(true)
-        mockConfig.features.contactDetailsSection(true)
+    mockConfig.features.registrationStatus(true)
+    mockConfig.features.contactDetailsSection(true)
 
     "Viewing for any user (in this case Individual) without any pending changes" should {
 
@@ -197,6 +197,31 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
+      }
+
+      "display a progressive disclosure" which {
+
+        "contains help text" which {
+
+          lazy val progressiveDisclosure = element("details")
+
+          "contains the correct text" in {
+            progressiveDisclosure.select("summary").text() shouldEqual viewMessages.changeNotListed
+          }
+
+          "contains content" which {
+
+            lazy val helpContent = progressiveDisclosure.select("div > p")
+
+            "displays the correct text" in {
+              helpContent.text() shouldEqual viewMessages.helpText
+            }
+
+            s"has a link to ${mockConfig.govUkChangeVatRegistrationDetails}" in {
+              helpContent.select("a").attr("href") shouldEqual mockConfig.govUkChangeVatRegistrationDetails
+            }
+          }
+        }
       }
     }
 
@@ -441,7 +466,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-
     "the registration status is true" should {
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationRegisteredIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -473,7 +497,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "the registration status is false deregistration set to a future date " should {
+    "the registration status is false deregistration set to a future date" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelFutureDereg)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -485,7 +509,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "the registration status is false - deregistration set to a past date " should {
+    "the registration status is false - deregistration set to a past date" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -500,8 +524,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-
-    "the registration status is false deregistration set to a pending " should {
+    "the registration status is false deregistration set to a pending" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelDeregPending)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -512,7 +535,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#registration-status") shouldBe viewMessages.deregPending
       }
     }
-
 
     "the registration status is true" should {
 

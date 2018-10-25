@@ -49,7 +49,6 @@ object ConfigKeys {
   val addressLookupFrontend: String = "address-lookup-frontend"
   val addressLookupFrontendHost: String = s"$addressLookupFrontend.host"
 
-
   val surveyHost: String = "feedback-survey-frontend.host"
   val surveyUrl: String = "feedback-survey-frontend.url"
 
@@ -67,4 +66,6 @@ object ConfigKeys {
   val deregistrationForVat: String = "deregister-vat-frontend.url"
 
   val vatCorrespondenceChangeEmailUrl: String = "vat-correspondence-details-frontend.changeEmailUrl"
+
+  val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
 }
