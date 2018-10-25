@@ -55,15 +55,15 @@
         </dd>
         <dd class="cya-change">
             @findDeregStatus(circumstances) match {
-            case Registered => {
+                case Registered => {
                     <a id="business-name-status"
                        onclick="sendGAEvent('business-name','change','change-business-details', @user.isAgent)"
                        href="@{controllers.routes.ChangeBusinessNameController.show().url}"
                        aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
                        @messages("customer_details.change")
                     </a>
-            }
-            case _ => {}
+                }
+                case _ => {}
             }
         </dd>
     </div>
@@ -301,4 +301,11 @@
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
         </p>
     }
+
+    <details>
+        <summary><span class="summary">The change I want to make is not listed</span></summary>
+        <div class="panel-indent">
+            <p>You can <a href="https://www.gov.uk/government/publications/vat-changes-to-registration-details-vat484" target="_blank">make any other changes (opens in a new tab)</a> using a form. You must print and complete this form before posting it to HMRC.</p>
+        </div>
+    </details>
 }

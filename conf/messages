@@ -20,6 +20,7 @@ common.errorSummary.heading = You have one or more errors
 common.finish = Finish
 common.clientService = Business tax account
 common.agentService = Update your client''s VAT details
+common.newTab = (opens in a new tab)
 
 common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
