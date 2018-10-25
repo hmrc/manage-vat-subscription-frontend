@@ -29,6 +29,7 @@ import play.api.libs.json.{JsValue, Json}
 object CircumstanceDetailsTestConstants {
 
   val mandationStatus = "MTDfB Mandated"
+  val partyType = "002"
 
   val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
     "customerDetails" -> organisationJson,
@@ -37,6 +38,7 @@ object CircumstanceDetailsTestConstants {
     "bankDetails" -> bankDetailsJsonMax,
     "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus,
+    "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
     "changeIndicators" -> Json.obj(
       "PPOBDetails" -> true,
@@ -80,6 +82,7 @@ object CircumstanceDetailsTestConstants {
     "bankDetails" -> bankDetailsModelMax,
     "returnPeriod" -> returnPeriodMCJson,
     "mandationStatus" -> mandationStatus,
+    "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
     "changeIndicators" -> Json.obj(
       "PPOBDetails" -> true,
@@ -125,143 +128,171 @@ object CircumstanceDetailsTestConstants {
 
 
   val customerInformationModelMaxOrganisation: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    organisation,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(deregModel),
-    Some(ChangeIndicators(
+    mandationStatus = MTDfBMandated,
+    partyType = Some(partyType),
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
       returnPeriod = true,
       deregister = true
     )),
-    Some(PendingChanges(
-      Some(ppobModelMax),
-      Some(bankDetailsModelMax),
-      Some(Mar)
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppobModelMax),
+      bankDetails = Some(bankDetailsModelMax),
+      returnPeriod = Some(Mar)
     ))
   )
 
   val customerInformationModelMaxOrganisationPending: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    organisation,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(deregModel),
-    Some(ChangeIndicators(
+    mandationStatus = MTDfBMandated,
+    partyType = Some(partyType),
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
       returnPeriod = true,
       deregister = true
     )),
-    Some(PendingChanges(
-      Some(ppobModelMaxPending),
-      Some(bankDetailsModelMax),
-      Some(Mar)
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppobModelMaxPending),
+      bankDetails = Some(bankDetailsModelMax),
+      returnPeriod = Some(Mar)
     ))
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    individual,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(deregModel),
-    Some(ChangeIndicators(
+    mandationStatus = MTDfBMandated,
+    partyType = Some(partyType),
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
       returnPeriod = true,
       deregister = true
     )),
-    Some(PendingChanges(
-      Some(ppobModelMax),
-      Some(bankDetailsModelMax),
-      Some(Mar)
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppobModelMax),
+      bankDetails = Some(bankDetailsModelMax),
+      returnPeriod = Some(Mar)
     ))
   )
 
   val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    individual,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(deregModel),
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = None,
+    pendingChanges = None
   )
 
   val customerInformationNoPendingChangeOfCert: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    organisation,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    None,
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None
   )
 
 
   val customerInformationRegisteredIndividual: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    individual,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    None,
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None
   )
 
   val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    organisation,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(deregModel),
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = None,
+    pendingChanges = None
   )
 
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    individual,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    Some(futureDeregModel),
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(futureDeregModel),
+    changeIndicators = None,
+    pendingChanges = None
   )
 
   val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    individual,
-    Some(frsModelMax),
-    ppobModelMax,
-    Some(bankDetailsModelMax),
-    Some(Mar),
-    None,
-    Some(ChangeIndicators(ppob = false, bankDetails = false, returnPeriod = false, deregister = true)),
-    None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = None,
+    changeIndicators = Some(
+      ChangeIndicators(
+        ppob = false,
+        bankDetails = false,
+        returnPeriod = false,
+        deregister = true)
+    ),
+    pendingChanges = None
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated, CustomerDetails(None, None, None, None), None, ppobModelMin, None, None, None, None, None
+    mandationStatus = MTDfBMandated,
+    partyType = None,
+    customerDetails = CustomerDetails(
+      firstName = None,
+      lastName = None,
+      organisationName = None,
+      tradingName = None),
+    flatRateScheme = None,
+    ppob = ppobModelMin,
+    bankDetails = None,
+    returnPeriod = None,
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None
   )
 
 }
