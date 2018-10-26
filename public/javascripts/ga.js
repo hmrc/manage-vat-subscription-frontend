@@ -8,6 +8,9 @@ function sendGAEvent(category, action, label, isAgent) {
 
 $(document).ready($(function () {
 
+    //initialise <details> polyfill from frontend toolkit
+    GOVUK.details.init();
+
     $('[data-metrics]').each(function () {
         var metrics = $(this).attr('data-metrics');
         var splitOnUser = metrics.split(';');

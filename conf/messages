@@ -20,6 +20,7 @@ common.errorSummary.heading = You have one or more errors
 common.finish = Finish
 common.clientService = Business tax account
 common.agentService = Update your client''s VAT details
+common.newTab = (opens in a new tab)
 
 common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
@@ -103,7 +104,10 @@ customer_details.contactDetails.emailAddress.agent.change.hidden = You are not p
 customer_details.contactDetails.emailAddress.pending.hidden = Change to business email address is pending
 customer_details.registration.deregister.choose_deregistration_date = Your deregistration for VAT is set for {0}
 customer_details.registration.deregister.deregistration_date = You successfully deregistered for VAT on {0}
-customer_details.register = How to register
+customer_details.changeNotListed = The change I want to make is not listed
+customer_details.changeNotListed.youCan = You can
+customer_details.changeNotListed.makeOtherChanges = make any other changes
+customer_details.changeNotListed.useAForm = using a form. You must print and complete this form before posting it to HMRC.
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
