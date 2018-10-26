@@ -25,7 +25,7 @@ object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
   val userId = s"/auth/oid/1234567890"
 
-  val partyType = "002"
+  val partyType = "2"
   val clientVRN = "999999999"
   val VRN = "111111111"
 
@@ -120,5 +120,18 @@ object IntegrationTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
+  )
+
+  def customerCircumstancesDetailsWithPartyType(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
+    mandationStatus = MTDfBMandated,
+    customerDetails = customerType,
+    flatRateScheme = None,
+    ppob = ppob,
+    bankDetails = None,
+    returnPeriod = None,
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None,
+    partyType = Some("2")
   )
 }

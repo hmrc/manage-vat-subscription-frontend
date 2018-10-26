@@ -125,7 +125,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with minimum details returned for an Organisation")
-              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsMin(organisation))
+              VatSubscriptionStub.getClientDetailsSuccess(clientVRN)(customerCircumstancesDetailsWithPartyType(organisation))
 
               When("I call to show the Customer Circumstances page")
               val res = show(Some(clientVRN))
@@ -360,12 +360,42 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
       "a success response is received for the Customer Details with minimum details (Organisation)" should {
 
-        "Render the Customer Circumstances page with only the business name shown" in {
+        "Render the Customer Circumstances page with only business address shown" in {
 
           given.user.isAuthenticated
 
           And("A successful response with minimum details returned for an Organisation")
           VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+
+          When("I call to show the Customer Circumstances page")
+          val res = show()
+
+          res should have(
+            httpStatus(OK),
+
+            //Business Name
+            isElementVisible("#business-name")(isVisible = false),
+
+            //Business Address
+            isElementVisible("#businessAddress")(isVisible = true),
+
+            //Bank Details
+            isElementVisible("#bank-details")(isVisible = false),
+
+            //VAT Return Dates
+            isElementVisible("#vat-return-dates")(isVisible = false)
+          )
+        }
+      }
+
+      "a success response is received for the Customer Details with a partyType (Organisation)" should {
+
+        "Render the Customer Circumstances page with only business address shown" in {
+
+          given.user.isAuthenticated
+
+          And("A successful response with minimum details returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsWithPartyType(organisation))
 
           When("I call to show the Customer Circumstances page")
           val res = show()

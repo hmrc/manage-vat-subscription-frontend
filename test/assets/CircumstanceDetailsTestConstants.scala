@@ -29,7 +29,7 @@ import play.api.libs.json.{JsValue, Json}
 object CircumstanceDetailsTestConstants {
 
   val mandationStatus = "MTDfB Mandated"
-  val partyType = "002"
+  val partyType = "2"
 
   val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
     "customerDetails" -> organisationJson,
@@ -129,7 +129,6 @@ object CircumstanceDetailsTestConstants {
 
   val customerInformationModelMaxOrganisation: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = Some(partyType),
     customerDetails = organisation,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -146,12 +145,12 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
-    ))
+    )),
+    partyType = Some(partyType)
   )
 
   val customerInformationModelMaxOrganisationPending: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = Some(partyType),
     customerDetails = organisation,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -168,12 +167,12 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMaxPending),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
-    ))
+    )),
+    partyType = Some(partyType)
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = Some(partyType),
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -190,12 +189,12 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
-    ))
+    )),
+    partyType = Some(partyType)
   )
 
   val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -203,12 +202,12 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = Some(partyType)
   )
 
   val customerInformationNoPendingChangeOfCert: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = organisation,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -216,13 +215,25 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = Some(Mar),
     deregistration = None,
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = Some(partyType)
   )
 
+  def customerInformationWithPartyType(partyType: Option[String]): CircumstanceDetails = CircumstanceDetails(
+    mandationStatus = MTDfBMandated,
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None,
+    partyType = partyType
+  )
 
   val customerInformationRegisteredIndividual: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -230,12 +241,12 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = Some(Mar),
     deregistration = None,
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = None
   )
 
   val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = organisation,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -243,12 +254,12 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = Some("other")
   )
 
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -256,12 +267,12 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = Some(Mar),
     deregistration = Some(futureDeregModel),
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = None
   )
 
   val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
     ppob = ppobModelMax,
@@ -275,12 +286,12 @@ object CircumstanceDetailsTestConstants {
         returnPeriod = false,
         deregister = true)
     ),
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = None
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
-    partyType = None,
     customerDetails = CustomerDetails(
       firstName = None,
       lastName = None,
@@ -292,7 +303,8 @@ object CircumstanceDetailsTestConstants {
     returnPeriod = None,
     deregistration = None,
     changeIndicators = None,
-    pendingChanges = None
+    pendingChanges = None,
+    partyType = None
   )
 
 }

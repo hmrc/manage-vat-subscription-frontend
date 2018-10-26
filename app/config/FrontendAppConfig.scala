@@ -65,6 +65,7 @@ trait AppConfig extends ServicesConfig {
   val deregisterForVat: String
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
+  val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
 }
 
