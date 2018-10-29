@@ -66,6 +66,7 @@ trait AppConfig extends ServicesConfig {
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
   val govUkChangeVatRegistrationDetails: String
+  val govUkSoftwareGuidanceUrl: String
 }
 
 @Singleton
@@ -150,4 +151,6 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
 
   override lazy val govUkChangeVatRegistrationDetails: String = getString(Keys.changeVatRegistrationDetails)
+
+  override lazy val govUkSoftwareGuidanceUrl: String = getString(Keys.softwareGuidanceUrl)
 }

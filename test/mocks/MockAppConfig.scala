@@ -64,4 +64,5 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val feedbackUrl: String = "/feedback"
   override val vatCorrespondenceChangeEmailUrl: String = "mock-change-email-url"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
+  override val govUkSoftwareGuidanceUrl: String = "software-guidance"
 }

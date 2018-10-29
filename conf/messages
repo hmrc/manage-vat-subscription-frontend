@@ -56,8 +56,8 @@ unauthorised.agentJourneyDisabled.p2 = If your client needs to change their busi
 
 not_signed_up.title = You can’t use this service yet
 not_signed_up.heading = You can’t use this service yet
-not_signed_up.p1 = This service is only available to some limited companies and sole traders.
-not_signed_up.p2 = You’ll be able to sign up for this service by April 2019.
+not_signed_up.text = You need to
+not_signed_up.link = sign up to use software to update your VAT returns.
 
 featureSwitch.title = Feature switches
 featureSwitch.heading = Features

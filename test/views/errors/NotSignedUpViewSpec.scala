@@ -37,11 +37,11 @@ class NotSignedUpViewSpec extends ViewBaseSpec {
     }
 
     "have the correct p1 on the page" in {
-      paragraph(1) shouldBe Messages.p1
+      paragraph(1) shouldBe Messages.text
     }
 
     "have the correct p2 on the page" in {
-      paragraph(2) shouldBe Messages.p2
+      element("#content > article > p > a").attr("href") shouldBe mockConfig.govUkSoftwareGuidanceUrl
     }
 
     "A Sign Out button" which {
