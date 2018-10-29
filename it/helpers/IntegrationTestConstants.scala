@@ -25,6 +25,7 @@ object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
   val userId = s"/auth/oid/1234567890"
 
+  val partyType = "002"
   val clientVRN = "999999999"
   val VRN = "111111111"
 
@@ -92,30 +93,32 @@ object IntegrationTestConstants {
   )
 
   def customerCircumstancesDetailsMax(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    customerType,
-    None,
-    ppob,
-    Some(bankDetails),
-    Some(Jan),
-    Some(deregModel),
-    Some(changeIndicators),
-    Some(PendingChanges(
-      Some(ppob),
-      Some(bankDetails),
-      Some(Jan)
-    ))
+    mandationStatus = MTDfBMandated,
+    customerDetails = customerType,
+    flatRateScheme = None,
+    ppob = ppob,
+    bankDetails = Some(bankDetails),
+    returnPeriod = Some(Jan),
+    deregistration = Some(deregModel),
+    changeIndicators = Some(changeIndicators),
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppob),
+      bankDetails = Some(bankDetails),
+      returnPeriod = Some(Jan)
+    )),
+    partyType = Some(partyType)
   )
 
   def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
-    MTDfBMandated,
-    customerType,
-    None,
-    ppob,
-    None,
-    None,
-    None,
-    None,
-    None
+    mandationStatus = MTDfBMandated,
+    customerDetails = customerType,
+    flatRateScheme = None,
+    ppob = ppob,
+    bankDetails = None,
+    returnPeriod = None,
+    deregistration = None,
+    changeIndicators = None,
+    pendingChanges = None,
+    partyType = None
   )
 }

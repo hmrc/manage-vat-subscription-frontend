@@ -29,7 +29,8 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
                                returnPeriod: Option[ReturnPeriod],
                                deregistration: Option[Deregistration],
                                changeIndicators: Option[ChangeIndicators],
-                               pendingChanges: Option[PendingChanges]) {
+                               pendingChanges: Option[PendingChanges],
+                               partyType: Option[String]) {
 
   val ppobAddress: PPOBAddress = ppob.address
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
@@ -49,6 +50,7 @@ object CircumstanceDetails extends JsonReadUtil {
   private val deregistrationPath = __ \ "deregistration"
   private val changeIndicatorsPath = __ \ "changeIndicators"
   private val pendingChangesPath = __ \ "pendingChanges"
+  private val partyTypePath = __ \ "partyType"
 
   implicit val reads: Reads[CircumstanceDetails] = (
     mandationStatusPath.read[MandationStatus] and
@@ -59,7 +61,8 @@ object CircumstanceDetails extends JsonReadUtil {
       returnPeriodPath.readOpt[ReturnPeriod] and
       deregistrationPath.readOpt[Deregistration] and
       changeIndicatorsPath.readOpt[ChangeIndicators] and
-      pendingChangesPath.readOpt[PendingChanges]
+      pendingChangesPath.readOpt[PendingChanges] and
+      partyTypePath.readOpt[String]
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Writes[CircumstanceDetails] = (
@@ -71,6 +74,7 @@ object CircumstanceDetails extends JsonReadUtil {
       returnPeriodPath.writeNullable[ReturnPeriod]  and
       deregistrationPath.writeNullable[Deregistration] and
       changeIndicatorsPath.writeNullable[ChangeIndicators] and
-      pendingChangesPath.writeNullable[PendingChanges]
+      pendingChangesPath.writeNullable[PendingChanges] and
+      partyTypePath.writeNullable[String]
     )(unlift(CircumstanceDetails.unapply))
 }

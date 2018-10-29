@@ -94,15 +94,27 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   "Calling BusinessAddressController.callback" when {
 
     val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-      MTDfBMandated,
-      CustomerDetails(None, None, None, None),
-      None,
-      PPOB(PPOBAddress("add line 1",None,None,None,None,None,"GB"),None,None),
-      None,
-      None,
-      None,
-      None,
-      None
+      mandationStatus = MTDfBMandated,
+      customerDetails = CustomerDetails(None, None, None, None),
+      flatRateScheme = None,
+      ppob = PPOB(
+        address = PPOBAddress(
+          line1 = "add line 1",
+          line2 = None,
+          line3 = None,
+          line4 = None,
+          line5 = None,
+          postCode = None,
+          countryCode = "GB"),
+        contactDetails = None,
+        websiteAddress = None
+      ),
+      bankDetails = None,
+      returnPeriod = None,
+      deregistration = None,
+      changeIndicators = None,
+      pendingChanges = None,
+      partyType = None
     )
 
     "the user is an individual" should {
