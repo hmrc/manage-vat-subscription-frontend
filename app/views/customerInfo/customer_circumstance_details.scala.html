@@ -237,6 +237,7 @@
     <div class="form-group">
         <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-check-your-answers cya-questions-short">
+
             @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
                 case (Some(orgName),true) => {
                     @customerName(orgName)

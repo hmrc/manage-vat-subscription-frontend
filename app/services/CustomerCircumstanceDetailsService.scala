@@ -28,6 +28,10 @@ import scala.concurrent.{ExecutionContext, Future}
 class CustomerCircumstanceDetailsService @Inject()(val subscriptionConnector: SubscriptionConnector) {
 
   def getCustomerCircumstanceDetails(vrn: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext)
-  : Future[Either[ErrorModel, CircumstanceDetails]] =
+  : Future[Either[ErrorModel, CircumstanceDetails]] = {
+    println(subscriptionConnector.getCustomerCircumstanceDetails(vrn).map(_.right.get))
+
     subscriptionConnector.getCustomerCircumstanceDetails(vrn)
+  }
+
 }

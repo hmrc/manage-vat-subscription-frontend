@@ -39,11 +39,10 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
   val pendingDeregistration: Boolean = changeIndicators.fold(false)(_.deregister)
 
-  def validPartyType(implicit appConfig: AppConfig): Boolean = {
-    partyType.fold(false){
-      party => appConfig.partyTypes.contains(party)
-    }
+  def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
+    party => appConfig.partyTypes.contains(party)
   }
+
 }
 
 object CircumstanceDetails extends JsonReadUtil {
