@@ -63,6 +63,7 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val deregisterForVat: String = "ye-olde-deregister-url"
   override val feedbackUrl: String = "/feedback"
   override val vatCorrespondenceChangeEmailUrl: String = "mock-change-email-url"
+  override val partyTypes: Seq[String] = Seq("2","4","7","11","50","52","59","62")
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
 }

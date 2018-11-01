@@ -407,6 +407,52 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
+    "Viewing for an Organisation with one of the valid partyTypes" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("2")))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a change details section for the Business Name" which {
+
+        s"has the heading '${viewMessages.organisationNameHeading}'" in {
+          elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
+        }
+      }
+    }
+
+    "Viewing for an Organisation with a different valid partyType" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("4")))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a change details section for the Business Name" which {
+
+        s"has the heading '${viewMessages.organisationNameHeading}'" in {
+          elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
+        }
+      }
+    }
+
+    "Viewing for an Organisation without one of the valid partyTypes" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("other")))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a change details section for the Business Name" in {
+        document.select("#business-name-text").isEmpty shouldBe true
+      }
+    }
+
+    "Viewing for an Organisation without any partyType" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(None))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have a no change details section for the Business Name" in {
+        document.select("#business-name-text").isEmpty shouldBe true
+      }
+    }
+
     "Viewing a client's details as an agent" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
@@ -538,7 +584,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     "the registration status is true" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingChangeOfCert)(user, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("2")))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "registration section displays the following" in {

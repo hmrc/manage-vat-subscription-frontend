@@ -65,12 +65,15 @@ trait AppConfig extends ServicesConfig {
   val deregisterForVat: String
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
+  val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
 }
 
 @Singleton
 class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig with AppConfig {
+
+  private def getStringSeq(key: String): Seq[String] = runModeConfiguration.getStringSeq(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   override protected def mode: Mode = environment.mode
 
@@ -149,6 +152,8 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
     s"&backUrl=${ContinueUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
 
   override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
+
+  override lazy val partyTypes: Seq[String] = getStringSeq(Keys.partyTypes)
 
   override lazy val govUkChangeVatRegistrationDetails: String = getString(Keys.changeVatRegistrationDetails)
 

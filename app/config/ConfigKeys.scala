@@ -44,6 +44,8 @@ object ConfigKeys {
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
 
+  val partyTypes: String = "party-types"
+
   val governmentGatewayHost: String = "government-gateway.host"
 
   val addressLookupFrontend: String = "address-lookup-frontend"

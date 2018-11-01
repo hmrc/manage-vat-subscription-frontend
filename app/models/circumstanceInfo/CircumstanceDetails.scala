@@ -16,6 +16,7 @@
 
 package models.circumstanceInfo
 
+import config.AppConfig
 import models.JsonReadUtil
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
@@ -37,6 +38,11 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
   val pendingDeregistration: Boolean = changeIndicators.fold(false)(_.deregister)
+
+  def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
+    party => appConfig.partyTypes.contains(party)
+  }
+
 }
 
 object CircumstanceDetails extends JsonReadUtil {
