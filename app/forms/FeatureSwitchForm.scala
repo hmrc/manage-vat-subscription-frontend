@@ -20,15 +20,25 @@ import config.ConfigKeys
 import models.FeatureSwitchModel
 import play.api.data.Form
 import play.api.data.Forms._
+import testOnly.models.{Api1365Version, VatSubscriptionFeatureSwitchModel}
 
 object FeatureSwitchForm {
+
+  val api1365Version: String = "Api1365Version"
+  val latestApi1363Version: String = "latestApi1363Version"
+  val stubDes: String = "stubDes"
 
   val form: Form[FeatureSwitchModel] = Form(
     mapping(
       ConfigKeys.simpleAuthFeature -> boolean,
       ConfigKeys.agentAccessFeature -> boolean,
       ConfigKeys.registrationStatusFeature -> boolean,
-      ConfigKeys.contactDetailsSectionFeature -> boolean
+      ConfigKeys.contactDetailsSectionFeature -> boolean,
+      "vatSubscriptionFeatures" -> mapping(
+          latestApi1363Version -> boolean,
+          api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
+          stubDes -> boolean
+        )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply)
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package models
+package testOnly.models
 
-import testOnly.models.VatSubscriptionFeatureSwitchModel
+import play.api.libs.json.{Format, Json}
 
-case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
-                              agentAccessEnabled: Boolean,
-                              registrationStatusEnabled: Boolean,
-                              contactDetailsSectionEnabled: Boolean,
-                              vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel)
+case class VatSubscriptionFeatureSwitchModel(latestApi1363Version: Boolean,
+                                             Api1365Version: Api1365Version,
+                                             stubDes: Boolean)
+
+object VatSubscriptionFeatureSwitchModel {
+  implicit val format: Format[VatSubscriptionFeatureSwitchModel] = Json.format[VatSubscriptionFeatureSwitchModel]
+}
