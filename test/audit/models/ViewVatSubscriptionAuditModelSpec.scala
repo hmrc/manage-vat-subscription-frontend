@@ -18,7 +18,6 @@ package audit.models
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
-import models.returnFrequency.ReturnPeriod
 import play.api.libs.json.Json
 import utils.TestUtil
 
@@ -76,7 +75,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
-                "vatReturnDates" -> false
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
               )
             )
           }
@@ -107,7 +107,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
-                "vatReturnDates" -> true
+                "vatReturnDates" -> true,
+                "emailAddress" -> true
               )
             )
           }
@@ -143,7 +144,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
-                "vatReturnDates" -> false
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
               )
             )
           }
@@ -175,7 +177,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
-                "vatReturnDates" -> true
+                "vatReturnDates" -> true,
+                "emailAddress" -> true
               )
             )
           }
@@ -211,7 +214,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
-                "vatReturnDates" -> false
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
               )
             )
           }
@@ -241,7 +245,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
-                "vatReturnDates" -> true
+                "vatReturnDates" -> true,
+                "emailAddress" -> true
               )
             )
           }
@@ -276,7 +281,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
-                "vatReturnDates" -> false
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
               )
             )
           }
@@ -307,7 +313,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "inFlightChanges" -> Json.obj(
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
-                "vatReturnDates" -> true
+                "vatReturnDates" -> true,
+                "emailAddress" -> true
               )
             )
           }

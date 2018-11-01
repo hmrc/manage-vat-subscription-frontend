@@ -47,13 +47,15 @@ object PendingChanges {
       Json.obj(
         "businessAddress" -> pending.ppob.isDefined,
         "repaymentBankDetails" -> pending.bankDetails.isDefined,
-        "vatReturnDates" -> pending.returnPeriod.isDefined
+        "vatReturnDates" -> pending.returnPeriod.isDefined,
+        "emailAddress" -> pending.ppob.fold(false)(_.contactDetails.fold(false)(_.emailAddress.isDefined))
       )
     case _ =>
       Json.obj(
         "businessAddress" -> false,
         "repaymentBankDetails" -> false,
-        "vatReturnDates" -> false
+        "vatReturnDates" -> false,
+        "emailAddress" -> false
       )
   }
 }
