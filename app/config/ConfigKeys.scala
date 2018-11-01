@@ -68,4 +68,6 @@ object ConfigKeys {
   val vatCorrespondenceChangeEmailUrl: String = "vat-correspondence-details-frontend.changeEmailUrl"
 
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
+  
+  val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
 }
