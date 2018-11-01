@@ -16,41 +16,61 @@
 
 package testOnly.controllers
 
-import javax.inject.{Inject, Singleton}
-
 import config.AppConfig
 import forms.FeatureSwitchForm
+import javax.inject.{Inject, Singleton}
 import models.FeatureSwitchModel
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Result}
+import testOnly.connectors.VatSubscriptionFeaturesConnector
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
+import scala.concurrent.Future
+
 @Singleton
-class FeatureSwitchController @Inject()(val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
+class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSubscriptionFeaturesConnector,
+                                         val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
   extends FrontendController with I18nSupport {
 
-  val featureSwitch: Action[AnyContent] = Action { implicit request =>
-    Ok(testOnly.views.html.featureSwitch(FeatureSwitchForm.form.fill(
-      FeatureSwitchModel(
-        simpleAuthEnabled = appConfig.features.simpleAuth(),
-        agentAccessEnabled = appConfig.features.agentAccess(),
-        registrationStatusEnabled = appConfig.features.registrationStatus(),
-        contactDetailsSectionEnabled = appConfig.features.contactDetailsSection())
-    )))
+  val featureSwitch: Action[AnyContent] = Action.async { implicit request =>
+
+    vatSubscriptionFeaturesConnector.getFeatures.map {
+      vatSubFeatures =>
+        Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: ${vatSubFeatures}")
+        val form = FeatureSwitchForm.form.fill(
+          FeatureSwitchModel(
+            simpleAuthEnabled = appConfig.features.simpleAuth(),
+            agentAccessEnabled = appConfig.features.agentAccess(),
+            registrationStatusEnabled = appConfig.features.registrationStatus(),
+            contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
+            vatSubFeatures
+          )
+        )
+        Logger.debug(s"[FeatureSwitchController][featureSwitch] form: ${form}")
+        Ok(testOnly.views.html.featureSwitch(form))
+    }
   }
 
-  val submitFeatureSwitch: Action[AnyContent] = Action { implicit request =>
+  val submitFeatureSwitch: Action[AnyContent] = Action.async { implicit request =>
     FeatureSwitchForm.form.bindFromRequest().fold(
-      _ => Redirect(routes.FeatureSwitchController.featureSwitch()),
+      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch())),
       success = handleSuccess
     )
   }
 
-  def handleSuccess(model: FeatureSwitchModel): Result = {
+  def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
     appConfig.features.simpleAuth(model.simpleAuthEnabled)
     appConfig.features.agentAccess(model.agentAccessEnabled)
     appConfig.features.registrationStatus(model.registrationStatusEnabled)
     appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
-    Redirect(routes.FeatureSwitchController.featureSwitch())
+    vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
+      response =>
+        response.status match {
+          case 200 => Redirect(routes.FeatureSwitchController.featureSwitch())
+          case _ => InternalServerError("Failed to update feature switches in VAT Subscription")
+        }
+    }
   }
 }

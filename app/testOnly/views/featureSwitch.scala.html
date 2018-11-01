@@ -16,6 +16,8 @@
 
 @import config.ConfigKeys
 @import helper.CSRF
+@import testOnly.models.{Api1365R5, Api1365R6, Api1365R7, VatSubscriptionFeatureSwitchModel}
+@import forms.FeatureSwitchForm
 
 @(form: Form[FeatureSwitchModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -24,10 +26,10 @@
   @helper.form(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
       @CSRF.formField
 
-      <div class="form-group">
+      <div class="form-group" style="border-radius: 25px;background: #C9EDD9; padding: 25px;">
           <fieldset>
               <legend>
-                  <h1 class="heading-medium">@messages("featureSwitch.heading")</h1>
+                  <p class="bold-medium" style="margin-bottom:10px;">Manage VAT Subscription Frontend Features</p>
               </legend>
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.simpleAuthFeature), messages(ConfigKeys.simpleAuthFeature))
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.agentAccessFeature), messages(ConfigKeys.agentAccessFeature))
@@ -35,6 +37,28 @@
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.contactDetailsSectionFeature), messages(ConfigKeys.contactDetailsSectionFeature))
           </fieldset>
       </div>
+
+        <div class="form-group" style="border-radius: 25px;background: #D6EDB0; padding: 25px;">
+            <p class="bold-medium" style="margin-bottom:10px;">Vat Subscription Backend Features</p>
+                </legend>
+                @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.latestApi1363Version"), "Use Latest API 1363 Version")
+                @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.stubDes"), "Use Vat-Subscription-Dynamic-Stub instead of DES (QA only)")
+
+                <fieldset>
+                    <legend>
+                        <h3>Which API1365 Version should be used?</h3>
+                    </legend>
+                    @views.html.templates.inputs.radioGroup(
+                        field = form("vatSubscriptionFeatures.Api1365Version"),
+                        choices = Seq(
+                            (Api1365R5.id, "API1365 R5"),
+                            (Api1365R6.id, "API1365 R6"),
+                            (Api1365R7.id, "API1365 R7")
+                        ),
+                        question = "Which API1365 Version should be used?"
+                    )
+                </fieldset>
+        </div>
 
       <button class="button" type="submit" id="continue-button">@messages("featureSwitch.submit")</button>
     }
