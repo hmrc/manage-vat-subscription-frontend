@@ -37,7 +37,7 @@ class SignOutControllerSpec extends ControllerBaseSpec {
       }
     }
 
-    "show Exit Survey is true" should {
+    "show Exit Survey is false" should {
       "return 303 and navigate to sign out url" in {
         lazy val result: Future[Result] = TestSignOutController.signOut(showExitSurvey = false)(request)
 
