@@ -41,8 +41,8 @@
             window.GOVUK.timeoutDialog({
               timeout: @appConfig.timeoutPeriod,
               countdown: @appConfig.timeoutCountdown,
-              keepAliveUrl: '/vat-through-software/account/change-business-details',
-              signOutUrl: '/vat-through-software/account/time-out'
+              keepAliveUrl: '@{controllers.routes.CustomerCircumstanceDetailsController.redirect().url}',
+              signOutUrl: '@{controllers.routes.SignOutController.signOut(false, true).url}'
             });
             var dialogOpen;
         }
