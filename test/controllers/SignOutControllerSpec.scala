@@ -28,21 +28,30 @@ class SignOutControllerSpec extends ControllerBaseSpec {
 
   "navigating to signout page" when {
 
-    "authorised" should {
+    "show Exit Survey is true" should {
       "return 303 and navigate to the survey url" in {
-        lazy val result: Future[Result] = TestSignOutController.signOut(authorised = true)(request)
+        lazy val result: Future[Result] = TestSignOutController.signOut(showExitSurvey = true)(request)
 
         status(result) shouldBe SEE_OTHER
-        redirectLocation(result) shouldBe Some(mockConfig.signOutUrl)
+        redirectLocation(result) shouldBe Some(mockConfig.signOutExitSurveyUrl)
       }
     }
 
-    "unauthorised" should {
+    "show Exit Survey is false" should {
       "return 303 and navigate to sign out url" in {
-        lazy val result: Future[Result] = TestSignOutController.signOut(authorised = false)(request)
+        lazy val result: Future[Result] = TestSignOutController.signOut(showExitSurvey = false)(request)
 
         status(result) shouldBe SEE_OTHER
         redirectLocation(result) shouldBe Some(mockConfig.unauthorisedSignOutUrl)
+      }
+    }
+
+    "timeout is true" should {
+      "return 303 and navigate to timeout url" in {
+        lazy val result: Future[Result] = TestSignOutController.signOut(showExitSurvey = false, timeout = true)(request)
+
+        status(result) shouldBe SEE_OTHER
+        redirectLocation(result) shouldBe Some(mockConfig.signOutTimeoutUrl)
       }
     }
   }
