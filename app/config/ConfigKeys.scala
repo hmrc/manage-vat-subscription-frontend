@@ -40,6 +40,8 @@ object ConfigKeys {
   val agentAccessFeature: String = "features.agentAccess.enabled"
   val registrationStatusFeature: String = "features.registrationStatus.enabled"
   val contactDetailsSectionFeature: String = "features.contactDetailsSection.enabled"
+  val useAgentClientLookupFeature: String = "features.useAgentClientLookup"
+  val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
@@ -72,4 +74,7 @@ object ConfigKeys {
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
   
   val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
+
+  val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
+  val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
 }

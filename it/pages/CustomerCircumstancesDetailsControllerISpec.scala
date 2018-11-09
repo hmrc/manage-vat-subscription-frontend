@@ -241,20 +241,68 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
           }
         }
 
-        "NO client VRN is held in the session cookie" should {
+        "NO client VRN is held in the session cookie" when {
 
-          "Redirect to the Select a Client page" in {
+          "stub Agent Client Lookup is enabled" should {
 
-            mockAppConfig.features.agentAccess(true)
-            given.agent.isSignedUpToAgentServices
+            "Redirect to the stubbed Client Lookup page" in {
 
-            When("I call to show the Customer Circumstances page without a VRN being in session for the Client")
-            val res = show()
+              mockAppConfig.features.agentAccess(true)
+              mockAppConfig.features.stubAgentClientLookup(true)
 
-            res should have(
-              httpStatus(SEE_OTHER),
-              redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
-            )
+              given.agent.isSignedUpToAgentServices
+
+              When("I call to show the Customer Circumstances page without a VRN being in session for the Client")
+              val res = show()
+
+              res should have(
+                httpStatus(SEE_OTHER),
+                redirectURI(testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url)
+              )
+            }
+          }
+
+          "stub Agent Client Lookup is disabled" when {
+
+            "VACLF is enabled" should {
+
+              "Redirect to the VACLF Client Lookup page" in {
+
+                mockAppConfig.features.agentAccess(true)
+                mockAppConfig.features.stubAgentClientLookup(false)
+                mockAppConfig.features.useAgentClientLookup(true)
+
+                given.agent.isSignedUpToAgentServices
+
+                When("I call to show the Customer Circumstances page without a VRN being in session for the Client")
+                val res = show()
+
+                res should have(
+                  httpStatus(SEE_OTHER),
+                  redirectURI(mockAppConfig.vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url))
+                )
+              }
+            }
+
+            "VACLF is disabled" should {
+
+              "Redirect to the Client Lookup page" in {
+
+                mockAppConfig.features.agentAccess(true)
+                mockAppConfig.features.stubAgentClientLookup(false)
+                mockAppConfig.features.useAgentClientLookup(false)
+
+                given.agent.isSignedUpToAgentServices
+
+                When("I call to show the Customer Circumstances page without a VRN being in session for the Client")
+                val res = show()
+
+                res should have(
+                  httpStatus(SEE_OTHER),
+                  redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+                )
+              }
+            }
           }
         }
       }

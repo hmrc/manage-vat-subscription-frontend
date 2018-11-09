@@ -81,7 +81,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
           res should have(
             httpStatus(SEE_OTHER),
-            redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+            redirectURI(mockAppConfig.agentClientLookupUrl)
           )
         }
       }

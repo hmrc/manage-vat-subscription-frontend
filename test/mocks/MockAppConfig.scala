@@ -23,7 +23,10 @@ import play.api.Mode.Mode
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
-class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mode.Test) extends AppConfig {
+class MockAppConfig(implicit val runModeConfiguration: Configuration) extends AppConfig {
+
+  override val mode: Mode = Mode.Test
+
   override val analyticsToken: String = ""
   override val analyticsHost: String = ""
   override val reportAProblemPartialUrl: String = ""
@@ -36,7 +39,7 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val signOutExitSurveyUrl: String = "/some-gg-signout-url"
   override val unauthorisedSignOutUrl: String = ""
   override val surveyUrl: String = "/some-survey-url"
-  override val features: Features = new Features(runModeConfiguration)
+  override val features: Features = new Features
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"
   override val addressLookupCallbackUrl: String = ""
   override val addressLookupService: String = ""
@@ -67,4 +70,7 @@ class MockAppConfig(val runModeConfiguration: Configuration, val mode: Mode = Mo
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
   override val signOutTimeoutUrl: String = "/gg/signout-for-timeout"
+  override val vatAgentClientLookupFrontendUrl: String = "/vaclf"
+  override def agentClientLookupUrl: String = "/agent-client-lookup"
+  override def agentClientUnauthorisedUrl: String = "agent-client-unauthorised"
 }

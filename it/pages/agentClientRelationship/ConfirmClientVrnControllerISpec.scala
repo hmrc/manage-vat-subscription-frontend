@@ -29,6 +29,13 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
   val path = "/confirm-client-vat-number"
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
+  override def beforeEach() {
+    mockAppConfig.features.agentAccess(true)
+    mockAppConfig.features.stubAgentClientLookup(false)
+    mockAppConfig.features.useAgentClientLookup(false)
+    super.beforeEach()
+  }
+
   "Calling the .show action" when {
 
     def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
@@ -43,7 +50,6 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
             "Render the Confirm Client View with the correction information" in {
 
-              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("I stub a successful response Individual response from ")
@@ -64,7 +70,6 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
             "Render the Internal Server Error view" in {
 
-              mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
               And("I stub an error response Individual response from ")
@@ -85,7 +90,6 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
           "Redirect to the Select Client VRN view" in {
 
-            mockAppConfig.features.agentAccess(true)
             given.agent.isSignedUpToAgentServices
 
             When("I call the Confirm Client VRN page with NO client VRN held in the session")
@@ -103,7 +107,6 @@ class ConfirmClientVrnControllerISpec extends BasePageISpec {
 
         "Render the Internal Server Error page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call the Confirm Client VRN page with the clients VRN in the session")

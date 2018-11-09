@@ -69,10 +69,13 @@ trait AppConfig extends ServicesConfig {
   val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
+  val vatAgentClientLookupFrontendUrl: String
+  def agentClientLookupUrl: String
+  def agentClientUnauthorisedUrl: String
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, environment: Environment) extends ServicesConfig with AppConfig {
+class FrontendAppConfig @Inject()(environment: Environment, implicit val runModeConfiguration: Configuration) extends ServicesConfig with AppConfig {
 
   private def getStringSeq(key: String): Seq[String] = runModeConfiguration.getStringSeq(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
@@ -111,7 +114,7 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
 
   override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
 
-  override val features = new Features(runModeConfiguration)
+  override val features = new Features
 
   private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
   override lazy val surveyUrl = s"$surveyBaseUrl/?origin=$contactFormServiceIdentifier"
@@ -162,4 +165,35 @@ class FrontendAppConfig @Inject()(val runModeConfiguration: Configuration, envir
   override lazy val govUkChangeVatRegistrationDetails: String = getString(Keys.changeVatRegistrationDetails)
 
   override lazy val govUkSoftwareGuidanceUrl: String = getString(Keys.softwareGuidanceUrl)
+
+  override lazy val vatAgentClientLookupFrontendUrl: String =
+    getString(Keys.vatAgentClientLookupFrontendHost) + getString(Keys.vatAgentClientLookupFrontendUrl)
+
+  def vatAgentClientLookupHandoff(redirectUrl: String): String =
+    vatAgentClientLookupFrontendUrl + s"/client-vat-number?redirectUrl=${ContinueUrl(getString(Keys.host) + redirectUrl).encodedUrl}"
+
+  override def agentClientLookupUrl: String =
+    if (features.stubAgentClientLookup()) {
+      testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+    } else {
+      if (features.useAgentClientLookup()) {
+        vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+      } else {
+        controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
+      }
+    }
+
+  def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
+    vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(getString(Keys.host) + redirectUrl).encodedUrl}"
+
+  override def agentClientUnauthorisedUrl: String =
+    if (features.stubAgentClientLookup()) {
+      testOnly.controllers.routes.StubAgentClientLookupController.unauth(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+    } else {
+      if (features.useAgentClientLookup()) {
+        vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+      } else {
+        controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url
+      }
+    }
 }

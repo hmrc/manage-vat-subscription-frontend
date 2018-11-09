@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package forms
+package testOnly.forms
 
 import config.ConfigKeys
-import models.FeatureSwitchModel
 import play.api.data.Form
 import play.api.data.Forms._
-import testOnly.models.{Api1365Version, VatSubscriptionFeatureSwitchModel}
+import testOnly.models.{Api1365Version, FeatureSwitchModel, VatSubscriptionFeatureSwitchModel}
 
 object FeatureSwitchForm {
 
@@ -38,8 +37,10 @@ object FeatureSwitchForm {
           latestApi1363Version -> boolean,
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
           stubDes -> boolean
-        )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply)
-    )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
+        )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
+      ConfigKeys.useAgentClientLookupFeature -> boolean,
+      ConfigKeys.stubAgentClientLookupFeature -> boolean
+  )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 
 }

@@ -16,8 +16,8 @@
 
 @import config.ConfigKeys
 @import helper.CSRF
-@import testOnly.models.{Api1365R5, Api1365R6, Api1365R7, VatSubscriptionFeatureSwitchModel}
-@import forms.FeatureSwitchForm
+@import testOnly.models._
+@import testOnly.forms.FeatureSwitchForm
 
 @(form: Form[FeatureSwitchModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -35,6 +35,8 @@
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.agentAccessFeature), messages(ConfigKeys.agentAccessFeature))
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.registrationStatusFeature), messages(ConfigKeys.registrationStatusFeature))
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.contactDetailsSectionFeature), messages(ConfigKeys.contactDetailsSectionFeature))
+              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useAgentClientLookupFeature), "Use VAT Agent Client Lookup Frontend")
+              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.stubAgentClientLookupFeature), "Stub Agent Client Lookup (trumps above setting)")
           </fieldset>
       </div>
 

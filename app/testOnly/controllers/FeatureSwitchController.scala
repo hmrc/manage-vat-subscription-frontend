@@ -17,13 +17,13 @@
 package testOnly.controllers
 
 import config.AppConfig
-import forms.FeatureSwitchForm
 import javax.inject.{Inject, Singleton}
-import models.FeatureSwitchModel
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Result}
 import testOnly.connectors.VatSubscriptionFeaturesConnector
+import testOnly.forms.FeatureSwitchForm
+import testOnly.models.FeatureSwitchModel
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
@@ -45,7 +45,9 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             agentAccessEnabled = appConfig.features.agentAccess(),
             registrationStatusEnabled = appConfig.features.registrationStatus(),
             contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
-            vatSubFeatures
+            vatSubFeatures,
+            stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
+            useAgentClientLookup = appConfig.features.useAgentClientLookup()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: ${form}")
@@ -65,6 +67,8 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.agentAccess(model.agentAccessEnabled)
     appConfig.features.registrationStatus(model.registrationStatusEnabled)
     appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
+    appConfig.features.useAgentClientLookup(model.useAgentClientLookup)
+    appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

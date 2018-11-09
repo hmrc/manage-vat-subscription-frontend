@@ -69,11 +69,11 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
               Redirect(appConfig.signInUrl)
             case _: AuthorisationException =>
               Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
-              Redirect(controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show())
+              Redirect(appConfig.agentClientUnauthorisedUrl)
           }
         case _ =>
           Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
-          Future.successful(Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show()))
+          Future.successful(Redirect(appConfig.agentClientLookupUrl))
       }
     } else {
       Future.successful(Unauthorized(views.html.errors.agent.agent_journey_disabled()))

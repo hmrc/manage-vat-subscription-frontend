@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,14 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package models
+@import helper.CSRF
+@import testOnly.models.StubAgentClientLookupModel
+@import views.html.templates.inputs.text
 
-import testOnly.models.VatSubscriptionFeatureSwitchModel
+@(redirectUrl: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
-                              agentAccessEnabled: Boolean,
-                              registrationStatusEnabled: Boolean,
-                              contactDetailsSectionEnabled: Boolean,
-                              vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel)
+@views.html.main_template(title = "Stub Agent Client Lookup Frontend - Unauthorised", bodyClasses = None, appConfig = appConfig) {
+
+    <h1>Agent Unauthorised</h1>
+
+    <p><span class="bold-small">RedirectUrl:</span> @redirectUrl</p>
+
+    <a class="button" id="continue-button" href="@redirectUrl">Redirect</a>
+
+}
