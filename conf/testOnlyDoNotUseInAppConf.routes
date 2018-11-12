@@ -14,9 +14,9 @@
 GET        /vat-through-software/account/test-only/feature-switch            testOnly.controllers.FeatureSwitchController.featureSwitch
 POST       /vat-through-software/account/test-only/feature-switch            testOnly.controllers.FeatureSwitchController.submitFeatureSwitch
 
-GET        /vat-through-software/account/deregister/test-only/vaclf-stub        testOnly.controllers.StubAgentClientLookupController.show(redirectUrl: String)
-GET        /vat-through-software/account/deregister/test-only/vaclf-stub-unauth testOnly.controllers.StubAgentClientLookupController.unauth(redirectUrl: String)
-POST       /vat-through-software/account/deregister/test-only/vaclf-stub        testOnly.controllers.StubAgentClientLookupController.post
+GET        /vat-through-software/account/test-only/vaclf-stub                testOnly.controllers.StubAgentClientLookupController.show(redirectUrl: String)
+GET        /vat-through-software/account/test-only/vaclf-stub-unauth         testOnly.controllers.StubAgentClientLookupController.unauth(redirectUrl: String)
+POST       /vat-through-software/account/test-only/vaclf-stub                testOnly.controllers.StubAgentClientLookupController.post
 
 # NOCSRF
 POST        /vat-through-software/account/test-only/populate-stub            testOnly.controllers.DynamicStubController.populateStub
