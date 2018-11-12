@@ -57,7 +57,7 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
         }
 
         "redirect to the Select Your Client controller" in {
-          redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+          redirectLocation(result) shouldBe Some(mockConfig.agentClientLookupUrl)
         }
       }
 
@@ -84,8 +84,8 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
           status(result) shouldBe Status.SEE_OTHER
         }
 
-        s"redirect location to ${controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url}" in {
-          redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url)
+        s"redirect location to ${mockConfig.agentClientUnauthorisedUrl}" in {
+          redirectLocation(result) shouldBe Some(mockConfig.agentClientUnauthorisedUrl)
         }
       }
     }

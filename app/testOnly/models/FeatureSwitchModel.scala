@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package views.templates
+package testOnly.models
 
-import org.jsoup.Jsoup
-import play.twirl.api.Html
-import utils.TestUtil
-
-class TemplateBaseSpec extends TestUtil {
-
-  def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
-}
+case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
+                              agentAccessEnabled: Boolean,
+                              registrationStatusEnabled: Boolean,
+                              contactDetailsSectionEnabled: Boolean,
+                              vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
+                              useAgentClientLookup: Boolean,
+                              stubAgentClientLookup: Boolean)

@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package views.templates
+package testOnly.forms
 
-import org.jsoup.Jsoup
-import play.twirl.api.Html
-import utils.TestUtil
+import play.api.data.Form
+import play.api.data.Forms._
+import testOnly.models.StubAgentClientLookupModel
 
-class TemplateBaseSpec extends TestUtil {
+object StubAgentClientLookupForm {
 
-  def formatHtml(body: Html): String = Jsoup.parseBodyFragment(s"\n$body\n").toString.trim
+  val form: Form[StubAgentClientLookupModel] = Form(
+    mapping("vrn" -> text,
+      "redirectUrl" -> text
+    )
+    (StubAgentClientLookupModel.apply)(StubAgentClientLookupModel.unapply)
+  )
+
 }

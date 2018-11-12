@@ -22,10 +22,12 @@ import config.ConfigKeys
 import play.api.Configuration
 
 @Singleton
-class Features @Inject()(config: Configuration) {
+class Features @Inject()(implicit config: Configuration) {
 
-  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature, config)
-  val agentAccess = new Feature(ConfigKeys.agentAccessFeature, config)
-  val registrationStatus = new Feature(ConfigKeys.registrationStatusFeature, config)
-  val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature, config)
+  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature)
+  val agentAccess = new Feature(ConfigKeys.agentAccessFeature)
+  val registrationStatus = new Feature(ConfigKeys.registrationStatusFeature)
+  val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature)
+  val useAgentClientLookup = new Feature(ConfigKeys.useAgentClientLookupFeature)
+  val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
 }

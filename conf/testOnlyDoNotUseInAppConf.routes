@@ -11,20 +11,24 @@
 
 # Add all the application routes to the prod.routes file
 
-GET        /vat-through-software/account/test-only/feature-switch            @testOnly.controllers.FeatureSwitchController.featureSwitch
-POST       /vat-through-software/account/test-only/feature-switch            @testOnly.controllers.FeatureSwitchController.submitFeatureSwitch
+GET        /vat-through-software/account/test-only/feature-switch            testOnly.controllers.FeatureSwitchController.featureSwitch
+POST       /vat-through-software/account/test-only/feature-switch            testOnly.controllers.FeatureSwitchController.submitFeatureSwitch
+
+GET        /vat-through-software/account/test-only/vaclf-stub                testOnly.controllers.StubAgentClientLookupController.show(redirectUrl: String)
+GET        /vat-through-software/account/test-only/vaclf-stub-unauth         testOnly.controllers.StubAgentClientLookupController.unauth(redirectUrl: String)
+POST       /vat-through-software/account/test-only/vaclf-stub                testOnly.controllers.StubAgentClientLookupController.post
 
 # NOCSRF
-POST        /vat-through-software/account/test-only/populate-stub            @testOnly.controllers.DynamicStubController.populateStub
+POST        /vat-through-software/account/test-only/populate-stub            testOnly.controllers.DynamicStubController.populateStub
 
 # NOCSRF
-POST        /vat-through-software/account/test-only/populate-schema          @testOnly.controllers.DynamicStubController.populateSchema
+POST        /vat-through-software/account/test-only/populate-schema          testOnly.controllers.DynamicStubController.populateSchema
 
 # NOCSRF
-DELETE      /vat-through-software/account/test-only/clear-stub               @testOnly.controllers.DynamicStubController.clearStub
+DELETE      /vat-through-software/account/test-only/clear-stub               testOnly.controllers.DynamicStubController.clearStub
 
 # NOCSRF
-DELETE      /vat-through-software/account/test-only/clear-schema             @testOnly.controllers.DynamicStubController.clearSchema
+DELETE      /vat-through-software/account/test-only/clear-schema             testOnly.controllers.DynamicStubController.clearSchema
 
 
-->         /                                                                  prod.Routes
+->         /                                                                 prod.Routes

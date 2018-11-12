@@ -57,7 +57,7 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
   def changeClient: Action[AnyContent] = authenticate.async {
     implicit user =>
       Future.successful(
-        Redirect(controllers.agentClientRelationship.routes.SelectClientVrnController.show())
+        Redirect(appConfig.agentClientLookupUrl)
           .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
       )
   }

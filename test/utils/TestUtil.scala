@@ -31,6 +31,7 @@ import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import assets.BaseTestConstants._
+import play.api.Configuration
 
 import scala.concurrent.ExecutionContext
 
@@ -46,7 +47,8 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
-  implicit lazy val mockConfig: MockAppConfig = new MockAppConfig(app.configuration)
+  implicit val config: Configuration = app.configuration
+  implicit lazy val mockConfig: MockAppConfig = new MockAppConfig
   implicit lazy val serviceErrorHandler: ServiceErrorHandler = injector.instanceOf[ServiceErrorHandler]
 
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
