@@ -40,7 +40,12 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
   val selectPage = Map(
     "title" -> messages("address_lookupPage.selectPage.heading"),
     "heading" -> messages("address_lookupPage.selectPage.heading"),
-    "submitLabel" -> messages("common.saveAndContinue")
+    "editAddressLinkText" -> messages("address_lookupPage.selectPage.editLink"),
+    "submitLabel" -> messages("common.continue")
+  )
+
+  val editPage = Map(
+    "submitLabel" -> messages("common.continue")
   )
 
   val confirmPage = Json.obj(
@@ -64,6 +69,8 @@ object AddressLookupJsonBuilder {
         "lookupPage" -> data.lookupPage,
 
         "selectPage" -> data.selectPage,
+
+        "editPage" -> data.editPage,
 
         "confirmPage" -> data.confirmPage
       )

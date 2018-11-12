@@ -159,11 +159,13 @@ confirm_client_vrn.vrn = VAT number
 confirm_client_vrn.edit = Edit different client
 
 address_lookupPage.title = What is the new business address?
-address_lookupPage.heading = What is the new business address?
+address_lookupPage.heading = What is the new principal place of business?
 address_lookupPage.filter = Property name or number
 address_lookupPage.postcode = Postcode
-address_lookupPage.selectPage.heading = Select the new business address
-address_lookupPage.confirmPage.heading = Confirm the new business address
+address_lookupPage.postcode.link = The address does not have a post code
+address_lookupPage.selectPage.heading = Choose the new address
+address_lookupPage.selectPage.editLink = Edit the address manually
+address_lookupPage.confirmPage.heading = Confirm the new principal place of business
 address_lookupPage.confirmPage.confirmChangeText = By confirming this change, you agree that the information you have given is complete and correct.
 
 breadcrumb.bta = Business tax account

@@ -18,10 +18,12 @@ package assets.messages
 
 object AddressLookupMessages {
 
-  val startHeading = "What is the new business address?"
+  val startHeading = "What is the new principal place of business?"
   val filter = "Property name or number"
   val postcode = "Postcode"
-  val selectHeading = "Select the new business address"
-  val confirmHeading = "Confirm the new business address"
+  val postcodeLink = "The address does not have a post code"
+  val selectHeading = "Choose the new address"
+  val editAddressLinkText = "Edit the address manually"
+  val confirmHeading = "Confirm the new principal place of business"
   val confirmChangeText = "By confirming this change, you agree that the information you have given is complete and correct."
 }
