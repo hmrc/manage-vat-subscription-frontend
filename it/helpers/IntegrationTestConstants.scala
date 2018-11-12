@@ -25,7 +25,7 @@ object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
   val userId = s"/auth/oid/1234567890"
 
-  val partyType = "2"
+  val partyType = "50"
   val clientVRN = "999999999"
   val VRN = "111111111"
 
@@ -132,6 +132,6 @@ object IntegrationTestConstants {
     deregistration = None,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some("2")
+    partyType = Some("7")
   )
 }
