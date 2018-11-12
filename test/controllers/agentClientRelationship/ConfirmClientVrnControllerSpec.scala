@@ -138,7 +138,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
           }
 
           "redirect to the Select Your Client show action" in {
-            redirectLocation(result) shouldBe Some(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+            redirectLocation(result) shouldBe Some(mockConfig.agentClientLookupUrl)
           }
 
           "have removed the Clients VRN from session" in {
