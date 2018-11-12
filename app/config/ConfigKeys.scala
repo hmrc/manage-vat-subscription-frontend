@@ -42,6 +42,7 @@ object ConfigKeys {
   val contactDetailsSectionFeature: String = "features.contactDetailsSection.enabled"
   val useAgentClientLookupFeature: String = "features.useAgentClientLookup"
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
+  val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
