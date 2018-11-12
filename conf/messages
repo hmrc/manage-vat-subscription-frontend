@@ -119,6 +119,14 @@ change_business_name.bullet2 = &pound;30 to update on the same day
 change_business_name.p4 = Companies House will send you an email notification, a secure message and a new certificate when the details have changed.
 change_business_name.link = Continue to Companies House (opens in a new tab)
 
+change_address.title = Change the ‘principal place of business’
+change_address.p1 = This is where ABC DIGITAL LIMITED does most of its work.
+change_address.p2 = If this is in different locations, use the address where it keeps its business records. This could be a home address.
+change_address.bulletHeader = You cannot use:
+change_address.bullet1 = the address of a third-party accountant or tax agent
+change_address.bullet2 = a PO box address
+change_address.bullet3 = a ‘care of’ address
+
 change_address_confirmation.title = We have received the new business address
 change_address_confirmation.h2 = What happens next
 change_address_confirmation.p1 = If this change is accepted, we will send a confirmation letter to the new business address.
