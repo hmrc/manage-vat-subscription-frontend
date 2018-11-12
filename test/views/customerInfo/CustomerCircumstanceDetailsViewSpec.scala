@@ -114,8 +114,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
             element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
           }
 
-          s"has a link to ${controllers.routes.BusinessAddressController.initialiseJourney().url}" in {
-            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
+          s"has a link to ${controllers.routes.BusinessAddressController.show().url}" in {
+            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
           }
         }
       }

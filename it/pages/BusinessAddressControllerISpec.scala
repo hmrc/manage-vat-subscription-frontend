@@ -25,6 +25,7 @@ import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
+import play.api.test.Helpers.{OK, SEE_OTHER}
 import stubs.BusinessAddressStub
 
 class BusinessAddressControllerISpec extends BasePageISpec {
@@ -32,9 +33,34 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
-  "Calling BusinessAddressController.initialiseJourney" when {
+  "Calling the .show action" when {
 
     def show(sessionVrn: String): WSResponse = get("/change-business-address", session)
+
+    "the user is an Agent" when {
+
+      "the Agent is signed up for HMRC-AS-AGENT (authorised)" should {
+
+        "Render the Select a Client page" in {
+
+          mockAppConfig.features.agentAccess(true)
+          given.agent.isSignedUpToAgentServices
+
+          When("I call the change business address page")
+          val res = show(VRN)
+
+          res should have(
+            httpStatus(OK),
+            elementText("h1")("Change the ‘principal place of business'")
+          )
+        }
+      }
+    }
+  }
+
+  "Calling BusinessAddressController.initialiseJourney" when {
+
+    def show(sessionVrn: String): WSResponse = get("/change-business-address/ppob-handoff", session)
 
     "A valid AddressLookupOnRampModel is returned from Address Lookup" should {
 

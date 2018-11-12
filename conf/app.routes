@@ -8,7 +8,8 @@ GET         /assets/*file                                    controllers.Assets.
 GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.redirect
 GET         /change-business-details/:userType               controllers.CustomerCircumstanceDetailsController.show(userType: String)
 
-GET         /change-business-address                         controllers.BusinessAddressController.initialiseJourney
+GET         /change-business-address                         controllers.BusinessAddressController.show
+GET         /change-business-address/ppob-handoff            controllers.BusinessAddressController.initialiseJourney
 
 GET         /change-business-name                            controllers.ChangeBusinessNameController.show
 GET         /change-business-name/coho-handoff               controllers.ChangeBusinessNameController.handOffToCOHO
