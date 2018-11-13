@@ -15,6 +15,7 @@
  *@
 
 @import templates.headings
+@import views.html.helpers.back_to_business_details
 
 @()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -22,6 +23,8 @@
     title = messages("change_address.title"),
     bodyClasses = None,
     appConfig = appConfig) {
+
+    @back_to_business_details()
 
     @headings(messages("change_address.title"))
 

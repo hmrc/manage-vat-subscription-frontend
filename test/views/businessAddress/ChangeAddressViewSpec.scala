@@ -38,6 +38,11 @@ class ChangeAddressViewSpec extends ViewBaseSpec {
       elementText("h1") shouldBe viewMessages.title
     }
 
+    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
+      elementText("#content > article > a.link-back") shouldBe BaseMessages.back
+      element("#content > article > a.link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+    }
+
     s"have the correct p1 of '${viewMessages.p1}'" in {
       paragraph(1) shouldBe viewMessages.p1
     }
@@ -59,11 +64,11 @@ class ChangeAddressViewSpec extends ViewBaseSpec {
     s"have a button to continue" which {
 
       s"has the correct text of '${BaseMessages.continue}" in {
-        elementText("#content > article > a") shouldBe BaseMessages.continue
+        elementText("#content > article > a.button") shouldBe BaseMessages.continue
       }
 
       s"has the correct link to '${controllers.routes.BusinessAddressController.initialiseJourney().url}'" in {
-        element("#content > article > a").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
+        element("#content > article > a.button").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
       }
     }
   }
