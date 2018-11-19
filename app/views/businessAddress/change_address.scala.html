@@ -26,7 +26,9 @@
 
     @back_to_business_details()
 
-    @headings(messages("change_address.title"))
+    <div data-metrics="business-address:view:change-business-address;@user.isAgent" class="govuk-box-highlight">
+        @headings(messages("change_address.title"))
+    </div>
 
     <p>@messages("change_address.p1")</p>
 
@@ -41,7 +43,9 @@
         </ul>
     </div>
 
-    <a href="@controllers.routes.BusinessAddressController.initialiseJourney().url" class="button" type="submit">
+    <a href="@controllers.routes.BusinessAddressController.initialiseJourney().url"
+       onclick="sendGAEvent('business-address','continue','change-business-address', @user.isAgent)"
+       class="button" type="submit">
         @messages("common.continue")
     </a>
 
