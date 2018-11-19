@@ -33,7 +33,7 @@
         <label><h1>Address Lookup</h1></label>
 
         <h2>Sent Json</h2>
-        <dl class="govuk-check-your-answers cya-questions-short">
+        <dl class="govuk-check-your-answers cya-questions-short form-group">
             @row("continueUrl", stubModel.continueUrl)
             @row("navTitle", stubModel.navTitle.get)
             @row("showPhaseBanner",stubModel.showPhaseBanner.get.toString)
@@ -65,9 +65,8 @@
                 @row("confirmChangeText",confirmPage.confirmChangeText.get)
             }
         </dl>
-        <div class="form-group">
-            <a class="button" type="submit" id="continue-button"
-            href="@stubModel.continueUrl">Submit</a>
-        </div>
+
+        <a class="form-group button" type="submit" id="continue-button"
+        href="@stubModel.continueUrl">Submit</a>
     }
 }
