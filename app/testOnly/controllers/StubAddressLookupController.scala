@@ -19,7 +19,7 @@ package testOnly.controllers
 import config.AppConfig
 import controllers.predicates.AuthPredicate
 import javax.inject.Inject
-import models.customerAddress.{AddressLookupOnRampModel, AddressModel}
+import models.customerAddress.AddressModel
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent}

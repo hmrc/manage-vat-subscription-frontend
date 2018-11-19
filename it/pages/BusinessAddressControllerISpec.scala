@@ -66,6 +66,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the page Redirect to AddressLookup" in {
 
+        mockAppConfig.features.stubAddressLookup(false)
+
         given.user.isAuthenticated
 
         And("a url is returned from the Address Lookup Service")
@@ -81,6 +83,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       }
 
       "render the page for a agent signed up to agent services" in {
+
+        mockAppConfig.features.stubAddressLookup(false)
 
         given.agent.isSignedUpToAgentServices
 
@@ -101,6 +105,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "show internal server error" in {
 
+        mockAppConfig.features.stubAddressLookup(false)
+
         given.agent.isSignedUpToAgentServices
 
         And("a url is returned from the Address Lookup Service")
@@ -114,6 +120,27 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         )
       }
 
+    }
+
+    "Address Lookup stub is enabled" should {
+
+      "redirect to stub StubAddressLookup page" in {
+
+        mockAppConfig.features.stubAddressLookup(true)
+
+        given.agent.isSignedUpToAgentServices
+
+        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel(
+          testOnly.controllers.routes.StubAddressLookupController.show().url)
+        )
+
+        val res = show(VRN)
+
+        res should have(
+          httpStatus(SEE_OTHER),
+          redirectURI(testOnly.controllers.routes.StubAddressLookupController.show().url)
+        )
+      }
     }
   }
 
@@ -147,6 +174,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "redirect to the ChangeAddressConfirmationPage page" in {
 
+        mockAppConfig.features.stubAddressLookup(false)
+
         given.user.isAuthenticated
 
         And("An address is returned address lookup service")
@@ -179,6 +208,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       "redirect to the ChangeAddressConfirmationPage page" in {
 
         mockAppConfig.features.agentAccess(true)
+        mockAppConfig.features.stubAddressLookup(false)
+
         given.agent.isSignedUpToAgentServices
 
         And("An address is returned address lookup service")
