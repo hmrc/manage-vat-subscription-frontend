@@ -120,7 +120,7 @@ change_business_name.p4 = Companies House will send you an email notification, a
 change_business_name.link = Continue to Companies House (opens in a new tab)
 
 change_address.title = Change the ‘principal place of business’
-change_address.p1 = This is where ABC DIGITAL LIMITED does most of its work.
+change_address.p1 = This is where the business does most of its work.
 change_address.p2 = If this is in different locations, use the address where it keeps its business records. This could be a home address.
 change_address.bulletHeader = You cannot use:
 change_address.bullet1 = the address of a third-party accountant or tax agent
