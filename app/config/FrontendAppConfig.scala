@@ -47,7 +47,7 @@ trait AppConfig extends ServicesConfig {
   val signOutTimeoutUrl: String
   val unauthorisedSignOutUrl: String
   val addressLookupCallbackUrl: String
-  val addressLookupService: String
+  def addressLookupService: String
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
   val agentAuthoriseForClient: String
@@ -128,7 +128,7 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override lazy val signOutTimeoutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$timeoutUrl"
 
   override lazy val addressLookupUrlHost: String = getString(Keys.addressLookupFrontendHost)
-  override lazy val addressLookupService: String = {
+  override def addressLookupService: String = {
     if(features.stubAddressLookup()){
       host + "/vat-through-software/account/test-only/address-lookup-stub"
     }else{

@@ -119,28 +119,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           httpStatus(INTERNAL_SERVER_ERROR)
         )
       }
-
-    }
-
-    "Address Lookup stub is enabled" should {
-
-      "redirect to stub StubAddressLookup page" in {
-
-        mockAppConfig.features.stubAddressLookup(true)
-
-        given.agent.isSignedUpToAgentServices
-
-        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel(
-          testOnly.controllers.routes.StubAddressLookupController.show().url)
-        )
-
-        val res = show(VRN)
-
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI(testOnly.controllers.routes.StubAddressLookupController.show().url)
-        )
-      }
     }
   }
 
