@@ -16,26 +16,52 @@
 
 package controllers
 
-import assets.messages.ChangeAddressConfirmationPageMessages
-import assets.CustomerAddressTestConstants._
-import assets.PPOBAddressTestConstants._
-import audit.mocks.MockAuditingService
-import mocks.services.MockAddressLookupService
-import mocks.services.MockBusinessAddressService
-import org.jsoup.Jsoup
-import play.api.http.Status
 import assets.BaseTestConstants._
+import assets.CustomerAddressTestConstants._
+import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages}
+import audit.mocks.MockAuditingService
+import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
-import org.mockito.ArgumentMatchers
-import play.api.test.Helpers.redirectLocation
-import play.api.test.Helpers._
-import org.mockito.Mockito.verify
-import uk.gov.hmrc.http.HeaderCarrier
+import org.jsoup.Jsoup
+import play.api.http.Status
+import play.api.mvc.Result
+import play.api.test.Helpers.{redirectLocation, _}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService with MockAuditingService {
+
+  "Calling the .show action" when {
+
+    "the user is authorised" should {
+
+      object TestBusinessAddressController extends BusinessAddressController(
+        messagesApi,
+        mockAuthPredicate,
+        mockAddressLookupService,
+        mockBusinessAddressService,
+        serviceErrorHandler,
+        mockAuditingService,
+        mockConfig
+      )
+
+      lazy val result: Future[Result] = TestBusinessAddressController.show(request)
+
+      "return OK (200)" in {
+        status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+
+      s"have the heading '${ChangeAddressPageMessages.title}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeAddressPageMessages.title
+      }
+    }
+  }
 
   "Calling .callback" when {
 
