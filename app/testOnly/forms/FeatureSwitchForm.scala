@@ -39,7 +39,8 @@ object FeatureSwitchForm {
           stubDes -> boolean
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
       ConfigKeys.useAgentClientLookupFeature -> boolean,
-      ConfigKeys.stubAgentClientLookupFeature -> boolean
+      ConfigKeys.stubAgentClientLookupFeature -> boolean,
+      ConfigKeys.stubAddressLookupFeature -> boolean
   )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

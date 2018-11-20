@@ -16,5 +16,10 @@
 
 package models.customerAddress
 
+import play.api.libs.json.{Json, Reads}
+
 case class AddressLookupOnRampModel(redirectUrl: String)
 
+object AddressLookupOnRampModel {
+  implicit val rds: Reads[AddressLookupOnRampModel] = Json.reads[AddressLookupOnRampModel]
+}
