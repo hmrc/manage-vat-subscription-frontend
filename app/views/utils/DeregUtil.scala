@@ -29,10 +29,10 @@ object DeregUtil {
   def findDeregStatus(circs: CircumstanceDetails): DeregStatus = {
     if(circs.changeIndicators.exists(_.deregister)){
       PendingDereg
-    } else if(circs.deregistration.map(_.cancellationDate).isDefined) {
-      futureOrPast(circs.deregistration.get.cancellationDate.get.toLocalDate)
     } else {
-      Registered
+      circs.deregistration.fold[DeregStatus](Registered)(
+        _.cancellationDate.fold[DeregStatus](Registered)(
+          cd => futureOrPast(cd.toLocalDate)))
     }
   }
 
