@@ -67,6 +67,7 @@ object DeregUtil {
       case _ => Html(
         s"""
           |<a id="registration-status-link"
+          |  target="_blank"
           |  href="https://www.gov.uk/vat-registration/how-to-register">
           |  ${messages("customer_details.howToRegister")}
           |</a>
