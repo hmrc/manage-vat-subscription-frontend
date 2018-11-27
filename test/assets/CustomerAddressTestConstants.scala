@@ -124,7 +124,11 @@ object CustomerAddressTestConstants {
     "selectPage" -> Json.obj(
       "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
-      "submitLabel" -> BaseMessages.saveAndContinue
+      "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
+      "submitLabel" -> BaseMessages.continue
+    ),
+    "editPage" -> Json.obj(
+      "submitLabel" -> BaseMessages.continue
     ),
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,
@@ -148,7 +152,11 @@ object CustomerAddressTestConstants {
     "selectPage" -> Json.obj(
       "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
-      "submitLabel" -> BaseMessages.saveAndContinue
+      "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
+      "submitLabel" -> BaseMessages.continue
+    ),
+    "editPage" -> Json.obj(
+      "submitLabel" -> BaseMessages.continue
     ),
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,
