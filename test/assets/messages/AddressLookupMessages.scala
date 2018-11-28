@@ -22,7 +22,7 @@ object AddressLookupMessages {
   val filter = "Property name or number"
   val postcode = "Postcode"
   val postcodeLink = "The address does not have a post code"
-  val selectHeading = "Choose the new address"
+  val selectHeading = "Select the new address"
   val editAddressLinkText = "Edit the address manually"
   val confirmHeading = "Confirm the new principal place of business"
   val confirmChangeText = "By confirming this change, you agree that the information you have given is complete and correct."
