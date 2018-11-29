@@ -23,7 +23,8 @@ import utils.JsonObjectSugar
 
 case class UpdateReturnFrequencyAuditModel(user: User[_],
                                            currentReturnFrequency: ReturnPeriod,
-                                           requestedReturnFrequency: ReturnPeriod) extends ExtendedAuditModel {
+                                           requestedReturnFrequency: ReturnPeriod,
+                                           partyType: Option[String]) extends ExtendedAuditModel {
 
   override val transactionName: String = "change-vat-return-frequency"
   override val detail: JsValue = Json.toJson(this)
@@ -38,7 +39,8 @@ object UpdateReturnFrequencyAuditModel extends JsonObjectSugar {
       "agentReferenceNumber" -> model.user.arn,
       "vrn" -> model.user.vrn,
       "currentReturnFrequency" -> model.currentReturnFrequency.auditValue,
-      "requestedReturnFrequency" -> model.requestedReturnFrequency.auditValue
+      "requestedReturnFrequency" -> model.requestedReturnFrequency.auditValue,
+      "partyType" -> model.partyType
     )
   }
 }

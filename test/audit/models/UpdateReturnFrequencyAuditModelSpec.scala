@@ -17,6 +17,7 @@
 package audit.models
 
 import assets.BaseTestConstants._
+import assets.CircumstanceDetailsTestConstants.partyType
 import models.returnFrequency.{Jan, Monthly}
 import play.api.libs.json.Json
 import utils.TestUtil
@@ -26,8 +27,8 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
   val transactionName = "change-vat-return-frequency"
   val auditEvent = "ChangeVatSubscriptionDetails"
 
-  lazy val testUpdateReturnFrequencyAgent = UpdateReturnFrequencyAuditModel(agentUser, Jan, Monthly)
-  lazy val testUpdateReturnFrequencyPrincipal = UpdateReturnFrequencyAuditModel(user, Jan, Monthly)
+  lazy val testUpdateReturnFrequencyAgent = UpdateReturnFrequencyAuditModel(agentUser, Jan, Monthly, Some(partyType))
+  lazy val testUpdateReturnFrequencyPrincipal = UpdateReturnFrequencyAuditModel(user, Jan, Monthly, Some(partyType))
 
   "The UpdateReturnFrequencyAuditModel" should {
 
@@ -47,7 +48,8 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
           "agentReferenceNumber" -> arn,
           "vrn" -> vrn,
           "currentReturnFrequency" -> "January, April, July and October",
-          "requestedReturnFrequency" -> "Every month"
+          "requestedReturnFrequency" -> "Every month",
+          "partyType" -> partyType
         )
       }
     }
@@ -59,7 +61,8 @@ class UpdateReturnFrequencyAuditModelSpec extends TestUtil {
           "isAgent" -> false,
           "vrn" -> vrn,
           "currentReturnFrequency" -> "January, April, July and October",
-          "requestedReturnFrequency" -> "Every month"
+          "requestedReturnFrequency" -> "Every month",
+          "partyType" -> partyType
         )
       }
     }

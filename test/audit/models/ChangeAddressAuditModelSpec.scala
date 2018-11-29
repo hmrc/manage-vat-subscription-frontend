@@ -19,6 +19,7 @@ package audit.models
 import assets.BaseTestConstants._
 import assets.PPOBAddressTestConstants._
 import assets.CustomerAddressTestConstants._
+import assets.CircumstanceDetailsTestConstants.partyType
 import play.api.libs.json.Json
 import utils.TestUtil
 
@@ -27,8 +28,8 @@ class ChangeAddressAuditModelSpec extends TestUtil {
   val transactionName = "change-vat-business-address"
   val auditType = "ChangeVatSubscriptionDetails"
 
-  lazy val changeAddressMaxModel = ChangeAddressAuditModel(agentUser, ppobAddressModelMax, customerAddressMax)
-  lazy val changeAddressMinModel = ChangeAddressAuditModel(user, ppobAddressModelMin, customerAddressMin)
+  lazy val changeAddressMaxModel = ChangeAddressAuditModel(agentUser, ppobAddressModelMax, customerAddressMax, Some(partyType))
+  lazy val changeAddressMinModel = ChangeAddressAuditModel(user, ppobAddressModelMin, customerAddressMin, None)
 
   "The ChangeAddressAuditModel" should {
 
@@ -82,7 +83,8 @@ class ChangeAddressAuditModelSpec extends TestUtil {
             "line4" -> customerAddressMax.line4,
             "postCode" -> customerAddressMax.postcode,
             "countryCode" -> customerAddressMax.countryCode
-          )
+          ),
+          "partyType" -> partyType
         )
       }
     }

@@ -18,14 +18,13 @@ package services
 
 import audit.AuditService
 import audit.models.ChangeAddressAuditModel
-import javax.inject.{Inject, Singleton}
 import connectors.SubscriptionConnector
+import javax.inject.{Inject, Singleton}
 import models.User
-import models.circumstanceInfo.{CircumstanceDetails, PPOBAddress}
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressModel
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
-import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -55,7 +54,7 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
     subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(customerDetails) =>
         auditService.extendedAudit(
-          ChangeAddressAuditModel(user, customerDetails.ppobAddress, address),
+          ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, customerDetails.partyType),
           Some(controllers.routes.BusinessAddressController.callback(id).url)
         )
         subscriptionConnector.updatePPOB(user.vrn, buildPPOBUpdateModel(address, customerDetails)) map {

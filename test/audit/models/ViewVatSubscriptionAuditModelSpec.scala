@@ -36,6 +36,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
   lazy val userNoPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationNoPendingOrganisation)
   lazy val userPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationModelMaxOrganisation)
 
+  lazy val userWithNoPartyType = ViewVatSubscriptionAuditModel(user, customerInformationRegisteredIndividual)
+
   "The ViewVatSubscriptionAuditModel" should {
 
     s"Have the correct transaction name of '$transactionName'" in {
@@ -77,7 +79,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
                 "emailAddress" -> false
-              )
+              ),
+              "partyType" -> partyType
             )
           }
         }
@@ -109,7 +112,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
                 "emailAddress" -> true
-              )
+              ),
+              "partyType" -> partyType
             )
           }
         }
@@ -146,7 +150,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
                 "emailAddress" -> false
-              )
+              ),
+              "partyType" -> "other"
             )
           }
         }
@@ -179,7 +184,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
                 "emailAddress" -> true
-              )
+              ),
+              "partyType" -> partyType
             )
           }
         }
@@ -216,7 +222,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
                 "emailAddress" -> false
-              )
+              ),
+              "partyType" -> partyType
             )
           }
         }
@@ -247,7 +254,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
                 "emailAddress" -> true
-              )
+              ),
+              "partyType" -> partyType
             )
           }
         }
@@ -283,7 +291,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
                 "emailAddress" -> false
-              )
+              ),
+              "partyType" -> "other"
             )
           }
         }
@@ -315,9 +324,41 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
                 "emailAddress" -> true
-              )
+              ),
+              "partyType" -> partyType
             )
           }
+        }
+      }
+
+      "the User has no partyType" should {
+
+        "Have the correct details for the audit event" in {
+          userWithNoPartyType.detail shouldBe Json.obj(
+            "isAgent" -> false,
+            "vrn" -> vrn,
+            "businessAddress" -> Json.obj(
+              "line1" -> customerInformationRegisteredIndividual.ppobAddress.line1,
+              "line2" -> customerInformationRegisteredIndividual.ppobAddress.line2.get,
+              "line3" -> customerInformationRegisteredIndividual.ppobAddress.line3.get,
+              "line4" -> customerInformationRegisteredIndividual.ppobAddress.line4.get,
+              "line5" -> customerInformationRegisteredIndividual.ppobAddress.line5.get,
+              "postCode" -> customerInformationRegisteredIndividual.ppobAddress.postCode.get,
+              "countryCode" -> customerInformationRegisteredIndividual.ppobAddress.countryCode
+            ),
+            "repaymentBankDetails" -> Json.obj(
+              "accountNumber" -> customerInformationRegisteredIndividual.bankDetails.get.bankAccountNumber.get,
+              "sortCode" -> customerInformationRegisteredIndividual.bankDetails.get.sortCode.get
+            ),
+            "vatReturnFrequency" -> "March, June, September and December",
+            "email" -> "test@test.com",
+            "inFlightChanges" -> Json.obj(
+              "businessAddress" -> false,
+              "repaymentBankDetails" -> false,
+              "vatReturnDates" -> false,
+              "emailAddress" -> false
+            )
+          )
         }
       }
     }

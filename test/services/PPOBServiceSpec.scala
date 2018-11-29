@@ -19,9 +19,9 @@ package services
 import mocks.connectors.MockSubscriptionConnector
 import models.core.SubscriptionUpdateResponseModel
 import assets.CustomerAddressTestConstants._
-import assets.BaseTestConstants.{vrn, formBundle}
+import assets.BaseTestConstants.{formBundle, vrn}
 import assets.PPOBAddressTestConstants._
-import assets.CircumstanceDetailsTestConstants.customerInformationModelMaxOrganisation
+import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisation, partyType}
 import audit.mocks.MockAuditingService
 import audit.models.ChangeAddressAuditModel
 import org.mockito.ArgumentMatchers
@@ -52,7 +52,7 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
 
       verify(mockAuditingService)
         .extendedAudit(
-          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax)),
+          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, Some(partyType))),
           ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
         )(
           ArgumentMatchers.any[HeaderCarrier],
