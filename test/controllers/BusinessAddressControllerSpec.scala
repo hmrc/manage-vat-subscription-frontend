@@ -17,8 +17,9 @@
 package controllers
 
 import assets.BaseTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
-import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages}
+import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, EmailChangePendingMessages}
 import audit.mocks.MockAuditingService
 import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
 import models.core.SubscriptionUpdateResponseModel
@@ -34,19 +35,23 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
   "Calling the .show action" when {
 
-    "the user is authorised" should {
+    object TestBusinessAddressController extends BusinessAddressController(
+      messagesApi,
+      mockAuthPredicate,
+      mockInflightEmailPredicate,
+      mockAddressLookupService,
+      mockBusinessAddressService,
+      serviceErrorHandler,
+      mockAuditingService,
+      mockConfig
+    )
 
-      object TestBusinessAddressController extends BusinessAddressController(
-        messagesApi,
-        mockAuthPredicate,
-        mockAddressLookupService,
-        mockBusinessAddressService,
-        serviceErrorHandler,
-        mockAuditingService,
-        mockConfig
-      )
+    "the user is authorised and does not have any conflicting inflight data" should {
 
-      lazy val result: Future[Result] = TestBusinessAddressController.show(request)
+      lazy val result: Future[Result] = {
+        mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+        TestBusinessAddressController.show(request)
+      }
 
       "return OK (200)" in {
         status(result) shouldBe Status.OK
@@ -59,6 +64,27 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       s"have the heading '${ChangeAddressPageMessages.title}'" in {
         Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeAddressPageMessages.title
+      }
+    }
+
+    "the user is authorised and has a pending change to their email address" should {
+
+      lazy val result: Future[Result] = {
+        mockCustomerDetailsSuccess(customerInformationPendingEmailModel)
+        TestBusinessAddressController.show(request)
+      }
+
+      "return OK (200)" in {
+        status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+
+      s"have the heading '${EmailChangePendingMessages.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe EmailChangePendingMessages.heading
       }
     }
   }
@@ -74,6 +100,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       new BusinessAddressController(
         messagesApi,
         mockAuthPredicate,
+        mockInflightEmailPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
@@ -165,6 +192,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       new BusinessAddressController(
         messagesApi,
         mockAuthPredicate,
+        mockInflightEmailPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
         serviceErrorHandler,
@@ -172,24 +200,55 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockConfig)
     }
 
-    "address lookup service returns success" should {
+    "address lookup service returns success" when {
 
       lazy val controller = setup(addressLookupResponse = Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = controller.initialiseJourney(request)
 
-      "return redirect to the url returned" in {
-        status(result) shouldBe Status.SEE_OTHER
+      "the user does not have any conflicting inflight data" should {
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+          controller.initialiseJourney(request)
+        }
+
+        "return redirect to the url returned" in {
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to url returned" in {
+          redirectLocation(result) shouldBe Some("redirect-url")
+        }
       }
 
-      "redirect to url returned" in {
-        redirectLocation(result) shouldBe Some("redirect-url")
+      "the user has a pending change to their email address" should {
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationPendingEmailModel)
+          controller.initialiseJourney(request)
+        }
+
+        "return OK (200)" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        s"have the heading '${EmailChangePendingMessages.heading}'" in {
+          Jsoup.parse(bodyOf(result)).select("h1").text shouldBe EmailChangePendingMessages.heading
+        }
       }
     }
 
     "address lookup service returns an error" should {
 
       lazy val controller = setup(addressLookupResponse = Left(errorModel))
-      lazy val result = controller.initialiseJourney(request)
+      lazy val result = {
+        mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+        controller.initialiseJourney(request)
+      }
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -202,6 +261,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     lazy val controller = new BusinessAddressController(
       messagesApi,
       mockAuthPredicate,
+      mockInflightEmailPredicate,
       mockAddressLookupService,
       mockBusinessAddressService,
       serviceErrorHandler,

@@ -17,6 +17,7 @@
 package controllers.predicates
 
 import assets.CircumstanceDetailsTestConstants._
+import assets.messages.EmailChangePendingMessages
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
@@ -62,7 +63,7 @@ class InflightEmailPredicateSpec extends MockAuth {
       }
 
       "show the 'Email change pending' error page" in {
-        document.title shouldBe "We are reviewing your request"
+        document.title shouldBe EmailChangePendingMessages.title
       }
     }
 
