@@ -307,4 +307,38 @@ object CircumstanceDetailsTestConstants {
     partyType = None
   )
 
+  val customerInformationPendingEmailModel: CircumstanceDetails = CircumstanceDetails(
+    mandationStatus = MTDfBMandated,
+    customerDetails = customerDetailsMin,
+    flatRateScheme = None,
+    ppob = ppobModelMax,
+    bankDetails = None,
+    returnPeriod = None,
+    deregistration = None,
+    changeIndicators = Some(
+      ChangeIndicators(
+        ppob = true,
+        bankDetails = false,
+        returnPeriod = false,
+        deregister = false
+      )
+    ),
+    pendingChanges = Some(PendingChanges(
+      Some(PPOB(
+        ppobAddressModelMax,
+        Some(ContactDetails(
+          Some(phoneNumber),
+          Some(mobileNumber),
+          Some(faxNumber),
+          Some(emailPending),
+          Some(emailVerified)
+        )),
+        Some(website)
+      )),
+      None,
+      None
+    )),
+    partyType = None
+  )
+
 }

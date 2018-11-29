@@ -29,10 +29,11 @@ import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
 import assets.BaseTestConstants._
+import mocks.services.MockCustomerCircumstanceDetailsService
 
 import scala.concurrent.Future
 
-trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
+trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar with MockCustomerCircumstanceDetailsService {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -75,6 +76,15 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar  {
       messagesApi,
       injector.instanceOf[ServiceErrorHandler],
       mockConfig
+    )
+
+  val mockInflightEmailPredicate: InflightEmailPredicate =
+    new InflightEmailPredicate(
+      mockCustomerDetailsService,
+      serviceErrorHandler,
+      messagesApi,
+      mockConfig,
+      ec
     )
 
   def mockIndividualAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
