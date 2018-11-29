@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2018 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package assets.messages
+@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-object AddressLookupMessages {
+@views.html.main_template(title = messages("emailChangePending.title"), appConfig = appConfig) {
 
-  val startHeading = "What is the new principal place of business?"
-  val filter = "Property name or number"
-  val postcode = "Postcode"
-  val postcodeLink = "The address does not have a post code"
-  val selectHeading = "Select the new address"
-  val editAddressLinkText = "Edit the address manually"
-  val confirmHeading = "Confirm the new principal place of business"
-  val confirmChangeText = "By confirming this change, you agree that the information you have given is complete and correct."
+ <a class="link-back" href="@controllers.routes.CustomerCircumstanceDetailsController.redirect">@messages("base.back")</a>
+
+ <h1 class="heading-large">@messages("emailChangePending.heading")</h1>
+ <p>@messages("emailChangePending.infoOne")</p>
+ <p>@messages("emailChangePending.infoTwo")</p>
 }

@@ -18,8 +18,9 @@ package controllers
 
 import audit.AuditService
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
 import javax.inject.{Inject, Singleton}
+
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
@@ -31,17 +32,18 @@ import scala.concurrent.Future
 @Singleton
 class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthPredicate,
+                                          val inflightEmailCheck: InflightEmailPredicate,
                                           addressLookupService: AddressLookupService,
                                           ppobService: PPOBService,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           val auditService: AuditService,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async { implicit user =>
+  val show: Action[AnyContent] = (authenticate andThen inflightEmailCheck).async { implicit user =>
     Future.successful(Ok(views.html.businessAddress.change_address()))
   }
 
-  val initialiseJourney: Action[AnyContent] = authenticate.async { implicit user =>
+  val initialiseJourney: Action[AnyContent] = (authenticate andThen inflightEmailCheck).async { implicit user =>
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         Redirect(response.redirectUrl)

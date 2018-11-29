@@ -18,7 +18,7 @@ package pages
 
 import common.SessionKeys
 import config.FrontendAppConfig
-import helpers.IntegrationTestConstants.VRN
+import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, organisation}
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
@@ -26,7 +26,7 @@ import play.api.http.Status._
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{OK, SEE_OTHER}
-import stubs.BusinessAddressStub
+import stubs.{BusinessAddressStub, VatSubscriptionStub}
 
 class BusinessAddressControllerISpec extends BasePageISpec {
 
@@ -45,6 +45,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
+
+          And("A successful response with minimum details is returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
 
           When("I call the change business address page")
           val res = show(VRN)
@@ -70,6 +73,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         given.user.isAuthenticated
 
+        And("A successful response with minimum details is returned for an Organisation")
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+
         And("a url is returned from the Address Lookup Service")
         BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
 
@@ -87,6 +93,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         mockAppConfig.features.stubAddressLookup(false)
 
         given.agent.isSignedUpToAgentServices
+
+        And("A successful response with minimum details is returned for an Organisation")
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
 
         And("a url is returned from the Address Lookup Service")
         BusinessAddressStub.postInitJourney(ACCEPTED,AddressLookupOnRampModel("redirect/url"))

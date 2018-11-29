@@ -16,14 +16,10 @@
 
 package assets.messages
 
-object AddressLookupMessages {
-
-  val startHeading = "What is the new principal place of business?"
-  val filter = "Property name or number"
-  val postcode = "Postcode"
-  val postcodeLink = "The address does not have a post code"
-  val selectHeading = "Select the new address"
-  val editAddressLinkText = "Edit the address manually"
-  val confirmHeading = "Confirm the new principal place of business"
-  val confirmChangeText = "By confirming this change, you agree that the information you have given is complete and correct."
+object EmailChangePendingMessages {
+  val title = "We are reviewing your request"
+  val heading = "You already have a change pending"
+  val p1 = "You have already requested to change your email address. " +
+    "While this change is pending you are unable to change your principal place of business."
+  val p2 = "We will usually update your details within 2 working days."
 }
