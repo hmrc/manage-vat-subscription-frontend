@@ -19,4 +19,7 @@ package assets.messages
 object EmailChangePendingMessages {
   val title = "We are reviewing your request"
   val heading = "You already have a change pending"
+  val p1 = "You have already requested to change your email address. " +
+    "While this change is pending you are unable to change your principal place of business."
+  val p2 = "We will usually update your details within 2 working days."
 }
