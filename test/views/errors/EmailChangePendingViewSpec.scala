@@ -16,6 +16,7 @@
 
 package views.errors
 
+import assets.messages.{BaseMessages, EmailChangePendingMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -35,24 +36,23 @@ class EmailChangePendingViewSpec extends ViewBaseSpec {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct title" in {
-      document.title shouldBe "We are reviewing your request"
+      document.title shouldBe EmailChangePendingMessages.title
     }
 
     "have the correct heading" in {
-      elementText(Selectors.heading) shouldBe "You already have a change pending"
+      elementText(Selectors.heading) shouldBe EmailChangePendingMessages.heading
     }
 
     "have the correct information in the first paragraph" in {
-      elementText(Selectors.paragraphOne) shouldBe "You have already requested to change your email " +
-        "address. While this change is pending you are unable to change your principal place of business."
+      elementText(Selectors.paragraphOne) shouldBe EmailChangePendingMessages.p1
     }
 
     "have the correct information in the second paragraph" in {
-      elementText(Selectors.paragraphTwo) shouldBe "We will usually update your details within 2 working days."
+      elementText(Selectors.paragraphTwo) shouldBe EmailChangePendingMessages.p2
     }
 
     "have the correct text for the back link" in {
-      elementText(Selectors.backLink) shouldBe "Back"
+      elementText(Selectors.backLink) shouldBe BaseMessages.back
     }
 
     "have the correct back link location" in {
