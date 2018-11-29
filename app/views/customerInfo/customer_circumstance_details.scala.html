@@ -19,6 +19,7 @@
 @import helpers.render_return_frequency
 @import helpers.render_address
 @import helpers.deregistration_helper
+@import helpers.addIt
 @import templates.breadcrumb
 @import templates.openInNewTab
 @import views.utils.DeregUtil._
@@ -242,6 +243,9 @@
                 case (Some(orgName),true) => {
                     @customerName(orgName)
                 }
+                case (_, true) => {
+                    @addIt(messages("customer_details.businessName.heading"),"business-name")
+                }
                 case _ => {}
             }
 
@@ -252,16 +256,24 @@
             }
 
             @circumstances.pendingBankDetails.fold {
-                @circumstances.bankDetails.map{ bankDetails =>
-                    @customerBankDetails(bankDetails,false)
+                @if(circumstances.bankDetails.isDefined){
+                    @circumstances.bankDetails.map{ bankDetails =>
+                        @customerBankDetails(bankDetails,false)
+                    }
+                } else {
+                    @addIt(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true)
                 }
             }{ pendingBankDetails =>
                 @customerBankDetails(pendingBankDetails,true)
             }
 
             @circumstances.pendingReturnPeriod.fold {
-                @circumstances.returnPeriod.map{ period =>
-                    @customerReturnPeriod(period,false)
+                @if(circumstances.returnPeriod.isDefined){
+                    @circumstances.returnPeriod.map{ period =>
+                        @customerReturnPeriod(period,false)
+                    }
+                } else {
+                    @addIt(messages("customer_details.returnFrequency.heading"), "vat-return-dates")
                 }
             }{ pendingPeriod =>
                 @customerReturnPeriod(pendingPeriod,true)
@@ -275,7 +287,7 @@
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @{
-                    for{
+                    val emailOption = for{
                         contactDetails <- circumstances.ppob.contactDetails
                         email <- contactDetails.emailAddress
                     } yield {
@@ -283,6 +295,11 @@
                             case Some(pendingEmail) if(!pendingEmail.equals(email)) => customerEmailAddress(pendingEmail, true)
                             case _ => customerEmailAddress(email, false)
                         }
+                    }
+                    if(emailOption.isDefined){
+                        emailOption
+                    } else {
+                        addIt(messages("customer_details.contactDetails.emailAddress"), "vat-email-address")
                     }
                 }
             </dl>
