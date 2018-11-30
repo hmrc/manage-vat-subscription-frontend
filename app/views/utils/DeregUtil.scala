@@ -69,7 +69,7 @@ object DeregUtil {
           |<a id="registration-status-link"
           |  target="_blank"
           |  href="https://www.gov.uk/vat-registration/how-to-register">
-          |  ${messages("customer_details.howToRegister")}
+          |  ${messages("customer_details.howToRegister")}<br><span class="font-xsmall">${messages("common.newTab")}</span>
           |</a>
         """.stripMargin)
     }

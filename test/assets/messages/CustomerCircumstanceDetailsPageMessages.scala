@@ -35,7 +35,7 @@ object CustomerCircumstanceDetailsPageMessages {
   val change = "Change"
   val deregister = "Deregister"
   val pending = "Pending"
-  val howToRegister = "How to register"
+  val howToRegister = "How to register (opens in a new tab)"
 
   val registrationStatusHeading = "Your registration"
   val aboutHeading = "About the business"
