@@ -14,21 +14,23 @@
  * limitations under the License.
  *@
 
-@(heading: String, id: String, link: String = "#", repaymentHint: Boolean = false)(implicit messages: Messages, user : User[_])
+@(heading: String, id: String, link: String = "#", repaymentHint: Boolean = false)(implicit messages: Messages, user : User[_], appConfig: config.AppConfig)
 
-<div>
-  <dt id="@id-text" class="cya-question">
-    @heading
-    @if(repaymentHint){
-      <span id="repayments-only" class="form-hint">
-        @messages("customer_details.bankAccount.repaymentsOnly")
-      </span>
-    }
-  </dt>
-  <dd id="@id" class="cya-answer">
-    None
-  </dd>
-  <dd id="@id-status" class="cya-change">
-    <a href="@link">Add</a>
-  </dd>
-</div>
+@if(appConfig.features.addDetailRows()){
+    <div>
+        <dt id="@id-text" class="cya-question">
+            @heading
+            @if(repaymentHint){
+                <span id="repayments-only" class="form-hint">
+                    @messages("customer_details.bankAccount.repaymentsOnly")
+                </span>
+            }
+        </dt>
+        <dd id="@id" class="cya-answer">
+            None
+        </dd>
+        <dd id="@id-status" class="cya-change">
+            <a href="@link">Add</a>
+        </dd>
+    </div>
+}

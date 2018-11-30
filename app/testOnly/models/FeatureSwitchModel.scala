@@ -23,4 +23,5 @@ case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
                               vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
                               useAgentClientLookup: Boolean,
                               stubAgentClientLookup: Boolean,
-                              stubAddressLookup: Boolean)
+                              stubAddressLookup: Boolean,
+                              addDetailRows: Boolean)

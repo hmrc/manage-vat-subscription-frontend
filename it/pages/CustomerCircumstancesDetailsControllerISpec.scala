@@ -119,9 +119,10 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           "a success response is received for the Customer Details with minimum details (Organisation)" should {
 
-            "Render the Customer Circumstances page with only the business name shown" in {
+            "Render the Customer Circumstances page with only the business name shown (with addDetailRows feature off)" in {
 
               mockAppConfig.features.agentAccess(true)
+              mockAppConfig.features.addDetailRows(false)
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with minimum details returned for an Organisation")
@@ -150,9 +151,11 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           "a success response is received for the Customer Details with all details (Individual)" should {
 
-            "Render the Customer Circumstances page with correct details shown" in {
+            "Render the Customer Circumstances page with correct details shown (with addDetailRows feature off)" in {
 
+              mockAppConfig.features.addDetailRows(false)
               mockAppConfig.features.agentAccess(true)
+
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -190,8 +193,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           "a success response is received for the Customer Details with minimum details (Individual)" should {
 
-            "Render the Customer Circumstances page with only the business name shown" in {
+            "Render the Customer Circumstances page with only the business name shown (with addDetailRows feature off)" in {
 
+              mockAppConfig.features.addDetailRows(false)
               mockAppConfig.features.agentAccess(true)
               given.agent.isSignedUpToAgentServices
 
@@ -408,8 +412,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
       "a success response is received for the Customer Details with minimum details (Organisation)" should {
 
-        "Render the Customer Circumstances page with only business address shown" in {
+        "Render the Customer Circumstances page with only business address shown (with addDetailRows feature off)" in {
 
+          mockAppConfig.features.addDetailRows(false)
           given.user.isAuthenticated
 
           And("A successful response with minimum details returned for an Organisation")
@@ -438,8 +443,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
       "a success response is received for the Customer Details with a partyType (Organisation)" should {
 
-        "Render the Customer Circumstances page with only business address shown" in {
+        "Render the Customer Circumstances page with only business address shown (with addDetailRows feature on)" in {
 
+          mockAppConfig.features.addDetailRows(true)
           given.user.isAuthenticated
 
           And("A successful response with minimum details returned for an Organisation")
@@ -458,18 +464,23 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
-            isElementVisible("#bank-details")(isVisible = false),
+            isElementVisible("#bank-details")(isVisible = true),
+            elementText("#bank-details")("None"),
+            elementText("#bank-details-status")("Add"),
 
             //VAT Return Dates
-            isElementVisible("#vat-return-dates")(isVisible = false)
+            isElementVisible("#vat-return-dates")(isVisible = true),
+            elementText("#vat-return-dates")("None"),
+            elementText("#vat-return-dates-status")("Add")
           )
         }
       }
 
       "a success response is received for the Customer Details with all details (Individual)" should {
 
-        "Render the Customer Circumstances page with correct details shown" in {
+        "Render the Customer Circumstances page with correct details shown (with addDetailRows feature off)" in {
 
+          mockAppConfig.features.addDetailRows(false)
           given.user.isAuthenticated
 
           And("A successful response with all details is returned for an Individual")
@@ -507,8 +518,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
       "a success response is received for the Customer Details with minimum details (Individual)" should {
 
-        "Render the Customer Circumstances page with only the business name shown" in {
+        "Render the Customer Circumstances page with only the business name shown (with addDetailRows feature off)" in {
 
+          mockAppConfig.features.addDetailRows(false)
           given.user.isAuthenticated
 
           And("A successful response with minimum details returned for an Individual")
