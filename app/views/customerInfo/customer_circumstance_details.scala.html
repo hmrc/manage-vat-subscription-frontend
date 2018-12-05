@@ -244,7 +244,7 @@
                     @customerName(orgName)
                 }
                 case (_, true) => {
-                    @addIt(messages("customer_details.businessName.heading"),"business-name")
+                    @addIt(messages("customer_details.businessName.heading"),"business-name", link = controllers.routes.ChangeBusinessNameController.show().url)
                 }
                 case _ => {}
             }
@@ -261,7 +261,7 @@
                         @customerBankDetails(bankDetails,false)
                     }
                 } else {
-                    @addIt(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true)
+                    @addIt(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true, link = controllers.routes.PaymentsController.sendToPayments().url)
                 }
             }{ pendingBankDetails =>
                 @customerBankDetails(pendingBankDetails,true)
@@ -273,7 +273,7 @@
                         @customerReturnPeriod(period,false)
                     }
                 } else {
-                    @addIt(messages("customer_details.returnFrequency.heading"), "vat-return-dates")
+                    @addIt(messages("customer_details.returnFrequency.heading"), "vat-return-dates", link = controllers.returnFrequency.routes.ChooseDatesController.show().url)
                 }
             }{ pendingPeriod =>
                 @customerReturnPeriod(pendingPeriod,true)
@@ -299,7 +299,7 @@
                     if(emailOption.isDefined){
                         emailOption
                     } else {
-                        addIt(messages("customer_details.contactDetails.emailAddress"), "vat-email-address")
+                        addIt(messages("customer_details.contactDetails.emailAddress"), "vat-email-address", link = appConfig.vatCorrespondenceChangeEmailUrl)
                     }
                 }
             </dl>

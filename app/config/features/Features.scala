@@ -31,5 +31,4 @@ class Features @Inject()(implicit config: Configuration) {
   val useAgentClientLookup = new Feature(ConfigKeys.useAgentClientLookupFeature)
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)
-  val addDetailRows = new Feature(ConfigKeys.addDetailRowsFeature)
 }
