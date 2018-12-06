@@ -140,10 +140,12 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 isElementVisible("#businessAddress")(isVisible = true),
 
                 //Bank Details
-                isElementVisible("#bank-details")(isVisible = false),
+                elementText("#bank-details")(expectedValue = "None"),
+                elementText("#bank-details-status")(expectedValue = "Add"),
 
                 //VAT Return Dates
-                isElementVisible("#vat-return-dates")(isVisible = false)
+                elementText("#vat-return-dates")(expectedValue = "None"),
+                elementText("#vat-return-dates-status")(expectedValue = "Add")
               )
             }
           }
@@ -153,6 +155,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             "Render the Customer Circumstances page with correct details shown" in {
 
               mockAppConfig.features.agentAccess(true)
+
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Organisation")
@@ -165,7 +168,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 httpStatus(OK),
 
                 //Business Name
-                isElementVisible("#business-name")(isVisible = false),
+                elementText("#business-name")(expectedValue = "None"),
+                elementText("#business-name-status")(expectedValue = "Add"),
+
 
                 //Business Address
                 elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
@@ -211,10 +216,12 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 isElementVisible("#businessAddress")(isVisible = true),
 
                 //Bank Details
-                isElementVisible("#bank-details")(isVisible = false),
+                elementText("#bank-details")(expectedValue = "None"),
+                elementText("#bank-details-status")(expectedValue = "Add"),
 
                 //VAT Return Dates
-                isElementVisible("#vat-return-dates")(isVisible = false)
+                elementText("#vat-return-dates")(expectedValue = "None"),
+                elementText("#vat-return-dates-status")(expectedValue = "Add")
               )
             }
           }
@@ -428,10 +435,12 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
-            isElementVisible("#bank-details")(isVisible = false),
+            elementText("#bank-details")(expectedValue = "None"),
+            elementText("#bank-details-status")(expectedValue = "Add"),
 
             //VAT Return Dates
-            isElementVisible("#vat-return-dates")(isVisible = false)
+            elementText("#vat-return-dates")(expectedValue = "None"),
+            elementText("#vat-return-dates-status")(expectedValue = "Add")
           )
         }
       }
@@ -458,10 +467,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
-            isElementVisible("#bank-details")(isVisible = false),
+            isElementVisible("#bank-details")(isVisible = true),
+            elementText("#bank-details")("None"),
+            elementText("#bank-details-status")("Add"),
 
             //VAT Return Dates
-            isElementVisible("#vat-return-dates")(isVisible = false)
+            isElementVisible("#vat-return-dates")(isVisible = true),
+            elementText("#vat-return-dates")("None"),
+            elementText("#vat-return-dates-status")("Add")
           )
         }
       }
@@ -482,7 +495,8 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             httpStatus(OK),
 
             //Business Name
-            isElementVisible("#business-name")(isVisible = false),
+            elementText("#business-name")(expectedValue = "None"),
+            elementText("#business-name-status")(expectedValue = "Add"),
 
             //Business Address
             elementText("#businessAddress li:nth-of-type(1)")(ppob.address.line1),
@@ -527,10 +541,12 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             isElementVisible("#businessAddress")(isVisible = true),
 
             //Bank Details
-            isElementVisible("#bank-details")(isVisible = false),
+            elementText("#bank-details")(expectedValue = "None"),
+            elementText("#bank-details-status")(expectedValue = "Add"),
 
             //VAT Return Dates
-            isElementVisible("#vat-return-dates")(isVisible = false)
+            elementText("#vat-return-dates")(expectedValue = "None"),
+            elementText("#vat-return-dates-status")(expectedValue = "Add")
           )
         }
       }
