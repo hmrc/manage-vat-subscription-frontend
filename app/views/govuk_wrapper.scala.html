@@ -35,6 +35,10 @@
 @import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
 @import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
 
+@linkElem = {
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/stylesheet.css")'>
+}
+
 @scriptElement = {
     <script>
         @if(showSignOut) {
@@ -52,7 +56,7 @@
 
 @head = {
     @uiLayouts.head(
-      linkElem = None,
+      linkElem = Some(linkElem),
       headScripts = None)
     <meta name="format-detection" content="telephone=no" />
 }
