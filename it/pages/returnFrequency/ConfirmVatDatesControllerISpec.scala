@@ -19,7 +19,7 @@ package pages.returnFrequency
 import assets.ReturnFrequencyIntegrationTestConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
-import helpers.IntegrationTestConstants.VRN
+import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, organisation}
 import models.core.SubscriptionUpdateResponseModel
 import pages.BasePageISpec
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
@@ -27,7 +27,7 @@ import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{FORBIDDEN, OK}
-import stubs.ReturnFrequencyStub
+import stubs.{ReturnFrequencyStub, VatSubscriptionStub}
 
 class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
@@ -85,6 +85,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
           given.user.isAuthenticated
           And("I stub a successful response from the Payments service")
           ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
 
           When("I initiate a return frequency update journey")
           val res: WSResponse = postJSValueBody(
