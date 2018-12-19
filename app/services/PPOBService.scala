@@ -19,13 +19,14 @@ package services
 import audit.AuditService
 import audit.models.ChangeAddressAuditModel
 import javax.inject.{Inject, Singleton}
+
+import common.SessionKeys
 import connectors.SubscriptionConnector
 import models.User
-import models.circumstanceInfo.{CircumstanceDetails, PPOBAddress}
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressModel
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
-import play.api.mvc.AnyContent
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -35,7 +36,9 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
                             val auditService: AuditService) {
 
 
-  private def buildPPOBUpdateModel(addressModel: AddressModel, circumstanceDetails: CircumstanceDetails) = {
+  private def buildPPOBUpdateModel(addressModel: AddressModel,
+                                   circumstanceDetails: CircumstanceDetails,
+                                   transactorOrCapacitorEmail: Option[String]) = {
 
     val updateAddress: UpdatePPOBAddress = UpdatePPOBAddress(
       line1 = addressModel.line1,
@@ -45,7 +48,13 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
       postCode = addressModel.postcode,
       countryCode = addressModel.countryCode
     )
-    UpdatePPOB(updateAddress, circumstanceDetails.ppob.contactDetails, circumstanceDetails.ppob.websiteAddress)
+
+    UpdatePPOB(
+      updateAddress,
+      circumstanceDetails.ppob.contactDetails,
+      circumstanceDetails.ppob.websiteAddress,
+      transactorOrCapacitorEmail
+    )
   }
 
 
@@ -58,10 +67,11 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
           ChangeAddressAuditModel(user, customerDetails.ppobAddress, address),
           Some(controllers.routes.BusinessAddressController.callback(id).url)
         )
-        subscriptionConnector.updatePPOB(user.vrn, buildPPOBUpdateModel(address, customerDetails)) map {
-          case Right(success) =>
-
-            Right(success)
+        subscriptionConnector.updatePPOB(
+          user.vrn,
+          buildPPOBUpdateModel(address, customerDetails, user.session.get(SessionKeys.verifiedAgentEmail))
+        ) map {
+          case Right(success) => Right(success)
           case Left(error) => Left(error)
         }
       case Left(error) => Future.successful(Left(error))

@@ -14,12 +14,25 @@
  * limitations under the License.
  */
 
-package common
+package models.returnFrequency
 
-object SessionKeys {
+import assets.UpdateReturnPeriodTestConstants._
+import play.api.libs.json.Json
+import uk.gov.hmrc.play.test.UnitSpec
 
-  val CURRENT_RETURN_FREQUENCY: String = "CURRENT_RETURN_FREQUENCY"
-  val NEW_RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
-  val CLIENT_VRN: String = "CLIENT_VRN"
-  val verifiedAgentEmail: String = "verifiedAgentEmail"
+class UpdateReturnPeriodSpec extends UnitSpec {
+
+  "UpdateReturnPeriod" should {
+
+    "serialize to JSON" when {
+
+      "all optional fields are populated" in {
+        Json.toJson(updateReturnPeriodMax) shouldBe updateReturnPeriodJsonMax
+      }
+
+      "no optional fields are returned" in {
+        Json.toJson(updateReturnPeriodMin) shouldBe updateReturnPeriodJsonMin
+      }
+    }
+  }
 }

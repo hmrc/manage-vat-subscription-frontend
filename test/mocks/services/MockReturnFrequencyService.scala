@@ -40,7 +40,7 @@ trait MockReturnFrequencyService extends UnitSpec with MockitoSugar with BeforeA
   }
 
   def setupMockReturnFrequencyService(response: ServiceResponse): OngoingStubbing[Future[ServiceResponse]]  = {
-    when(mockReturnFrequencyService.updateReturnFrequency(anyString(), any())(any(), any()))
+    when(mockReturnFrequencyService.updateReturnFrequency(anyString(), any())(any(), any(), any()))
       .thenReturn(Future.successful(response))
   }
 
