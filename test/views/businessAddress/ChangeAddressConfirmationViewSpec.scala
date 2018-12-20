@@ -23,6 +23,7 @@ import views.ViewBaseSpec
 import views.html.{businessAddress => views}
 import assets.messages.{ChangeAddressConfirmationPageMessages => viewMessages}
 import assets.messages.BaseMessages
+import assets.BaseTestConstants.agentEmail
 
 class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
@@ -63,41 +64,56 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
     }
   }
 
-  "the ChangeAddressConfirmationView for an agent" should {
+  "the ChangeAddressConfirmationView for an agent" when {
 
-    lazy val view: Html = views.change_address_confirmation()(agentUser, messages, mockConfig)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    "there is a client name" should {
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
-    }
+      lazy val view: Html = views.change_address_confirmation(
+        clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page heading of '${viewMessages.title}'" in {
-      elementText("h1") shouldBe viewMessages.title
-    }
-
-    s"have the correct p1 of '${viewMessages.p1}'" in {
-      paragraph(1) shouldBe viewMessages.p1
-    }
-
-    s"have the correct p2 of '${viewMessages.p2}'" in {
-      paragraph(2) shouldBe viewMessages.p2
-    }
-
-    "display the 'change another clients details' link" in {
-      elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
-      element("#change-client-link").attr("href") shouldBe
-        controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-    }
-
-    s"have a button to finish" which {
-
-      s"has the correct text of '${BaseMessages.finish}" in {
-        elementText("#finish") shouldBe BaseMessages.finish
+      s"have the correct document title of '${viewMessages.title}'" in {
+        document.title shouldBe viewMessages.title
       }
 
-      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+      s"have the correct page heading of '${viewMessages.title}'" in {
+        elementText("h1") shouldBe viewMessages.title
+      }
+
+      s"have the correct p1 of '${viewMessages.p1Agent}'" in {
+        paragraph(1) shouldBe viewMessages.p1Agent
+      }
+
+      s"have the correct p2 of '${viewMessages.p2Agent}'" in {
+        paragraph(2) shouldBe viewMessages.p2Agent
+      }
+
+      "display the 'change another clients details' link" in {
+        elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
+        element("#change-client-link").attr("href") shouldBe
+          controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+      }
+
+      s"have a button to finish" which {
+
+        s"has the correct text of '${BaseMessages.finish}" in {
+          elementText("#finish") shouldBe BaseMessages.finish
+        }
+
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
+          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+        }
+      }
+    }
+
+    "there is no client name" should {
+
+      lazy val view: Html = views.change_address_confirmation(
+        agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct p2 of '${viewMessages.p2AgentNoClientName}'" in {
+        paragraph(2) shouldBe viewMessages.p2AgentNoClientName
       }
     }
   }

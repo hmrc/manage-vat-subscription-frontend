@@ -134,7 +134,7 @@ change_address_confirmation.h2 = What happens next
 change_address_confirmation.p1 = If this change is accepted, we will send a confirmation letter to the new business address.
 change_address_confirmation.p2 = We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately.
 change_address_confirmation.agent.p1-1 = We will send an email to
-change_address_confirmation.agent.p1-2 = within 2 working days with an update, followed by a letter to your principal place of business.
+change_address_confirmation.agent.p1-2 = within 2 working days with an update, followed by a letter to the principal place of business.
 change_address_confirmation.agent.p2-1 = We will also contact
 change_address_confirmation.agent.p2-2 = with an update.
 
