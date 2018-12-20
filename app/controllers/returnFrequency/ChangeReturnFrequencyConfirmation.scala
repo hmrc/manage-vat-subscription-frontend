@@ -19,8 +19,11 @@ package controllers.returnFrequency
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
+
+import common.SessionKeys
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
+import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -28,10 +31,22 @@ import scala.concurrent.Future
 @Singleton
 class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val authenticate: AuthPredicate,
+                                                  customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
-    Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
+    user.session.get(SessionKeys.verifiedAgentEmail) match {
+      case Some(email) =>
+        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+          case Right(details) =>
+            val entityName = details.customerDetails.clientName
+            Ok(views.html.returnFrequency.change_return_frequency_confirmation(clientName = entityName, agentEmail = Some(email)))
+          case Left(_) =>
+            Ok(views.html.returnFrequency.change_return_frequency_confirmation(agentEmail = Some(email)))
+        }
+      case None =>
+        Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
+    }
   }
 }

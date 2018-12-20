@@ -30,29 +30,77 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
   object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
     messagesApi,
     mockAuthPredicate,
+    mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockConfig
   )
 
   "Calling the .show action" when {
 
-    "the user is authorised" should {
+    "the user is authorised" when {
 
-      lazy val result = TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
-      lazy val document = Jsoup.parse(bodyOf(result))
+      "there is an agent email in session" when {
 
-      "return 200" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.OK
+        "the call to the customer details service is successful" should {
+
+          lazy val result = {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
+          }
+
+          "return 200" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Business Address confirmation view" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.heading
+          }
+        }
+
+        "the call to the customer details service is unsuccessful" should {
+
+          lazy val result = {
+            mockCustomerDetailsError()
+            TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
+          }
+
+          "return 200" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Business Address confirmation view" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.heading
+          }
+        }
       }
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+      "there is no agent email in session" should {
 
-      "render the Change Return Frequency Confirmation Page" in {
-        document.title shouldBe Messages.ReceivedPage.heading
+        lazy val result = TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Change Return Frequency Confirmation Page" in {
+          document.title shouldBe Messages.ReceivedPage.heading
+        }
       }
     }
 

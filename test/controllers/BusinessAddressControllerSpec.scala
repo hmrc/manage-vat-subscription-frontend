@@ -282,8 +282,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           controller.confirmation("agent")(agentUser)
         }
 
-        "Return status 200 (OK)" in {
+        "return 200" in {
           status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
         }
 
         "render the Business Address confirmation view" in {
@@ -298,8 +303,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           controller.confirmation("agent")(agentUser)
         }
 
-        "Return status 200 (OK)" in {
+        "return 200" in {
           status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
         }
 
         "render the Business Address confirmation view" in {
@@ -312,8 +322,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       lazy val result = controller.confirmation("non-agent")(request)
 
-      "Return status 200 (OK)" in {
+      "return 200" in {
         status(result) shouldBe Status.OK
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
       }
 
       "render the Business Address confirmation view" in {
