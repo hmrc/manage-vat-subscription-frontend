@@ -16,6 +16,7 @@
 
 package assets
 
+import assets.BaseTestConstants.agentEmail
 import models.circumstanceInfo.ContactDetails
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
 import play.api.libs.json.{JsValue, Json}
@@ -66,9 +67,10 @@ object UpdatePPOBAddressTestConstants {
 
   val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
 
-  val updatePPOBModelMax = UpdatePPOB(updatePPOBAddressModelMax,Some(contactDetailsModelMax), Some(website))
+  val updatePPOBModelMax =
+    UpdatePPOB(updatePPOBAddressModelMax, Some(contactDetailsModelMax), Some(website), Some(agentEmail))
 
-  val updatePPOBModelMin = UpdatePPOB(updatePPOBAddressModelMin,None,None)
+  val updatePPOBModelMin = UpdatePPOB(updatePPOBAddressModelMin, None, None, None)
 
   val updatePPOBJsonMax: JsValue = Json.obj(
     "address" -> Json.obj(
@@ -86,7 +88,8 @@ object UpdatePPOBAddressTestConstants {
       "emailAddress" -> email,
       "emailVerified" -> emailVerified
     ),
-    "websiteAddress" -> website
+    "websiteAddress" -> website,
+    "transactorOrCapacitorEmail" -> agentEmail
   )
 
   val updatePPOBJsonMin: JsValue = Json.obj(
@@ -96,5 +99,4 @@ object UpdatePPOBAddressTestConstants {
       "countryCode" -> countryCode
     )
   )
-
 }

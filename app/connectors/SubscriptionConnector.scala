@@ -21,9 +21,10 @@ import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstan
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import javax.inject.{Inject, Singleton}
+
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.returnFrequency.ReturnPeriod
+import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.UpdatePPOB
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
@@ -52,9 +53,9 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
     http.PUT[UpdatePPOB, HttpPostResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
   }
 
-  def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)
+  def updateReturnFrequency(vrn: String, frequency: UpdateReturnPeriod)
                            (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     val url = updateReturnPeriod(vrn)
-    http.PUT[ReturnPeriod,HttpPostResult[SubscriptionUpdateResponseModel]](url, frequency)
+    http.PUT[UpdateReturnPeriod,HttpPostResult[SubscriptionUpdateResponseModel]](url, frequency)
   }
 }

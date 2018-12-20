@@ -18,7 +18,10 @@ package services
 
 import connectors.SubscriptionConnector
 import javax.inject.{Inject, Singleton}
-import models.returnFrequency.ReturnPeriod
+
+import common.SessionKeys
+import models.User
+import models.returnFrequency.{ReturnPeriod, UpdateReturnPeriod}
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -28,7 +31,11 @@ import scala.concurrent.{ExecutionContext, Future}
 class ReturnFrequencyService @Inject()(subscriptionConnector: SubscriptionConnector) {
 
   def updateReturnFrequency(vrn: String, frequency: ReturnPeriod)
-                           (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
-    subscriptionConnector.updateReturnFrequency(vrn, frequency)
+                           (implicit headerCarrier: HeaderCarrier,
+                            ec: ExecutionContext,
+                            user: User[_]): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
+
+    val updateReturnPeriod = UpdateReturnPeriod(frequency.internalId, user.session.get(SessionKeys.verifiedAgentEmail))
+    subscriptionConnector.updateReturnFrequency(vrn, updateReturnPeriod)
   }
 }

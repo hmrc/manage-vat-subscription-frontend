@@ -22,18 +22,21 @@ import play.api.libs.json._
 
 case class UpdatePPOB(address: UpdatePPOBAddress,
                       contactDetails: Option[ContactDetails],
-                      websiteAddress: Option[String])
+                      websiteAddress: Option[String],
+                      transactorOrCapacitorEmail: Option[String])
 
 object UpdatePPOB {
 
   private val addressPath = __ \ "address"
   private val contactDetailsPath = __ \ "contactDetails"
   private val websiteAddressPath = __ \ "websiteAddress"
+  private val transactorOrCapacitorEmailPath = __ \ "transactorOrCapacitorEmail"
 
   implicit val writes: Writes[UpdatePPOB] = (
     addressPath.write[UpdatePPOBAddress] and
       contactDetailsPath.writeNullable[ContactDetails] and
-      websiteAddressPath.writeNullable[String]
+      websiteAddressPath.writeNullable[String] and
+      transactorOrCapacitorEmailPath.writeNullable[String]
     )(unlift(UpdatePPOB.unapply))
 
 }

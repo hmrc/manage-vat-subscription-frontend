@@ -34,7 +34,7 @@ class ReturnFrequencyServiceSpec extends TestUtil with MockSubscriptionConnector
     val subscriptionResult = SubscriptionUpdateResponseModel("formBundle")
 
     lazy val service = setup(Right(subscriptionResult))
-    lazy val result = service.updateReturnFrequency("", Jan)
+    lazy val result = service.updateReturnFrequency("", Jan)(hc, ec, agentUser)
 
     "return successful SubscriptionUpdateResponseModel" in {
       await(result) shouldBe Right(subscriptionResult)

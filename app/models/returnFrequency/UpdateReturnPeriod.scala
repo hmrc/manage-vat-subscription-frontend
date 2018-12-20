@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package common
+package models.returnFrequency
 
-object SessionKeys {
+import play.api.libs.functional.syntax._
+import play.api.libs.json._
 
-  val CURRENT_RETURN_FREQUENCY: String = "CURRENT_RETURN_FREQUENCY"
-  val NEW_RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
-  val CLIENT_VRN: String = "CLIENT_VRN"
-  val verifiedAgentEmail: String = "verifiedAgentEmail"
+case class UpdateReturnPeriod(returnPeriodId: String,
+                              transactorOrCapacitorEmail: Option[String])
+
+object UpdateReturnPeriod {
+
+  private val returnPeriodPath = __ \ "stdReturnPeriod"
+  private val transactorOrCapacitorEmailPath = __ \ "transactorOrCapacitorEmail"
+
+  implicit val writes: Writes[UpdateReturnPeriod] = (
+    returnPeriodPath.write[String] and
+    transactorOrCapacitorEmailPath.writeNullable[String]
+  )(unlift(UpdateReturnPeriod.unapply))
 }

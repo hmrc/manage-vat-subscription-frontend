@@ -23,7 +23,7 @@ import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.returnFrequency.Jan
+import models.returnFrequency.{Jan, UpdateReturnPeriod}
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
@@ -91,7 +91,8 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .updateReturnFrequency" when {
 
-      def result: Future[HttpPostResult[SubscriptionUpdateResponseModel]] = TestSubscriptionConnector.updateReturnFrequency("999999999", Jan)
+      def result: Future[HttpPostResult[SubscriptionUpdateResponseModel]] =
+        TestSubscriptionConnector.updateReturnFrequency("999999999", UpdateReturnPeriod(Jan.id, Some(agentEmail)))
 
       "called with a Right SubscriptionUpdateResponseModel" should {
 

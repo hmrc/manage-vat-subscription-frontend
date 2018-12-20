@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package common
+package assets
 
-object SessionKeys {
+import assets.BaseTestConstants.agentEmail
+import models.returnFrequency.UpdateReturnPeriod
+import play.api.libs.json.{JsObject, Json}
 
-  val CURRENT_RETURN_FREQUENCY: String = "CURRENT_RETURN_FREQUENCY"
-  val NEW_RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
-  val CLIENT_VRN: String = "CLIENT_VRN"
-  val verifiedAgentEmail: String = "verifiedAgentEmail"
+object UpdateReturnPeriodTestConstants {
+
+  val updateReturnPeriodMax = UpdateReturnPeriod("MA", Some(agentEmail))
+  val updateReturnPeriodMin = UpdateReturnPeriod("MA", None)
+  val updateReturnPeriodJsonMax: JsObject = Json.obj(
+    "stdReturnPeriod" -> "MA",
+    "transactorOrCapacitorEmail" -> agentEmail
+  )
+  val updateReturnPeriodJsonMin: JsObject = Json.obj(
+    "stdReturnPeriod" -> "MA"
+  )
 }
