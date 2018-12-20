@@ -21,7 +21,7 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, EmailChangePendingMessages}
 import audit.mocks.MockAuditingService
-import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
+import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockCustomerCircumstanceDetailsService}
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
@@ -31,7 +31,8 @@ import play.api.test.Helpers.{redirectLocation, _}
 
 import scala.concurrent.Future
 
-class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with MockBusinessAddressService with MockAuditingService {
+class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
+  MockBusinessAddressService with MockAuditingService with MockCustomerCircumstanceDetailsService {
 
   "Calling the .show action" when {
 
@@ -41,6 +42,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockInflightEmailPredicate,
       mockAddressLookupService,
       mockBusinessAddressService,
+      mockCustomerDetailsService,
       serviceErrorHandler,
       mockAuditingService,
       mockConfig
@@ -103,6 +105,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockInflightEmailPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
+        mockCustomerDetailsService,
         serviceErrorHandler,
         mockAuditingService,
         mockConfig)
@@ -195,6 +198,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockInflightEmailPredicate,
         mockAddressLookupService,
         mockBusinessAddressService,
+        mockCustomerDetailsService,
         serviceErrorHandler,
         mockAuditingService,
         mockConfig)
@@ -256,7 +260,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     }
   }
 
-  "calling .confirmation" should {
+  "calling .confirmation" when {
 
     lazy val controller = new BusinessAddressController(
       messagesApi,
@@ -264,18 +268,57 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockInflightEmailPredicate,
       mockAddressLookupService,
       mockBusinessAddressService,
+      mockCustomerDetailsService,
       serviceErrorHandler,
       mockAuditingService,
       mockConfig)
 
-    lazy val result = controller.confirmation("non-agent")(request)
+    "there is an agent email in session" when {
 
-    "Return status 200 (OK)" in {
-      status(result) shouldBe Status.OK
+      "the call to the customer details service is successful" should {
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+          controller.confirmation("agent")(agentUser)
+        }
+
+        "Return status 200 (OK)" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "render the Business Address confirmation view" in {
+          Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+        }
+      }
+
+      "the call to the customer details service is unsuccessful" should {
+
+        lazy val result = {
+          mockCustomerDetailsError()
+          controller.confirmation("agent")(agentUser)
+        }
+
+        "Return status 200 (OK)" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "render the Business Address confirmation view" in {
+          Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+        }
+      }
     }
 
-    "render the Business Address confirmation view" in {
-      Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+    "there is no agent email in session" should {
+
+      lazy val result = controller.confirmation("non-agent")(request)
+
+      "Return status 200 (OK)" in {
+        status(result) shouldBe Status.OK
+      }
+
+      "render the Business Address confirmation view" in {
+        Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+      }
     }
   }
 }

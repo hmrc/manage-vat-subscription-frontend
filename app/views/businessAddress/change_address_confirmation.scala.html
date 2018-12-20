@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(clientName: Option[String] = None, agentEmail: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("change_address_confirmation.title"),
@@ -27,9 +27,28 @@
 
     <h2>@messages("change_address_confirmation.h2")</h2>
 
-    <p>@messages("change_address_confirmation.p1")</p>
+    @agentEmail match {
 
-    <p>@messages("change_address_confirmation.p2")</p>
+      case Some(email) => {
+        <p>@messages("change_address_confirmation.agent.p1-1")
+        <strong class="bold">@email</strong>
+        @messages("change_address_confirmation.agent.p1-2")</p>
+
+        <p>@messages("change_address_confirmation.agent.p2-1")
+
+        @clientName.fold(
+          <span>{messages("common.agent.yourClient")}</span>
+        )(
+          entityName => <strong class="bold">{entityName}</strong>
+        )
+        @messages("change_address_confirmation.agent.p2-2")</p>
+      }
+
+      case None => {
+        <p>@messages("change_address_confirmation.p1")</p>
+        <p>@messages("change_address_confirmation.p2")</p>
+      }
+    }
 
     @if(user.isAgent){
         <p id="change-client-text">

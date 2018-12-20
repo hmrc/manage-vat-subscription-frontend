@@ -21,10 +21,11 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
 import javax.inject.{Inject, Singleton}
 
+import common.SessionKeys
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import services.{AddressLookupService, PPOBService}
+import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -35,6 +36,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val inflightEmailCheck: InflightEmailPredicate,
                                           addressLookupService: AddressLookupService,
                                           ppobService: PPOBService,
+                                          customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           val auditService: AuditService,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
@@ -67,6 +69,17 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   }
 
   val confirmation: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
-    Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
+    user.session.get(SessionKeys.verifiedAgentEmail) match {
+      case Some(email) =>
+        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+          case Right(details) =>
+            val entityName = details.customerDetails.clientName
+            Ok(views.html.businessAddress.change_address_confirmation(clientName = entityName, agentEmail = Some(email)))
+          case Left(_) =>
+            Ok(views.html.businessAddress.change_address_confirmation(agentEmail = Some(email)))
+        }
+      case None =>
+        Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
+    }
   }
 }
