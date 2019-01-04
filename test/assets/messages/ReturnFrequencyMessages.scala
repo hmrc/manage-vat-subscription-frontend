@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,5 +48,6 @@ object ReturnFrequencyMessages {
       "the request has been accepted."
     val p2Agent = "We will also contact MyCompany Ltd with an update."
     val p2AgentNoClientName = "We will also contact your client with an update."
+    val confirmationLetter = "We will send a confirmation letter to the agency address within 15 working days."
   }
 }

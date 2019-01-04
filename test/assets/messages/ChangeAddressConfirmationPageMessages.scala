@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,4 +27,5 @@ object ChangeAddressConfirmationPageMessages {
   val p2Agent: String = "We will also contact MyCompany Ltd with an update."
   val p2AgentNoClientName: String = "We will also contact your client with an update."
   val changeClientDetails = "You can change another client’s details."
+  val confirmationLetter = "We will send a confirmation letter to the agency address within 15 working days."
 }
