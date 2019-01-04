@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,17 +69,17 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   }
 
   val confirmation: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
-    user.session.get(SessionKeys.verifiedAgentEmail) match {
-      case Some(email) =>
-        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
-          case Right(details) =>
-            val entityName = details.customerDetails.clientName
-            Ok(views.html.businessAddress.change_address_confirmation(clientName = entityName, agentEmail = Some(email)))
-          case Left(_) =>
-            Ok(views.html.businessAddress.change_address_confirmation(agentEmail = Some(email)))
-        }
-      case None =>
-        Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
+    if(user.isAgent) {
+      val email = user.session.get(SessionKeys.verifiedAgentEmail)
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+        case Right(details) =>
+          val entityName = details.customerDetails.clientName
+          Ok(views.html.businessAddress.change_address_confirmation(clientName = entityName, agentEmail = email))
+        case Left(_) =>
+          Ok(views.html.businessAddress.change_address_confirmation(agentEmail = email))
+      }
+    } else {
+      Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
     }
   }
 }

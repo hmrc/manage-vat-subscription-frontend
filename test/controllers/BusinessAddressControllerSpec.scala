@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -273,7 +273,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockAuditingService,
       mockConfig)
 
-    "there is an agent email in session" when {
+    "the user is an agent" when {
 
       "the call to the customer details service is successful" should {
 
@@ -318,7 +318,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
     }
 
-    "there is no agent email in session" should {
+    "the user is not an agent" should {
 
       lazy val result = controller.confirmation("non-agent")(request)
 

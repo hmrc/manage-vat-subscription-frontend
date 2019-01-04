@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
     "the user is authorised" when {
 
-      "there is an agent email in session" when {
+      "the user is an agent" when {
 
         "the call to the customer details service is successful" should {
 
@@ -84,7 +84,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         }
       }
 
-      "there is no agent email in session" should {
+      "the user is not an agent" should {
 
         lazy val result = TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
         lazy val document = Jsoup.parse(bodyOf(result))

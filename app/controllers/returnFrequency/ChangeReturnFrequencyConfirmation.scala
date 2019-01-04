@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,17 +36,17 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
-    user.session.get(SessionKeys.verifiedAgentEmail) match {
-      case Some(email) =>
-        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
-          case Right(details) =>
-            val entityName = details.customerDetails.clientName
-            Ok(views.html.returnFrequency.change_return_frequency_confirmation(clientName = entityName, agentEmail = Some(email)))
-          case Left(_) =>
-            Ok(views.html.returnFrequency.change_return_frequency_confirmation(agentEmail = Some(email)))
-        }
-      case None =>
-        Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
+    if(user.isAgent) {
+      val email = user.session.get(SessionKeys.verifiedAgentEmail)
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+        case Right(details) =>
+          val entityName = details.customerDetails.clientName
+          Ok(views.html.returnFrequency.change_return_frequency_confirmation(clientName = entityName, agentEmail = email))
+        case Left(_) =>
+          Ok(views.html.returnFrequency.change_return_frequency_confirmation(agentEmail = email))
+      }
+    } else {
+      Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))
     }
   }
 }
