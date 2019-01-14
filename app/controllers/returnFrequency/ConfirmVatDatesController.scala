@@ -18,6 +18,8 @@ package controllers.returnFrequency
 
 import audit.AuditService
 import audit.models.UpdateReturnFrequencyAuditModel
+import cats.data.EitherT
+import cats.instances.future._
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
@@ -25,7 +27,7 @@ import javax.inject.{Inject, Singleton}
 import models.returnFrequency._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.ReturnFrequencyService
+import services.{CustomerCircumstanceDetailsService, ReturnFrequencyService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -34,6 +36,7 @@ import scala.concurrent.Future
 class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           returnFrequencyService: ReturnFrequencyService,
+                                          val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val auditService: AuditService,
                                           implicit val appConfig: AppConfig,
                                           implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
@@ -48,15 +51,17 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
   val submit: Action[AnyContent] = authenticate.async { implicit user =>
     (ReturnPeriod(user.session(SessionKeys.CURRENT_RETURN_FREQUENCY)), ReturnPeriod(user.session(SessionKeys.NEW_RETURN_FREQUENCY))) match {
       case (Some(currentFrequency), Some(newFrequency)) =>
-        auditService.extendedAudit(
-          UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency),
-          Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
-        )
-        returnFrequencyService.updateReturnFrequency(user.vrn, newFrequency).map {
-          case Right(success) => {
+        (for{
+          customerDetails <- EitherT(customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn))
+          _ <- EitherT(returnFrequencyService.updateReturnFrequency(user.vrn, newFrequency))
+        } yield customerDetails).value.map {
+          case Right(details) =>
+            auditService.extendedAudit(
+              UpdateReturnFrequencyAuditModel(user, currentFrequency, newFrequency, details.partyType),
+              Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url)
+            )
             Redirect(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show(if(user.isAgent) "agent" else "non-agent"))
               .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
-          }
           case _ => serviceErrorHandler.showInternalServerError
         }
       case _ => Future.successful(serviceErrorHandler.showInternalServerError)

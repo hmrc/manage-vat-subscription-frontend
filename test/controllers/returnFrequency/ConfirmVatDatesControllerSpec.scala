@@ -16,8 +16,8 @@
 
 package controllers.returnFrequency
 
-import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
+import assets.BaseTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import audit.mocks.MockAuditingService
 import audit.models.UpdateReturnFrequencyAuditModel
@@ -44,6 +44,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     mockAuthPredicate,
     app.injector.instanceOf[ServiceErrorHandler],
     mockReturnFrequencyService,
+    mockCustomerDetailsService,
     mockAuditingService,
     mockConfig,
     messagesApi
@@ -102,11 +103,12 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return 303" in {
         setupMockReturnFrequencyServiceWithSuccess()
+        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
         status(result) shouldBe Status.SEE_OTHER
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, Some(partyType))),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
@@ -115,7 +117,6 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       }
 
       "return a location to the received dates view" in {
-        setupMockReturnFrequencyServiceWithSuccess()
         val test = s"/vat-through-software/account/confirmation-vat-return-dates/non-agent"
         redirectLocation(result) shouldBe Some(test)
       }
@@ -130,12 +131,13 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
       "return 303" in {
         mockAgentAuthorised()
+        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
         setupMockReturnFrequencyServiceWithSuccess()
         status(result) shouldBe Status.SEE_OTHER
 
         verify(mockAuditingService)
           .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan)),
+            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan, Some(partyType))),
             ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
@@ -144,7 +146,6 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       }
 
       "return a location to the received dates view" in {
-        setupMockReturnFrequencyServiceWithSuccess()
         val test = s"/vat-through-software/account/confirmation-vat-return-dates/agent"
         redirectLocation(result) shouldBe Some(test)
       }
@@ -158,6 +159,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
       ))
 
       "return 500" in {
+        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
         setupMockReturnFrequencyServiceWithFailure()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
