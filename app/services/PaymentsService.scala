@@ -17,37 +17,55 @@
 package services
 
 import config.AppConfig
-import connectors.PaymentsConnector
+import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.{PaymentsConnector, SubscriptionConnector}
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
+import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
+import play.api.http.Status.NOT_FOUND
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
+class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscriptionConnector: SubscriptionConnector) {
 
   def postPaymentDetails[A](user: User[A])
-                       (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
+                           (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
 
     val convenienceUrl = {
-      if(user.isAgent) {
+      if (user.isAgent) {
         config.host + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
       } else {
         config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)
       }
     }
 
-    val paymentDetails: PaymentStartModel = PaymentStartModel(
-      user.vrn,
-      user.isAgent,
-      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
-      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
-      convenienceUrl
-    )
-
-    paymentsConnector.postPaymentsDetails(paymentDetails)
+    subscriptionConnector.getCustomerCircumstanceDetails(user.vrn).flatMap {
+      case Left(error) =>
+        Logger(getClass.getSimpleName).warn(
+          s"[PaymentsService][postPaymentDetails] Error retrieving Customer Circumstance Details with status ${error.status} - ${error.message}"
+        )
+        Future.successful(Left(error))
+      case Right(circumstanceDetails) =>
+        val paymentDetails: PaymentStartModel = PaymentStartModel(
+          user.vrn,
+          user.isAgent,
+          config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
+          config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
+          convenienceUrl,
+          circumstanceDetails.partyType,
+          circumstanceDetails.customerDetails.welshIndicator
+        )
+        if(circumstanceDetails.customerDetails.welshIndicator.isDefined) {
+          paymentsConnector.postPaymentsDetails(paymentDetails)
+        } else {
+          Logger(getClass.getSimpleName).warn("[PaymentsService][postPaymentDetails] Welsh indicator missing from customer details")
+          Future.successful(Left(ErrorModel(NOT_FOUND, "Welsh Indicator Missing")))
+        }
+    }
   }
 }

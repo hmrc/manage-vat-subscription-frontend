@@ -22,7 +22,9 @@ case class PaymentStartModel(vrn: String,
                              isAgent: Boolean,
                              returnUrl: String,
                              backUrl: String,
-                             convenienceUrl: String)
+                             convenienceUrl: String,
+                             partyType: Option[String],
+                             welshIndicator: Option[Boolean])
 
 object PaymentStartModel {
   implicit val format: Format[PaymentStartModel] = Json.format[PaymentStartModel]
