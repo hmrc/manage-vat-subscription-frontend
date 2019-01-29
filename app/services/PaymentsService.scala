@@ -20,9 +20,9 @@ import config.AppConfig
 import connectors.{PaymentsConnector, SubscriptionConnector}
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
-import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscriptionConnector: SubscriptionConnector) {
 
-  def postPaymentDetails[A](user: User[A])
+  def postPaymentDetails[A](user: User[A], circumstanceDetails: CircumstanceDetails)
                            (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
 
     val convenienceUrl = {
@@ -41,23 +41,15 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscripti
       }
     }
 
-    subscriptionConnector.getCustomerCircumstanceDetails(user.vrn).flatMap {
-      case Left(error) =>
-        Logger(getClass.getSimpleName).warn(
-          s"[PaymentsService][postPaymentDetails] Error retrieving Customer Circumstance Details with status ${error.status} - ${error.message}"
-        )
-        Future.successful(Left(error))
-      case Right(circumstanceDetails) =>
-        val paymentDetails: PaymentStartModel = PaymentStartModel(
-          user.vrn,
-          user.isAgent,
-          config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
-          config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
-          convenienceUrl,
-          circumstanceDetails.partyType,
-          circumstanceDetails.customerDetails.welshIndicator
-        )
-        paymentsConnector.postPaymentsDetails(paymentDetails)
-    }
+    val paymentDetails: PaymentStartModel = PaymentStartModel(
+      user.vrn,
+      user.isAgent,
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
+      config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
+      convenienceUrl,
+      circumstanceDetails.partyType,
+      circumstanceDetails.customerDetails.welshIndicator
+    )
+    paymentsConnector.postPaymentsDetails(paymentDetails)
   }
 }
