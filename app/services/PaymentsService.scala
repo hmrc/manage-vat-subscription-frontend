@@ -60,12 +60,7 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscripti
           circumstanceDetails.partyType,
           circumstanceDetails.customerDetails.welshIndicator
         )
-        if(circumstanceDetails.customerDetails.welshIndicator.isDefined) {
-          paymentsConnector.postPaymentsDetails(paymentDetails)
-        } else {
-          Logger(getClass.getSimpleName).warn("[PaymentsService][postPaymentDetails] Welsh indicator missing from customer details")
-          Future.successful(Left(ErrorModel(NOT_FOUND, "Welsh Indicator Missing")))
-        }
+        paymentsConnector.postPaymentsDetails(paymentDetails)
     }
   }
 }
