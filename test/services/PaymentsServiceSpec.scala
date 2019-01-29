@@ -16,14 +16,15 @@
 
 package services
 
-import assets.BaseTestConstants.errorModel
+import assets.BaseTestConstants.{errorModel, vrn}
+import assets.CircumstanceDetailsTestConstants._
 import assets.PaymentsTestConstants._
-import mocks.connectors.MockPaymentsConnector
+import mocks.connectors.{MockPaymentsConnector, MockSubscriptionConnector}
 import utils.TestUtil
 
-class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
+class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockSubscriptionConnector {
 
-  object TestPaymentsService extends PaymentsService(mockPaymentsConnector)
+  object TestPaymentsService extends PaymentsService(mockPaymentsConnector, mockSubscriptionConnector)
 
   "PaymentsService" should {
 
@@ -34,6 +35,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
         "for a principal user" should {
 
           "return a PaymentRedirectModel" in {
+            setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
             setupMockPostPaymentsDetails(principlePaymentStart)(Right(successPaymentsResponseModel))
             await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
           }
@@ -42,6 +44,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
         "for an Agent" should {
 
           "return a PaymentRedirectModel" in {
+            setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
             setupMockPostPaymentsDetails(agentPaymentStart)(Right(successPaymentsResponseModel))
             await(TestPaymentsService.postPaymentDetails(agentUser)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
           }
@@ -50,8 +53,14 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
       "given an error should" should {
 
-        "return a Left with an ErrorModel" in {
+        "return a Left with an ErrorModel when POST fails" in {
+          setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
           setupMockPostPaymentsDetails(principlePaymentStart)(Left(errorModel))
+          await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
+        }
+
+        "return a Left with an ErrorModel when get user details fails" in {
+          setupMockUserDetails(vrn)(Left(errorModel))
           await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
         }
       }

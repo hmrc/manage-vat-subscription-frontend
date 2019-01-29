@@ -17,16 +17,13 @@
 package services
 
 import config.AppConfig
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import connectors.{PaymentsConnector, SubscriptionConnector}
 import javax.inject.{Inject, Singleton}
 import models.User
-import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.http.Status.NOT_FOUND
 
 import scala.concurrent.{ExecutionContext, Future}
 

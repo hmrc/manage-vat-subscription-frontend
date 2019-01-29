@@ -41,14 +41,16 @@ object IntegrationTestConstants {
     firstName = None,
     lastName = None,
     tradingName = Some("Vatmobile Taxi"),
-    organisationName = Some("Vatmobile Taxi LTD")
+    organisationName = Some("Vatmobile Taxi LTD"),
+    welshIndicator = None
   )
 
   val individual = CustomerDetails(
     firstName = Some("Nanana"),
     lastName = Some("Vatman"),
     tradingName = Some("Vatmobile Taxi"),
-    organisationName = None
+    organisationName = None,
+    welshIndicator = None
   )
 
   val contactDetailsModelMax = ContactDetails(

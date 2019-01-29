@@ -50,12 +50,12 @@ class CustomerDetailsSpec extends UnitSpec {
       }
       "FirstName is present" should {
         "return 'Firstname'" in {
-          CustomerDetails(Some(firstName), None, None, None).userName shouldBe Some(s"$firstName")
+          CustomerDetails(Some(firstName), None, None, None, None).userName shouldBe Some(s"$firstName")
         }
       }
       "LastName is present" should {
         "return 'Lastname'" in {
-          CustomerDetails(None, Some(lastName), None, None).userName shouldBe Some(s"$lastName")
+          CustomerDetails(None, Some(lastName), None, None, None).userName shouldBe Some(s"$lastName")
         }
       }
       "No names are present" should {
