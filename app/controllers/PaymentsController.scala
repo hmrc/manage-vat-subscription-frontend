@@ -53,11 +53,7 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
             Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
-      case Left(error) =>
-        Logger(getClass.getSimpleName).warn(
-          s"[PaymentsService][postPaymentDetails] Error retrieving Customer Circumstance Details with status ${error.status} - ${error.message}"
-        )
-        Future.successful(serviceErrorHandler.showInternalServerError)
+      case Left(_) => Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 }

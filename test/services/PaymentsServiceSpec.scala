@@ -35,18 +35,20 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockS
         "for a principal user" should {
 
           "return a PaymentRedirectModel" in {
-            setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
             setupMockPostPaymentsDetails(principlePaymentStart)(Right(successPaymentsResponseModel))
-            await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+            await(
+              TestPaymentsService.postPaymentDetails(user, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+            ) shouldBe Right(successPaymentsResponseModel)
           }
         }
 
         "for an Agent" should {
 
           "return a PaymentRedirectModel" in {
-            setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
             setupMockPostPaymentsDetails(agentPaymentStart)(Right(successPaymentsResponseModel))
-            await(TestPaymentsService.postPaymentDetails(agentUser)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+            await(
+              TestPaymentsService.postPaymentDetails(agentUser, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+            ) shouldBe Right(successPaymentsResponseModel)
           }
         }
       }
@@ -54,14 +56,10 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockS
       "given an error should" should {
 
         "return a Left with an ErrorModel when POST fails" in {
-          setupMockUserDetails(vrn)(Right(customerInformationWithPartyType(None)))
           setupMockPostPaymentsDetails(principlePaymentStart)(Left(errorModel))
-          await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
-        }
-
-        "return a Left with an ErrorModel when get user details fails" in {
-          setupMockUserDetails(vrn)(Left(errorModel))
-          await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
+          await(
+            TestPaymentsService.postPaymentDetails(user, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+          ) shouldBe Left(errorModel)
         }
       }
     }
