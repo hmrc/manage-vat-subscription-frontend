@@ -16,15 +16,14 @@
 
 package services
 
-import assets.BaseTestConstants.{errorModel, vrn}
-import assets.CircumstanceDetailsTestConstants._
+import assets.BaseTestConstants.errorModel
 import assets.PaymentsTestConstants._
-import mocks.connectors.{MockPaymentsConnector, MockSubscriptionConnector}
+import mocks.connectors.MockPaymentsConnector
 import utils.TestUtil
 
-class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockSubscriptionConnector {
+class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
-  object TestPaymentsService extends PaymentsService(mockPaymentsConnector, mockSubscriptionConnector)
+  object TestPaymentsService extends PaymentsService(mockPaymentsConnector)
 
   "PaymentsService" should {
 
@@ -37,7 +36,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockS
           "return a PaymentRedirectModel" in {
             setupMockPostPaymentsDetails(principlePaymentStart)(Right(successPaymentsResponseModel))
             await(
-              TestPaymentsService.postPaymentDetails(user, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+              TestPaymentsService.postPaymentDetails(user, None, None)(implicitly, implicitly, mockConfig)
             ) shouldBe Right(successPaymentsResponseModel)
           }
         }
@@ -47,7 +46,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockS
           "return a PaymentRedirectModel" in {
             setupMockPostPaymentsDetails(agentPaymentStart)(Right(successPaymentsResponseModel))
             await(
-              TestPaymentsService.postPaymentDetails(agentUser, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+              TestPaymentsService.postPaymentDetails(agentUser, None, None)(implicitly, implicitly, mockConfig)
             ) shouldBe Right(successPaymentsResponseModel)
           }
         }
@@ -58,7 +57,7 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector with MockS
         "return a Left with an ErrorModel when POST fails" in {
           setupMockPostPaymentsDetails(principlePaymentStart)(Left(errorModel))
           await(
-            TestPaymentsService.postPaymentDetails(user, customerInformationWithPartyType(None))(implicitly, implicitly, mockConfig)
+            TestPaymentsService.postPaymentDetails(user, None, None)(implicitly, implicitly, mockConfig)
           ) shouldBe Left(errorModel)
         }
       }

@@ -17,10 +17,9 @@
 package services
 
 import config.AppConfig
-import connectors.{PaymentsConnector, SubscriptionConnector}
+import connectors.PaymentsConnector
 import javax.inject.{Inject, Singleton}
 import models.User
-import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -28,9 +27,9 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscriptionConnector: SubscriptionConnector) {
+class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
-  def postPaymentDetails[A](user: User[A], circumstanceDetails: CircumstanceDetails)
+  def postPaymentDetails[A](user: User[A], partyType: Option[String], welshIndicator: Option[Boolean])
                            (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
 
     val convenienceUrl = {
@@ -47,8 +46,8 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector, subscripti
       config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
       config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
       convenienceUrl,
-      circumstanceDetails.partyType,
-      circumstanceDetails.customerDetails.welshIndicator
+      partyType,
+      welshIndicator
     )
     paymentsConnector.postPaymentsDetails(paymentDetails)
   }

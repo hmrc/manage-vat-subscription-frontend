@@ -17,9 +17,8 @@
 package mocks.services
 
 import models.core.ErrorModel
-import models.payments.{PaymentRedirectModel, PaymentStartModel}
+import models.payments.PaymentRedirectModel
 import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
@@ -41,8 +40,9 @@ trait MockPaymentsService extends UnitSpec with MockitoSugar with BeforeAndAfter
   }
 
   def setupMockPaymentsService(response: PaymentsResponse): OngoingStubbing[Future[PaymentsResponse]] = {
-    when(mockPaymentsService.postPaymentDetails(
-        ArgumentMatchers.any(), ArgumentMatchers.any())(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+    when(mockPaymentsService.postPaymentDetails
+    (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())
+    (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(Future.successful(response))
   }
 

@@ -42,7 +42,7 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
   val sendToPayments: Action[AnyContent] = authenticate.async { implicit user =>
     subscriptionConnector.getCustomerCircumstanceDetails(user.vrn).flatMap {
       case Right(circumstanceDetails) =>
-        paymentsService.postPaymentDetails(user, circumstanceDetails) map {
+        paymentsService.postPaymentDetails(user, circumstanceDetails.partyType, circumstanceDetails.customerDetails.welshIndicator) map {
           case Right(response) =>
             auditService.extendedAudit(
               BankAccountHandOffAuditModel(user, response.nextUrl),
@@ -50,7 +50,7 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
             )
             Redirect(response.nextUrl)
           case _ =>
-            Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
+            Logger.debug("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) => Future.successful(serviceErrorHandler.showInternalServerError)
