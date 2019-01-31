@@ -17,10 +17,11 @@
 package controllers
 
 import assets.BaseTestConstants._
+import assets.CircumstanceDetailsTestConstants.customerInformationWithPartyType
 import assets.PaymentsTestConstants._
 import audit.mocks.MockAuditingService
 import audit.models.BankAccountHandOffAuditModel
-import mocks.services.MockPaymentsService
+import mocks.services.{MockCustomerCircumstanceDetailsService, MockPaymentsService}
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
@@ -30,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext
 
 
-class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService with MockAuditingService {
+class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService with MockAuditingService with MockCustomerCircumstanceDetailsService {
 
   object TestPaymentController extends PaymentsController(
     messagesApi,
@@ -38,14 +39,17 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     serviceErrorHandler,
     mockPaymentsService,
     mockAuditingService,
+    mockCustomerDetailsService,
     mockConfig
   )
 
   "Calling the sendToPayments method for an individual" when {
 
-    def setup(paymentsResponse: PaymentsResponse): PaymentsController = {
+    def setup(customerDetailsResponse: CircumstanceDetailsResponse = Right(customerInformationWithPartyType(None)),
+              paymentsResponse: PaymentsResponse): PaymentsController = {
 
       setupMockPaymentsService(paymentsResponse)
+      setupMockCustomerDetails(vrn)(customerDetailsResponse)
       mockIndividualAuthorised()
 
       TestPaymentController
@@ -77,6 +81,16 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     "the PaymentsService returns an error" should {
 
       lazy val controller = setup(paymentsResponse = Left(errorModel))
+      lazy val result = controller.sendToPayments(request)
+
+      "return 500 (ISE)" in {
+        status(result) shouldBe INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "the CustomerCircumstanceDetailsService returns an error" should {
+
+      lazy val controller = setup(customerDetailsResponse = Left(errorModel), paymentsResponse = Left(errorModel))
       lazy val result = controller.sendToPayments(request)
 
       "return 500 (ISE)" in {

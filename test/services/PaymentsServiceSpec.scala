@@ -35,7 +35,9 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
           "return a PaymentRedirectModel" in {
             setupMockPostPaymentsDetails(principlePaymentStart)(Right(successPaymentsResponseModel))
-            await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+            await(
+              TestPaymentsService.postPaymentDetails(user, None, None)(implicitly, implicitly, mockConfig)
+            ) shouldBe Right(successPaymentsResponseModel)
           }
         }
 
@@ -43,16 +45,20 @@ class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 
           "return a PaymentRedirectModel" in {
             setupMockPostPaymentsDetails(agentPaymentStart)(Right(successPaymentsResponseModel))
-            await(TestPaymentsService.postPaymentDetails(agentUser)(implicitly, implicitly, mockConfig)) shouldBe Right(successPaymentsResponseModel)
+            await(
+              TestPaymentsService.postPaymentDetails(agentUser, None, None)(implicitly, implicitly, mockConfig)
+            ) shouldBe Right(successPaymentsResponseModel)
           }
         }
       }
 
       "given an error should" should {
 
-        "return a Left with an ErrorModel" in {
+        "return a Left with an ErrorModel when POST fails" in {
           setupMockPostPaymentsDetails(principlePaymentStart)(Left(errorModel))
-          await(TestPaymentsService.postPaymentDetails(user)(implicitly, implicitly, mockConfig)) shouldBe Left(errorModel)
+          await(
+            TestPaymentsService.postPaymentDetails(user, None, None)(implicitly, implicitly, mockConfig)
+          ) shouldBe Left(errorModel)
         }
       }
     }

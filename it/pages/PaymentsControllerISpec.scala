@@ -20,7 +20,8 @@ import helpers.BaseIntegrationSpec
 import models.payments.PaymentRedirectModel
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 import play.api.libs.ws.WSResponse
-import stubs.PaymentStub
+import stubs.{PaymentStub, VatSubscriptionStub}
+import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMax, individual}
 
 class PaymentsControllerISpec extends BaseIntegrationSpec {
 
@@ -31,6 +32,9 @@ class PaymentsControllerISpec extends BaseIntegrationSpec {
       "return status 303 and redirect to the returned url " in {
 
         given.user.isAuthenticated
+
+        And("I stub a successful response from the Subscription service")
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual))
 
         And("I stub a successful response from the Payments service")
         PaymentStub.postPaymentSuccess(PaymentRedirectModel("change-business-details"))

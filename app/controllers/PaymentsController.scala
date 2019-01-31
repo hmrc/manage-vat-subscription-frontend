@@ -24,8 +24,10 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
-import services.PaymentsService
+import services.{CustomerCircumstanceDetailsService, PaymentsService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+
+import scala.concurrent.Future
 
 @Singleton
 class PaymentsController @Inject()(val messagesApi: MessagesApi,
@@ -33,19 +35,24 @@ class PaymentsController @Inject()(val messagesApi: MessagesApi,
                                    val serviceErrorHandler: ServiceErrorHandler,
                                    val paymentsService: PaymentsService,
                                    val auditService: AuditService,
+                                   val subscriptionService: CustomerCircumstanceDetailsService,
                                    implicit val config: AppConfig) extends FrontendController with I18nSupport {
 
   val sendToPayments: Action[AnyContent] = authenticate.async { implicit user =>
-    paymentsService.postPaymentDetails(user) map {
-      case Right(response) =>
-        auditService.extendedAudit(
-          BankAccountHandOffAuditModel(user, response.nextUrl),
-          Some(routes.PaymentsController.sendToPayments().url)
-        )
-        Redirect(response.nextUrl)
-      case _ =>
-        Logger.debug(s"[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
-        serviceErrorHandler.showInternalServerError
+    subscriptionService.getCustomerCircumstanceDetails(user.vrn).flatMap {
+      case Right(circumstanceDetails) =>
+        paymentsService.postPaymentDetails(user, circumstanceDetails.partyType, circumstanceDetails.customerDetails.welshIndicator) map {
+          case Right(response) =>
+            auditService.extendedAudit(
+              BankAccountHandOffAuditModel(user, response.nextUrl),
+              Some(routes.PaymentsController.sendToPayments().url)
+            )
+            Redirect(response.nextUrl)
+          case _ =>
+            Logger.debug("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
+            serviceErrorHandler.showInternalServerError
+        }
+      case Left(_) => Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 }
