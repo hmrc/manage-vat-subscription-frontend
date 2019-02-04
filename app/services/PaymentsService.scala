@@ -29,11 +29,11 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
-  def postPaymentDetails[A](user: User[A])
-                       (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
+  def postPaymentDetails[A](user: User[A], partyType: Option[String], welshIndicator: Option[Boolean])
+                           (implicit hc: HeaderCarrier, ec: ExecutionContext, config: AppConfig): Future[Either[ErrorModel, PaymentRedirectModel]] = {
 
     val convenienceUrl = {
-      if(user.isAgent) {
+      if (user.isAgent) {
         config.host + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
       } else {
         config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)
@@ -45,9 +45,10 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
       user.isAgent,
       config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
       config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix),
-      convenienceUrl
+      convenienceUrl,
+      partyType,
+      welshIndicator
     )
-
     paymentsConnector.postPaymentsDetails(paymentDetails)
   }
 }

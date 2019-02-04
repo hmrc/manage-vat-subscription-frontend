@@ -27,7 +27,9 @@ object PaymentsTestConstants {
     isAgent = false,
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
+    None,
+    None
   )
 
   val agentPaymentStart: PaymentStartModel = PaymentStartModel(
@@ -35,7 +37,9 @@ object PaymentsTestConstants {
     isAgent = true,
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
-    "/manage-vat-subscription-frontend" + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
+    "/manage-vat-subscription-frontend" + controllers.agentClientRelationship.routes.SelectClientVrnController.show(),
+    None,
+    None
   )
 
   val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")

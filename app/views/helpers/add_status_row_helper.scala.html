@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@(heading: String, id: String, link: String = "#", repaymentHint: Boolean = false)(implicit messages: Messages, user : User[_], appConfig: config.AppConfig)
+@(heading: String, id: String, link: String, repaymentHint: Boolean = false)(implicit messages: Messages, user : User[_], appConfig: config.AppConfig)
 
 <div>
     <dt id="@id-text" class="cya-question">
@@ -26,9 +26,9 @@
         }
     </dt>
     <dd id="@id" class="cya-answer">
-        None
+        @messages("customer_details.none")
     </dd>
     <dd id="@id-status" class="cya-change">
-        <a href="@link">Add</a>
+        <a href="@link">@messages("customer_details.add")</a>
     </dd>
 </div>

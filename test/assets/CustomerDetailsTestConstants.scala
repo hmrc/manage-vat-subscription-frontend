@@ -17,7 +17,7 @@
 package assets
 
 import models.circumstanceInfo.CustomerDetails
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 
 object CustomerDetailsTestConstants {
 
@@ -26,28 +26,29 @@ object CustomerDetailsTestConstants {
   val firstName = "Fred"
   val lastName = "Flintstone"
 
-  val individualJson = Json.obj(
+  val individualJson: JsObject = Json.obj(
     "firstName" -> firstName,
     "lastName" -> lastName,
     "hasFlatRateScheme" -> false
   )
 
-  val organisationJson = Json.obj(
+  val organisationJson: JsObject = Json.obj(
     "organisationName" -> orgName,
     "tradingName" -> tradingName,
     "hasFlatRateScheme" -> false
   )
 
-  val customerDetailsJsonMax = Json.obj(
+  val customerDetailsJsonMax: JsObject = Json.obj(
     "organisationName" -> orgName,
     "firstName" -> firstName,
     "lastName" -> lastName,
     "tradingName" -> tradingName,
-    "hasFlatRateScheme" -> false
+    "hasFlatRateScheme" -> false,
+    "welshIndicator" -> false
   )
 
 
-  val customerDetailsJsonMin = Json.obj(
+  val customerDetailsJsonMin: JsObject = Json.obj(
     "hasFlatRateScheme" -> false
   )
 
@@ -55,24 +56,28 @@ object CustomerDetailsTestConstants {
       firstName = Some(firstName),
       lastName = Some(lastName),
       organisationName = None,
-      tradingName = None
+      tradingName = None,
+      welshIndicator = None
   )
 
   val organisation = CustomerDetails(
     firstName = None,
     lastName = None,
     organisationName = Some(orgName),
-    tradingName = Some(tradingName)
+    tradingName = Some(tradingName),
+    welshIndicator = None
   )
 
   val customerDetailsMax = CustomerDetails(
     Some(firstName),
     Some(lastName),
     Some(orgName),
-    Some(tradingName)
+    Some(tradingName),
+    Some(false)
   )
 
   val customerDetailsMin = CustomerDetails(
+    None,
     None,
     None,
     None,
