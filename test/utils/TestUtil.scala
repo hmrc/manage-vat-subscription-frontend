@@ -31,6 +31,7 @@ import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import assets.BaseTestConstants._
+import controllers.predicates.InflightReturnFrequencyPredicate
 import play.api.Configuration
 
 import scala.concurrent.ExecutionContext
@@ -45,6 +46,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
 
   lazy val injector: Injector = app.injector
   lazy val messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
+  lazy val pendingReturn: InflightReturnFrequencyPredicate = injector.instanceOf[InflightReturnFrequencyPredicate]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
   implicit val config: Configuration = app.configuration
