@@ -30,7 +30,7 @@ import play.api.test.Helpers.{contentType, _}
 class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChooseDatesController extends ChooseDatesController(
-    messagesApi, mockAuthPredicate,pendingReturn, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
+    messagesApi, mockAuthPredicate,mockInflightReturnPEriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
 
   "ChooseDatesController 'show' method" when {
 
@@ -43,7 +43,6 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
           lazy val result = TestChooseDatesController.show(request)
           "return OK (200)" in {
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-            println("VVVVVVVVVVVVVV " + status(result) )
             status(result) shouldBe Status.OK
           }
           "return HTML" in {
@@ -74,6 +73,28 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
             Jsoup.parse(bodyOf(result)).select("#period-option-january").attr("checked") shouldBe "checked"
           }
         }
+
+
+
+        "a value is already held in session for the Return Frequency - user attemps to go straight to the change vat return dates page" should {
+
+          lazy val result = TestChooseDatesController.show(request)
+          "return OK (200)" in {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
+            status(result) shouldBe Status.OK
+          }
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
+            Jsoup.parse(bodyOf(result)).title shouldBe ReturnFrequencyMessages.ChoosePage.userHomepageHeading
+          }
+        }
+
+
+
       }
 
       "a return frequency is NOT returned from the call to get circumstance info" should {
