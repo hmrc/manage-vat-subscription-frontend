@@ -27,22 +27,26 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import controllers.predicates.InflightReturnFrequencyPredicate
 
 import scala.concurrent.Future
 
 @Singleton
 class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
                                       val authenticate: AuthPredicate,
+                                      val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                       val serviceErrorHandler: ServiceErrorHandler,
                                       implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async { implicit user =>
+
+  val show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency).async { implicit user =>
 
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
       case Right(details) if details.returnPeriod.isDefined =>
         val form: Form[ReturnDatesModel] = user.session.get(SessionKeys.NEW_RETURN_FREQUENCY) match {
           case Some(value) => datesForm.fill(ReturnDatesModel(value))
+
           case _ => datesForm
         }
         Ok(views.html.returnFrequency.chooseDates(form, details.returnPeriod.get))
