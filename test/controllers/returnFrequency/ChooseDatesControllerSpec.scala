@@ -30,7 +30,7 @@ import play.api.test.Helpers.{contentType, _}
 class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChooseDatesController extends ChooseDatesController(
-    messagesApi, mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
+    messagesApi, mockAuthPredicate,pendingReturn, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
 
   "ChooseDatesController 'show' method" when {
 
@@ -41,12 +41,11 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
         "a value is not already held in session for the Return Frequency" should {
 
           lazy val result = TestChooseDatesController.show(request)
-
           "return OK (200)" in {
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            println("VVVVVVVVVVVVVV " + status(result) )
             status(result) shouldBe Status.OK
           }
-
           "return HTML" in {
             contentType(result) shouldBe Some("text/html")
             charset(result) shouldBe Some("utf-8")
