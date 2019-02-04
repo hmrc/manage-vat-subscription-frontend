@@ -149,6 +149,30 @@ object CircumstanceDetailsTestConstants {
     partyType = Some(partyType)
   )
 
+
+  val customerInformationModelMaxOrganisationPending: CircumstanceDetails = CircumstanceDetails(
+    mandationStatus = MTDfBMandated,
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = Some(deregModel),
+    changeIndicators = Some(ChangeIndicators(
+      ppob = true,
+      bankDetails = true,
+      returnPeriod = true,
+      deregister = true
+    )),
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppobModelMax),
+      bankDetails = Some(bankDetailsModelMax),
+      returnPeriod = Some(Feb)
+    )),
+    partyType = Some(partyType)
+  )
+
+
   val customerInformationModelOrganisationPending: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
     customerDetails = organisation,
