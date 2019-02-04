@@ -61,7 +61,15 @@ object IntegrationTestConstants {
     Some(emailVerified)
   )
 
-  val ppob = PPOB(
+  val contactDetailsModelMin = ContactDetails(
+    None,
+    None,
+    None,
+    None,
+    None
+  )
+
+  val ppobMax = PPOB(
     PPOBAddress(
       "Add Line 1",
       Some("Add Line 2"),
@@ -73,6 +81,20 @@ object IntegrationTestConstants {
     ),
     Some(contactDetailsModelMax),
     Some(website)
+  )
+
+  val ppobMin = PPOB(
+    PPOBAddress(
+      "Add Line 1",
+      None,
+      None,
+      None,
+      None,
+      None,
+      countryCode = "GB"
+    ),
+    Some(contactDetailsModelMin),
+    None
   )
 
   val bankDetails = BankDetails(
@@ -94,28 +116,29 @@ object IntegrationTestConstants {
     Some("2018-10-01")
   )
 
-  def customerCircumstancesDetailsMax(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
+  def customerCircumstancesDetailsMax(customerType: CustomerDetails,
+                                      partyType: Option[String] = None): CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
-    ppob = ppob,
+    ppob = ppobMax,
     bankDetails = Some(bankDetails),
     returnPeriod = Some(Jan),
     deregistration = Some(deregModel),
     changeIndicators = Some(changeIndicators),
     pendingChanges = Some(PendingChanges(
-      ppob = Some(ppob),
+      ppob = Some(ppobMax),
       bankDetails = Some(bankDetails),
       returnPeriod = Some(Jan)
     )),
-    partyType = Some(partyType)
+    partyType = partyType
   )
 
   def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
-    ppob = ppob,
+    ppob = ppobMin,
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,
@@ -128,7 +151,7 @@ object IntegrationTestConstants {
     mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
-    ppob = ppob,
+    ppob = ppobMax,
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,

@@ -17,9 +17,13 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
+import assets.CustomerDetailsTestConstants.individual
 import assets.DeregistrationTestConstants._
+import assets.FlatRateSchemeTestConstants.frsModelMax
 import assets.PPOBAddressTestConstants
+import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
+import models.circumstanceInfo.{CircumstanceDetails, MTDfBMandated}
 import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -258,35 +262,32 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#registration-status-link") shouldBe viewMessages.pending
         }
       }
+
+      "have a section for return frequency" which {
+
+        "has the heading" in {
+          elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+        }
+
+        "has the correct value output for the current frequency" in {
+          elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+        }
+
+        "has no change link or pending status" in {
+          document.select("#vat-return-dates-status").isEmpty shouldBe true
+        }
+      }
     }
 
     "Viewing for an Organisation with pending changes" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxOrganisationPending)(user, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelOrganisationPending)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a breadcrumb trail" in {
         elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
         elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
         elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
-      }
-
-      "have a change details section for the Business Name" which {
-
-        s"has the heading '${viewMessages.organisationNameHeading}'" in {
-          elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
-        }
-
-        s"has the value '${customerInformationModelMaxOrganisationPending.customerDetails.organisationName.get}'" in {
-          elementText("#business-name") shouldBe customerInformationModelMaxOrganisationPending.customerDetails.organisationName.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            document.select("#business-name-status").isEmpty shouldBe true
-          }
-        }
       }
 
       "have a section for business address" which {
@@ -296,12 +297,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct address output" in {
-          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line1
-          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.get.ppob.get.address.postCode.get
+          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line1
+          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line2.get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line3.get
+          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line4.get
+          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line5.get
+          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.postCode.get
           elementText("#businessAddress li:nth-child(7)") shouldBe
             CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
         }
@@ -366,7 +367,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-
       "have a section for return frequency" which {
 
         "has the heading" in {
@@ -377,8 +377,19 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
         }
 
-        "has no change link or pending status" in {
-          document.select("#vat-return-dates-status").isEmpty shouldBe true
+        "has Pending instead of a change link" which {
+
+          s"has the wording '${viewMessages.pending}'" in {
+            elementText("#vat-return-dates-status") shouldBe viewMessages.pending
+          }
+
+          s"has the correct aria label text '${viewMessages.pendingReturnFrequencyHidden}'" in {
+            element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.pendingReturnFrequencyHidden
+          }
+
+          s"has no link" in {
+            element("#vat-return-dates-status").attr("href").isEmpty shouldBe true
+          }
         }
       }
 
@@ -393,7 +404,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "has the correct value for the email address" in {
-          elementText("#vat-email-address") shouldBe customerInformationModelMaxOrganisationPending.pendingChanges.
+          elementText("#vat-email-address") shouldBe customerInformationModelOrganisationPending.pendingChanges.
             get.ppob.get.contactDetails.get.emailAddress.get
         }
 
@@ -420,6 +431,29 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
+    "Viewing for a user with one of the valid partyTypes but no organisation name" should {
+
+      val model: CircumstanceDetails = CircumstanceDetails(
+        mandationStatus = MTDfBMandated,
+        customerDetails = individual,
+        flatRateScheme = None,
+        ppob = ppobModelMax,
+        bankDetails = None,
+        returnPeriod = None,
+        deregistration = None,
+        changeIndicators = None,
+        pendingChanges = None,
+        partyType = Some(mockConfig.partyTypes.head)
+      )
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(model)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not have a change details section for the Business Name" in {
+        document.select("#business-name-text").isEmpty shouldBe true
+      }
+    }
+
     "Viewing for an Organisation with a different valid partyType" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("4")))(user, messages, mockConfig)
@@ -438,7 +472,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(Some("other")))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "have a change details section for the Business Name" in {
+      "not have a change details section for the Business Name" in {
         document.select("#business-name-text").isEmpty shouldBe true
       }
     }
@@ -448,7 +482,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationWithPartyType(None))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "have a no change details section for the Business Name" in {
+      "have no change details section for the Business Name" in {
         document.select("#business-name-text").isEmpty shouldBe true
       }
     }
@@ -607,7 +641,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementExtinct("#content > article > div:nth-child(4) > h2")
       }
     }
-
 
   }
 }
