@@ -40,6 +40,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
+    mockInflightReturnPeriodPredicate,
     mockAuditingService,
     mockConfig,
     messagesApi

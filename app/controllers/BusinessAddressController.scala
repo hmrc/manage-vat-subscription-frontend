@@ -18,9 +18,8 @@ package controllers
 
 import audit.AuditService
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
+import controllers.predicates.{AuthPredicate, InflightEmailPredicate, InflightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
-
 import common.SessionKeys
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,9 +38,10 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           val auditService: AuditService,
+                                          val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = (authenticate andThen inflightEmailCheck).async { implicit user =>
+  val show: Action[AnyContent] = (authenticate andThen inflightEmailCheck andThen pendingReturnFrequency).async { implicit user =>
     Future.successful(Ok(views.html.businessAddress.change_address()))
   }
 

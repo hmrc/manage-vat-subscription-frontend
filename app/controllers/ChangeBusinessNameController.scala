@@ -19,7 +19,7 @@ package controllers
 import audit.AuditService
 import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -30,12 +30,13 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
+                                             val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                              val auditService: AuditService,
                                              implicit val appConfig: AppConfig,
                                              implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
 
-  val show: Action[AnyContent] = authenticate.async {
+  val show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency).async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>

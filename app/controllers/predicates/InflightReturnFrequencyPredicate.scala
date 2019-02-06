@@ -49,10 +49,10 @@ class InflightReturnFrequencyPredicate @Inject()(customerCircumstancesService: C
         val currentReturnPeriod = circumstanceDetails.returnPeriod
         val pendingReturnperiod = circumstanceDetails.pendingReturnPeriod
 
-        (currentReturnPeriod, pendingReturnperiod) match {
-          case (Some(current), Some(pending))  if current != pending => Left(Ok(views.html.customerInfo.customer_circumstance_details(circumstanceDetails)))
-          case _ => Right(user)
-        }
+  (currentReturnPeriod, pendingReturnperiod) match {
+    case (Some(current), Some(pending)) if current != pending => Left(Ok(views.html.customerInfo.customer_circumstance_details(circumstanceDetails)))
+    case _ => Right(user)
+  }
 
       case Left(error) =>
         Logger.warn(s"[InflightReturnFrequencyPredicate][getCusatomerInfoCall] - " +
@@ -61,3 +61,4 @@ class InflightReturnFrequencyPredicate @Inject()(customerCircumstancesService: C
     }
   }
 }
+

@@ -17,7 +17,6 @@
 package controllers.agentClientRelationship
 
 import javax.inject.{Inject, Singleton}
-
 import audit.AuditService
 import audit.models.AuthenticateAgentAuditModel
 import common.SessionKeys

@@ -20,7 +20,7 @@ import audit.AuditService
 import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthoriseAsAgentWithClient
+import controllers.predicates.{AuthoriseAsAgentWithClient, InflightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -35,9 +35,10 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
                                            val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
                                            val auditService: AuditService,
+                                           val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  def show: Action[AnyContent] = authenticate.async {
+  def show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency).async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) =>

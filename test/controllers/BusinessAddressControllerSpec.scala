@@ -45,6 +45,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockCustomerDetailsService,
       serviceErrorHandler,
       mockAuditingService,
+      mockInflightReturnPeriodPredicate,
       mockConfig
     )
 
@@ -108,6 +109,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockCustomerDetailsService,
         serviceErrorHandler,
         mockAuditingService,
+        mockInflightReturnPeriodPredicate,
         mockConfig)
     }
 
@@ -201,6 +203,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockCustomerDetailsService,
         serviceErrorHandler,
         mockAuditingService,
+        mockInflightReturnPeriodPredicate,
         mockConfig)
     }
 
@@ -271,6 +274,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockCustomerDetailsService,
       serviceErrorHandler,
       mockAuditingService,
+      mockInflightReturnPeriodPredicate,
       mockConfig)
 
     "the user is an agent" when {

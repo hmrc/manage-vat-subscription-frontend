@@ -22,7 +22,7 @@ import cats.data.EitherT
 import cats.instances.future._
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
 import models.returnFrequency._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -38,10 +38,11 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
                                           returnFrequencyService: ReturnFrequencyService,
                                           val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val auditService: AuditService,
+                                          val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                           implicit val appConfig: AppConfig,
                                           implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
-  val show: Action[AnyContent] = authenticate.async { implicit user =>
+  val show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency).async { implicit user =>
     ReturnPeriod(user.session(SessionKeys.NEW_RETURN_FREQUENCY)) match {
       case Some(newFrequency) => Future.successful(Ok(views.html.returnFrequency.confirm_dates(newFrequency)))
       case None => Future.successful(serviceErrorHandler.showInternalServerError)

@@ -44,6 +44,7 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAuditingService,
+    mockInflightReturnPeriodPredicate,
     mockConfig
   )
 

@@ -39,6 +39,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     serviceErrorHandler,
     mockPaymentsService,
     mockAuditingService,
+    mockInflightReturnPeriodPredicate,
     mockCustomerDetailsService,
     mockConfig
   )

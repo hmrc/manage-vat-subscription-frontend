@@ -21,7 +21,7 @@ import audit.AuditService
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
@@ -34,11 +34,12 @@ import scala.concurrent.Future
 class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPredicate,
                                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                       val serviceErrorHandler: ServiceErrorHandler,
+                                                      val pendingReturnFrequency: InflightReturnFrequencyPredicate,
                                                       val auditService: AuditService,
                                                       implicit val appConfig: AppConfig,
                                                       implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 
-  val redirect: Action[AnyContent] = authenticate.async {
+  val redirect: Action[AnyContent] = (authenticate andThen pendingReturnFrequency).async {
     implicit user =>
       Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)))
   }
