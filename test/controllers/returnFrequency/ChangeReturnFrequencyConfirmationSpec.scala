@@ -68,6 +68,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           lazy val result = {
             mockCustomerDetailsError()
             TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
+            // This test fails for calls to the get customer details service
           }
 
           "return 200" in {
