@@ -16,12 +16,13 @@
 
 package controllers.predicates
 
+import common.SessionKeys.CURRENT_RETURN_FREQUENCY
 import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.Inject
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results.Ok
+import play.api.mvc.Results.{Ok, Redirect}
 import play.api.mvc.{ActionRefiner, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
@@ -41,17 +42,26 @@ class InFlightReturnFrequencyPredicate @Inject()(customerCircumstancesService: C
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
     implicit val user: User[A] = request
 
+    user.session.get(CURRENT_RETURN_FREQUENCY) match {
+      case Some(_) => Future.successful(Right(user))
+      case None => getCustomerCircumstanceDetails
+    }
+  }
+
+  private def getCustomerCircumstanceDetails[A](implicit user: User[A], hc: HeaderCarrier): Future[Either[Result, User[A]]] = {
     customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
 
+      case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.returnPeriod) =>
+        Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
       case Right(circumstanceDetails) =>
-        val currentReturnPeriod = circumstanceDetails.returnPeriod
-        val pendingReturnPeriod = circumstanceDetails.pendingReturnPeriod
-
-        (currentReturnPeriod, pendingReturnPeriod) match {
-          case (Some(current), Some(pending)) if current != pending => Left(Ok(views.html.customerInfo.customer_circumstance_details(circumstanceDetails)))
-          case _ => Right(user)
+        circumstanceDetails.returnPeriod match {
+          case Some(returnPeriod) =>
+            Left(Redirect(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+              .addingToSession(CURRENT_RETURN_FREQUENCY -> returnPeriod.id))
+          case None =>
+            Logger.warn("[InFlightReturnFrequencyPredicate][refine] - No return frequency returned from GetCustomerInfo")
+            Left(serviceErrorHandler.showInternalServerError)
         }
-
       case Left(error) =>
         Logger.warn(s"[InFlightReturnFrequencyPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
         Left(serviceErrorHandler.showInternalServerError)

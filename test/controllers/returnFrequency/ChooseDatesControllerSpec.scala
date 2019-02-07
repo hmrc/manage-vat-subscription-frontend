@@ -17,8 +17,7 @@
 package controllers.returnFrequency
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.messages.ReturnFrequencyMessages
-import assets.ReturnPeriodTestConstants.returnPeriodJan
+import assets.ReturnPeriodTestConstants._
 import common.SessionKeys
 import controllers.ControllerBaseSpec
 import mocks.services.MockCustomerCircumstanceDetailsService
@@ -36,127 +35,202 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
     "the user is authorised" when {
 
-      "a return frequency is returned from the call to get circumstance info" when {
-
-        "a value is not already held in session for the Return Frequency" should {
-
-          lazy val result = TestChooseDatesController.show(request)
-          "return OK (200)" in {
-            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-            status(result) shouldBe Status.OK
-          }
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
-          }
-
-          s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe ReturnFrequencyMessages.ChoosePage.heading
-          }
-        }
-
-        "a value is already held in session for the Return Frequency = January" should {
-
-          lazy val result = TestChooseDatesController.show(request.withSession(SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan))
-
-          "return OK (200)" in {
-            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-            status(result) shouldBe Status.OK
-          }
-
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
-          }
-
-          "have the January radio option selected" in {
-            Jsoup.parse(bodyOf(result)).select("#period-option-january").attr("checked") shouldBe "checked"
-          }
-        }
-
-        "user attempts to change return frequency but already has an inflight change" should {
-
-          lazy val result = TestChooseDatesController.show(request)
-
-          "return OK (200)" in {
-            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
-            status(result) shouldBe Status.OK
-          }
-
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
-          }
-
-          s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")}" in {
-            redirectLocation(result) shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")
-          }
-        }
-      }
-
-      "a return frequency is NOT returned from the call to get circumstance info" should {
+      "user has an in-flight return frequency change" should {
 
         lazy val result = TestChooseDatesController.show(request)
 
-        "return ISE (500)" in {
-          mockCustomerDetailsSuccess(customerInformationModelMin)
-          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        "return SEE_OTHER (303)" in {
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
+          status(result) shouldBe Status.SEE_OTHER
         }
 
-        "return HTML" in {
-          contentType(result) shouldBe Some("text/html")
-          charset(result) shouldBe Some("utf-8")
+        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
+          redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
         }
       }
 
-    }
+      "user does not have an in-flight change" when {
 
-    "the user is authorised and an Error is returned from Customer Details" should {
+        "a value is not held in session for the current Return Frequency" should {
 
-      lazy val result = TestChooseDatesController.show(request)
+          lazy val result = TestChooseDatesController.show(request)
 
-      "return ISE (500)" in {
-        mockCustomerDetailsError()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          "return SEE_OTHER (303)" in {
+            mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+          }
+
+          "add the current return frequency to the session" in {
+            session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe Some(returnPeriodMar)
+          }
+        }
+
+        "a value is already held in session for the current Return Frequency" when {
+
+          "a value for new return frequency is not in session" should {
+
+            lazy val result = TestChooseDatesController.show(request.withSession(
+              SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodJan
+            ))
+
+            "return OK (200)" in {
+              mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+              status(result) shouldBe Status.OK
+            }
+
+            "return HTML" in {
+              contentType(result) shouldBe Some("text/html")
+              charset(result) shouldBe Some("utf-8")
+            }
+
+            s"have the title 'Choose the new VAT Return dates'" in {
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+            }
+          }
+
+          "a value for new return frequency is in session" should {
+
+            lazy val result = TestChooseDatesController.show(request.withSession(
+              SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodJan,
+              SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodMar)
+            )
+
+            "return OK (200)" in {
+              mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+              status(result) shouldBe Status.OK
+            }
+
+            "return HTML" in {
+              contentType(result) shouldBe Some("text/html")
+              charset(result) shouldBe Some("utf-8")
+            }
+
+            "have the January radio option selected" in {
+              Jsoup.parse(bodyOf(result)).select("#period-option-march").attr("checked") shouldBe "checked"
+            }
+
+            s"have the title 'Choose the new VAT Return dates'" in {
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+            }
+          }
+        }
+
+        "a return frequency is NOT returned from the call to get circumstance info" should {
+
+          lazy val result = TestChooseDatesController.show(request)
+
+          "return ISE (500)" in {
+            mockCustomerDetailsSuccess(customerInformationModelMin)
+            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+        }
+
+        "an error is returned from Customer Details" should {
+
+          lazy val result = TestChooseDatesController.show(request)
+
+          "return ISE (500)" in {
+            mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+            mockCustomerDetailsError()
+            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          }
+        }
       }
     }
-
   }
 
   "ChooseDatesController 'submit' method" when {
 
-    "submitting with an option selected" should {
+    "user is authorised" when {
 
-      lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", "January"))
-      lazy val result = TestChooseDatesController.submit(request)
+      "user has an in-flight return frequency change" should {
 
-      "return 303" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.SEE_OTHER
-      }
-    }
-
-    "submitting with no option selected" should {
-
-      "when a return period is returned from get customer details" should {
-
-        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", "January"))
         lazy val result = TestChooseDatesController.submit(request)
 
-        "return Bad Request (400)" in {
-          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          status(result) shouldBe Status.BAD_REQUEST
+        "return SEE_OTHER (303)" in {
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
+          redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
         }
       }
 
-      "when a return period is NOT returned from get customer details" should {
+      "user does not have an in-flight change" when {
 
-        lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
-        lazy val result = TestChooseDatesController.submit(request)
+        "a value is not held in session for the current Return Frequency" should {
 
-        "return ISE (500)" in {
-          mockCustomerDetailsSuccess(customerInformationModelMin)
-          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", "January"))
+          lazy val result = TestChooseDatesController.submit(request)
+
+          "return SEE_OTHER (303)" in {
+            mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+          }
+
+          "add the current return frequency to the session" in {
+            session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe Some(returnPeriodMar)
+          }
+        }
+
+        "submitting with an option selected" should {
+
+          lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", "January"))
+          lazy val result = TestChooseDatesController.submit(request.withSession(SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodJan))
+
+          "return 303" in {
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          s"redirect to ${controllers.returnFrequency.routes.ConfirmVatDatesController.show().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ConfirmVatDatesController.show().url)
+          }
+
+          "add the new return frequency to the session" in {
+            session(result).get(SessionKeys.NEW_RETURN_FREQUENCY) shouldBe Some(returnPeriodJan)
+          }
+        }
+
+        "submitting with no option selected" should {
+
+          "current return period in session is not valid" should {
+
+            lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+            lazy val result = TestChooseDatesController.submit(request.withSession(SessionKeys.CURRENT_RETURN_FREQUENCY -> "invalid"))
+
+            "return Internal Server Error (500)" in {
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            }
+          }
+
+          "current return period in session is valid" should {
+
+            lazy val request = FakeRequest("POST", "/").withFormUrlEncodedBody(("period-option", ""))
+            lazy val result = TestChooseDatesController.submit(request.withSession(SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodJan))
+
+            "return Bad Request (400)" in {
+              status(result) shouldBe Status.BAD_REQUEST
+            }
+
+            s"have the title 'Choose the new VAT Return dates'" in {
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+            }
+          }
         }
       }
     }
