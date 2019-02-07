@@ -16,8 +16,8 @@
 
 package controllers.returnFrequency
 
-import assets.CircumstanceDetailsTestConstants._
 import assets.BaseTestConstants._
+import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import audit.mocks.MockAuditingService
 import audit.models.UpdateReturnFrequencyAuditModel

@@ -22,7 +22,7 @@ import javax.inject.Inject
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.Results.{Ok, Redirect}
+import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier

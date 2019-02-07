@@ -18,17 +18,16 @@ package controllers.returnFrequency
 
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.AuthPredicate
+import controllers.predicates.{AuthPredicate, InFlightReturnFrequencyPredicate}
 import forms.chooseDatesForm.datesForm
 import javax.inject.{Inject, Singleton}
 import models.returnFrequency.{ReturnDatesModel, ReturnPeriod}
+import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import controllers.predicates.InFlightReturnFrequencyPredicate
-import play.api.Logger
 
 @Singleton
 class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
