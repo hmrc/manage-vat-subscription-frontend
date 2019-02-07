@@ -24,7 +24,7 @@ import javax.inject.{Inject, Singleton}
 import models.returnFrequency.{ReturnDatesModel, ReturnPeriod}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.mvc.{Action, AnyContent}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import controllers.predicates.InFlightReturnFrequencyPredicate

@@ -17,10 +17,9 @@
 package controllers.returnFrequency
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.{AuthPredicate, InFlightReturnFrequencyPredicate}
+import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import common.SessionKeys
-import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
