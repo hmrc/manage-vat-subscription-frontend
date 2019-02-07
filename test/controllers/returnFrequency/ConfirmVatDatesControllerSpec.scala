@@ -53,40 +53,62 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
   "Calling the .show action" when {
 
-    "the user is authorised and a Return Frequency is in session" should {
+    "user is authorised" when {
 
-      val session = SessionKeys.NEW_RETURN_FREQUENCY -> "January"
-      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
-      lazy val document = Jsoup.parse(bodyOf(result))
+      "current return frequency is in session" when {
 
-      "return 200" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.OK
+        "new return frequency is in session" should {
+
+          lazy val result = TestConfirmVatDatesController.show(request.withSession(
+            SessionKeys.CURRENT_RETURN_FREQUENCY -> "March",
+            SessionKeys.NEW_RETURN_FREQUENCY -> "January")
+          )
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+          "return 200" in {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Confirm Dates Page" in {
+            document.title shouldBe Messages.ConfirmPage.heading
+          }
+        }
+
+        "new return frequency is not in session" should {
+
+          lazy val result = TestConfirmVatDatesController.show(request.withSession(
+            SessionKeys.CURRENT_RETURN_FREQUENCY -> "March"
+          ))
+
+          "return 303" in {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+          }
+        }
       }
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+      "current return frequency is not in session" should {
 
-      "render the Confirm Dates Page" in {
-        document.title shouldBe Messages.ConfirmPage.heading
-      }
-    }
+        lazy val result = TestConfirmVatDatesController.show(request)
 
-    "the user is authorised and an Error is returned" should {
+        "return 303" in {
+          mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+          status(result) shouldBe Status.SEE_OTHER
+        }
 
-      val session = SessionKeys.NEW_RETURN_FREQUENCY -> "unknown"
-      lazy val result = TestConfirmVatDatesController.show(request.withSession(session))
-
-      "return 500" in {
-        mockCustomerDetailsError()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
+        s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+          redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+        }
       }
     }
 
@@ -95,87 +117,85 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
 
   "Calling the .submit action" when {
 
-    "the user is authorised and a the session contains valid data" should {
+    "user is authorised" when {
 
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
-        SessionKeys.NEW_RETURN_FREQUENCY -> "January",
-        SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
-      ))
+      "current return frequency is in session" when {
 
-      "return 303" in {
-        setupMockReturnFrequencyServiceWithSuccess()
-        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
-        status(result) shouldBe Status.SEE_OTHER
+        "new return frequency is in session" when {
 
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, Some(partyType))),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
+          "updateReturnFrequency returns an error" should {
+
+            lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+              SessionKeys.NEW_RETURN_FREQUENCY -> "Monthly",
+              SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
+            ))
+
+            "return 500" in {
+              setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
+              setupMockReturnFrequencyServiceWithFailure()
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            }
+          }
+
+          "updateReturnFrequency returns success" should {
+
+            lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+              SessionKeys.NEW_RETURN_FREQUENCY -> "January",
+              SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
+            ))
+
+            "return 303" in {
+              setupMockReturnFrequencyServiceWithSuccess()
+              setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
+              status(result) shouldBe Status.SEE_OTHER
+
+              verify(mockAuditingService)
+                .extendedAudit(
+                  ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(user, Monthly, Jan, Some(partyType))),
+                  ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
+                )(
+                  ArgumentMatchers.any[HeaderCarrier],
+                  ArgumentMatchers.any[ExecutionContext]
+                )
+            }
+
+            s"redirect to ${controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show("non-agent").url}" in {
+              redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show("non-agent").url)
+            }
+          }
+        }
+
+        "new return frequency is not in session" should {
+
+          lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+            SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
+          ))
+
+          "return 303" in {
+            setupMockReturnFrequencyServiceWithSuccess()
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+          }
+        }
       }
 
-      "return a location to the received dates view" in {
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates/non-agent"
-        redirectLocation(result) shouldBe Some(test)
-      }
-    }
+      "current return frequency is not in session" should {
 
-    "the user is an Agent and authorised and a the session contains valid data" should {
+        lazy val result = TestConfirmVatDatesController.submit(request.withSession(
+          SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
+        ))
 
-      lazy val result = TestConfirmVatDatesController.submit(fakeRequestWithClientsVRN.withSession(
-        SessionKeys.NEW_RETURN_FREQUENCY -> "January",
-        SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
-      ))
+        "return 303" in {
+          setupMockReturnFrequencyServiceWithSuccess()
+          status(result) shouldBe Status.SEE_OTHER
+        }
 
-      "return 303" in {
-        mockAgentAuthorised()
-        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
-        setupMockReturnFrequencyServiceWithSuccess()
-        status(result) shouldBe Status.SEE_OTHER
-
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.eq(UpdateReturnFrequencyAuditModel(agentUser, Monthly, Jan, Some(partyType))),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.returnFrequency.routes.ConfirmVatDatesController.submit().url))
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
-      }
-
-      "return a location to the received dates view" in {
-        val test = s"/vat-through-software/account/confirmation-vat-return-dates/agent"
-        redirectLocation(result) shouldBe Some(test)
-      }
-    }
-
-    "the user is authorised but submitting the changes to the backend fails" should {
-
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
-        SessionKeys.NEW_RETURN_FREQUENCY -> "Monthly",
-        SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
-      ))
-
-      "return 500" in {
-        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
-        setupMockReturnFrequencyServiceWithFailure()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-      }
-    }
-
-    "the user is authorised and a the session contains invalid data" should {
-
-      lazy val result = TestConfirmVatDatesController.submit(request.withSession(
-        SessionKeys.NEW_RETURN_FREQUENCY -> "unknown",
-        SessionKeys.CURRENT_RETURN_FREQUENCY -> "January"
-      ))
-
-      "return 500" in {
-        setupMockReturnFrequencyServiceWithSuccess()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        s"redirect to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+          redirectLocation(result) shouldBe Some(controllers.returnFrequency.routes.ChooseDatesController.show().url)
+        }
       }
     }
   }

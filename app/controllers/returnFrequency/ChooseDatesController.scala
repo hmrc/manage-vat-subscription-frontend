@@ -41,7 +41,7 @@ class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
 
   val show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency) { implicit user =>
     user.session.get(SessionKeys.CURRENT_RETURN_FREQUENCY).fold {
-      Logger.warn("[ChooseDatesController][submit] No CURRENT_RETURN_FREQUENCY found in session")
+      Logger.warn("[ChooseDatesController][show] No CURRENT_RETURN_FREQUENCY found in session")
       serviceErrorHandler.showInternalServerError
     } { currentReturnFrequency =>
 
