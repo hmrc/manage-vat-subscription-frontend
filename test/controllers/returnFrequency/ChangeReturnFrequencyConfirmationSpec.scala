@@ -32,7 +32,6 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
     mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockInflightReturnPeriodPredicate,
     mockConfig
   )
 

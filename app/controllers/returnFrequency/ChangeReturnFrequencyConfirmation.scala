@@ -33,10 +33,9 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val authenticate: AuthPredicate,
                                                   customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
-                                                  val pendingReturnFrequency: InFlightReturnFrequencyPredicate,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  val show: String => Action[AnyContent] = _ => (authenticate andThen pendingReturnFrequency).async { implicit user =>
+  val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
     if(user.isAgent) {
       val email = user.session.get(SessionKeys.verifiedAgentEmail)
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
