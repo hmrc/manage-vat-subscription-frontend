@@ -19,8 +19,6 @@ package controllers.predicates
 import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.Inject
 import models.User
-import models.circumstanceInfo.PendingChanges
-import models.returnFrequency.ReturnPeriod
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Ok

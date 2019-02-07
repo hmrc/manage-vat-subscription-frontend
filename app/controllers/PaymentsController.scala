@@ -19,7 +19,7 @@ package controllers
 import audit.AuditService
 import audit.models.BankAccountHandOffAuditModel
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
+import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
