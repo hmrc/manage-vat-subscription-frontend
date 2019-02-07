@@ -46,7 +46,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
     mockReturnFrequencyService,
     mockCustomerDetailsService,
     mockAuditingService,
-    mockInflightReturnPeriodPredicate,
+    mockInFlightReturnPeriodPredicate,
     mockConfig,
     messagesApi
   )

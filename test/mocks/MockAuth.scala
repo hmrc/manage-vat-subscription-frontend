@@ -87,7 +87,7 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar with M
       ec
     )
 
-  val mockInflightReturnPeriodPredicate: InFlightReturnFrequencyPredicate =
+  val mockInFlightReturnPeriodPredicate: InFlightReturnFrequencyPredicate =
     new InFlightReturnFrequencyPredicate(
       mockCustomerDetailsService,
       serviceErrorHandler,

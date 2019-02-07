@@ -29,7 +29,7 @@ import play.api.test.Helpers.{contentType, _}
 class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
 
   object TestChooseDatesController extends ChooseDatesController(
-    messagesApi, mockAuthPredicate,mockInflightReturnPeriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
+    messagesApi, mockAuthPredicate,mockInFlightReturnPeriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
 
   "ChooseDatesController 'show' method" when {
 
