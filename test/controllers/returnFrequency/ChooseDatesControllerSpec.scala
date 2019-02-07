@@ -74,27 +74,24 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
           }
         }
 
-
-
-        "a value is already held in session for the Return Frequency - User attempts to change return frequency but already has inflight changes" should {
+        "user attempts to change return frequency but already has an inflight change" should {
 
           lazy val result = TestChooseDatesController.show(request)
+
           "return OK (200)" in {
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
             status(result) shouldBe Status.OK
           }
+
           "return HTML" in {
             contentType(result) shouldBe Some("text/html")
             charset(result) shouldBe Some("utf-8")
           }
 
-          s"have the heading '${ReturnFrequencyMessages.ChoosePage.heading}'" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe ReturnFrequencyMessages.ChoosePage.userHomepageHeading
+          s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")}" in {
+            redirectLocation(result) shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")
           }
         }
-
-
-
       }
 
       "a return frequency is NOT returned from the call to get circumstance info" should {

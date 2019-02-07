@@ -19,7 +19,6 @@ package controllers.agentClientRelationship
 import assets.BaseTestConstants.{arn, vrn}
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ConfirmClientVrnPageMessages => Messages}
-import audit.AuditService
 import audit.mocks.MockAuditingService
 import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
@@ -44,7 +43,6 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockAuditingService,
-    mockInflightReturnPeriodPredicate,
     mockConfig
   )
 

@@ -16,7 +16,6 @@
 
 package controllers
 
-import assets.BaseTestConstants.vrn
 import assets.ReturnPeriodTestConstants.{returnPeriodJan,returnPeriodFeb}
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
@@ -40,7 +39,6 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     mockAuthPredicate,
     mockCustomerDetailsService,
     app.injector.instanceOf[ServiceErrorHandler],
-    mockInflightReturnPeriodPredicate,
     mockAuditingService,
     mockConfig,
     messagesApi

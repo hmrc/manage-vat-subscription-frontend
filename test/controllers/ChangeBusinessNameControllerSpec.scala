@@ -34,7 +34,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockAuditingService {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
-    mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler,mockInflightReturnPeriodPredicate, mockAuditingService, mockConfig, messagesApi
+    mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAuditingService, mockConfig, messagesApi
   )
 
   "Calling the .show action" when {
