@@ -22,7 +22,7 @@ import cats.data.EitherT
 import cats.instances.future._
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
+import controllers.predicates.{AuthPredicate, InFlightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
 import models.returnFrequency._
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -38,7 +38,7 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
                                           returnFrequencyService: ReturnFrequencyService,
                                           val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val auditService: AuditService,
-                                          val pendingReturnFrequency: InflightReturnFrequencyPredicate,
+                                          val pendingReturnFrequency: InFlightReturnFrequencyPredicate,
                                           implicit val appConfig: AppConfig,
                                           implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
 

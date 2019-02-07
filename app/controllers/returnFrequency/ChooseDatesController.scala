@@ -27,14 +27,14 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import controllers.predicates.InflightReturnFrequencyPredicate
+import controllers.predicates.InFlightReturnFrequencyPredicate
 
 import scala.concurrent.Future
 
 @Singleton
 class ChooseDatesController @Inject()(val messagesApi: MessagesApi,
                                       val authenticate: AuthPredicate,
-                                      val pendingReturnFrequency: InflightReturnFrequencyPredicate,
+                                      val pendingReturnFrequency: InFlightReturnFrequencyPredicate,
                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                       val serviceErrorHandler: ServiceErrorHandler,
                                       implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {

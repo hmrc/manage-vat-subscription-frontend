@@ -29,7 +29,7 @@ import uk.gov.hmrc.play.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class InflightReturnFrequencyPredicate @Inject()(customerCircumstancesService: CustomerCircumstanceDetailsService,
+class InFlightReturnFrequencyPredicate @Inject()(customerCircumstancesService: CustomerCircumstanceDetailsService,
                                                  val serviceErrorHandler: ServiceErrorHandler,
                                                  val messagesApi: MessagesApi,
                                                  implicit val appConfig: AppConfig,
@@ -45,16 +45,15 @@ class InflightReturnFrequencyPredicate @Inject()(customerCircumstancesService: C
 
       case Right(circumstanceDetails) =>
         val currentReturnPeriod = circumstanceDetails.returnPeriod
-        val pendingReturnperiod = circumstanceDetails.pendingReturnPeriod
+        val pendingReturnPeriod = circumstanceDetails.pendingReturnPeriod
 
-  (currentReturnPeriod, pendingReturnperiod) match {
-    case (Some(current), Some(pending)) if current != pending => Left(Ok(views.html.customerInfo.customer_circumstance_details(circumstanceDetails)))
-    case _ => Right(user)
-  }
+        (currentReturnPeriod, pendingReturnPeriod) match {
+          case (Some(current), Some(pending)) if current != pending => Left(Ok(views.html.customerInfo.customer_circumstance_details(circumstanceDetails)))
+          case _ => Right(user)
+        }
 
       case Left(error) =>
-        Logger.warn(s"[InflightReturnFrequencyPredicate][getCusatomerInfoCall] - " +
-          s"The call to the GetCustomerInfo API failed. Error: ${error.message}")
+        Logger.warn(s"[InFlightReturnFrequencyPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
         Left(serviceErrorHandler.showInternalServerError)
     }
   }

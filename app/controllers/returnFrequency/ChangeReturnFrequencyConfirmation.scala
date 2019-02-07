@@ -17,7 +17,7 @@
 package controllers.returnFrequency
 
 import config.{AppConfig, ServiceErrorHandler}
-import controllers.predicates.{AuthPredicate, InflightReturnFrequencyPredicate}
+import controllers.predicates.{AuthPredicate, InFlightReturnFrequencyPredicate}
 import javax.inject.{Inject, Singleton}
 import common.SessionKeys
 import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails}
@@ -33,7 +33,7 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val authenticate: AuthPredicate,
                                                   customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
-                                                  val pendingReturnFrequency: InflightReturnFrequencyPredicate,
+                                                  val pendingReturnFrequency: InFlightReturnFrequencyPredicate,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: String => Action[AnyContent] = _ => (authenticate andThen pendingReturnFrequency).async { implicit user =>

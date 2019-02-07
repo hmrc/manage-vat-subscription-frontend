@@ -31,7 +31,7 @@ import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 import assets.BaseTestConstants._
-import controllers.predicates.InflightReturnFrequencyPredicate
+import controllers.predicates.InFlightReturnFrequencyPredicate
 import controllers.returnFrequency.ChooseDatesController
 import play.api.Configuration
 
