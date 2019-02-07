@@ -25,7 +25,6 @@ object ReturnFrequencyMessages {
 
   object ChoosePage {
     val heading = "Choose the new VAT Return dates"
-    val userHomepageHeading = "Change of business details"
     val question = "The VAT Return dates are currently"
     val error = "Select the new VAT Return dates"
   }
