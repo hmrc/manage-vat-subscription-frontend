@@ -16,12 +16,15 @@
 
 package utils
 
+import assets.BaseTestConstants._
 import common.SessionKeys
-import config.{FrontendAppConfig, ServiceErrorHandler}
+import config.ServiceErrorHandler
+import controllers.returnFrequency.ChooseDatesController
 import mocks.MockAppConfig
 import models.User
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.Configuration
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.inject.Injector
 import play.api.mvc.AnyContentAsEmpty
@@ -30,8 +33,6 @@ import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
-import assets.BaseTestConstants._
-import play.api.Configuration
 
 import scala.concurrent.ExecutionContext
 

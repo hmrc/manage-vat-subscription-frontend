@@ -19,7 +19,6 @@ package controllers.returnFrequency
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
-
 import common.SessionKeys
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._

@@ -16,7 +16,6 @@
 
 package controllers
 
-import assets.BaseTestConstants.vrn
 import assets.ReturnPeriodTestConstants.{returnPeriodJan,returnPeriodFeb}
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}

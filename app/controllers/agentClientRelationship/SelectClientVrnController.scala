@@ -17,7 +17,6 @@
 package controllers.agentClientRelationship
 
 import javax.inject.{Inject, Singleton}
-
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentOnly

@@ -30,7 +30,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-
 class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService with MockAuditingService with MockCustomerCircumstanceDetailsService {
 
   object TestPaymentController extends PaymentsController(
