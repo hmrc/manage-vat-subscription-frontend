@@ -17,7 +17,7 @@
 package controllers
 
 import assets.BaseTestConstants._
-import assets.CircumstanceDetailsTestConstants.customerInformationWithPartyType
+import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisationPending, customerInformationWithPartyType}
 import assets.PaymentsTestConstants._
 import audit.mocks.MockAuditingService
 import audit.models.BankAccountHandOffAuditModel
@@ -39,61 +39,79 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
     mockPaymentsService,
     mockAuditingService,
     mockCustomerDetailsService,
+    mockInFlightRepaymentBankAccountPredicate,
     mockConfig
   )
 
   "Calling the sendToPayments method for an individual" when {
 
-    def setup(customerDetailsResponse: CircumstanceDetailsResponse = Right(customerInformationWithPartyType(None)),
-              paymentsResponse: PaymentsResponse): PaymentsController = {
+    "user has no in-flight repayment bank account change" when {
 
-      setupMockPaymentsService(paymentsResponse)
-      setupMockCustomerDetails(vrn)(customerDetailsResponse)
-      mockIndividualAuthorised()
+      def setup(customerDetailsResponse: CircumstanceDetailsResponse = Right(customerInformationWithPartyType(None)),
+                paymentsResponse: PaymentsResponse): PaymentsController = {
 
-      TestPaymentController
+        setupMockPaymentsService(paymentsResponse)
+        setupMockCustomerDetails(vrn)(customerDetailsResponse)
+        mockIndividualAuthorised()
+
+        TestPaymentController
+      }
+
+      "the PaymentsService returns a Right(PaymentRedirectModel)" should {
+
+        lazy val controller = setup(paymentsResponse = Right(successPaymentsResponseModel))
+        lazy val result = controller.sendToPayments(request)
+
+        "return 303 (Redirect)" in {
+          status(result) shouldBe Status.SEE_OTHER
+
+          verify(mockAuditingService)
+            .extendedAudit(
+              ArgumentMatchers.eq(BankAccountHandOffAuditModel(user, successPaymentsResponse)),
+              ArgumentMatchers.eq[Option[String]](Some(controllers.routes.PaymentsController.sendToPayments().url))
+            )(
+              ArgumentMatchers.any[HeaderCarrier],
+              ArgumentMatchers.any[ExecutionContext]
+            )
+        }
+
+        "redirect to the correct url" in {
+          redirectLocation(result) shouldBe Some(successPaymentsResponse)
+        }
+      }
+
+      "the PaymentsService returns an error" should {
+
+        lazy val controller = setup(paymentsResponse = Left(errorModel))
+        lazy val result = controller.sendToPayments(request)
+
+        "return 500 (ISE)" in {
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+        }
+      }
+
+      "the CustomerCircumstanceDetailsService returns an error" should {
+
+        lazy val controller = setup(customerDetailsResponse = Left(errorModel), paymentsResponse = Left(errorModel))
+        lazy val result = controller.sendToPayments(request)
+
+        "return 500 (ISE)" in {
+          status(result) shouldBe INTERNAL_SERVER_ERROR
+        }
+      }
     }
 
-    "the PaymentsService returns a Right(PaymentRedirectModel)" should {
+    "user has an in-flight repayment bank account change" should {
 
-      lazy val controller = setup(paymentsResponse = Right(successPaymentsResponseModel))
-      lazy val result = controller.sendToPayments(request)
+      lazy val result = TestPaymentController.sendToPayments(request)
 
-      "return 303 (Redirect)" in {
+      "return SEE_OTHER (303)" in {
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
         status(result) shouldBe Status.SEE_OTHER
-
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.eq(BankAccountHandOffAuditModel(user, successPaymentsResponse)),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.PaymentsController.sendToPayments().url))
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
       }
 
-      "redirect to the correct url" in {
-        redirectLocation(result) shouldBe Some(successPaymentsResponse)
-      }
-    }
-
-    "the PaymentsService returns an error" should {
-
-      lazy val controller = setup(paymentsResponse = Left(errorModel))
-      lazy val result = controller.sendToPayments(request)
-
-      "return 500 (ISE)" in {
-        status(result) shouldBe INTERNAL_SERVER_ERROR
-      }
-    }
-
-    "the CustomerCircumstanceDetailsService returns an error" should {
-
-      lazy val controller = setup(customerDetailsResponse = Left(errorModel), paymentsResponse = Left(errorModel))
-      lazy val result = controller.sendToPayments(request)
-
-      "return 500 (ISE)" in {
-        status(result) shouldBe INTERNAL_SERVER_ERROR
+      s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
       }
     }
   }
