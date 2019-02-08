@@ -19,6 +19,7 @@ package testOnly.models
 import play.api.libs.json.{Format, Json}
 
 case class VatSubscriptionFeatureSwitchModel(latestApi1363Version: Boolean,
+                                             Api1363Version: Api1363Version,
                                              Api1365Version: Api1365Version,
                                              stubDes: Boolean)
 
