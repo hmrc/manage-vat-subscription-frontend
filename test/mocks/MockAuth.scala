@@ -96,6 +96,15 @@ trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar with M
       ec
     )
 
+  val mockInFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate =
+    new InFlightRepaymentBankAccountPredicate(
+      mockCustomerDetailsService,
+      serviceErrorHandler,
+      messagesApi,
+      mockConfig,
+      ec
+    )
+
   def mockIndividualAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
     setupAuthResponse(Future.successful(
       new ~(Some(AffinityGroup.Individual),
