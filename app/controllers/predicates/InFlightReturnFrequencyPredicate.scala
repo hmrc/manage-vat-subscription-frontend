@@ -60,7 +60,7 @@ class InFlightReturnFrequencyPredicate @Inject()(customerCircumstancesService: C
               .addingToSession(CURRENT_RETURN_FREQUENCY -> returnPeriod.id))
           case None =>
             Logger.warn("[InFlightReturnFrequencyPredicate][refine] - No return frequency returned from GetCustomerInfo")
-            Left(serviceErrorHandler.showInternalServerError)
+            Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
         }
       case Left(error) =>
         Logger.warn(s"[InFlightReturnFrequencyPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
