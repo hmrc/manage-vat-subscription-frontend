@@ -72,6 +72,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.useAgentClientLookup(model.useAgentClientLookup)
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
+    appConfig.features.stubContactPreferences(model.stubContactPreferences)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
