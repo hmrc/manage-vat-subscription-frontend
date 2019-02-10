@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ContactPreferencesHttpParser.ContactPreferencesReads
+import connectors.httpParsers.ContactPreferenceHttpParser.ContactPreferenceReads
 import models.contactPreferences.ContactPreference
 import models.core.ErrorModel
 import play.api.http.Status
@@ -35,7 +35,7 @@ class ContactPreferenceHttpParserSpec extends TestUtil {
         val response = Json.obj("preference" -> "DIGITAL")
 
         "return Digital" in {
-          ContactPreferencesReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe Right(ContactPreference("DIGITAL"))
+          ContactPreferenceReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe Right(ContactPreference("DIGITAL"))
         }
       }
 
@@ -44,7 +44,7 @@ class ContactPreferenceHttpParserSpec extends TestUtil {
         val response = Json.obj("preference" -> "PAPER")
 
         "return Paper" in {
-          ContactPreferencesReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe Right(ContactPreference("PAPER"))
+          ContactPreferenceReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe Right(ContactPreference("PAPER"))
         }
       }
 
@@ -53,7 +53,7 @@ class ContactPreferenceHttpParserSpec extends TestUtil {
         val response = Json.obj("preference" -> "Invalid")
 
         "return an ErrorModel" in {
-          ContactPreferencesReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe
+          ContactPreferenceReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe
             Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid preference type received from Contact Preferences"))
         }
       }
@@ -63,7 +63,7 @@ class ContactPreferenceHttpParserSpec extends TestUtil {
         val response = Json.obj("Invalid" -> "Invalid")
 
         "return an ErrorModel" in {
-          ContactPreferencesReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe
+          ContactPreferenceReads.read("", "", HttpResponse(Status.OK, Some(response))) shouldBe
             Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json received from Contact Preferences"))
         }
       }
@@ -72,7 +72,7 @@ class ContactPreferenceHttpParserSpec extends TestUtil {
     "the http response status is unexpected" should {
 
       "return an ErrorModel" in {
-        ContactPreferencesReads.read("", "", HttpResponse(Status.NOT_FOUND, responseString = Some("Response body"))) shouldBe
+        ContactPreferenceReads.read("", "", HttpResponse(Status.NOT_FOUND, responseString = Some("Response body"))) shouldBe
           Left(ErrorModel(Status.NOT_FOUND, "Unexpected Response. Response: Response body"))
       }
     }

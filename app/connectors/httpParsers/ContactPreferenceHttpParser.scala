@@ -24,9 +24,9 @@ import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object ContactPreferencesHttpParser {
+object ContactPreferenceHttpParser {
 
-  implicit object ContactPreferencesReads extends HttpReads[HttpGetResult[ContactPreference]] {
+  implicit object ContactPreferenceReads extends HttpReads[HttpGetResult[ContactPreference]] {
 
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[ContactPreference] = {
 
