@@ -48,7 +48,8 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             useAgentClientLookup = appConfig.features.useAgentClientLookup(),
-            stubAddressLookup = appConfig.features.stubAddressLookup()
+            stubAddressLookup = appConfig.features.stubAddressLookup(),
+            stubContactPreferences = appConfig.features.stubContactPreferences()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: ${form}")
