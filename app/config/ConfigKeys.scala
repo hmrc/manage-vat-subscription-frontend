@@ -43,6 +43,7 @@ object ConfigKeys {
   val useAgentClientLookupFeature: String = "features.useAgentClientLookup"
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
+  val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
@@ -78,4 +79,6 @@ object ConfigKeys {
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
+
+  val contactPreferencesService: String = "contact-preferences"
 }

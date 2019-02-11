@@ -72,6 +72,8 @@ trait AppConfig extends ServicesConfig {
   val vatAgentClientLookupFrontendUrl: String
   def agentClientLookupUrl: String
   def agentClientUnauthorisedUrl: String
+  val contactPreferencesService: String
+  def contactPreferencesUrl(vrn: String): String
 }
 
 @Singleton
@@ -135,6 +137,17 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
       baseUrl(Keys.addressLookupFrontend)
     }
   }
+
+  override lazy val contactPreferencesService: String = {
+    if(features.stubContactPreferences()){
+      baseUrl("vat-subscription-dynamic-stub")
+    } else {
+      baseUrl(Keys.contactPreferencesService)
+    }
+  }
+
+  override def contactPreferencesUrl(vrn: String): String = contactPreferencesService + s"/contact-preferences/vat/vrn/$vrn"
+
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
