@@ -123,14 +123,13 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCirc
 
           lazy val result = TestChooseDatesController.show(request)
 
-          "return ISE (500)" in {
+          "return 303" in {
             mockCustomerDetailsSuccess(customerInformationModelMin)
-            status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            status(result) shouldBe Status.SEE_OTHER
           }
 
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
+          s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
+            redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
           }
         }
 

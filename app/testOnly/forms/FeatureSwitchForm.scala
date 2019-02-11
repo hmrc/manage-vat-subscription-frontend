@@ -19,11 +19,12 @@ package testOnly.forms
 import config.ConfigKeys
 import play.api.data.Form
 import play.api.data.Forms._
-import testOnly.models.{Api1365Version, FeatureSwitchModel, VatSubscriptionFeatureSwitchModel}
+import testOnly.models.{Api1363Version, Api1365Version, FeatureSwitchModel, VatSubscriptionFeatureSwitchModel}
 
 object FeatureSwitchForm {
 
   val api1365Version: String = "Api1365Version"
+  val api1363Version: String = "Api1363Version"
   val latestApi1363Version: String = "latestApi1363Version"
   val stubDes: String = "stubDes"
 
@@ -35,6 +36,7 @@ object FeatureSwitchForm {
       ConfigKeys.contactDetailsSectionFeature -> boolean,
       "vatSubscriptionFeatures" -> mapping(
           latestApi1363Version -> boolean,
+          api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
           stubDes -> boolean
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),

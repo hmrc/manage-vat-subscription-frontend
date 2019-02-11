@@ -86,8 +86,12 @@ class InFlightReturnFrequencyPredicateSpec extends MockAuth {
               await(mockInFlightReturnPeriodPredicate.refine(user).left.get)
             }
 
-            "return 500" in {
-              status(result) shouldBe INTERNAL_SERVER_ERROR
+            "return 303" in {
+              status(result) shouldBe SEE_OTHER
+            }
+
+            s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
+              redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
             }
           }
 

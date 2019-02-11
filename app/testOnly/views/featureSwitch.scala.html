@@ -49,6 +49,20 @@
 
                 <fieldset>
                     <legend>
+                        <h3>Which API1363 Version should be used?</h3>
+                    </legend>
+                    @views.html.templates.inputs.radioGroup(
+                        field = form("vatSubscriptionFeatures.Api1363Version"),
+                        choices = Seq(
+                            (Api1363R6.id, "API1363 R6"),
+                            (Api1363R7.id, "API1363 R7"),
+                            (Api1363R8.id, "API1363 R8")
+                        ),
+                        question = "Which API1363 Version should be used?"
+                    )
+                </fieldset>
+                <fieldset>
+                    <legend>
                         <h3>Which API1365 Version should be used?</h3>
                     </legend>
                     @views.html.templates.inputs.radioGroup(
