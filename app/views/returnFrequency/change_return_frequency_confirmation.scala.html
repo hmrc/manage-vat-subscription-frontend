@@ -16,7 +16,7 @@
 
 @import views.html.templates.updateClient
 
-@(clientName: Option[String] = None, agentEmail: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
   title = messages("received_frequency.title"),

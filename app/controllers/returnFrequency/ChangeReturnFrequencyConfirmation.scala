@@ -20,9 +20,10 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
 import common.SessionKeys
+import models.User
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.CustomerCircumstanceDetailsService
+import services.{ContactPreferenceService, CustomerCircumstanceDetailsService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -31,6 +32,7 @@ import scala.concurrent.Future
 class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   val authenticate: AuthPredicate,
                                                   customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
+                                                  val contactPreferenceService: ContactPreferenceService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
@@ -43,6 +45,19 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
           Ok(views.html.returnFrequency.change_return_frequency_confirmation(clientName = entityName, agentEmail = email))
         case Left(_) =>
           Ok(views.html.returnFrequency.change_return_frequency_confirmation(agentEmail = email))
+      }
+    } else {
+      nonAgentConfirmation
+    }
+  }
+
+  private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
+    if(appConfig.features.useContactPreferences.apply()){
+      contactPreferenceService.getContactPreference(user.vrn).map {
+        case Right(cPref) =>
+          Ok(views.html.returnFrequency.change_return_frequency_confirmation())
+        case Left(_) =>
+          Ok(views.html.returnFrequency.change_return_frequency_confirmation())
       }
     } else {
       Future.successful(Ok(views.html.returnFrequency.change_return_frequency_confirmation()))

@@ -24,4 +24,5 @@ case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
                               useAgentClientLookup: Boolean,
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
-                              stubContactPreferences: Boolean)
+                              stubContactPreferences: Boolean,
+                              useContactPreferences: Boolean)
