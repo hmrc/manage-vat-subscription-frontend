@@ -52,10 +52,10 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    if(appConfig.features.useContactPreferences.apply()){
+    if(appConfig.features.useContactPreferences()){
       contactPreferenceService.getContactPreference(user.vrn).map {
         case Right(cPref) =>
-          Ok(views.html.returnFrequency.change_return_frequency_confirmation())
+          Ok(views.html.returnFrequency.change_return_frequency_confirmation(contactPref = Some(cPref.preference)))
         case Left(_) =>
           Ok(views.html.returnFrequency.change_return_frequency_confirmation())
       }

@@ -29,33 +29,23 @@
 
     <h2 class="heading-medium">@messages("received_frequency.subheading")</h2>
 
-  @agentEmail match {
-
-    case Some(email) => {
-      <p>@messages("received_frequency.agent.p1-1")
-      <strong class="bold">@email</strong>
-      @messages("received_frequency.agent.p1-2")</p>
-      @updateClient(clientName)
-    }
-
-    case None if user.isAgent => {
-      <p>@messages("common.agent.confirmationLetter")</p>
-      @updateClient(clientName)
-    }
-
-    case None => {
-      <p>@messages("received_frequency.p1")</p>
-
-      <p>@messages("received_frequency.p2")</p>
-
-      <ul class="list list-bullet">
-        <li>@messages("received_frequency.bullet1")</li>
-        <li>@messages("received_frequency.bullet2")</li>
-      </ul>
-    }
-  }
-
     @if(user.isAgent){
+
+        @agentEmail match {
+
+            case Some(email) => {
+                <p>@messages("received_frequency.agent.p1-1")
+                    <strong class="bold">@email</strong>
+                    @messages("received_frequency.agent.p1-2")</p>
+                @updateClient(clientName)
+            }
+
+            case None => {
+                <p>@messages("common.agent.confirmationLetter")</p>
+                @updateClient(clientName)
+            }
+        }
+
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
             <a id="change-client-link"
@@ -63,6 +53,30 @@
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
                 @messages("common.agent.changeClient.link")</a>.
         </p>
+    } else {
+
+        @if(appConfig.features.useContactPreferences()){
+
+            @contactPref match {
+                case Some("DIGITAL") => {<p>@messages("received_frequency.digital")</p>}
+                case Some("PAPER") => {<p>@messages("received_frequency.paper")</p>}
+                case _ => {<p>@messages("received_frequency.noContactPref")</p>}
+            }
+            <p>@messages("received_frequency.contact")</p>
+
+        } else {
+
+            <p>@messages("received_frequency.p1")</p>
+
+            <p>@messages("received_frequency.p2")</p>
+
+            <ul class="list list-bullet">
+                <li>@messages("received_frequency.bullet1")</li>
+                <li>@messages("received_frequency.bullet2")</li>
+            </ul>
+
+        }
+
     }
 
     <a  id="finish"

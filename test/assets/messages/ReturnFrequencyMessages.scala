@@ -49,5 +49,11 @@ object ReturnFrequencyMessages {
     val p2Agent = "We will also contact MyCompany Ltd with an update."
     val p2AgentNoClientName = "We will also contact your client with an update."
     val confirmationLetter = "We will send a confirmation letter to the agency address within 15 working days."
+    val digitalPref = "We will send you an email within 2 working days with an update, followed by a letter to " +
+      "your principal place of business. You can also go to your HMRC secure messages to find out if your request has been accepted."
+    val paperPref = "We will send a letter to your principal place of business with an update within 15 working days."
+    val noContactPref = "We will send you an email within 2 working days with an update, followed by a letter " +
+      "to your principal place of business. You can also go to your HMRC secure messages to find out if your request has been accepted."
+    val contactDetails = "Make sure your contact details are up to date."
   }
 }
