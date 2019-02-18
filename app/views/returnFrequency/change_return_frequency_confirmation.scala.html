@@ -60,7 +60,7 @@
             @contactPref match {
                 case Some("DIGITAL") => {<p>@messages("received_frequency.digital")</p>}
                 case Some("PAPER") => {<p>@messages("received_frequency.paper")</p>}
-                case _ => {<p>@messages("received_frequency.noContactPref")</p>}
+                case _ => {<p>@messages("received_frequency.contactPrefError")</p>}
             }
             <p>@messages("received_frequency.contact")</p>
 

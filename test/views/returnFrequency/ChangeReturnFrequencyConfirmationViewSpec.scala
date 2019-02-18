@@ -180,7 +180,7 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       }
 
       s"have the correct p1 of '${viewMessages.ReceivedPage.p1}'" in {
-        paragraph(1) shouldBe viewMessages.ReceivedPage.noContactPref
+        paragraph(1) shouldBe viewMessages.ReceivedPage.contactPrefError
       }
 
       s"have the correct p2 of '${viewMessages.ReceivedPage.p2}'" in {

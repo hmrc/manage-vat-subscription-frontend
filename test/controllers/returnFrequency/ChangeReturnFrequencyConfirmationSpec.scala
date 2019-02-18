@@ -106,6 +106,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
         "render the Change Return Frequency Confirmation Page" in {
           document.title shouldBe Messages.ReceivedPage.heading
+          document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.p1
         }
       }
 
@@ -130,6 +131,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           "render the Change Return Frequency Confirmation Page" in {
             document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.digitalPref
           }
         }
 
@@ -154,6 +156,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           "render the Change Return Frequency Confirmation Page" in {
             document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.paperPref
           }
         }
 
@@ -177,6 +180,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           "render the Change Return Frequency Confirmation Page" in {
             document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.contactPrefError
           }
         }
 
