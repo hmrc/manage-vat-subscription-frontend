@@ -19,9 +19,8 @@ package controllers
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisationPending, customerInformationWithPartyType}
 import assets.PaymentsTestConstants._
-import audit.mocks.MockAuditingService
 import audit.models.BankAccountHandOffAuditModel
-import mocks.services.{MockCustomerCircumstanceDetailsService, MockPaymentsService}
+import mocks.services.MockPaymentsService
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
@@ -30,7 +29,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService with MockAuditingService with MockCustomerCircumstanceDetailsService {
+class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService {
 
   object TestPaymentController extends PaymentsController(
     messagesApi,

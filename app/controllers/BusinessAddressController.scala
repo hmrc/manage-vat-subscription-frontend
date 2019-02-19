@@ -17,6 +17,7 @@
 package controllers
 
 import audit.AuditService
+import audit.models.ContactPreferenceAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
 import javax.inject.{Inject, Singleton}
@@ -70,7 +71,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   }
 
   val confirmation: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
-    if(user.isAgent) {
+    if (user.isAgent) {
       val email = user.session.get(SessionKeys.verifiedAgentEmail)
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) =>
@@ -85,9 +86,15 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    if(appConfig.features.useContactPreferences()){
+    if (appConfig.features.useContactPreferences()) {
       contactPreferenceService.getContactPreference(user.vrn).map {
         case Right(cPref) =>
+
+          auditService.extendedAudit(
+            ContactPreferenceAuditModel(user.vrn, cPref.preference),
+            Some(controllers.routes.ChangeBusinessNameController.show().url)
+          )
+
           Ok(views.html.businessAddress.change_address_confirmation(contactPref = Some(cPref.preference)))
         case Left(_) =>
           Ok(views.html.businessAddress.change_address_confirmation())

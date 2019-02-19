@@ -20,20 +20,23 @@ import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, EmailChangePendingMessages}
-import audit.mocks.MockAuditingService
-import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockContactPreferenceService, MockCustomerCircumstanceDetailsService}
+import audit.models.ContactPreferenceAuditModel
+import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockContactPreferenceService}
 import models.contactPreferences.ContactPreference
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
+import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
-  MockBusinessAddressService with MockAuditingService with MockCustomerCircumstanceDetailsService with MockContactPreferenceService {
+  MockBusinessAddressService with MockContactPreferenceService {
 
   "Calling the .show action" when {
 
@@ -359,6 +362,16 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "return 200" in {
           status(result) shouldBe Status.OK
+
+          verify(mockAuditingService)
+            .extendedAudit(
+              ArgumentMatchers.any[ContactPreferenceAuditModel],
+              ArgumentMatchers.any[Option[String]]
+
+            )(
+              ArgumentMatchers.any[HeaderCarrier],
+              ArgumentMatchers.any[ExecutionContext]
+            )
         }
 
         "return HTML" in {

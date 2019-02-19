@@ -20,13 +20,12 @@ import assets.messages.{ClientVrnPageMessages => Messages}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
-class SelectClientVrnControllerSpec extends ControllerBaseSpec with MockAuth {
+class SelectClientVrnControllerSpec extends ControllerBaseSpec {
 
   object TestClientVrnControllerSpec extends SelectClientVrnController(
     messagesApi,

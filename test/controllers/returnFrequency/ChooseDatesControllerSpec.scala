@@ -20,13 +20,12 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.ReturnPeriodTestConstants._
 import common.SessionKeys
 import controllers.ControllerBaseSpec
-import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
 
-class ChooseDatesControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
+class ChooseDatesControllerSpec extends ControllerBaseSpec {
 
   object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate,mockInFlightReturnPeriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
