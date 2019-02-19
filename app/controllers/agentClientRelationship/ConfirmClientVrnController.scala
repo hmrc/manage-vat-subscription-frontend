@@ -22,6 +22,7 @@ import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
@@ -50,7 +51,10 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
             Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
           )
           Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
-        case _ => serviceErrorHandler.showInternalServerError
+        case Left(error) => if (error.status == NOT_FOUND)  {
+          Logger.warn("[ConfirmClientVrnController][show] Agent is authorised for client but no MTD VAT subscription found")
+        }
+          serviceErrorHandler.showInternalServerError
       }
   }
 

@@ -72,7 +72,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
               Redirect(appConfig.agentClientUnauthorisedUrl)
           }
         case _ =>
-          Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
+          Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
           Future.successful(Redirect(appConfig.agentClientLookupUrl))
       }
     } else {
