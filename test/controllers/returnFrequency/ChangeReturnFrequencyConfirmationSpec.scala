@@ -20,17 +20,19 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.MockCustomerCircumstanceDetailsService
+import mocks.services.{MockContactPreferenceService, MockCustomerCircumstanceDetailsService}
+import models.contactPreferences.ContactPreference
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 
-class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService {
+class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockContactPreferenceService {
 
   object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
     messagesApi,
     mockAuthPredicate,
     mockCustomerDetailsService,
+    mockContactPreferenceService,
     app.injector.instanceOf[ServiceErrorHandler],
     mockConfig
   )
@@ -44,6 +46,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         "the call to the customer details service is successful" should {
 
           lazy val result = {
+            mockConfig.features.useContactPreferences(false)
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
           }
@@ -84,9 +87,12 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         }
       }
 
-      "the user is not an agent" should {
+      "the user is not an agent and the 'useContactPreference' feature is disabled" should {
 
-        lazy val result = TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+        lazy val result = {
+          mockConfig.features.useContactPreferences(false)
+          TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+        }
         lazy val document = Jsoup.parse(bodyOf(result))
 
         "return 200" in {
@@ -100,7 +106,84 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
         "render the Change Return Frequency Confirmation Page" in {
           document.title shouldBe Messages.ReceivedPage.heading
+          document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.p1
         }
+      }
+
+      "the user is not an agent and the 'useContactPreference' feature is enabled" when {
+
+        "display the correct content for a user that has a digital contact preference" should {
+          lazy val result = {
+            mockConfig.features.useContactPreferences(true)
+            mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
+            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+          }
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+          "return 200" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Change Return Frequency Confirmation Page" in {
+            document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.digitalPref
+          }
+        }
+
+        "display the correct content for a user that has a paper contact preference" should {
+
+          lazy val result = {
+            mockConfig.features.useContactPreferences(true)
+            mockContactPreferenceSuccess(ContactPreference("PAPER"))
+            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+          }
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+
+          "return 200" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Change Return Frequency Confirmation Page" in {
+            document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.paperPref
+          }
+        }
+
+        "display the correct content when an error is returned from contactPreferences" should {
+
+          lazy val result = {
+            mockConfig.features.useContactPreferences(true)
+            mockContactPreferenceError()
+            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+          }
+          lazy val document = Jsoup.parse(bodyOf(result))
+
+          "return 200" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "render the Change Return Frequency Confirmation Page" in {
+            document.title shouldBe Messages.ReceivedPage.heading
+            document.getElementById("content").getElementsByTag("p").first().text() shouldBe Messages.ReceivedPage.contactPrefError
+          }
+        }
+
       }
     }
 

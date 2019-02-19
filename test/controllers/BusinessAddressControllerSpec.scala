@@ -21,7 +21,8 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, EmailChangePendingMessages}
 import audit.mocks.MockAuditingService
-import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockCustomerCircumstanceDetailsService}
+import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockContactPreferenceService, MockCustomerCircumstanceDetailsService}
+import models.contactPreferences.ContactPreference
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
@@ -32,7 +33,7 @@ import play.api.test.Helpers.{redirectLocation, _}
 import scala.concurrent.Future
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
-  MockBusinessAddressService with MockAuditingService with MockCustomerCircumstanceDetailsService {
+  MockBusinessAddressService with MockAuditingService with MockCustomerCircumstanceDetailsService with MockContactPreferenceService {
 
   "Calling the .show action" when {
 
@@ -41,6 +42,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockAuthPredicate,
       mockInflightEmailPredicate,
       mockAddressLookupService,
+      mockContactPreferenceService,
       mockBusinessAddressService,
       mockCustomerDetailsService,
       serviceErrorHandler,
@@ -104,6 +106,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAuthPredicate,
         mockInflightEmailPredicate,
         mockAddressLookupService,
+        mockContactPreferenceService,
         mockBusinessAddressService,
         mockCustomerDetailsService,
         serviceErrorHandler,
@@ -197,6 +200,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockAuthPredicate,
         mockInflightEmailPredicate,
         mockAddressLookupService,
+        mockContactPreferenceService,
         mockBusinessAddressService,
         mockCustomerDetailsService,
         serviceErrorHandler,
@@ -267,6 +271,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockAuthPredicate,
       mockInflightEmailPredicate,
       mockAddressLookupService,
+      mockContactPreferenceService,
       mockBusinessAddressService,
       mockCustomerDetailsService,
       serviceErrorHandler,
@@ -278,6 +283,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is successful" should {
 
         lazy val result = {
+          mockConfig.features.useContactPreferences(false)
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
           controller.confirmation("agent")(agentUser)
         }
@@ -299,6 +305,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is unsuccessful" should {
 
         lazy val result = {
+          mockConfig.features.useContactPreferences(false)
           mockCustomerDetailsError()
           controller.confirmation("agent")(agentUser)
         }
@@ -318,9 +325,12 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
     }
 
-    "the user is not an agent" should {
+    "the user is not an agent and the 'useContactPreferences is disabled'" should {
 
-      lazy val result = controller.confirmation("non-agent")(request)
+      lazy val result = {
+        mockConfig.features.useContactPreferences(false)
+        controller.confirmation("non-agent")(request)
+      }
 
       "return 200" in {
         status(result) shouldBe Status.OK
@@ -333,6 +343,81 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "render the Business Address confirmation view" in {
         Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+      }
+    }
+
+    "the user is not an agent and the 'useContactPreferences is enabled'" when {
+
+      "contactPreference is set to 'DIGITAL'" should {
+
+        lazy val result = {
+          mockConfig.features.useContactPreferences(true)
+          mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
+          controller.confirmation("non-agent")(request)
+        }
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Business Address confirmation view" in {
+          document.title shouldBe ChangeAddressConfirmationPageMessages.title
+          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.digitalPref
+        }
+      }
+
+      "contactPreference is set to 'PAPER'" should {
+
+        lazy val result = {
+          mockConfig.features.useContactPreferences(true)
+          mockContactPreferenceSuccess(ContactPreference("PAPER"))
+          controller.confirmation("non-agent")(request)
+        }
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Business Address confirmation view" in {
+          document.title shouldBe ChangeAddressConfirmationPageMessages.title
+          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.paperPref
+        }
+      }
+
+      "contactPreference returns an error" should {
+
+        lazy val result = {
+          mockConfig.features.useContactPreferences(true)
+          mockContactPreferenceError()
+          controller.confirmation("non-agent")(request)
+        }
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Business Address confirmation view" in {
+          document.title shouldBe ChangeAddressConfirmationPageMessages.title
+          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+        }
       }
     }
   }

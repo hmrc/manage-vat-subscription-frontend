@@ -21,10 +21,11 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
 import javax.inject.{Inject, Singleton}
 import common.SessionKeys
+import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
-import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBService}
+import play.api.mvc.{Action, AnyContent, Result}
+import services.{AddressLookupService, ContactPreferenceService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
@@ -34,6 +35,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
                                           val authenticate: AuthPredicate,
                                           val inflightEmailCheck: InflightEmailPredicate,
                                           addressLookupService: AddressLookupService,
+                                          contactPreferenceService: ContactPreferenceService,
                                           ppobService: PPOBService,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val serviceErrorHandler: ServiceErrorHandler,
@@ -76,6 +78,19 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
           Ok(views.html.businessAddress.change_address_confirmation(clientName = entityName, agentEmail = email))
         case Left(_) =>
           Ok(views.html.businessAddress.change_address_confirmation(agentEmail = email))
+      }
+    } else {
+      nonAgentConfirmation
+    }
+  }
+
+  private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
+    if(appConfig.features.useContactPreferences()){
+      contactPreferenceService.getContactPreference(user.vrn).map {
+        case Right(cPref) =>
+          Ok(views.html.businessAddress.change_address_confirmation(contactPref = Some(cPref.preference)))
+        case Left(_) =>
+          Ok(views.html.businessAddress.change_address_confirmation())
       }
     } else {
       Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))

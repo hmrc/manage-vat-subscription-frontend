@@ -49,7 +49,8 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             useAgentClientLookup = appConfig.features.useAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
-            stubContactPreferences = appConfig.features.stubContactPreferences()
+            stubContactPreferences = appConfig.features.stubContactPreferences(),
+            useContactPreferences = appConfig.features.useContactPreferences()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: ${form}")
@@ -73,6 +74,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
+    appConfig.features.useContactPreferences(model.useContactPreferences)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

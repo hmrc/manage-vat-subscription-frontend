@@ -27,39 +27,157 @@ import assets.BaseTestConstants.agentEmail
 
 class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
-  "the ChangeAddressConfirmationView for an individual" should {
+  "the ChangeAddressConfirmationView for an individual" when {
 
-    lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
-    lazy implicit val document: Document = Jsoup.parse(view.body)
+    "'useContactPreferences' is disabled" should {
 
-    s"have the correct document title of '${viewMessages.title}'" in {
-      document.title shouldBe viewMessages.title
-    }
+      lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page heading of '${viewMessages.title}'" in {
-      elementText("h1") shouldBe viewMessages.title
-    }
-
-    s"have the correct p1 of '${viewMessages.p1}'" in {
-      paragraph(1) shouldBe viewMessages.p1
-    }
-
-    s"have the correct p2 of '${viewMessages.p2}'" in {
-      paragraph(2) shouldBe viewMessages.p2
-    }
-
-    "not display the 'change another clients details' link" in {
-      elementExtinct("#change-client-text")
-    }
-
-    s"have a button to finish" which {
-
-      s"has the correct text of '${BaseMessages.finish}" in {
-        elementText("#finish") shouldBe BaseMessages.finish
+      s"have the correct document title of '${viewMessages.title}'" in {
+        mockConfig.features.useContactPreferences(false)
+        document.title shouldBe viewMessages.title
       }
 
-      s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-        element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+      s"have the correct page heading of '${viewMessages.title}'" in {
+        elementText("h1") shouldBe viewMessages.title
+      }
+
+      s"have the correct p1 of '${viewMessages.p1}'" in {
+        paragraph(1) shouldBe viewMessages.p1
+      }
+
+      s"have the correct p2 of '${viewMessages.p2}'" in {
+        paragraph(2) shouldBe viewMessages.p2
+      }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
+
+      s"have a button to finish" which {
+
+        s"has the correct text of '${BaseMessages.finish}" in {
+          elementText("#finish") shouldBe BaseMessages.finish
+        }
+
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        }
+      }
+    }
+
+    "'useContactPreferences' is enabled and set to 'DIGITAL'" should {
+
+      lazy val view: Html = views.change_address_confirmation(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct document title of '${viewMessages.title}'" in {
+        mockConfig.features.useContactPreferences(true)
+        document.title shouldBe viewMessages.title
+      }
+
+      s"have the correct page heading of '${viewMessages.title}'" in {
+        elementText("h1") shouldBe viewMessages.title
+      }
+
+      s"have the correct p1 of '${viewMessages.digitalPref}'" in {
+        paragraph(1) shouldBe viewMessages.digitalPref
+      }
+
+      s"have the correct p2 of '${viewMessages.contactDetails}'" in {
+        paragraph(2) shouldBe viewMessages.contactDetails
+      }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
+
+      s"have a button to finish" which {
+
+        s"has the correct text of '${BaseMessages.finish}" in {
+          elementText("#finish") shouldBe BaseMessages.finish
+        }
+
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        }
+      }
+    }
+
+    "'useContactPreferences' is enabled and set to 'PAPER'" should {
+
+      lazy val view: Html = views.change_address_confirmation(contactPref = Some("PAPER"))(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct document title of '${viewMessages.title}'" in {
+        mockConfig.features.useContactPreferences(true)
+        document.title shouldBe viewMessages.title
+      }
+
+      s"have the correct page heading of '${viewMessages.title}'" in {
+        elementText("h1") shouldBe viewMessages.title
+      }
+
+      s"have the correct p1 of '${viewMessages.paperPref}'" in {
+        paragraph(1) shouldBe viewMessages.paperPref
+      }
+
+      s"have the correct p2 of '${viewMessages.contactDetails}'" in {
+        paragraph(2) shouldBe viewMessages.contactDetails
+      }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
+
+      s"have a button to finish" which {
+
+        s"has the correct text of '${BaseMessages.finish}" in {
+          elementText("#finish") shouldBe BaseMessages.finish
+        }
+
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        }
+      }
+    }
+
+    "'useContactPreferences' is enabled, but an error is returned" should {
+
+      lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct document title of '${viewMessages.title}'" in {
+        mockConfig.features.useContactPreferences(true)
+        document.title shouldBe viewMessages.title
+      }
+
+      s"have the correct page heading of '${viewMessages.title}'" in {
+        elementText("h1") shouldBe viewMessages.title
+      }
+
+      s"have the correct p1 of '${viewMessages.contactPrefError}'" in {
+        paragraph(1) shouldBe viewMessages.contactPrefError
+      }
+
+      s"have the correct p2 of '${viewMessages.contactDetails}'" in {
+        paragraph(2) shouldBe viewMessages.contactDetails
+      }
+
+      "not display the 'change another clients details' link" in {
+        elementExtinct("#change-client-text")
+      }
+
+      s"have a button to finish" which {
+
+        s"has the correct text of '${BaseMessages.finish}" in {
+          elementText("#finish") shouldBe BaseMessages.finish
+        }
+
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        }
       }
     }
   }
