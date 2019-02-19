@@ -16,7 +16,7 @@
 
 @import views.html.templates.updateClient
 
-@(clientName: Option[String] = None, agentEmail: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @views.html.main_template(
     title = messages("change_address_confirmation.title"),
@@ -29,27 +29,23 @@
 
     <h2>@messages("change_address_confirmation.h2")</h2>
 
-    @agentEmail match {
-
-      case Some(email) => {
-        <p>@messages("change_address_confirmation.agent.p1-1")
-        <strong class="bold">@email</strong>
-        @messages("change_address_confirmation.agent.p1-2")</p>
-        @updateClient(clientName)
-      }
-
-      case None if user.isAgent => {
-        <p>@messages("common.agent.confirmationLetter")</p>
-        @updateClient(clientName)
-      }
-
-      case None => {
-        <p>@messages("change_address_confirmation.p1")</p>
-        <p>@messages("change_address_confirmation.p2")</p>
-      }
-    }
-
     @if(user.isAgent){
+
+        @agentEmail match {
+
+            case Some(email) => {
+                <p>@messages("change_address_confirmation.agent.p1-1")
+                    <strong class="bold">@email</strong>
+                    @messages("change_address_confirmation.agent.p1-2")</p>
+                @updateClient(clientName)
+            }
+
+            case None => {
+                <p>@messages("common.agent.confirmationLetter")</p>
+                @updateClient(clientName)
+            }
+        }
+
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
             <a onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
@@ -57,6 +53,22 @@
                href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
                 @messages("common.agent.changeClient.link")</a>.
         </p>
+    } else {
+
+        @if(appConfig.features.useContactPreferences()){
+
+            @contactPref match {
+                case Some("DIGITAL") => {<p>@messages("contact_preference.digital")</p>}
+                case Some("PAPER") => {<p>@messages("contact_preference.paper")</p>}
+                case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
+            }
+            <p>@messages("contact_preference.contact")</p>
+
+        } else {
+            <p>@messages("change_address_confirmation.p1")</p>
+            <p>@messages("change_address_confirmation.p2")</p>
+        }
+
     }
 
     <a onclick="sendGAEvent('business-address','finish','change-business-address-confirmation', @user.isAgent)"

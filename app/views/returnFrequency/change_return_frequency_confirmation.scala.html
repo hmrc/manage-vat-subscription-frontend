@@ -58,11 +58,11 @@
         @if(appConfig.features.useContactPreferences()){
 
             @contactPref match {
-                case Some("DIGITAL") => {<p>@messages("received_frequency.digital")</p>}
-                case Some("PAPER") => {<p>@messages("received_frequency.paper")</p>}
-                case _ => {<p>@messages("received_frequency.contactPrefError")</p>}
+                case Some("DIGITAL") => {<p>@messages("contact_preference.digital")</p>}
+                case Some("PAPER") => {<p>@messages("contact_preference.paper")</p>}
+                case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
             }
-            <p>@messages("received_frequency.contact")</p>
+            <p>@messages("contact_preference.contact")</p>
 
         } else {
 
