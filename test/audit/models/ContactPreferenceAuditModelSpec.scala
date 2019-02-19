@@ -24,26 +24,25 @@ import utils.TestUtil
 class ContactPreferenceAuditModelSpec extends TestUtil {
 
   val transactionName = "contact-preference"
-  val auditEvent = "AuthenticateAgentForClientConfirmation"
+  val auditType = "ContactPreference"
+  val preference = "DIGTIAL"
 
-  "The AuthenticationAgentAuditModelSpec" should {
+  "The ContactPreferenceAuditModel" should {
 
-    lazy val testGetClientBusinessNameAuditModel = GetClientBusinessNameAuditModel(arn, vrn, orgName)
+    lazy val testGetContactPreferenceAuditModel = ContactPreferenceAuditModel(vrn, preference)
 
     s"Have the correct transaction name of '$transactionName'" in {
-      testGetClientBusinessNameAuditModel.transactionName shouldBe transactionName
+      testGetContactPreferenceAuditModel.transactionName shouldBe transactionName
     }
 
-    s"Have the correct audit event type of '$auditEvent'" in {
-      testGetClientBusinessNameAuditModel.auditType shouldBe auditEvent
+    s"Have the correct audit event type of '$auditType'" in {
+      testGetContactPreferenceAuditModel.auditType shouldBe auditType
     }
 
     "Have the correct details for the audit event" in {
-      testGetClientBusinessNameAuditModel.detail shouldBe Json.obj(
-        "agentReferenceNumber" -> arn,
+      testGetContactPreferenceAuditModel.detail shouldBe Json.obj(
         "vrn" -> vrn,
-        "businessName" -> orgName,
-        "isAgent" -> true
+        "contactPreference" -> preference
       )
     }
   }

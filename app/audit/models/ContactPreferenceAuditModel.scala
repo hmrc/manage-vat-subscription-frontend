@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 HM Revenue & Customs
+ * Copyright 2019 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,24 @@
 
 package audit.models
 
-class ContactPreferenceAuditModel {
+import play.api.libs.json.{JsValue, Json, Writes}
+import utils.JsonObjectSugar
 
+case class ContactPreferenceAuditModel(vrn: String,
+                                       contactPreference: String) extends ExtendedAuditModel {
+
+  override val auditType: String = "ContactPreference"
+  override val detail: JsValue = Json.toJson(this)
+  override val transactionName: String = "contact-preference"
+
+}
+
+object ContactPreferenceAuditModel extends JsonObjectSugar {
+
+  implicit val writes: Writes[ContactPreferenceAuditModel] = Writes { model =>
+    jsonObjNoNulls(
+      "vrn" -> model.vrn,
+      "contactPreference" -> model.contactPreference
+    )
+  }
 }
