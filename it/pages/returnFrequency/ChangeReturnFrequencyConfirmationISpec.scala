@@ -28,6 +28,11 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
   val path = "/confirmation-vat-return-dates"
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
+  override def beforeEach() {
+    mockAppConfig.features.useContactPreferences(false)
+    super.beforeEach()
+  }
+
   "Calling .show" when {
 
     "the user is a Principle Entity and not an Agent" should {
