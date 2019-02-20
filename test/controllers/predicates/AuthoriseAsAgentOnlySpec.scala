@@ -17,7 +17,6 @@
 package controllers.predicates
 
 import assets.messages.{AgentJourneyDisabledPageMessages, AgentUnauthorisedPageMessages}
-import controllers.ControllerBaseSpec
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
@@ -27,7 +26,7 @@ import play.api.mvc.{Action, AnyContent}
 import scala.concurrent.Future
 import play.api.test.Helpers._
 
-class AuthoriseAsAgentOnlySpec extends MockAuth with ControllerBaseSpec {
+class AuthoriseAsAgentOnlySpec extends MockAuth {
 
   def target: Action[AnyContent] = {
     mockAgentOnlyAuthPredicate.async {

@@ -16,6 +16,8 @@
 
 package controllers.returnFrequency
 
+import audit.AuditService
+import audit.models.ContactPreferenceAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
@@ -34,6 +36,7 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
                                                   customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                   val contactPreferenceService: ContactPreferenceService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
+                                                  val auditService: AuditService,
                                                   implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
   val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
@@ -55,6 +58,12 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
     if(appConfig.features.useContactPreferences()){
       contactPreferenceService.getContactPreference(user.vrn).map {
         case Right(cPref) =>
+
+          auditService.extendedAudit(
+            ContactPreferenceAuditModel(user.vrn, cPref.preference),
+            Some(controllers.routes.ChangeBusinessNameController.show().url)
+          )
+
           Ok(views.html.returnFrequency.change_return_frequency_confirmation(contactPref = Some(cPref.preference)))
         case Left(_) =>
           Ok(views.html.returnFrequency.change_return_frequency_confirmation())

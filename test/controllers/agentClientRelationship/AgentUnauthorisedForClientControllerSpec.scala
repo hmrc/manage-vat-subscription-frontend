@@ -17,11 +17,9 @@
 package controllers.agentClientRelationship
 
 import assets.messages.{AgentUnauthorisedForClientPageMessages => Messages}
-import audit.mocks.MockAuditingService
 import audit.models.AuthenticateAgentAuditModel
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.MockAuth
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
@@ -32,7 +30,7 @@ import assets.BaseTestConstants._
 
 import scala.concurrent.ExecutionContext
 
-class AgentUnauthorisedForClientControllerSpec extends ControllerBaseSpec with MockAuth with MockAuditingService {
+class AgentUnauthorisedForClientControllerSpec extends ControllerBaseSpec {
 
   object TestUnauthorisedForClientController extends AgentUnauthorisedForClientController(
     mockAgentOnlyAuthPredicate,

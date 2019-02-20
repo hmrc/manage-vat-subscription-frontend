@@ -18,15 +18,21 @@ package controllers.returnFrequency
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
+import audit.models.ContactPreferenceAuditModel
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.{MockContactPreferenceService, MockCustomerCircumstanceDetailsService}
+import mocks.services.MockContactPreferenceService
 import models.contactPreferences.ContactPreference
 import org.jsoup.Jsoup
+import org.mockito.ArgumentMatchers
+import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
 
-class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockContactPreferenceService {
+import scala.concurrent.ExecutionContext
+
+class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockContactPreferenceService {
 
   object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
     messagesApi,
@@ -34,6 +40,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
     mockCustomerDetailsService,
     mockContactPreferenceService,
     app.injector.instanceOf[ServiceErrorHandler],
+    mockAuditingService,
     mockConfig
   )
 
@@ -122,6 +129,16 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           "return 200" in {
             status(result) shouldBe Status.OK
+
+            verify(mockAuditingService)
+              .extendedAudit(
+                ArgumentMatchers.any[ContactPreferenceAuditModel],
+                ArgumentMatchers.any[Option[String]]
+
+              )(
+                ArgumentMatchers.any[HeaderCarrier],
+                ArgumentMatchers.any[ExecutionContext]
+              )
           }
 
           "return HTML" in {

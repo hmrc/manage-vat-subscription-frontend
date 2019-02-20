@@ -16,11 +16,12 @@
 
 package controllers
 
+import audit.mocks.MockAuditingService
 import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.{Action, AnyContent}
 
-trait ControllerBaseSpec extends MockAuth {
+trait ControllerBaseSpec extends MockAuth with MockAuditingService {
 
   def unauthenticatedCheck(controllerAction: Action[AnyContent]): Unit = {
 

@@ -20,8 +20,6 @@ import controllers.predicates._
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
-import org.scalatest.BeforeAndAfterEach
-import org.scalatest.mockito.MockitoSugar
 import _root_.services.EnrolmentsAuthService
 import audit.AuditService
 import config.ServiceErrorHandler
@@ -33,7 +31,7 @@ import mocks.services.MockCustomerCircumstanceDetailsService
 
 import scala.concurrent.Future
 
-trait MockAuth extends TestUtil with BeforeAndAfterEach with MockitoSugar with MockCustomerCircumstanceDetailsService {
+trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
 
   override def beforeEach(): Unit = {
     super.beforeEach()

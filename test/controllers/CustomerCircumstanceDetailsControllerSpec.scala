@@ -19,11 +19,9 @@ package controllers
 import assets.ReturnPeriodTestConstants.{returnPeriodJan,returnPeriodFeb}
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
-import audit.mocks.MockAuditingService
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
 import config.ServiceErrorHandler
-import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
@@ -33,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockAuditingService {
+class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
 
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,

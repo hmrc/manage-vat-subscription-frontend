@@ -19,13 +19,10 @@ package controllers.agentClientRelationship
 import assets.BaseTestConstants.{arn, vrn}
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ConfirmClientVrnPageMessages => Messages}
-import audit.mocks.MockAuditingService
 import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.MockAuth
-import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
@@ -35,7 +32,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth with MockCustomerCircumstanceDetailsService with MockAuditingService {
+class ConfirmClientVrnControllerSpec extends ControllerBaseSpec {
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
     messagesApi,
@@ -94,7 +91,6 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
         "a Clients VRN is held in Session and NO details are retrieved" should {
 
           lazy val result = TestConfirmClientVrnControllerSpec.show(fakeRequestWithClientsVRN)
-          lazy val document = Jsoup.parse(bodyOf(result))
 
           "return 200" in {
             mockAgentAuthorised()
@@ -129,7 +125,6 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec with MockAuth wi
         "a Clients VRN is held in Session" should {
 
           lazy val result = TestConfirmClientVrnControllerSpec.changeClient(fakeRequestWithVrnAndReturnFreq)
-          lazy val document = Jsoup.parse(bodyOf(result))
 
           "return status redirect SEE_OTHER (303)" in {
             mockAgentAuthorised()

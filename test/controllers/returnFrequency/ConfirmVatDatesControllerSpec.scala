@@ -19,12 +19,11 @@ package controllers.returnFrequency
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
-import audit.mocks.MockAuditingService
 import audit.models.UpdateReturnFrequencyAuditModel
 import common.SessionKeys
 import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
-import mocks.services.{MockCustomerCircumstanceDetailsService, MockReturnFrequencyService}
+import mocks.services.MockReturnFrequencyService
 import models.returnFrequency.{Jan, Monthly}
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
@@ -35,10 +34,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext
 
-class ConfirmVatDatesControllerSpec extends ControllerBaseSpec
-  with MockCustomerCircumstanceDetailsService
-  with MockReturnFrequencyService
-  with MockAuditingService {
+class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockReturnFrequencyService {
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
     mockAuthPredicate,

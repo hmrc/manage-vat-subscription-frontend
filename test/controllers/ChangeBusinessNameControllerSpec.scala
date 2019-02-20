@@ -18,9 +18,7 @@ package controllers
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ChangeBusinessNamePageMessages
-import audit.mocks.MockAuditingService
 import audit.models.HandOffToCOHOAuditModel
-import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
@@ -31,7 +29,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ChangeBusinessNameControllerSpec extends ControllerBaseSpec with MockCustomerCircumstanceDetailsService with MockAuditingService {
+class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
     mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAuditingService, mockConfig, messagesApi
