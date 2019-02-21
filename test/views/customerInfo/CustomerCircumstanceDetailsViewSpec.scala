@@ -37,7 +37,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
     mockConfig.features.contactDetailsSection(true)
     mockConfig.features.allowAgentBankAccountChange(false)
 
-    "Viewing for any user (in this case Individual) without any pending changes" should {
+    "Viewing for an Individual without any pending changes" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
