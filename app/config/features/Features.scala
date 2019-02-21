@@ -33,4 +33,5 @@ class Features @Inject()(implicit config: Configuration) {
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)
   val stubContactPreferences = new Feature(ConfigKeys.stubContactPreferencesFeature)
   val useContactPreferences = new Feature(ConfigKeys.useContactPreferencesFeature)
+  val allowAgentBankAccountChange = new Feature(ConfigKeys.allowAgentBankAccountChange)
 }

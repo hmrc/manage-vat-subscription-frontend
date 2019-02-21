@@ -45,6 +45,7 @@ object ConfigKeys {
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
   val useContactPreferencesFeature: String = "features.useContactPreferences.enabled"
+  val allowAgentBankAccountChange: String = "features.allowAgentBankAccountChange.enabled"
 
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
