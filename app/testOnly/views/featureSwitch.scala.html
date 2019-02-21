@@ -45,7 +45,8 @@
       </div>
 
         <div class="form-group" style="border-radius: 25px;background: #D6EDB0; padding: 25px;">
-            <p class="bold-medium" style="margin-bottom:10px;">Vat Subscription Backend Features</p>
+                <legend>
+                    <p class="bold-medium" style="margin-bottom:10px;">Vat Subscription Backend Features</p>
                 </legend>
                 @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.latestApi1363Version"), "Use Latest API 1363 Version")
                 @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.stubDes"), "Use Vat-Subscription-Dynamic-Stub instead of DES (QA only)")
