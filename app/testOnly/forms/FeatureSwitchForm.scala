@@ -44,7 +44,8 @@ object FeatureSwitchForm {
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.stubContactPreferencesFeature -> boolean,
-      ConfigKeys.useContactPreferencesFeature -> boolean
+      ConfigKeys.useContactPreferencesFeature -> boolean,
+      ConfigKeys.allowAgentBankAccountChange -> boolean
   )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

@@ -38,7 +38,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
 
     vatSubscriptionFeaturesConnector.getFeatures.map {
       vatSubFeatures =>
-        Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: ${vatSubFeatures}")
+        Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
         val form = FeatureSwitchForm.form.fill(
           FeatureSwitchModel(
             simpleAuthEnabled = appConfig.features.simpleAuth(),
@@ -50,10 +50,11 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             useAgentClientLookup = appConfig.features.useAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
-            useContactPreferences = appConfig.features.useContactPreferences()
+            useContactPreferences = appConfig.features.useContactPreferences(),
+            allowAgentBankAccountChange = appConfig.features.allowAgentBankAccountChange()
           )
         )
-        Logger.debug(s"[FeatureSwitchController][featureSwitch] form: ${form}")
+        Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
         Ok(testOnly.views.html.featureSwitch(form))
     }
   }
@@ -75,10 +76,11 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
     appConfig.features.useContactPreferences(model.useContactPreferences)
+    appConfig.features.allowAgentBankAccountChange(model.allowAgentBankAccountChange)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
-          case 200 => Redirect(routes.FeatureSwitchController.featureSwitch())
+          case OK => Redirect(routes.FeatureSwitchController.featureSwitch())
           case _ => InternalServerError("Failed to update feature switches in VAT Subscription")
         }
     }
