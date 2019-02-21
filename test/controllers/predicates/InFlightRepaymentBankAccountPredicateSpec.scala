@@ -54,6 +54,22 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
         }
       }
 
+
+      "bank account change indicator is false user is agent" should {
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+          await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser))
+        }
+
+        "not allowed request through" in {
+          result shouldBe Right(agentUser)
+        }
+      }
+
+
+
+
       "changeIndicators is not returned" should {
 
         lazy val result = {
