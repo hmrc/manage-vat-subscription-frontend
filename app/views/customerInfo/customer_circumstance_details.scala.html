@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress, ContactDetails}
+@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.render_return_frequency
 @import helpers.render_address
@@ -252,16 +252,19 @@
                 }
             }
 
-            @circumstances.pendingBankDetails.fold {
-                @if(circumstances.bankDetails.isDefined){
-                    @circumstances.bankDetails.map{ bankDetails =>
-                        @customerBankDetails(bankDetails, false)
+            @if(appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
+
+                @circumstances.pendingBankDetails.fold {
+                    @if(circumstances.bankDetails.isDefined){
+                        @circumstances.bankDetails.map{ bankDetails =>
+                            @customerBankDetails(bankDetails, false)
+                        }
+                    } else {
+                        @add_status_row_helper(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true, link = controllers.routes.PaymentsController.sendToPayments().url)
                     }
-                } else {
-                    @add_status_row_helper(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true, link = controllers.routes.PaymentsController.sendToPayments().url)
+                }{ pendingBankDetails =>
+                    @customerBankDetails(pendingBankDetails, true)
                 }
-            }{ pendingBankDetails =>
-                @customerBankDetails(pendingBankDetails, true)
             }
 
             @circumstances.pendingReturnPeriod.fold {
