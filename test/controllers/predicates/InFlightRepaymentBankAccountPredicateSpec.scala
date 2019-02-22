@@ -54,6 +54,36 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
         }
       }
 
+
+      "bank account change indicator is false, user is agent and feature is set to false" should {
+
+        lazy val result = {
+          mockConfig.features.allowAgentBankAccountChange(false)
+          mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+          await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser).left.get)
+        }
+        "not allowed request through - redirect to the customer circumstance details page" in {
+          redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+
+        }
+      }
+
+      "bank account change indicator is false user is agent and feature is set to true" should {
+
+        lazy val result = {
+          mockConfig.features.allowAgentBankAccountChange(true)
+          mockCustomerDetailsSuccess(customerInformationModelDeregPending)
+          await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser))
+        }
+
+        "not allowed request through" in {
+          result shouldBe Right(agentUser)
+        }
+      }
+
+
+
+
       "changeIndicators is not returned" should {
 
         lazy val result = {
