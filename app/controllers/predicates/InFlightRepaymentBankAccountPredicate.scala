@@ -40,15 +40,14 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
     implicit val user: User[A] = request
 
-    customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
-
-      case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
-        Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
-      case Right(_) => Right(user)
-      case Left(error) =>
-        Logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
-        Left(serviceErrorHandler.showInternalServerError)
+      appConfig.features.allowAgentBankAccountChange() || !user.isAgent
+      customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
+        case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
+          Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
+        case Right(_) => Right(user)
+        case Left(error) =>
+          Logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
+          Left(serviceErrorHandler.showInternalServerError)
+      }
     }
   }
-}
-
