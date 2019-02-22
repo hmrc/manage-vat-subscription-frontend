@@ -40,7 +40,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
     implicit val user: User[A] = request
 
-      appConfig.features.allowAgentBankAccountChange() || !user.isAgent
+    if (appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
       customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
           Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
@@ -50,4 +50,8 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
           Left(serviceErrorHandler.showInternalServerError)
       }
     }
+    else{
+      Future(Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect())))
+    }
   }
+}
