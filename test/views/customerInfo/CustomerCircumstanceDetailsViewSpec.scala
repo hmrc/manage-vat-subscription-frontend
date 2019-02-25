@@ -19,7 +19,6 @@ package views.customerInfo
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.individual
 import assets.DeregistrationTestConstants._
-import assets.FlatRateSchemeTestConstants.frsModelMax
 import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
@@ -36,8 +35,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
     mockConfig.features.registrationStatus(true)
     mockConfig.features.contactDetailsSection(true)
+    mockConfig.features.allowAgentBankAccountChange(false)
 
-    "Viewing for any user (in this case Individual) without any pending changes" should {
+    "Viewing for an Individual without any pending changes" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -487,50 +487,72 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "Viewing a client's details as an agent" should {
+    "Viewing a client's details as an agent" when {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      "the allowAgentBankAccountChange feature is set to false" should {
 
-      "not display a breadcrumb trail" in {
-        elementExtinct(".breadcrumbs li:nth-of-type(1)")
-        elementExtinct(".breadcrumbs li:nth-of-type(2)")
-        elementExtinct(".breadcrumbs li:nth-of-type(3)")
-      }
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct document title '${viewMessages.title}'" in {
-        document.title shouldBe viewMessages.title
-      }
-
-      s"have the correct service name" in {
-        elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
-      }
-
-      s"have a the correct page heading '${viewMessages.h1}'" in {
-        elementText("h1") shouldBe viewMessages.h1
-      }
-
-      s"have a the correct page subheading '${viewMessages.agentSubheading}'" in {
-        elementText("#sub-heading") shouldBe viewMessages.agentSubheading
-      }
-
-      "display the 'change another clients details' link" in {
-        elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
-        element("#change-client-link").attr("href") shouldBe
-          controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-      }
-
-      "have a blank field where the 'Change' link would be for email address" which {
-
-        "displays no text" in {
-          elementText("#vat-email-address-status") shouldBe ""
+        "not display a breadcrumb trail" in {
+          elementExtinct(".breadcrumbs li:nth-of-type(1)")
+          elementExtinct(".breadcrumbs li:nth-of-type(2)")
+          elementExtinct(".breadcrumbs li:nth-of-type(3)")
         }
 
-        s"has the correct aria-label text '${viewMessages.changeEmailAddressAgentHidden}'" in {
-          element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.changeEmailAddressAgentHidden
+        s"have the correct document title '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.title
+        }
+
+        s"have the correct service name" in {
+          elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
+        }
+
+        s"have a the correct page heading '${viewMessages.h1}'" in {
+          elementText("h1") shouldBe viewMessages.h1
+        }
+
+        s"have a the correct page subheading '${viewMessages.agentSubheading}'" in {
+          elementText("#sub-heading") shouldBe viewMessages.agentSubheading
+        }
+
+        "display the 'change another clients details' link" in {
+          elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
+          element("#change-client-link").attr("href") shouldBe
+            controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+        }
+
+        "not display the Change Bank Account details row" which {
+
+          "is not found in the document" in {
+            document.select("#bank-details-text") shouldBe empty
+          }
+        }
+
+        "have a blank field where the 'Change' link would be for email address" which {
+
+          "displays no text" in {
+            elementText("#vat-email-address-status") shouldBe ""
+          }
+
+          s"has the correct aria-label text '${viewMessages.changeEmailAddressAgentHidden}'" in {
+            element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.changeEmailAddressAgentHidden
+          }
+        }
+      }
+
+      "the allowAgentBankAccountChange feature is set to false" should {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "display the Change Bank Account details row" in {
+          mockConfig.features.allowAgentBankAccountChange(true)
+          elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
         }
       }
     }
+
 
     "the registration feature switch is disabled" should {
 
