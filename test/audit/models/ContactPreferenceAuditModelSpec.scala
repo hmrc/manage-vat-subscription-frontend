@@ -26,10 +26,11 @@ class ContactPreferenceAuditModelSpec extends TestUtil {
   val transactionName = "contact-preference"
   val auditType = "ContactPreference"
   val preference = "DIGTIAL"
+  val action = "ChangePPOBContactPreference"
 
   "The ContactPreferenceAuditModel" should {
 
-    lazy val testGetContactPreferenceAuditModel = ContactPreferenceAuditModel(vrn, preference)
+    lazy val testGetContactPreferenceAuditModel = ContactPreferenceAuditModel(vrn, preference, action)
 
     s"Have the correct transaction name of '$transactionName'" in {
       testGetContactPreferenceAuditModel.transactionName shouldBe transactionName
@@ -42,7 +43,8 @@ class ContactPreferenceAuditModelSpec extends TestUtil {
     "Have the correct details for the audit event" in {
       testGetContactPreferenceAuditModel.detail shouldBe Json.obj(
         "vrn" -> vrn,
-        "contactPreference" -> preference
+        "contactPreference" -> preference,
+        "action" -> action
       )
     }
   }

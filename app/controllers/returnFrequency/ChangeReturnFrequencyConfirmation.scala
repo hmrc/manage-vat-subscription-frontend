@@ -16,7 +16,7 @@
 
 package controllers.returnFrequency
 
-import audit.AuditService
+import audit.{AuditService, ContactPreferenceAuditKeys}
 import audit.models.ContactPreferenceAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
@@ -60,7 +60,7 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
         case Right(cPref) =>
 
           auditService.extendedAudit(
-            ContactPreferenceAuditModel(user.vrn, cPref.preference),
+            ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeFrequencyAction),
             Some(controllers.routes.ChangeBusinessNameController.show().url)
           )
 

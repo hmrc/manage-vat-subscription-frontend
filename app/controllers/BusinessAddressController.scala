@@ -16,7 +16,7 @@
 
 package controllers
 
-import audit.AuditService
+import audit.{AuditService, ContactPreferenceAuditKeys}
 import audit.models.ContactPreferenceAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InflightEmailPredicate}
@@ -91,7 +91,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
         case Right(cPref) =>
 
           auditService.extendedAudit(
-            ContactPreferenceAuditModel(user.vrn, cPref.preference),
+            ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
             Some(controllers.routes.ChangeBusinessNameController.show().url)
           )
 
