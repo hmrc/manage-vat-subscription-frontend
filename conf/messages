@@ -25,7 +25,7 @@ common.newTab = (opens in a new tab)
 common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
 common.agent.yourClient = your client
-common.agent.confirmationLetter = We will send a confirmation letter to the agency address within 15 working days.
+common.agent.confirmationLetter = We will send a confirmation letter to the agency address registered with HMRC within 15 working days.
 common.agent.updateClient1 = We will also contact
 common.agent.updateClient2 = with an update.
 
