@@ -59,7 +59,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#bank-details")(expectedValue = "None"),
                 elementText("#bank-details-status")(expectedValue = "Add"),
 
-                elementText("#vat-email-address")(expectedValue = "None"),
+                elementText("#vat-email-address")(expectedValue = "Not provided"),
                 elementText("#vat-email-address-status")(expectedValue = "Add")
               )
 
