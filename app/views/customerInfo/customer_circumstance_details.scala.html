@@ -171,13 +171,16 @@
 
 }
 
-@customerEmailAddress(emailAddress: String, emailPending: Boolean) = {
+@customerEmailAddress(emailAddress: Option[String], emailPending: Boolean) = {
     <div>
         <dt id="vat-email-address-text" class="cya-question">
             @messages("customer_details.contactDetails.emailAddress")
         </dt>
         <dd id="vat-email-address" class="cya-answer">
-            @emailAddress
+            @emailAddress match {
+                case Some(email) => { @email }
+                case None => { @messages("customer_details.notProvided") }
+            }
         </dd>
         <dd class="cya-change">
             @(emailPending, user.isAgent) match {
@@ -198,8 +201,12 @@
                     <a id="vat-email-address-status"
                        onclick="sentGAEvent('email-address','change','change-email-address', false)"
                        href="@appConfig.vatCorrespondenceChangeEmailUrl"
-                       aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",emailAddress)">
-                        @messages("customer_details.change")
+                       aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",
+                                            emailAddress.getOrElse(messages("customer_details.notProvided")))">
+                        @emailAddress match {
+                            case Some(_) => { @messages("customer_details.change") }
+                            case None => { @messages("customer_details.add") }
+                        }
                     </a>
                 }
             }
@@ -285,19 +292,12 @@
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @{
-                    val emailOption = for{
-                        contactDetails <- circumstances.ppob.contactDetails
-                        email <- contactDetails.emailAddress
-                    } yield {
-                        pendingEmailAddress match {
-                            case Some(pendingEmail) if(!pendingEmail.equals(email)) => customerEmailAddress(pendingEmail, true)
-                            case _ => customerEmailAddress(email, false)
-                        }
-                    }
-                    if(emailOption.isDefined){
-                        emailOption
-                    } else {
-                        add_status_row_helper(messages("customer_details.contactDetails.emailAddress"), "vat-email-address", link = appConfig.vatCorrespondenceChangeEmailUrl)
+                    val approvedEmailAddress = circumstances.ppob.contactDetails.flatMap(_.emailAddress)
+                    (approvedEmailAddress, pendingEmailAddress) match {
+                        case (Some(approvedEmail), Some(pendingEmail)) if(!pendingEmail.equals(approvedEmail)) =>
+                            customerEmailAddress(pendingEmailAddress, true)
+                        case (None, Some(pendingEmail)) => customerEmailAddress(pendingEmailAddress, true)
+                        case _ => customerEmailAddress(approvedEmailAddress, false)
                     }
                 }
             </dl>

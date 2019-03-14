@@ -279,6 +279,27 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
+    "viewing for an individual with no email address" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "display the 'Not provided' text in place of the email address" in {
+        elementText("#vat-email-address") shouldBe "Not provided"
+      }
+
+      "display an 'Add' link" which {
+
+        "has the correct text" in {
+          elementText("#vat-email-address-status") shouldBe "Add"
+        }
+
+        "links to the correspondence details service" in {
+          element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+        }
+      }
+    }
+
     "Viewing for an Organisation with pending changes" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelOrganisationPending)(user, messages, mockConfig)
@@ -663,6 +684,5 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementExtinct("#content > article > div:nth-child(4) > h2")
       }
     }
-
   }
 }

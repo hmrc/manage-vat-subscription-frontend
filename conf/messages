@@ -115,6 +115,7 @@ customer_details.changeNotListed = The change I want to make is not listed
 customer_details.changeNotListed.youCan = You can
 customer_details.changeNotListed.makeOtherChanges = make any other changes
 customer_details.changeNotListed.useAForm = using a form. You must print and complete this form before posting it to HMRC.
+customer_details.notProvided = Not provided
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
