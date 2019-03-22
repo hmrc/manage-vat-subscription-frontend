@@ -47,6 +47,10 @@ object ConfigKeys {
   val useContactPreferencesFeature: String = "features.useContactPreferences.enabled"
   val allowAgentBankAccountChange: String = "features.allowAgentBankAccountChange.enabled"
 
+  // GOV UK
+  val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
+  val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
+  val vat484Form: String = "gov-uk.guidance.vat484Form.url"
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
 
@@ -74,10 +78,6 @@ object ConfigKeys {
   val deregistrationForVat: String = "deregister-vat-frontend.url"
 
   val vatCorrespondenceChangeEmailUrl: String = "vat-correspondence-details-frontend.changeEmailUrl"
-
-  val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
-  
-  val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"

@@ -21,13 +21,15 @@ object ChangeBusinessNamePageMessages {
   val title = "Change the business name"
   val h1 = title
 
-  val p1: String => String = name => s"""The business name is currently $name."""
-  val p2 = "You will be taken to Companies House to change it. The business name will automatically update with HMRC too."
-  val p3 = "Changing the business name costs:"
+  val p1: String => String = name => s"The business name is currently $name. You’ll be taken to Companies House to change it."
+  val p2 = "Changing the business name costs:"
   val bullet1 = "£8 to update within 2 working days"
   val bullet2 = "£30 to update on the same day"
-  val p4 = "Companies House will send you an email notification, a secure message and a new certificate when the details have changed."
-
-  val link = "Continue to Companies House (opens in a new tab)"
+  val bullet3 = "print out this form (opens in a new tab)"
+  val bullet4 = "add your new business name in section 1"
+  val bullet5 = "return the form to us with your new Certificate of Incorporation"
+  val p3 = "Companies House will send a new Certificate of Incorporation when the details have changed."
+  val p4 = "When you have changed your business name at Companies House and received your new Certificate of Incorporation, you will need to:"
+  val continueLink = "Continue to Companies House (opens in a new tab)"
 
 }

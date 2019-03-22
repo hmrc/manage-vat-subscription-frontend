@@ -75,4 +75,5 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override def agentClientUnauthorisedUrl: String = "agent-client-unauthorised"
   override val contactPreferencesService: String = ""
   override def contactPreferencesUrl(vrn: String): String = s"contact-preferences/vat/vrn/$vrn"
+  override val govUkVat484Form: String = "/link-to-page"
 }

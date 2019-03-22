@@ -28,18 +28,27 @@
 
     @headings(messages("change_business_name.h1"))
 
-    <p data-metrics="business-name:view:change-business-name;@user.isAgent">@messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.</p>
-
-    <p>@messages("change_business_name.p2")</p>
+    <p data-metrics="business-name:view:change-business-name;@user.isAgent">
+        @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
+        @messages("change_business_name.p2")
+    </p>
 
     <p>@messages("change_business_name.p3")</p>
-
     <ul class="list list-bullet">
         <li>@Html(messages("change_business_name.bullet1"))</li>
         <li>@Html(messages("change_business_name.bullet2"))</li>
     </ul>
 
     <p>@messages("change_business_name.p4")</p>
+
+    <p>@messages("change_business_name.p5")</p>
+    <ul class="list list-bullet">
+        <li>
+            <a href="@appConfig.govUkVat484Form" target="_blank">@messages("change_business_name.p5.bullet1")</a>
+        </li>
+        <li>@messages("change_business_name.p5.bullet2")</li>
+        <li>@messages("change_business_name.p5.bullet3")</li>
+    </ul>
 
     <a onclick="sendGAEvent('business-name','click-companies-house','change-business-name', @user.isAgent)"
        id="continue"

@@ -120,11 +120,15 @@ customer_details.notProvided = Not provided
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name
 change_business_name.p1 = The business name is currently
-change_business_name.p2 = You will be taken to Companies House to change it. The business name will automatically update with HMRC too.
+change_business_name.p2 = You’ll be taken to Companies House to change it.
 change_business_name.p3 = Changing the business name costs:
 change_business_name.bullet1 = &pound;8 to update within 2 working days
 change_business_name.bullet2 = &pound;30 to update on the same day
-change_business_name.p4 = Companies House will send you an email notification, a secure message and a new certificate when the details have changed.
+change_business_name.p4 = Companies House will send a new Certificate of Incorporation when the details have changed.
+change_business_name.p5 = When you have changed your business name at Companies House and received your new Certificate of Incorporation, you will need to:
+change_business_name.p5.bullet1 = print out this form (opens in a new tab)
+change_business_name.p5.bullet2 = add your new business name in section 1
+change_business_name.p5.bullet3 = return the form to us with your new Certificate of Incorporation
 change_business_name.link = Continue to Companies House (opens in a new tab)
 
 change_address.title = Change the ‘principal place of business’
