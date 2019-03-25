@@ -69,6 +69,7 @@ trait AppConfig extends ServicesConfig {
   val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
+  val govUkVat484Form: String
   val vatAgentClientLookupFrontendUrl: String
   def agentClientLookupUrl: String
   def agentClientUnauthorisedUrl: String
@@ -184,6 +185,7 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override lazy val govUkChangeVatRegistrationDetails: String = getString(Keys.changeVatRegistrationDetails)
 
   override lazy val govUkSoftwareGuidanceUrl: String = getString(Keys.softwareGuidanceUrl)
+  override lazy val govUkVat484Form: String = getString(Keys.vat484Form)
 
   override lazy val vatAgentClientLookupFrontendUrl: String =
     getString(Keys.vatAgentClientLookupFrontendHost) + getString(Keys.vatAgentClientLookupFrontendUrl)

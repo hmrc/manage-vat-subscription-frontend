@@ -35,6 +35,10 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       val bullet1 = s"$wrapper li:nth-of-type(1)"
       val bullet2 = s"$wrapper li:nth-of-type(2)"
       val p4 = s"$wrapper p:nth-of-type(4)"
+      val bullet3 = s"$wrapper ul:nth-child(8) > li:nth-child(1)"
+      val formLink = s"$wrapper ul:nth-child(8) > li:nth-child(1) > a"
+      val bullet4 = s"$wrapper ul:nth-child(8) > li:nth-child(2)"
+      val bullet5 = s"$wrapper ul:nth-child(8) > li:nth-child(3)"
       val link = s"$wrapper #continue"
       val backLink = ".link-back"
     }
@@ -79,10 +83,39 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       elementText(Selectors.p4) shouldBe viewMessages.p4
     }
 
+    "have a secondary bullet point section" which {
+
+      "has the first bullet point" which {
+
+        s"have a the correct text of '${viewMessages.bullet3}'" in {
+          elementText(Selectors.bullet3) shouldBe viewMessages.bullet3
+        }
+
+        "has a link" which {
+
+          s"has the correct URL to '${mockConfig.govUkVat484Form}'" in {
+            element(Selectors.formLink).attr("href") shouldBe mockConfig.govUkVat484Form
+          }
+
+          "opens in a new tab" in {
+            element(Selectors.formLink).attr("target") shouldBe "_blank"
+          }
+        }
+      }
+
+      s"has a the correct bullet of '${viewMessages.bullet4}'" in {
+        elementText(Selectors.bullet4) shouldBe viewMessages.bullet4
+      }
+
+      s"has a the correct bullet of '${viewMessages.bullet5}'" in {
+        elementText(Selectors.bullet5) shouldBe viewMessages.bullet5
+      }
+    }
+
     "have a continue link" which {
 
-      s"has the text '${viewMessages.link}'" in {
-        elementText(Selectors.link) shouldBe viewMessages.link
+      s"has the text '${viewMessages.continueLink}'" in {
+        elementText(Selectors.link) shouldBe viewMessages.continueLink
       }
 
       "has a URL to the Gov.UK guidance page for changing name via COHO" in {
