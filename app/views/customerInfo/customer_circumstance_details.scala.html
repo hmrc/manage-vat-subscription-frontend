@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
+@import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress,NonMTDfB}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.render_return_frequency
 @import helpers.render_address
@@ -288,7 +288,7 @@
     </div>
 
     @if(appConfig.features.contactDetailsSection()){
-        <div class="form-group">
+        <div id="contact-details-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @{
@@ -305,13 +305,23 @@
     }
 
     @if(appConfig.features.registrationStatus()){
-        <div class="form-group">
+        <div id="registration-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @registrationStatus()
             </dl>
         </div>
     }
+
+    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB){
+        <div id="mtd-section" class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                @views.html.helpers.mtd_section_helper(circumstances)
+            </dl>
+        </div>
+    }
+
 
     @if(user.isAgent){
         <p id="change-client-text">

@@ -75,6 +75,7 @@ trait AppConfig extends ServicesConfig {
   def agentClientUnauthorisedUrl: String
   val contactPreferencesService: String
   def contactPreferencesUrl(vrn: String): String
+  val vatOptOutUrl: String
 }
 
 @Singleton
@@ -217,4 +218,6 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
         controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url
       }
     }
+
+  override lazy val vatOptOutUrl: String = getString(Keys.vatOptOutUrl)
 }

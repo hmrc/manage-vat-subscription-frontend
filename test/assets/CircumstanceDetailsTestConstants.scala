@@ -71,7 +71,8 @@ object CircumstanceDetailsTestConstants {
         "bankAccountNumber" -> accNum,
         "sortCode" -> accSort
       ),
-      "returnPeriod" -> returnPeriodMCJson
+      "returnPeriod" -> returnPeriodMCJson,
+      "mandationStatus" -> mandationStatus
     )
   )
 
@@ -115,7 +116,8 @@ object CircumstanceDetailsTestConstants {
         "bankAccountNumber" -> accNum,
         "sortCode" -> accSort
       ),
-      "returnPeriod" -> returnPeriodMCJson
+      "returnPeriod" -> returnPeriodMCJson,
+      "mandationStatus" -> mandationStatus
     )
   )
 
@@ -144,7 +146,8 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
-      returnPeriod = Some(Mar)
+      returnPeriod = Some(Mar),
+      mandationStatus = Some(MTDfBMandated)
     )),
     partyType = Some(partyType)
   )
@@ -167,7 +170,8 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
-      returnPeriod = Some(Feb)
+      returnPeriod = Some(Feb),
+      mandationStatus = Some(MTDfBMandated)
     )),
     partyType = Some(partyType)
   )
@@ -190,7 +194,8 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobModelMaxPending),
       bankDetails = Some(bankDetailsModelMax),
-      returnPeriod = Some(Mar)
+      returnPeriod = Some(Mar),
+      mandationStatus = Some(MTDfBMandated)
     )),
     partyType = Some(partyType)
   )
@@ -212,7 +217,8 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
-      returnPeriod = Some(Mar)
+      returnPeriod = Some(Mar),
+      mandationStatus = Some(MTDfBMandated)
     )),
     partyType = Some(partyType)
   )
@@ -361,9 +367,11 @@ object CircumstanceDetailsTestConstants {
         Some(website)
       )),
       None,
+      None,
       None
     )),
     partyType = None
   )
 
+  val customerInformationNonMtd: CircumstanceDetails = customerInformationModelMin.copy(mandationStatus = NonMTDfB)
 }

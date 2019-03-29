@@ -39,6 +39,7 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
   val pendingDeregistration: Boolean = changeIndicators.fold(false)(_.deregister)
   val pendingEmail: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.emailAddress)))
+  val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)

@@ -84,4 +84,6 @@ object ConfigKeys {
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
 
   val contactPreferencesService: String = "contact-preferences"
+
+  val vatOptOutUrl: String = "vat-opt-out-frontend.url"
 }
