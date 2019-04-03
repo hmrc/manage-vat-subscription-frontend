@@ -195,13 +195,9 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override def agentClientLookupUrl: String =
     if (features.stubAgentClientLookup()) {
-      testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+      host + testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
     } else {
-      if (features.useAgentClientLookup()) {
-        vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
-      } else {
-        controllers.agentClientRelationship.routes.SelectClientVrnController.show().url
-      }
+      vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
 
   def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
