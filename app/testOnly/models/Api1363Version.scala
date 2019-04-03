@@ -22,12 +22,6 @@ sealed trait Api1363Version {
   val id: String
 }
 
-object Api1363R6 extends Api1363Version {
-  override val id: String = "R6"
-}
-object Api1363R7 extends Api1363Version {
-  override val id: String = "R7"
-}
 object Api1363R8 extends Api1363Version {
   override val id: String = "R8"
 }
@@ -41,8 +35,6 @@ object Api1363Version {
   }
 
   def apply(id: String): Api1363Version = id match {
-    case Api1363R6.id => Api1363R6
-    case Api1363R7.id => Api1363R7
     case Api1363R8.id => Api1363R8
     case _ => throw new RuntimeException(s"Invalid API 1363 Version. Version supplied: $id")
   }
