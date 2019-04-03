@@ -20,7 +20,7 @@ import BaseTestConstants._
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.libs.json.{JsObject, Json}
 
-object PaymentsTestConstants {
+object PaymentsTestConstants extends {
 
   val principlePaymentStart: PaymentStartModel = PaymentStartModel(
     vrn,
@@ -37,7 +37,7 @@ object PaymentsTestConstants {
     isAgent = true,
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
     "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
-    "/manage-vat-subscription-frontend" + controllers.agentClientRelationship.routes.SelectClientVrnController.show(),
+    "/agent-client-lookup",
     None,
     None
   )

@@ -362,10 +362,10 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "VACLF is disabled" should {
 
-              "Redirect to the Client Lookup page" in {
+              "Redirect to the stubbed Client Lookup page" in {
 
                 mockAppConfig.features.agentAccess(true)
-                mockAppConfig.features.stubAgentClientLookup(false)
+                mockAppConfig.features.stubAgentClientLookup(true)
                 mockAppConfig.features.useAgentClientLookup(false)
 
                 given.agent.isSignedUpToAgentServices
@@ -375,7 +375,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
                 res should have(
                   httpStatus(SEE_OTHER),
-                  redirectURI(controllers.agentClientRelationship.routes.SelectClientVrnController.show().url)
+                  redirectURI(
+                    testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+                  )
                 )
               }
             }

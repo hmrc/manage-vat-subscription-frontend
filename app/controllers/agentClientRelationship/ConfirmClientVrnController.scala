@@ -38,26 +38,6 @@ class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
                                            val auditService: AuditService,
                                            implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  def show: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) =>
-          auditService.extendedAudit(
-            AuthenticateAgentAuditModel(user.arn.get, user.vrn, isAuthorisedForClient = true),
-            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-          )
-          auditService.extendedAudit(
-            GetClientBusinessNameAuditModel(user.arn.get, user.vrn, circumstances.customerDetails.clientName.get),
-            Some(controllers.agentClientRelationship.routes.ConfirmClientVrnController.show().url)
-          )
-          Ok(views.html.agentClientRelationship.confirm_client_vrn(user.vrn, circumstances.customerDetails))
-        case Left(error) => if (error.status == NOT_FOUND)  {
-          Logger.warn("[ConfirmClientVrnController][show] Agent is authorised for client but no MTD VAT subscription found")
-        }
-          serviceErrorHandler.showInternalServerError
-      }
-  }
-
   def changeClient: Action[AnyContent] = authenticate.async {
     implicit user =>
       Future.successful(

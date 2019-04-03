@@ -25,11 +25,7 @@ POST        /confirm-vat-return-dates                        controllers.returnF
 
 GET         /confirmation-vat-return-dates/:userType         controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(userType: String)
 
-GET         /unauthorised-for-client                         controllers.agentClientRelationship.AgentUnauthorisedForClientController.show
-
 GET         /change-client-vat-number                        controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
-
-GET         /confirm-client-vat-number                       controllers.agentClientRelationship.ConfirmClientVrnController.show
 
 GET         /initialise-payment-journey                      controllers.PaymentsController.sendToPayments
 

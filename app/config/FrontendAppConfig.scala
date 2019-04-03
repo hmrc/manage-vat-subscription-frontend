@@ -108,12 +108,12 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String =
-    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect.url).encodedUrl
+    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl
 
   private lazy val signInOrigin = getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
-  override lazy val vatSubscriptionUrl:String = baseUrl(Keys.vatSubscription)
+  override lazy val vatSubscriptionUrl: String = baseUrl(Keys.vatSubscription)
 
   override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
 
@@ -131,16 +131,17 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override lazy val signOutTimeoutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$timeoutUrl"
 
   override lazy val addressLookupUrlHost: String = getString(Keys.addressLookupFrontendHost)
+
   override def addressLookupService: String = {
-    if(features.stubAddressLookup()){
+    if (features.stubAddressLookup()) {
       host + "/vat-through-software/account/test-only/address-lookup-stub"
-    }else{
+    } else {
       baseUrl(Keys.addressLookupFrontend)
     }
   }
 
   override lazy val contactPreferencesService: String = {
-    if(features.stubContactPreferences()){
+    if (features.stubContactPreferences()) {
       baseUrl("vat-subscription-dynamic-stub")
     } else {
       baseUrl(Keys.contactPreferencesService)
@@ -195,7 +196,7 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override def agentClientLookupUrl: String =
     if (features.stubAgentClientLookup()) {
-      host + testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+      testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
     } else {
       vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
@@ -207,10 +208,6 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
     if (features.stubAgentClientLookup()) {
       testOnly.controllers.routes.StubAgentClientLookupController.unauth(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
     } else {
-      if (features.useAgentClientLookup()) {
-        vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
-      } else {
-        controllers.agentClientRelationship.routes.AgentUnauthorisedForClientController.show().url
-      }
+      vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
 }
