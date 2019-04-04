@@ -346,7 +346,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
                 mockAppConfig.features.agentAccess(true)
                 mockAppConfig.features.stubAgentClientLookup(false)
-                mockAppConfig.features.useAgentClientLookup(true)
 
                 given.agent.isSignedUpToAgentServices
 
@@ -366,7 +365,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
                 mockAppConfig.features.agentAccess(true)
                 mockAppConfig.features.stubAgentClientLookup(true)
-                mockAppConfig.features.useAgentClientLookup(false)
 
                 given.agent.isSignedUpToAgentServices
 
