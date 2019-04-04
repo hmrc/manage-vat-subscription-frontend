@@ -47,7 +47,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
-            useAgentClientLookup = appConfig.features.useAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
             useContactPreferences = appConfig.features.useContactPreferences(),
@@ -72,7 +71,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.agentAccess(model.agentAccessEnabled)
     appConfig.features.registrationStatus(model.registrationStatusEnabled)
     appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
-    appConfig.features.useAgentClientLookup(model.useAgentClientLookup)
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)

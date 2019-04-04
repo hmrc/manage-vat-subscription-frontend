@@ -34,7 +34,7 @@ class PaymentsService @Inject()(paymentsConnector: PaymentsConnector) {
 
     val convenienceUrl = {
       if (user.isAgent) {
-        config.host + controllers.agentClientRelationship.routes.SelectClientVrnController.show()
+        config.agentClientLookupUrl
       } else {
         config.host + controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)
       }

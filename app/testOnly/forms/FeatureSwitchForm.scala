@@ -40,7 +40,6 @@ object FeatureSwitchForm {
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
           stubDes -> boolean
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
-      ConfigKeys.useAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.stubContactPreferencesFeature -> boolean,

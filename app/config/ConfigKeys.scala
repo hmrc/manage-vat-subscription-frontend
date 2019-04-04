@@ -40,7 +40,6 @@ object ConfigKeys {
   val agentAccessFeature: String = "features.agentAccess.enabled"
   val registrationStatusFeature: String = "features.registrationStatus.enabled"
   val contactDetailsSectionFeature: String = "features.contactDetailsSection.enabled"
-  val useAgentClientLookupFeature: String = "features.useAgentClientLookup"
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
