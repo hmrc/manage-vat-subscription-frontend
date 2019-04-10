@@ -36,6 +36,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
     mockConfig.features.registrationStatus(true)
     mockConfig.features.contactDetailsSection(true)
     mockConfig.features.allowAgentBankAccountChange(false)
+    mockConfig.features.makingTaxDigitalSection(true)
 
     "Viewing for an Individual without any pending changes" should {
 
@@ -70,11 +71,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for registration status" which {
 
         "has a registration header" in {
-          elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+          elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
         }
 
         "has a registration status header" in {
-          elementText("#registration-status-text") shouldBe viewMessages.registrationStatusText
+          elementText("#registration-status-text") shouldBe viewMessages.statusText
         }
 
         "displays the correct registration status" in {
@@ -171,7 +172,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for contact details" which {
 
         "has a contact details header" in {
-          elementText("#content > article > div:nth-child(4) > h2") shouldBe viewMessages.contactDetailsHeading
+          elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
         }
 
         "has the heading" in {
@@ -195,6 +196,36 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
           s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
             element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+          }
+        }
+      }
+
+      "have a section for making tax digital" which {
+
+        "has the correct section header" in {
+          elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
+        }
+
+        "has the correct row heading" in {
+          elementText("#opt-in-text") shouldBe viewMessages.statusText
+        }
+
+        "has the correct description" in {
+          elementText("#opt-in") shouldBe viewMessages.optedIn
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.optOut}'" in {
+            elementText("#opt-in-status") shouldBe viewMessages.optOut
+          }
+
+          s"has the correct aria label text '${viewMessages.changeMtdStatusHidden}'" in {
+            element("#opt-in-status").attr("aria-label") shouldBe viewMessages.changeMtdStatusHidden
+          }
+
+          s"has a link to ${mockConfig.vatOptOutUrl}" in {
+            element("#opt-in-status").attr("href") shouldBe mockConfig.vatOptOutUrl
           }
         }
       }
@@ -417,7 +448,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "have a section for contact details" which {
 
         "has a contact details header" in {
-          elementText("#content > article > div:nth-child(3) > h2") shouldBe viewMessages.contactDetailsHeading
+          elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
         }
 
         "has the heading" in {
@@ -431,6 +462,29 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
         s"has the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
           element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.pendingEmailAddressHidden
+        }
+      }
+
+      "have a section for making tax digital" which {
+
+        "has the correct section header" in {
+          elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
+        }
+
+        "has the correct row heading" in {
+          elementText("#opt-in-text") shouldBe viewMessages.statusText
+        }
+
+        "has the correct description" in {
+          elementText("#opt-in") shouldBe viewMessages.optOutRequested
+        }
+
+        "has the pending text" in {
+          elementText("#opt-in-status") shouldBe viewMessages.pending
+        }
+
+        s"has the correct hidden text" in {
+          element("#opt-in-status").attr("aria-label") shouldBe viewMessages.pendingMtdStatusHidden
         }
       }
 
@@ -642,7 +696,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText(".panel > p:nth-child(1)") shouldBe viewMessages.pastDeregDateText(pastDate.toLongDate)
         elementText("#registration-status")
         elementText("#registration-status-link") shouldBe viewMessages.howToRegister
-        elementText("#registration-status-text") shouldBe viewMessages.registrationStatusText
+        elementText("#registration-status-text") shouldBe viewMessages.statusText
         elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
       }
     }
@@ -681,7 +735,29 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
       "contact details section is hidden" in {
         mockConfig.features.contactDetailsSection(false)
-        elementExtinct("#content > article > div:nth-child(4) > h2")
+        elementExtinct("#contact-details-section")
+      }
+    }
+
+    "the making tax digital feature switch is false" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "hide the making tax digital section" in {
+        mockConfig.features.makingTaxDigitalSection(false)
+        elementExtinct("#mtd-section")
+      }
+    }
+
+    "the user has a non-MTD mandation status" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNonMtd)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "hide the making tax digital section" in {
+        mockConfig.features.makingTaxDigitalSection(true)
+        elementExtinct("#mtd-section")
       }
     }
   }

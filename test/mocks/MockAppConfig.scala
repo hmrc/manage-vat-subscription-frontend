@@ -76,4 +76,5 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val contactPreferencesService: String = ""
   override def contactPreferencesUrl(vrn: String): String = s"contact-preferences/vat/vrn/$vrn"
   override val govUkVat484Form: String = "/link-to-page"
+  override val vatOptOutUrl: String = "/opt-out"
 }

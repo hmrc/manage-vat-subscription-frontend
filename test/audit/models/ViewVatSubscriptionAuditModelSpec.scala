@@ -78,7 +78,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
-                "emailAddress" -> false
+                "emailAddress" -> false,
+                "mandationStatus" -> false
               ),
               "partyType" -> partyType
             )
@@ -111,7 +112,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
-                "emailAddress" -> true
+                "emailAddress" -> true,
+                "mandationStatus" -> true
               ),
               "partyType" -> partyType
             )
@@ -149,7 +151,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
-                "emailAddress" -> false
+                "emailAddress" -> false,
+                "mandationStatus" -> false
               ),
               "partyType" -> "other"
             )
@@ -183,7 +186,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
-                "emailAddress" -> true
+                "emailAddress" -> true,
+                "mandationStatus" -> true
               ),
               "partyType" -> partyType
             )
@@ -221,7 +225,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
-                "emailAddress" -> false
+                "emailAddress" -> false,
+                "mandationStatus" -> false
               ),
               "partyType" -> partyType
             )
@@ -253,7 +258,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
-                "emailAddress" -> true
+                "emailAddress" -> true,
+                "mandationStatus" -> true
               ),
               "partyType" -> partyType
             )
@@ -290,7 +296,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> false,
                 "repaymentBankDetails" -> false,
                 "vatReturnDates" -> false,
-                "emailAddress" -> false
+                "emailAddress" -> false,
+                "mandationStatus" -> false
               ),
               "partyType" -> "other"
             )
@@ -323,7 +330,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
                 "businessAddress" -> true,
                 "repaymentBankDetails" -> true,
                 "vatReturnDates" -> true,
-                "emailAddress" -> true
+                "emailAddress" -> true,
+                "mandationStatus" -> true
               ),
               "partyType" -> partyType
             )
@@ -356,7 +364,8 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "businessAddress" -> false,
               "repaymentBankDetails" -> false,
               "vatReturnDates" -> false,
-              "emailAddress" -> false
+              "emailAddress" -> false,
+              "mandationStatus" -> false
             )
           )
         }

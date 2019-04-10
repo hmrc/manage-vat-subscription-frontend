@@ -129,7 +129,8 @@ object IntegrationTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobMax),
       bankDetails = Some(bankDetails),
-      returnPeriod = Some(Jan)
+      returnPeriod = Some(Jan),
+      mandationStatus = Some(MTDfBMandated)
     )),
     partyType = partyType
   )
