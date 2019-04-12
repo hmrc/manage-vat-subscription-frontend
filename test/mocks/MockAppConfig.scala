@@ -20,6 +20,7 @@ import config.AppConfig
 import config.features.Features
 import play.api.{Configuration, Mode}
 import play.api.Mode.Mode
+import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
@@ -77,4 +78,9 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override def contactPreferencesUrl(vrn: String): String = s"contact-preferences/vat/vrn/$vrn"
   override val govUkVat484Form: String = "/link-to-page"
   override val vatOptOutUrl: String = "/opt-out"
+  override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
+  override def languageMap: Map[String, Lang] = Map(
+    "english" -> Lang("en"),
+    "cymraeg" -> Lang("cy")
+  )
 }

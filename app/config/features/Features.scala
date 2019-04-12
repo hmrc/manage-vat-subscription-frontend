@@ -34,4 +34,5 @@ class Features @Inject()(implicit config: Configuration) {
   val useContactPreferences = new Feature(ConfigKeys.useContactPreferencesFeature)
   val allowAgentBankAccountChange = new Feature(ConfigKeys.allowAgentBankAccountChange)
   val makingTaxDigitalSection = new Feature(ConfigKeys.makingTaxDigitalSectionFeature)
+  val useLanguageSelector = new Feature(ConfigKeys.useLanguageSelectorFeature)
 }

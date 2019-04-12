@@ -25,7 +25,7 @@
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
-@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig, lang: Lang)
 
 @bc = {
     @if(!user.isAgent){
