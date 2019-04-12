@@ -40,7 +40,7 @@ object ContactPreferenceHttpParser {
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json received from Contact Preferences"))
             },
             valid => valid.preference.toUpperCase match {
-              case `digital` | `paper` => Right(valid)
+              case `digital` | `paper` => Right(ContactPreference(valid.preference.toUpperCase()))
               case _ =>
                 Logger.warn(s"[ContactPreferencesHttpParser][read]: Invalid preference type received from Contact Preferences")
                 Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid preference type received from Contact Preferences"))
