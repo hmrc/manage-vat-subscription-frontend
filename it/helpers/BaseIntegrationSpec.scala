@@ -109,7 +109,11 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
     "microservice.services.bank-account-coc.host" -> mockHost,
     "microservice.services.bank-account-coc.port" -> mockPort,
     "microservice.services.address-lookup-frontend.host" -> mockHost,
-    "microservice.services.address-lookup-frontend.port" -> mockPort
+    "microservice.services.address-lookup-frontend.port" -> mockPort,
+    "microservice.services.contact-preferences.host" -> mockHost,
+    "microservice.services.contact-preferences.port" -> mockPort,
+    "microservice.services.vat-subscription-dynamic-stub.host" -> mockHost,
+    "microservice.services.vat-subscription-dynamic-stub.port" -> mockPort
   )
 
   override implicit lazy val app: Application = new GuiceApplicationBuilder()
