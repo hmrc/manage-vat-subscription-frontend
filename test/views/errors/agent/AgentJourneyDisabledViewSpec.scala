@@ -44,8 +44,8 @@ class AgentJourneyDisabledViewSpec extends ViewBaseSpec {
     object Selectors {
       val serviceName = ".header__menu__proposition-name"
       val pageHeading = "#content h1"
-      val p1 = "#content p:nth-of-type(1)"
-      val p2 = "#content p:nth-of-type(2)"
+      val p1 = "#content article p:nth-of-type(1)"
+      val p2 = "#content article p:nth-of-type(2)"
       val button = "#content .button"
     }
 

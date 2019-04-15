@@ -29,12 +29,12 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
     object Selectors {
       val wrapper = "#content"
       val pageHeading = s"$wrapper h1"
-      val p1 = s"$wrapper p:nth-of-type(1)"
-      val p2 = s"$wrapper p:nth-of-type(2)"
-      val p3 = s"$wrapper p:nth-of-type(3)"
+      val p1 = s"$wrapper article p:nth-of-type(1)"
+      val p2 = s"$wrapper article p:nth-of-type(2)"
+      val p3 = s"$wrapper article p:nth-of-type(3)"
       val bullet1 = s"$wrapper li:nth-of-type(1)"
       val bullet2 = s"$wrapper li:nth-of-type(2)"
-      val p4 = s"$wrapper p:nth-of-type(4)"
+      val p4 = s"$wrapper article p:nth-of-type(4)"
       val bullet3 = s"$wrapper ul:nth-child(8) > li:nth-child(1)"
       val formLink = s"$wrapper ul:nth-child(8) > li:nth-child(1) > a"
       val bullet4 = s"$wrapper ul:nth-child(8) > li:nth-child(2)"
@@ -56,16 +56,10 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
     }
 
     s"have a the correct page heading of '${viewMessages.h1}'" in {
-      elementText(Selectors.pageHadeading) shouldBe viewMessages.h1
+      elementText(Selectors.pageHeading) shouldBe viewMessages.h1
     }
 
     s"have a the correct p1 of '${viewMessages.p1(orgName)}'" in {
-//      println(Console.GREEN + document.body() + Console.RESET)
-      println(Console.GREEN + element(Selectors.wrapper) + "\n\n\n" + Console.RESET)
-      println(Console.GREEN + element(Selectors.p1) + Console.RESET)
-      println(Console.GREEN + element(Selectors.p2) + Console.RESET)
-      println(Console.GREEN + element(Selectors.p3) + Console.RESET)
-      println(Console.GREEN + element(s"${Selectors.wrapper} p") + Console.RESET)
       elementText(Selectors.p1) shouldBe viewMessages.p1(orgName)
     }
 
