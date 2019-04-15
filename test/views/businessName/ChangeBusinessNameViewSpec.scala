@@ -56,10 +56,16 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
     }
 
     s"have a the correct page heading of '${viewMessages.h1}'" in {
-      elementText(Selectors.pageHeading) shouldBe viewMessages.h1
+      elementText(Selectors.pageHadeading) shouldBe viewMessages.h1
     }
 
     s"have a the correct p1 of '${viewMessages.p1(orgName)}'" in {
+//      println(Console.GREEN + document.body() + Console.RESET)
+      println(Console.GREEN + element(Selectors.wrapper) + "\n\n\n" + Console.RESET)
+      println(Console.GREEN + element(Selectors.p1) + Console.RESET)
+      println(Console.GREEN + element(Selectors.p2) + Console.RESET)
+      println(Console.GREEN + element(Selectors.p3) + Console.RESET)
+      println(Console.GREEN + element(s"${Selectors.wrapper} p") + Console.RESET)
       elementText(Selectors.p1) shouldBe viewMessages.p1(orgName)
     }
 
