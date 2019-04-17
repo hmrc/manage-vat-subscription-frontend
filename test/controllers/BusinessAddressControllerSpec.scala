@@ -381,7 +381,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "render the Business Address confirmation view" in {
           document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.digitalPref
+          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.digitalPref
         }
       }
 
@@ -405,7 +405,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "render the Business Address confirmation view" in {
           document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.paperPref
+          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.paperPref
         }
       }
 
@@ -429,7 +429,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "render the Business Address confirmation view" in {
           document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.getElementById("content").getElementsByTag("p").first().text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
         }
       }
     }

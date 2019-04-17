@@ -51,7 +51,8 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             stubContactPreferences = appConfig.features.stubContactPreferences(),
             useContactPreferences = appConfig.features.useContactPreferences(),
             allowAgentBankAccountChange = appConfig.features.allowAgentBankAccountChange(),
-            makingTaxDigitalSectionEnabled = appConfig.features.makingTaxDigitalSection()
+            makingTaxDigitalSectionEnabled = appConfig.features.makingTaxDigitalSection(),
+            languageFeatureEnabled = appConfig.features.useLanguageSelector()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -77,6 +78,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.useContactPreferences(model.useContactPreferences)
     appConfig.features.allowAgentBankAccountChange(model.allowAgentBankAccountChange)
     appConfig.features.makingTaxDigitalSection(model.makingTaxDigitalSectionEnabled)
+    appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

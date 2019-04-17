@@ -37,6 +37,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
     mockConfig.features.contactDetailsSection(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.makingTaxDigitalSection(true)
+    mockConfig.features.useLanguageSelector(true)
 
     "Viewing for an Individual without any pending changes" should {
 

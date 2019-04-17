@@ -22,6 +22,7 @@ import config.features.Features
 import config.{ConfigKeys => Keys}
 import javax.inject.{Inject, Singleton}
 import play.api.Mode.Mode
+import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
@@ -76,6 +77,8 @@ trait AppConfig extends ServicesConfig {
   val contactPreferencesService: String
   def contactPreferencesUrl(vrn: String): String
   val vatOptOutUrl: String
+  def languageMap:Map[String,Lang]
+  val routeToSwitchLanguage :String => Call
 }
 
 @Singleton
@@ -213,4 +216,12 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
     }
 
   override lazy val vatOptOutUrl: String = getString(Keys.vatOptOutUrl)
+
+  override def languageMap: Map[String, Lang] = Map(
+    "english" -> Lang("en"),
+    "cymraeg" -> Lang("cy")
+  )
+
+  override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
+
 }

@@ -46,6 +46,7 @@ object ConfigKeys {
   val useContactPreferencesFeature: String = "features.useContactPreferences.enabled"
   val allowAgentBankAccountChange: String = "features.allowAgentBankAccountChange.enabled"
   val makingTaxDigitalSectionFeature: String = "features.makingTaxDigitalSection.enabled"
+  val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"

@@ -32,3 +32,6 @@ GET         /initialise-payment-journey                      controllers.Payment
 #Sign Out Routes
 GET         /sign-out                                        controllers.SignOutController.signOut(authorised: Boolean, timeout: Boolean ?= false)
 GET         /time-out                                        controllers.SignOutController.timeout
+
+#Language Controller
+GET         /language/:lang                                  controllers.LanguageController.switchToLanguage(lang: String)
