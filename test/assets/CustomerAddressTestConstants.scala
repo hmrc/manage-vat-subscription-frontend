@@ -133,8 +133,7 @@ object CustomerAddressTestConstants {
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,
       "heading" -> AddressLookupMessages.confirmHeading,
-      "showConfirmChangeText" -> true,
-      "confirmChangeText" -> AddressLookupMessages.confirmChangeText
+      "showConfirmChangeText" -> false
     )
   )
 
@@ -161,8 +160,7 @@ object CustomerAddressTestConstants {
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,
       "heading" -> AddressLookupMessages.confirmHeading,
-      "showConfirmChangeText" -> true,
-      "confirmChangeText" -> AddressLookupMessages.confirmChangeText
+      "showConfirmChangeText" -> false
     )
   )
 

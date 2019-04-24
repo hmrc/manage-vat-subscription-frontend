@@ -40,8 +40,7 @@ case class SelectPage(title: Option[String] = None,
 
 case class ConfirmPage(title: Option[String] = None,
                        heading: Option[String] = None,
-                       showConfirmChangeText: Option[Boolean] = Some(false),
-                       confirmChangeText: Option[String] = None)
+                       showConfirmChangeText: Option[Boolean] = Some(false))
 
 object StubAddressLookupJourneyConfig {
 
