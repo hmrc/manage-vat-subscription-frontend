@@ -35,14 +35,14 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         lazy val result = controller.switchToLanguage("english")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = false))
+        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
       "Welsh is passed in" in {
         lazy val result = controller.switchToLanguage("cymraeg")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "cy", None, "/", None, secure = false, httpOnly = false))
+        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "cy", None, "/", None, secure = false, httpOnly = true))
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
     }
@@ -51,7 +51,7 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         lazy val result = controller.switchToLanguage("dovahtongue")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = false))
+        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
     }
@@ -62,7 +62,7 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         val expectedResponse = controllers.routes.CustomerCircumstanceDetailsController.redirect().url
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = false))
+        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
         redirectLocation(result) shouldBe Some(expectedResponse)
       }
     }
