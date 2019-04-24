@@ -80,10 +80,6 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     }
 
-    s"have a the correct p2 of '${viewMessages.ConfirmPage.p2}'" in {
-      elementText("#p2") shouldBe viewMessages.ConfirmPage.p2
-    }
-
     "have a confirm button" which {
 
       s"has the text '${BaseMessages.confirmAndContinue}'" in {

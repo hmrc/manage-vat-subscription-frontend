@@ -158,7 +158,6 @@ confirm_return_frequency.title = Confirm the new VAT Return dates
 confirm_return_frequency.heading = Confirm the new VAT Return dates
 confirm_return_frequency.newDates = The new VAT Return dates are
 confirm_return_frequency.changeLink = Change the VAT Return dates
-confirm_return_frequency.p2 = By confirming this change, you agree that the information you have given is complete and correct.
 
 received_frequency.title = We have received the new VAT Return dates
 received_frequency.heading = We have received the new VAT Return dates
@@ -184,7 +183,6 @@ address_lookupPage.postcode.link = The address does not have a post code
 address_lookupPage.selectPage.heading = Select the new address
 address_lookupPage.selectPage.editLink = Edit the address manually
 address_lookupPage.confirmPage.heading = Confirm the new principal place of business
-address_lookupPage.confirmPage.confirmChangeText = By confirming this change, you agree that the information you have given is complete and correct.
 
 breadcrumb.bta = Business tax account
 breadcrumb.yourVatDetails = Your VAT details
