@@ -327,7 +327,8 @@ object CircumstanceDetailsTestConstants {
       lastName = None,
       organisationName = None,
       tradingName = None,
-      welshIndicator = None),
+      welshIndicator = None,
+      overseasIndicator = false),
     flatRateScheme = None,
     ppob = ppobModelMin,
     bankDetails = None,
@@ -374,4 +375,6 @@ object CircumstanceDetailsTestConstants {
   )
 
   val customerInformationNonMtd: CircumstanceDetails = customerInformationModelMin.copy(mandationStatus = NonMTDfB)
+
+  val overseasCompany: CircumstanceDetails = customerInformationModelMin.copy(customerDetails = organisation.copy(overseasIndicator = true))
 }

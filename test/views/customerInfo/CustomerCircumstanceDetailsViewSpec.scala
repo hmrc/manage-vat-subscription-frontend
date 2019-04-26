@@ -761,5 +761,27 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementExtinct("#mtd-section")
       }
     }
+
+    "the user is an overseas business" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(overseasCompany)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not display business name" in {
+        elementExtinct("#business-name-text")
+        elementExtinct("#business-name")
+        elementExtinct("#business-name-status")
+      }
+
+      "display PPOB" in {
+        elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
+        elementText("#businessAddress > ol > li:nth-child(1)" ) shouldBe "Add Line 1"
+      }
+
+      "not give the option to change PPOB" in {
+        elementExtinct("#place-of-business-status")
+      }
+
+    }
   }
 }

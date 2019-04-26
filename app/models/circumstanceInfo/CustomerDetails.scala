@@ -25,7 +25,8 @@ case class CustomerDetails(firstName: Option[String],
                            organisationName: Option[String],
                            tradingName: Option[String],
                            welshIndicator: Option[Boolean],
-                           hasFlatRateScheme: Boolean = false) {
+                           hasFlatRateScheme: Boolean = false,
+                           overseasIndicator: Boolean) {
 
   val isOrg: Boolean = organisationName.isDefined
   val isInd: Boolean = firstName.isDefined || lastName.isDefined
@@ -45,6 +46,7 @@ object CustomerDetails extends JsonReadUtil {
   private val tradingNamePath = __ \ "tradingName"
   private val hasFrsPath = __ \ "hasFlatRateScheme"
   private val welshIndicatorPath = __ \ "welshIndicator"
+  private val overseasIndicatorPath = __ \ "overseasIndicator"
 
   implicit val reads: Reads[CustomerDetails] = (
     firstNamePath.readOpt[String] and
@@ -52,7 +54,8 @@ object CustomerDetails extends JsonReadUtil {
       organisationNamePath.readOpt[String] and
       tradingNamePath.readOpt[String] and
       welshIndicatorPath.readOpt[Boolean] and
-      hasFrsPath.read[Boolean]
+      hasFrsPath.read[Boolean] and
+      overseasIndicatorPath.read[Boolean]
     ) (CustomerDetails.apply _)
 
   implicit val writes: Writes[CustomerDetails] = (
@@ -61,7 +64,8 @@ object CustomerDetails extends JsonReadUtil {
       organisationNamePath.writeNullable[String] and
       tradingNamePath.writeNullable[String] and
       welshIndicatorPath.writeNullable[Boolean] and
-      hasFrsPath.write[Boolean]
+      hasFrsPath.write[Boolean] and
+      overseasIndicatorPath.write[Boolean]
     ) (unlift(CustomerDetails.unapply))
 
 }

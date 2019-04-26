@@ -42,7 +42,8 @@ object IntegrationTestConstants {
     lastName = None,
     tradingName = Some("Vatmobile Taxi"),
     organisationName = Some("Vatmobile Taxi LTD"),
-    welshIndicator = None
+    welshIndicator = None,
+    overseasIndicator = false
   )
 
   val individual = CustomerDetails(
@@ -50,7 +51,8 @@ object IntegrationTestConstants {
     lastName = Some("Vatman"),
     tradingName = Some("Vatmobile Taxi"),
     organisationName = None,
-    welshIndicator = None
+    welshIndicator = None,
+    overseasIndicator = false
   )
 
   val contactDetailsModelMax = ContactDetails(

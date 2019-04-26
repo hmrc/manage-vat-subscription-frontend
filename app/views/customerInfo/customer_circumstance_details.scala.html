@@ -79,22 +79,24 @@
         <dd id="businessAddress" class="cya-answer">
             @render_address(address)
         </dd>
-        <dd class="cya-change">
+        @if(!circumstances.customerDetails.overseasIndicator) {
+            <dd class="cya-change">
             @if(pending){
                 <span id="place-of-business-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.businessAddress.pending.hidden")">
-                    @messages("customer_details.pending")
+                class="bold"
+                aria-label="@messages("customer_details.businessAddress.pending.hidden")">
+                @messages("customer_details.pending")
                 </span>
             } else {
                 <a id="place-of-business-status"
-                   onclick="sendGAEvent('business-address','change','change-business-details', @user.isAgent)"
-                   href="@controllers.routes.BusinessAddressController.show().url"
-                   aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
-                  @messages("customer_details.change")
+                onclick="sendGAEvent('business-address','change','change-business-details', @user.isAgent)"
+                href="@controllers.routes.BusinessAddressController.show().url"
+                aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
+                @messages("customer_details.change")
                 </a>
             }
-        </dd>
+            </dd>
+        }
     </div>
 }
 
@@ -246,11 +248,13 @@
         <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-check-your-answers cya-questions-short">
 
-            @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
-                case (Some(orgName), true) => {
-                    @customerName(orgName)
+            @if(!circumstances.customerDetails.overseasIndicator) {
+                @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
+                    case (Some(orgName), true) => {
+                        @customerName(orgName)
+                    }
+                    case _ => {}
                 }
-                case _ => {}
             }
 
             @{circumstances.pendingPPOBAddress match {

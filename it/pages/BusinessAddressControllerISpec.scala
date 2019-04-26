@@ -146,7 +146,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
     val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
       mandationStatus = MTDfBMandated,
-      customerDetails = CustomerDetails(None, None, None, None, None),
+      customerDetails = CustomerDetails(None, None, None, None, None, overseasIndicator = false),
       flatRateScheme = None,
       ppob = PPOB(
         address = PPOBAddress(
