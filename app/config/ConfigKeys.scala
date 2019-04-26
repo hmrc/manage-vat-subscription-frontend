@@ -62,8 +62,8 @@ object ConfigKeys {
   val addressLookupFrontend: String = "address-lookup-frontend"
   val addressLookupFrontendHost: String = s"$addressLookupFrontend.host"
 
-  val surveyHost: String = "feedback-survey-frontend.host"
-  val surveyUrl: String = "feedback-survey-frontend.url"
+  val surveyHost: String = "feedback-frontend.host"
+  val surveyUrl: String = "feedback-frontend.url"
 
   val agentAuthoriseForClient: String = "agent-subscription-frontend.host"
 
