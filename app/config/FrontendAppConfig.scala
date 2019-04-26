@@ -124,7 +124,7 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override val features = new Features
 
   private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
-  override lazy val surveyUrl = s"$surveyBaseUrl/?origin=$contactFormServiceIdentifier"
+  override lazy val surveyUrl = s"$surveyBaseUrl/$contactFormServiceIdentifier"
 
   private lazy val governmentGatewayHost: String = getString(Keys.governmentGatewayHost)
 
