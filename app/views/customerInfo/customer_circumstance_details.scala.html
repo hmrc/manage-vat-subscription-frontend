@@ -199,7 +199,7 @@
                 }
                 case (false, false) => {
                     <a id="vat-email-address-status"
-                       onclick="sentGAEvent('email-address','change','change-email-address', false)"
+                       onclick="sendGAEvent('email-address','change','change-email-address', false)"
                        href="@appConfig.vatCorrespondenceChangeEmailUrl"
                        aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",
                                             emailAddress.getOrElse(messages("customer_details.notProvided")))">
