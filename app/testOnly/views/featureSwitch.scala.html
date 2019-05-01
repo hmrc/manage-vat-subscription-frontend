@@ -42,6 +42,7 @@
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.allowAgentBankAccountChange), "Allow Agents to change Bank Account")
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.makingTaxDigitalSectionFeature), messages(ConfigKeys.makingTaxDigitalSectionFeature))
               @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useLanguageSelectorFeature), messages(ConfigKeys.useLanguageSelectorFeature))
+              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useOverseasIndicator), messages(ConfigKeys.useLanguageSelectorFeature))
           </fieldset>
       </div>
 
@@ -59,7 +60,8 @@
                     @views.html.templates.inputs.radioGroup(
                         field = form("vatSubscriptionFeatures.Api1363Version"),
                         choices = Seq(
-                            (Api1363R8.id, "API1363 R8")
+                            (Api1363R8.id, "API1363 R8"),
+                            (Api1363R10.id, "API1363 R10")
                         ),
                         question = "Which API1363 Version should be used?"
                     )

@@ -16,15 +16,18 @@
 
 package testOnly.models
 
-case class FeatureSwitchModel(simpleAuthEnabled: Boolean,
-                              agentAccessEnabled: Boolean,
-                              registrationStatusEnabled: Boolean,
-                              contactDetailsSectionEnabled: Boolean,
-                              vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
-                              stubAgentClientLookup: Boolean,
-                              stubAddressLookup: Boolean,
-                              stubContactPreferences: Boolean,
-                              useContactPreferences: Boolean,
-                              allowAgentBankAccountChange: Boolean,
-                              makingTaxDigitalSectionEnabled: Boolean,
-                              languageFeatureEnabled: Boolean)
+case class FeatureSwitchModel(
+                               simpleAuthEnabled: Boolean,
+                               agentAccessEnabled: Boolean,
+                               registrationStatusEnabled: Boolean,
+                               contactDetailsSectionEnabled: Boolean,
+                               vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
+                               stubAgentClientLookup: Boolean,
+                               stubAddressLookup: Boolean,
+                               stubContactPreferences: Boolean,
+                               useContactPreferences: Boolean,
+                               allowAgentBankAccountChange: Boolean,
+                               makingTaxDigitalSectionEnabled: Boolean,
+                               languageFeatureEnabled: Boolean,
+                               useOverseasIndicatorEnabled: Boolean
+                             )

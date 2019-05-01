@@ -65,6 +65,7 @@ features.contactDetailsSection.enabled = Contact details section
 features.addDetailRows.enabled = Add detail rows
 features.makingTaxDigitalSection.enabled = Making Tax Digital section
 features.useLanguageSelector.enabled = Language switch
+features.useOverseasIndicator.enabled = Overseas Indicator Switch
 
 customer_details.title = Change of business details
 customer_details.subheading = Your VAT details

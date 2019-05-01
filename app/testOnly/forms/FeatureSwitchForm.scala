@@ -46,7 +46,8 @@ object FeatureSwitchForm {
       ConfigKeys.useContactPreferencesFeature -> boolean,
       ConfigKeys.allowAgentBankAccountChange -> boolean,
       ConfigKeys.makingTaxDigitalSectionFeature -> boolean,
-      ConfigKeys.useLanguageSelectorFeature -> boolean
+      ConfigKeys.useLanguageSelectorFeature -> boolean,
+      ConfigKeys.useOverseasIndicator -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

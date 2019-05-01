@@ -50,7 +50,6 @@ object CustomerDetailsTestConstants {
     "overseasIndicator" -> false
   )
 
-
   val customerDetailsJsonMin: JsObject = Json.obj(
     "hasFlatRateScheme" -> false,
     "overseasIndicator" -> false
@@ -93,5 +92,58 @@ object CustomerDetailsTestConstants {
   )
 
 
+  ///////////////// Release 8 data -- separated for ease of removal
 
+  val organisationR8 = CustomerDetails(
+    firstName = None,
+    lastName = None,
+    organisationName = Some(orgName),
+    tradingName = Some(tradingName),
+    welshIndicator = None,
+    overseasIndicator = false
+  )
+
+  val organisationJsonR8: JsObject = Json.obj(
+    "organisationName" -> orgName,
+    "tradingName" -> tradingName,
+    "hasFlatRateScheme" -> false
+  )
+
+  val customerDetailsJsonMinR8: JsObject = Json.obj(
+    "hasFlatRateScheme" -> false
+  )
+
+
+
+  val customerDetailsMaxR8 = CustomerDetails(
+    Some(firstName),
+    Some(lastName),
+    Some(orgName),
+    Some(tradingName),
+    Some(false),
+    overseasIndicator = false
+  )
+
+  val customerDetailsMinR8 = CustomerDetails(
+    None,
+    None,
+    None,
+    None,
+    None,
+    overseasIndicator = false
+  )
+
+  val customerDetailsJsonMaxR8: JsObject = Json.obj(
+    "organisationName" -> orgName,
+    "firstName" -> firstName,
+    "lastName" -> lastName,
+    "tradingName" -> tradingName,
+    "hasFlatRateScheme" -> false,
+    "welshIndicator" -> false
+  )
+
+  val customerDetailsJsonMinWithTrueOverseas: JsObject = Json.obj(
+    "hasFlatRateScheme" -> false,
+    "overseasIndicator" -> true
+  )
 }

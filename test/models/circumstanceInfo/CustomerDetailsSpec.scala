@@ -103,23 +103,43 @@ class CustomerDetailsSpec extends UnitSpec {
 
     "Deserialize from JSON" when {
 
-      "all optional fields are populated" in {
-        customerDetailsJsonMax.as[CustomerDetails] shouldBe customerDetailsMax
+      "all optional fields are populated for release 10" in {
+        customerDetailsJsonMax.as[CustomerDetails](CustomerDetails.reads(true)) shouldBe customerDetailsMax
       }
 
-      "no optional fields are returned" in {
-        customerDetailsJsonMin.as[CustomerDetails] shouldBe customerDetailsMin
+      "all optional fields are populated for release 8" in {
+        customerDetailsJsonMax.as[CustomerDetails](CustomerDetails.reads(false)) shouldBe customerDetailsMaxR8
+      }
+
+      "no optional fields are returned for release 10" in {
+        customerDetailsJsonMin.as[CustomerDetails](CustomerDetails.reads(true)) shouldBe customerDetailsMin
+      }
+
+      "no optional fields are returned for release 8" in {
+        customerDetailsJsonMin.as[CustomerDetails](CustomerDetails.reads(false)) shouldBe customerDetailsMinR8
+      }
+
+      "no optional fields are returned for release 8, and overseas is set to false, even if true in Json" in {
+        customerDetailsJsonMinWithTrueOverseas.as[CustomerDetails](CustomerDetails.reads(false)) shouldBe customerDetailsMinR8
       }
     }
 
     "Serialize to JSON" when {
 
-      "all optional fields are populated" in {
-        Json.toJson(customerDetailsMax) shouldBe customerDetailsJsonMax
+      "all optional fields are populated for release 10" in {
+        Json.toJson(customerDetailsMax)(CustomerDetails.writes(true)) shouldBe customerDetailsJsonMax
       }
 
-      "no optional fields are returned" in {
-        Json.toJson(customerDetailsMin) shouldBe customerDetailsJsonMin
+      "all optional fields are populated for release 8 (overseas indicator not written to json)" in {
+        Json.toJson(customerDetailsMax)(CustomerDetails.writes(false)) shouldBe customerDetailsJsonMaxR8
+      }
+
+      "no optional fields are returned for release 10" in {
+        Json.toJson(customerDetailsMin)(CustomerDetails.writes(true)) shouldBe customerDetailsJsonMin
+      }
+
+      "no optional fields are returned for release 8 (overseas indicator not written to json)" in {
+        Json.toJson(customerDetailsMin)(CustomerDetails.writes(false)) shouldBe customerDetailsJsonMinR8
       }
     }
   }
