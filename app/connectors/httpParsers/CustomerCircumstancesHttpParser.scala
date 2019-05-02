@@ -28,7 +28,7 @@ object CustomerCircumstancesHttpParser {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
-    implicit val config: Configuration = Play.current.configuration
+    implicit val config: Configuration = play.api.Configuration.apply()
     private val features: Features = new Features
 
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CircumstanceDetails] = {
