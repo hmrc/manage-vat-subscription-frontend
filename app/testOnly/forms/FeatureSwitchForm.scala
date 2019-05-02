@@ -35,7 +35,6 @@ object FeatureSwitchForm {
       ConfigKeys.registrationStatusFeature -> boolean,
       ConfigKeys.contactDetailsSectionFeature -> boolean,
       "vatSubscriptionFeatures" -> mapping(
-          latestApi1363Version -> boolean,
           api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
           stubDes -> boolean
