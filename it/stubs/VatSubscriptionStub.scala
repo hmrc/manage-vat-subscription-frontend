@@ -28,7 +28,7 @@ object VatSubscriptionStub extends WireMockMethods {
 
   def getClientDetailsSuccess(vrn: String)(customerDetails: CircumstanceDetails): StubMapping = {
     when(method = GET, uri = subscriptionUri(vrn))
-      .thenReturn(status = OK, body = Json.toJson(customerDetails))
+      .thenReturn(status = OK, body = Json.toJson(customerDetails)(CircumstanceDetails.writes(true)))
   }
 
   def getClientDetailsError(vrn: String): StubMapping = {

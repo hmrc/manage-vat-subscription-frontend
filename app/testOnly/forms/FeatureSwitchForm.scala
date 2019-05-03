@@ -35,7 +35,6 @@ object FeatureSwitchForm {
       ConfigKeys.registrationStatusFeature -> boolean,
       ConfigKeys.contactDetailsSectionFeature -> boolean,
       "vatSubscriptionFeatures" -> mapping(
-          latestApi1363Version -> boolean,
           api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
           stubDes -> boolean
@@ -46,7 +45,8 @@ object FeatureSwitchForm {
       ConfigKeys.useContactPreferencesFeature -> boolean,
       ConfigKeys.allowAgentBankAccountChange -> boolean,
       ConfigKeys.makingTaxDigitalSectionFeature -> boolean,
-      ConfigKeys.useLanguageSelectorFeature -> boolean
+      ConfigKeys.useLanguageSelectorFeature -> boolean,
+      ConfigKeys.useOverseasIndicator -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 
