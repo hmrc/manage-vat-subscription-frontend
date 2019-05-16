@@ -26,6 +26,7 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import assets.BaseTestConstants._
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -63,6 +64,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
@@ -73,6 +75,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
@@ -112,6 +115,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
@@ -122,6 +126,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
 

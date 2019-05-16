@@ -29,6 +29,10 @@ common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiria
 common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
 common.agent.updateClient2 = i roi diweddariad.
 
+standardError.title = Mae problem gyda’r gwasanaeth – Rhoi gwybod am TAW drwy feddalwedd – GOV.UK
+standardError.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
+standardError.message = Rhowch gynnig arall arni yn nes ymlaen.
+
 # Choose return frequency dates messages
 chooseDatesForm.frequency.missing = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
 

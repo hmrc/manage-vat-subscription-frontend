@@ -28,6 +28,7 @@ import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import assets.BaseTestConstants._
 
 import scala.concurrent.ExecutionContext
 
@@ -88,6 +89,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
       "return 500" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
 
       "return HTML" in {

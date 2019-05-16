@@ -80,7 +80,7 @@ class InflightEmailPredicateSpec extends MockAuth {
       }
 
       "show the technical difficulties page" in {
-        document.title shouldBe "Sorry, we are experiencing technical difficulties - 500"
+        document.title shouldBe "There is a problem with the service - VAT reporting through software - GOV.UK"
       }
     }
   }
