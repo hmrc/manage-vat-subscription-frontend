@@ -16,7 +16,6 @@
 
 package pages.returnFrequency
 
-import assets.BaseITConstants.internalServerErrorTitle
 import assets.ReturnFrequencyIntegrationTestConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
@@ -158,7 +157,6 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
-              pageTitle(internalServerErrorTitle)
           )
         }
       }

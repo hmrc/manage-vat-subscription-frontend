@@ -16,7 +16,6 @@
 
 package pages
 
-import assets.BaseITConstants.internalServerErrorTitle
 import common.SessionKeys
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, organisation}
@@ -138,7 +137,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(INTERNAL_SERVER_ERROR)
-            pageTitle (internalServerErrorTitle)
         )
       }
     }
@@ -265,7 +263,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
-              pageTitle(internalServerErrorTitle)
           )
         }
 
@@ -293,7 +290,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
-              pageTitle(internalServerErrorTitle)
           )
         }
 
@@ -315,7 +311,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR)
-              pageTitle(internalServerErrorTitle)
           )
         }
       }
