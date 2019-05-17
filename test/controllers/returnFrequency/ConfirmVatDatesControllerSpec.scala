@@ -130,6 +130,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockReturnFr
               setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxOrganisation))
               setupMockReturnFrequencyServiceWithFailure()
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+              messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
             }
           }
 

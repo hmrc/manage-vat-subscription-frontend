@@ -16,8 +16,8 @@
 
 package controllers.predicates
 
+import assets.BaseTestConstants._
 import assets.messages._
-import config.FrontendAppConfig
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
@@ -40,7 +40,9 @@ class AuthPredicateSpec extends MockAuth {
 
         "return ISE (500)" in {
           mockUserWithoutAffinity()
+          val result = target(request)
           status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
 

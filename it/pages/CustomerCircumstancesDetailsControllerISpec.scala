@@ -16,6 +16,7 @@
 
 package pages
 
+import assets.BaseITConstants.internalServerErrorTitle
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
 import models.customerAddress.CountryCodes
@@ -230,7 +231,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR),
-            pageTitle(Messages("global.error.InternalServerError500.title"))
+            pageTitle(internalServerErrorTitle)
           )
         }
       }
@@ -309,7 +310,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               res should have(
                 httpStatus(INTERNAL_SERVER_ERROR),
-                pageTitle(Messages("global.error.InternalServerError500.title"))
+                pageTitle(internalServerErrorTitle)
               )
             }
           }

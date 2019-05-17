@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
+import assets.BaseTestConstants._
 
 import scala.concurrent.Future
 import play.api.test.Helpers._
@@ -80,6 +81,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
           mockUserWithoutAffinity()
           val result = target(request)
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
 

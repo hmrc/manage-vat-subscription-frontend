@@ -166,6 +166,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "return InternalServerError" in {
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
     }
@@ -179,6 +180,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
@@ -263,6 +265,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
   }

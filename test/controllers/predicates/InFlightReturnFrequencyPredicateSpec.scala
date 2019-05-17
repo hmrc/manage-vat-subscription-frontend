@@ -22,8 +22,10 @@ import assets.ReturnPeriodTestConstants._
 import common.SessionKeys
 import mocks.MockAuth
 import models.User
+import org.jsoup.Jsoup
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import assets.BaseTestConstants._
 
 class InFlightReturnFrequencyPredicateSpec extends MockAuth {
 
@@ -56,6 +58,7 @@ class InFlightReturnFrequencyPredicateSpec extends MockAuth {
 
         "return 500" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
 

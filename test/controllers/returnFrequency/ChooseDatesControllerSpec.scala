@@ -24,6 +24,7 @@ import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
+import assets.BaseTestConstants._
 
 class ChooseDatesControllerSpec extends ControllerBaseSpec {
 
@@ -140,6 +141,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             mockCustomerDetailsSuccess(customerInformationModelDeregPending)
             mockCustomerDetailsError()
             status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
           }
         }
       }
@@ -213,6 +215,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
 
             "return Internal Server Error (500)" in {
               status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+              messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
             }
           }
 

@@ -109,7 +109,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
 
         And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(ACCEPTED,AddressLookupOnRampModel("redirect/url"))
+        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
         val res = show(VRN)
@@ -130,7 +130,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         given.agent.isSignedUpToAgentServices
 
         And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(BAD_REQUEST,AddressLookupOnRampModel("redirect/url"))
+        BusinessAddressStub.postInitJourney(BAD_REQUEST, AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
         val res = show(VRN)
@@ -178,7 +178,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         And("An address is returned address lookup service")
         BusinessAddressStub.getAddress(OK, Json.obj(
-          "lines" -> Json.arr("line1","line2"),
+          "lines" -> Json.arr("line1", "line2"),
           "country" -> Json.obj(
             "name" -> "United Kingdom",
             "code" -> "GB"
@@ -192,7 +192,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
         When("I initiate a return frequency update journey")
-        val res: WSResponse = get("/change-business-address/callback?id=111111111",session)
+        val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -212,7 +212,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         And("An address is returned address lookup service")
         BusinessAddressStub.getAddress(OK, Json.obj(
-          "lines" -> Json.arr("line1","line2"),
+          "lines" -> Json.arr("line1", "line2"),
           "country" -> Json.obj(
             "name" -> "United Kingdom",
             "code" -> "GB"
@@ -226,7 +226,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
 
         When("I initiate a return frequency update journey")
-        val res: WSResponse = get("/change-business-address/callback?id=111111111",session)
+        val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -256,7 +256,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
 
           And("A response model is returned from the backend")
-          BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
+          BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           When("I initiate a return frequency update journey")
           val res: WSResponse = get("/change-business-address/callback?id=111111111", session)
@@ -280,7 +280,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
+          BusinessAddressStub.getFullInformation(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -298,7 +298,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.agent.isSignedUpToAgentServices
 
           And("An address is returned address lookup service")
-          BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR,"Bad times")))
+          BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           And("a valid CircumstanceDetails model is returned")
           BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))

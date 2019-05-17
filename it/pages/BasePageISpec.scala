@@ -16,9 +16,9 @@
 
 package pages
 
+import assets.BaseITConstants.internalServerErrorTitle
 import common.SessionKeys
 import helpers.BaseIntegrationSpec
-import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 
@@ -61,7 +61,7 @@ trait BasePageISpec extends BaseIntegrationSpec {
 
         res should have(
           httpStatus(INTERNAL_SERVER_ERROR),
-          pageTitle(Messages("global.error.InternalServerError500.title"))
+          pageTitle(internalServerErrorTitle)
         )
       }
     }

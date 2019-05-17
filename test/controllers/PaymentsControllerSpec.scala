@@ -21,6 +21,7 @@ import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrgan
 import assets.PaymentsTestConstants._
 import audit.models.BankAccountHandOffAuditModel
 import mocks.services.MockPaymentsService
+import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
@@ -86,6 +87,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
 
@@ -96,6 +98,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
         }
       }
     }

@@ -18,7 +18,9 @@ package controllers.predicates
 
 import assets.CircumstanceDetailsTestConstants._
 import mocks.MockAuth
+import org.jsoup.Jsoup
 import play.api.test.Helpers._
+import assets.BaseTestConstants._
 
 class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
@@ -106,6 +108,7 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
       "return 500" in {
         status(result) shouldBe INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
   }
