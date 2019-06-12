@@ -217,17 +217,17 @@
 }
 
 @views.html.main_template(
-    title = messages("customer_details.title"),
+    title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
     contentHeader = Some(bc),
     appConfig = appConfig) {
 
     <header class="page-heading">
-        <h1 id="page-heading" data-metrics="vat-overview:view:change-business-details;@user.isAgent" class="heading-xlarge">@messages("customer_details.h1")</h1>
-        <h2 id="sub-heading" class="heading-secondary">
-            @if(user.isAgent) {@messages("customer_details.agentSubheading")
-            } else {@messages("customer_details.subheading")}
-        </h2>
+        @if(user.isAgent) {
+            <h1 id="page-heading" data-metrics="vat-overview:view:change-business-details;@user.isAgent" class="heading-xlarge">@messages("customer_details.agentH1")</h1>
+        } else {
+            <h1 id="page-heading" data-metrics="vat-overview:view:change-business-details;@user.isAgent" class="heading-xlarge">@messages("customer_details.h1")</h1>
+        }
     </header>
 
     @findDeregStatus(circumstances) match {

@@ -71,10 +71,10 @@ features.makingTaxDigitalSection.enabled = Making Tax Digital section
 features.useLanguageSelector.enabled = Language switch
 features.useOverseasIndicator.enabled = Overseas Indicator Switch
 
-customer_details.title = Change of business details
-customer_details.subheading = Your VAT details
-customer_details.agentSubheading = Your client''s VAT details
-customer_details.h1 = Change of business details
+customer_details.title = Your business details
+customer_details.agentTitle = Your client''s VAT details
+customer_details.h1 = Your business details
+customer_details.agentH1 = Your client''s VAT details
 customer_details.deregister = Deregister
 customer_details.change = Change
 customer_details.add = Add

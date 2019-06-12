@@ -56,10 +56,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("h1") shouldBe viewMessages.h1
       }
 
-      s"have a the correct page subheading '${viewMessages.subheading}'" in {
-        elementText("#sub-heading") shouldBe viewMessages.subheading
-      }
-
       "display a breadcrumb trail which" in {
         elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
         elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
@@ -576,20 +572,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           elementExtinct(".breadcrumbs li:nth-of-type(3)")
         }
 
-        s"have the correct document title '${viewMessages.title}'" in {
-          document.title shouldBe viewMessages.title
+        s"have the correct document title '${viewMessages.agentTitle}'" in {
+          document.title shouldBe viewMessages.agentTitle
         }
 
         s"have the correct service name" in {
           elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
         }
 
-        s"have a the correct page heading '${viewMessages.h1}'" in {
-          elementText("h1") shouldBe viewMessages.h1
-        }
-
-        s"have a the correct page subheading '${viewMessages.agentSubheading}'" in {
-          elementText("#sub-heading") shouldBe viewMessages.agentSubheading
+        s"have a the correct page heading '${viewMessages.agentTitle}'" in {
+          elementText("h1") shouldBe viewMessages.agentTitle
         }
 
         "display the 'change another clients details' link" in {

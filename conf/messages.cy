@@ -70,10 +70,10 @@ features.addDetailRows.enabled = Ychwanegu rhesi manylion
 features.makingTaxDigitalSection.enabled = Adran Troi Treth yn Ddigidol
 features.useLanguageSelector.enabled =
 
-customer_details.title = Newid o ran manylion busnes
-customer_details.subheading = Eich manylion TAW
-customer_details.agentSubheading = Manylion TAW eich cleient
-customer_details.h1 = Newid o ran manylion busnes
+customer_details.title = Manylion eich busnes
+customer_details.agentTitle = Manylion TAW eich cleient
+customer_details.h1 = Manylion eich busnes
+customer_details.agentH1 = Manylion TAW eich cleient
 customer_details.deregister = Dadgofrestru
 customer_details.change = Newid
 customer_details.add = Ychwanegu
