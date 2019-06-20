@@ -197,36 +197,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
       }
 
-      "have a section for making tax digital" which {
-
-        "has the correct section header" in {
-          elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
-        }
-
-        "has the correct row heading" in {
-          elementText("#opt-in-text") shouldBe viewMessages.statusText
-        }
-
-        "has the correct description" in {
-          elementText("#opt-in") shouldBe viewMessages.optedIn
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.optOut}'" in {
-            elementText("#opt-in-status") shouldBe viewMessages.optOut
-          }
-
-          s"has the correct aria label text '${viewMessages.changeMtdStatusHidden}'" in {
-            element("#opt-in-status").attr("aria-label") shouldBe viewMessages.changeMtdStatusHidden
-          }
-
-          s"has a link to ${mockConfig.vatOptOutUrl}" in {
-            element("#opt-in-status").attr("href") shouldBe mockConfig.vatOptOutUrl
-          }
-        }
-      }
-
       "not display the 'change another clients details' link" in {
         elementExtinct("#change-client-text")
       }
@@ -459,29 +429,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
 
         s"has the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
           element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.pendingEmailAddressHidden
-        }
-      }
-
-      "have a section for making tax digital" which {
-
-        "has the correct section header" in {
-          elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
-        }
-
-        "has the correct row heading" in {
-          elementText("#opt-in-text") shouldBe viewMessages.statusText
-        }
-
-        "has the correct description" in {
-          elementText("#opt-in") shouldBe viewMessages.optOutRequested
-        }
-
-        "has the pending text" in {
-          elementText("#opt-in-status") shouldBe viewMessages.pending
-        }
-
-        s"has the correct hidden text" in {
-          element("#opt-in-status").attr("aria-label") shouldBe viewMessages.pendingMtdStatusHidden
         }
       }
 
@@ -729,6 +676,55 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       "contact details section is hidden" in {
         mockConfig.features.contactDetailsSection(false)
         elementExtinct("#contact-details-section")
+      }
+    }
+
+    "the making tax digital feature switch is true" when {
+
+      "the user is an agent" should {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(agentUser, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "have a section for making tax digital" which {
+
+          "has the correct section header" in {
+            elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
+          }
+
+          "has the correct row heading" in {
+            elementText("#opt-in-text") shouldBe viewMessages.statusText
+          }
+
+          "has the correct description" in {
+            elementText("#opt-in") shouldBe viewMessages.optedIn
+          }
+
+          "has a change link" which {
+
+            s"has the wording '${viewMessages.optOut}'" in {
+              elementText("#opt-in-status") shouldBe viewMessages.optOut
+            }
+
+            s"has the correct aria label text '${viewMessages.changeMtdStatusHidden}'" in {
+              element("#opt-in-status").attr("aria-label") shouldBe viewMessages.changeMtdStatusHidden
+            }
+
+            s"has a link to ${mockConfig.vatOptOutUrl}" in {
+              element("#opt-in-status").attr("href") shouldBe mockConfig.vatOptOutUrl
+            }
+          }
+        }
+      }
+
+      "the user is not an agent" should {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "not display the making tax digital section" in {
+          elementExtinct("#mtd-section")
+        }
       }
     }
 
