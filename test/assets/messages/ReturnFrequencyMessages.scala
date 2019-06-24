@@ -43,7 +43,8 @@ object ReturnFrequencyMessages {
     val p2 = "If this change is accepted:"
     val bullet1 = "we will send a confirmation letter to your principal place of business within 10 working days"
     val bullet2 = "the business must submit this period's return before following the new VAT Return dates"
-    val changeClientDetails = "You can change another client’s details."
+    val oldChangeClientDetails = "You can change another client’s details."
+    val newChangeClientDetails = "Change client"
     val p1Agent = "We will send an email to agentEmail@test.com within 2 working days telling you whether or not " +
       "the request has been accepted."
     val p2Agent = "We will also contact MyCompany Ltd with an update."

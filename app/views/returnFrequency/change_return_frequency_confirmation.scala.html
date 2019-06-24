@@ -18,6 +18,25 @@
 
 @(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
+@changeClientLink = {
+    @if(appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client','change','confirmation-vat-return-dates', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+            @messages("common.agent.changeClient")</a>
+        </p>
+    } else {
+        <p id="change-client-text">
+            @messages("common.agent.changeClient.youCan")
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client','change','confirmation-vat-return-dates', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+            @messages("common.agent.changeClient.link")</a>.
+        </p>
+    }
+}
+
 @views.html.main_template(
   title = messages("received_frequency.title"),
   bodyClasses = None,
@@ -46,13 +65,7 @@
             }
         }
 
-        <p id="change-client-text">
-            @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link"
-               onclick="sendGAEvent('select-client','change','confirmation-vat-return-dates', true)"
-               href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
-                @messages("common.agent.changeClient.link")</a>.
-        </p>
+        @changeClientLink
     } else {
 
         @if(appConfig.features.useContactPreferences()){
