@@ -186,10 +186,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
     "they have selected to receive email notifications" when {
 
-      "there is a client name" should {
-
-        lazy val view: Html = views.change_address_confirmation(
-          clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+      "there is a client name and the changeClient feature switch is on" should {
+        lazy val view: Html = {
+          mockConfig.features.changeClientFeature(true)
+          views.change_address_confirmation(
+            clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct document title of '${viewMessages.title}'" in {
@@ -209,7 +211,49 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         }
 
         "display the 'change another clients details' link" in {
-          elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
+          elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
+          element("#change-client-link").attr("href") shouldBe
+            controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+        }
+
+        s"have a button to finish" which {
+
+          s"has the correct text of '${BaseMessages.finish}" in {
+            elementText("#finish") shouldBe BaseMessages.finish
+          }
+
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
+            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+          }
+        }
+      }
+
+      "there is a client name and the changeClient feature switch is off" should {
+        lazy val view: Html = {
+          mockConfig.features.changeClientFeature(false)
+          views.change_address_confirmation(
+            clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        }
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        s"have the correct document title of '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.title
+        }
+
+        s"have the correct page heading of '${viewMessages.title}'" in {
+          elementText("h1") shouldBe viewMessages.title
+        }
+
+        s"have the correct p1 of '${viewMessages.p1Agent}'" in {
+          paragraph(1) shouldBe viewMessages.p1Agent
+        }
+
+        s"have the correct p2 of '${viewMessages.p2Agent}'" in {
+          paragraph(2) shouldBe viewMessages.p2Agent
+        }
+
+        "display the 'change another clients details' link" in {
+          elementText("#change-client-text") shouldBe viewMessages.oldChangeClientDetails
           element("#change-client-link").attr("href") shouldBe
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
         }
