@@ -523,19 +523,15 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         s"have the correct document title '${viewMessages.title}'" in {
-          document.title shouldBe viewMessages.title
+          document.title shouldBe viewMessages.agentTitle
         }
 
         s"have the correct service name" in {
           elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
         }
 
-        s"have a the correct page heading '${viewMessages.h1}'" in {
-          elementText("h1") shouldBe viewMessages.h1
-        }
-
-        s"have a the correct page subheading '${viewMessages.agentSubheading}'" in {
-          elementText("#sub-heading") shouldBe viewMessages.agentSubheading
+        s"have a the correct page heading '${viewMessages.agentTitle}'" in {
+          elementText("h1") shouldBe viewMessages.agentTitle
         }
 
         "display the 'Change client' link" in {
@@ -721,7 +717,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#registration-status")
         elementText("#registration-status-link") shouldBe viewMessages.howToRegister
         elementText("#registration-status-text") shouldBe viewMessages.statusText
-        elementText("div.form-group:nth-child(6) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+        elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
       }
     }
 
