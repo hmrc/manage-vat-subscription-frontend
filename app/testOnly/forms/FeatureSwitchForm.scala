@@ -46,7 +46,8 @@ object FeatureSwitchForm {
       ConfigKeys.allowAgentBankAccountChange -> boolean,
       ConfigKeys.makingTaxDigitalSectionFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
-      ConfigKeys.useOverseasIndicator -> boolean
+      ConfigKeys.useOverseasIndicator -> boolean,
+      ConfigKeys.changeClientFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 

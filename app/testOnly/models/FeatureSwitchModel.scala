@@ -29,5 +29,6 @@ case class FeatureSwitchModel(
                                allowAgentBankAccountChange: Boolean,
                                makingTaxDigitalSectionEnabled: Boolean,
                                languageFeatureEnabled: Boolean,
-                               useOverseasIndicatorEnabled: Boolean
+                               useOverseasIndicatorEnabled: Boolean,
+                               changeClientFeature: Boolean
                              )

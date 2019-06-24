@@ -72,6 +72,7 @@ trait AppConfig extends ServicesConfig {
   val govUkSoftwareGuidanceUrl: String
   val govUkVat484Form: String
   val vatAgentClientLookupFrontendUrl: String
+  val agentClientLookupAgentAction: String
   def agentClientLookupUrl: String
   def agentClientUnauthorisedUrl: String
   val contactPreferencesService: String
@@ -205,6 +206,11 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
       vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
 
+  override val agentClientLookupAgentAction: String =
+    getString(ConfigKeys.vatAgentClientLookupFrontendHost) +
+    getString(ConfigKeys.vatAgentClientLookupFrontendUrl) +
+    getString(ConfigKeys.vatAgentClientLookupFrontendAgentAction)
+
   def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
     vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(getString(Keys.host) + redirectUrl).encodedUrl}"
 
@@ -223,5 +229,4 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   )
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
-
 }

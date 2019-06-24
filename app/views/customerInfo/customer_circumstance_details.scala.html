@@ -216,6 +216,28 @@
     </div>
 }
 
+@oldChangeClientLink = {
+    @if(!appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            @messages("common.agent.changeClient.youCan")
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client', 'change', 'change-business-details', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+        </p>
+    }
+}
+@newChangeClientLink = {
+    @if(appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client','change','change-business-details', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
+        </p>
+
+        <a id="finish-button" class="button" href="@appConfig.agentClientLookupAgentAction" role="button">@messages("common.finish")</a>
+    }
+}
+
 @views.html.main_template(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
@@ -326,14 +348,8 @@
         </div>
     }
 
-
-    @if(user.isAgent){
-        <p id="change-client-text">
-            @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link"
-               onclick="sendGAEvent('select-client','change','change-business-details', true)"
-               href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
-        </p>
+    @if(user.isAgent) {
+        @oldChangeClientLink
     }
 
     <details>
@@ -350,4 +366,8 @@
             @messages("customer_details.changeNotListed.useAForm")</p>
         </div>
     </details>
+
+    @if(user.isAgent){
+        @newChangeClientLink
+    }
 }

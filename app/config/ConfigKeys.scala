@@ -48,6 +48,7 @@ object ConfigKeys {
   val makingTaxDigitalSectionFeature: String = "features.makingTaxDigitalSection.enabled"
   val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
+  val changeClientFeature: String = "features.changeClientFeature.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
@@ -83,6 +84,7 @@ object ConfigKeys {
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
+  val vatAgentClientLookupFrontendAgentAction: String = "vat-agent-client-lookup-frontend.agent-action-extension"
 
   val contactPreferencesService: String = "contact-preferences"
 

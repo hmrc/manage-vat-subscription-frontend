@@ -36,4 +36,5 @@ class Features @Inject()(implicit config: Configuration) {
   val makingTaxDigitalSection = new Feature(ConfigKeys.makingTaxDigitalSectionFeature)
   val useLanguageSelector = new Feature(ConfigKeys.useLanguageSelectorFeature)
   val useOverseasIndicator = new Feature(ConfigKeys.useOverseasIndicator)
+  val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
 }
