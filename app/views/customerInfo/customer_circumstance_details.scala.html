@@ -330,20 +330,20 @@
         </div>
     }
 
+    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB && user.isAgent){
+        <div id="mtd-section" class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+            @views.html.helpers.mtd_section_helper(circumstances)
+            </dl>
+        </div>
+    }
+
     @if(appConfig.features.registrationStatus()){
         <div id="registration-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @registrationStatus()
-            </dl>
-        </div>
-    }
-
-    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB && user.isAgent){
-        <div id="mtd-section" class="form-group">
-            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
-            <dl class="govuk-check-your-answers cya-questions-short">
-                @views.html.helpers.mtd_section_helper(circumstances)
             </dl>
         </div>
     }

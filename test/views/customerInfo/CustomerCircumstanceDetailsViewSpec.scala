@@ -721,7 +721,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         elementText("#registration-status")
         elementText("#registration-status-link") shouldBe viewMessages.howToRegister
         elementText("#registration-status-text") shouldBe viewMessages.statusText
-        elementText("div.form-group:nth-child(5) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
+        elementText("div.form-group:nth-child(6) > h2:nth-child(1)") shouldBe viewMessages.registrationStatusHeading
       }
     }
 
