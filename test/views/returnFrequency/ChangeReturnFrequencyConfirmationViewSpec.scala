@@ -65,13 +65,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         elementExtinct("#change-client-text")
       }
 
-      s"have the correct finish button" which {
+      "have the correct finish button" which {
 
         s"has the text '${BaseMessages.finish}'" in {
           elementText("#finish") shouldBe BaseMessages.finish
         }
 
-        s"has link back to customer details page" in {
+        "has link back to customer details page" in {
           element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
@@ -107,13 +107,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         elementExtinct("#change-client-text")
       }
 
-      s"have the correct finish button" which {
+      "have the correct finish button" which {
 
         s"has the text '${BaseMessages.finish}'" in {
           elementText("#finish") shouldBe BaseMessages.finish
         }
 
-        s"has link back to customer details page" in {
+        "has link back to customer details page" in {
           element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
@@ -149,13 +149,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         elementExtinct("#change-client-text")
       }
 
-      s"have the correct finish button" which {
+      "have the correct finish button" which {
 
         s"has the text '${BaseMessages.finish}'" in {
           elementText("#finish") shouldBe BaseMessages.finish
         }
 
-        s"has link back to customer details page" in {
+        "has link back to customer details page" in {
           element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
@@ -191,13 +191,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         elementExtinct("#change-client-text")
       }
 
-      s"have the correct finish button" which {
+      "have the correct finish button" which {
 
         s"has the text '${BaseMessages.finish}'" in {
           elementText("#finish") shouldBe BaseMessages.finish
         }
 
-        s"has link back to customer details page" in {
+        "has link back to customer details page" in {
           element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
@@ -211,8 +211,11 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
       "there is a client name and the changeClientFeature is on" should {
 
-        lazy val view = views.html.returnFrequency.change_return_frequency_confirmation(
-          clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        lazy val view = {
+          mockConfig.features.changeClientFeature(true)
+          views.html.returnFrequency.change_return_frequency_confirmation(
+            clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
@@ -241,13 +244,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
         }
 
-        s"have the correct finish button" which {
+        "have the correct finish button" which {
 
           s"has the text '${BaseMessages.finish}'" in {
             elementText("#finish") shouldBe BaseMessages.finish
           }
 
-          s"has link back to customer details page" in {
+          "has link back to customer details page" in {
             element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
           }
         }
@@ -288,13 +291,13 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
         }
 
-        s"have the correct finish button" which {
+        "have the correct finish button" which {
 
           s"has the text '${BaseMessages.finish}'" in {
             elementText("#finish") shouldBe BaseMessages.finish
           }
 
-          s"has link back to customer details page" in {
+          "has link back to customer details page" in {
             element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
           }
         }
