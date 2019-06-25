@@ -258,7 +258,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
         }
 
-        s"have a button to finish" which {
+        "have a button to finish" which {
 
           s"has the correct text of '${BaseMessages.finish}" in {
             elementText("#finish") shouldBe BaseMessages.finish

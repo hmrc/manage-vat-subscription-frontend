@@ -48,7 +48,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct service name" in {
+      "have the correct service name" in {
         elementText(".header__menu__proposition-name") shouldBe BaseMessages.clientServiceName
       }
 
