@@ -31,6 +31,10 @@ object Api1365R7 extends Api1365Version {
   override val id: String = "R7"
 }
 
+object Api1365R11 extends Api1365Version {
+  override val id: String = "R11"
+}
+
 object Api1365Version {
 
   implicit val rds: Reads[Api1365Version] = JsPath.read[String].map(apply)
@@ -43,6 +47,7 @@ object Api1365Version {
     case Api1365R5.id => Api1365R5
     case Api1365R6.id => Api1365R6
     case Api1365R7.id => Api1365R7
+    case Api1365R11.id => Api1365R11
     case _ => throw new RuntimeException(s"Invalid API 1365 Version. Version supplied: $id")
   }
 
