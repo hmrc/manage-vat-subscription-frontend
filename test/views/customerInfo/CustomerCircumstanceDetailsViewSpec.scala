@@ -541,9 +541,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "display the Finish button" in {
-          val finishSelector = "#finish-button"
+          val finishSelector = "#finish"
           elementText(finishSelector) shouldBe viewMessages.finish
-          element("#content > article > a").attr("href") shouldBe "/agent-action"
+          element(finishSelector).attr("href") shouldBe "/agent-action"
         }
 
         "not display the Change Bank Account details row" which {
