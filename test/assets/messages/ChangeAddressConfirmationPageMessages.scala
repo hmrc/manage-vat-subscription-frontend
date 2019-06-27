@@ -26,7 +26,8 @@ object ChangeAddressConfirmationPageMessages {
     "followed by a letter to the principal place of business."
   val p2Agent: String = "We will also contact MyCompany Ltd with an update."
   val p2AgentNoClientName: String = "We will also contact your client with an update."
-  val changeClientDetails = "You can change another client’s details."
+  val oldChangeClientDetails = "You can change another client’s details."
+  val newChangeClientDetails = "Change client"
   val confirmationLetter = "We will send a confirmation letter to the agency address registered with HMRC " +
     "within 15 working days."
 

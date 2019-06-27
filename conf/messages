@@ -28,6 +28,7 @@ common.agent.yourClient = your client
 common.agent.confirmationLetter = We will send a confirmation letter to the agency address registered with HMRC within 15 working days.
 common.agent.updateClient1 = We will also contact
 common.agent.updateClient2 = with an update.
+common.agent.changeClient = Change client
 
 standardError.title = There is a problem with the service - VAT reporting through software - GOV.UK
 standardError.heading = Sorry, there is a problem with the service
@@ -70,6 +71,7 @@ features.addDetailRows.enabled = Add detail rows
 features.makingTaxDigitalSection.enabled = Making Tax Digital section
 features.useLanguageSelector.enabled = Language switch
 features.useOverseasIndicator.enabled = Overseas Indicator Switch
+features.changeClientFeature.enabled = Enable change client links and Finish links where appropriate
 
 customer_details.title = Your business details
 customer_details.agentTitle = Your client''s VAT details

@@ -48,7 +48,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct service name" in {
+      "have the correct service name" in {
         elementText(".header__menu__proposition-name") shouldBe BaseMessages.clientServiceName
       }
 
@@ -506,11 +506,86 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
     }
 
-    "Viewing a client's details as an agent" when {
+    "Viewing a client's details as an agent with changeClient feature switch on" when {
+
+      "the allowAgentBankAccountChange feature is set to false" should {
+
+        lazy val view = {
+          mockConfig.features.changeClientFeature(true)
+          views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "not display a breadcrumb trail" in {
+          elementExtinct(".breadcrumbs li:nth-of-type(1)")
+          elementExtinct(".breadcrumbs li:nth-of-type(2)")
+          elementExtinct(".breadcrumbs li:nth-of-type(3)")
+        }
+
+        s"have the correct document title '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.agentTitle
+        }
+
+        "have the correct service name" in {
+          elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
+        }
+
+        s"have a the correct page heading '${viewMessages.agentTitle}'" in {
+          elementText("h1") shouldBe viewMessages.agentTitle
+        }
+
+        "display the 'Change client' link" in {
+          elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
+          element("#change-client-link").attr("href") shouldBe
+            controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+        }
+
+        "display the Finish button" in {
+          val finishSelector = "#finish"
+          elementText(finishSelector) shouldBe viewMessages.finish
+          element(finishSelector).attr("href") shouldBe "/agent-action"
+        }
+
+        "not display the Change Bank Account details row" which {
+
+          "is not found in the document" in {
+            document.select("#bank-details-text") shouldBe empty
+          }
+        }
+
+        "have a blank field where the 'Change' link would be for email address" which {
+
+          "displays no text" in {
+            elementText("#vat-email-address-status") shouldBe ""
+          }
+
+          s"has the correct aria-label text '${viewMessages.changeEmailAddressAgentHidden}'" in {
+            element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.changeEmailAddressAgentHidden
+          }
+        }
+      }
 
       "the allowAgentBankAccountChange feature is set to false" should {
 
         lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "display the Change Bank Account details row" in {
+          mockConfig.features.allowAgentBankAccountChange(true)
+          elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+        }
+      }
+    }
+
+    "Viewing a client's details as an agent with changeClient feature switch off" when {
+
+      "the allowAgentBankAccountChange feature is set to false" should {
+
+        lazy val view = {
+          mockConfig.features.changeClientFeature(false)
+          mockConfig.features.allowAgentBankAccountChange(false)
+          views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "not display a breadcrumb trail" in {
@@ -523,7 +598,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
           document.title shouldBe viewMessages.agentTitle
         }
 
-        s"have the correct service name" in {
+        "have the correct service name" in {
           elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
         }
 
@@ -532,9 +607,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "display the 'change another clients details' link" in {
-          elementText("#change-client-text") shouldBe viewMessages.changeClientDetails
+          elementText("#change-client-text") shouldBe viewMessages.oldChangeClientDetails
           element("#change-client-link").attr("href") shouldBe
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
+        }
+
+        "not display the Finish button" in {
+          val finishSelector = "#finish-button"
+          elementExtinct(finishSelector)
         }
 
         "not display the Change Bank Account details row" which {

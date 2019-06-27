@@ -216,6 +216,28 @@
     </div>
 }
 
+@oldChangeClientLink = {
+    @if(!appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            @messages("common.agent.changeClient.youCan")
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client', 'change', 'change-business-details', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
+        </p>
+    }
+}
+@newChangeClientLink = {
+    @if(appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            <a id="change-client-link"
+            onclick="sendGAEvent('select-client','change','change-business-details', true)"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
+        </p>
+
+        <a id="finish" class="button" href="@appConfig.agentClientLookupAgentAction" role="button">@messages("common.finish")</a>
+    }
+}
+
 @views.html.main_template(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
@@ -308,6 +330,15 @@
         </div>
     }
 
+    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB && user.isAgent){
+        <div id="mtd-section" class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+            @views.html.helpers.mtd_section_helper(circumstances)
+            </dl>
+        </div>
+    }
+
     @if(appConfig.features.registrationStatus()){
         <div id="registration-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
@@ -317,23 +348,8 @@
         </div>
     }
 
-    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB && user.isAgent){
-        <div id="mtd-section" class="form-group">
-            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
-            <dl class="govuk-check-your-answers cya-questions-short">
-                @views.html.helpers.mtd_section_helper(circumstances)
-            </dl>
-        </div>
-    }
-
-
-    @if(user.isAgent){
-        <p id="change-client-text">
-            @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link"
-               onclick="sendGAEvent('select-client','change','change-business-details', true)"
-               href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
-        </p>
+    @if(user.isAgent) {
+        @oldChangeClientLink
     }
 
     <details>
@@ -350,4 +366,8 @@
             @messages("customer_details.changeNotListed.useAForm")</p>
         </div>
     </details>
+
+    @if(user.isAgent){
+        @newChangeClientLink
+    }
 }

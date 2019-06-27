@@ -83,4 +83,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy")
   )
+
+  override val agentClientLookupAgentAction: String = "/agent-action"
 }
