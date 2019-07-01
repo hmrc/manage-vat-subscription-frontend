@@ -22,7 +22,7 @@
     @if(appConfig.features.changeClientFeature()) {
         <p id="change-client-text">
             <a id="change-client-link"
-            onclick="sendGAEvent('select-client','change','confirmation-vat-return-dates', true)"
+            onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("common.agent.changeClient")</a>
         </p>
@@ -43,7 +43,7 @@
     appConfig = appConfig) {
 
     <div data-metrics="business-address:view:change-business-address-confirmation;@user.isAgent" class="govuk-box-highlight">
-        <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
+        <h1 class="heading-xlarge" data-metrics="manage-client:view:confirmation-return-frequency;@user.isAgent">@messages("change_address_confirmation.title")</h1>
     </div>
 
     <h2>@messages("change_address_confirmation.h2")</h2>
