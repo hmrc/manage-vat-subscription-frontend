@@ -30,9 +30,9 @@ common.agent.updateClient1 = We will also contact
 common.agent.updateClient2 = with an update.
 common.agent.changeClient = Change client
 
-standardError.title = There is a problem with the service - VAT reporting through software - GOV.UK
-standardError.heading = Sorry, there is a problem with the service
-standardError.message = Try again later.
+global.error.InternalServerError500.title = There is a problem with the service - VAT reporting through software - GOV.UK
+global.error.InternalServerError500.heading = Sorry, there is a problem with the service
+global.error.InternalServerError500.message = Try again later.
 
 # Choose return frequency dates messages
 chooseDatesForm.frequency.missing = Select the new VAT Return dates

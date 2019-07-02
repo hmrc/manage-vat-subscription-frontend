@@ -29,9 +29,15 @@ common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiria
 common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
 common.agent.updateClient2 = i roi diweddariad.
 
-standardError.title = Mae problem gyda’r gwasanaeth – Rhoi gwybod am TAW drwy feddalwedd – GOV.UK
-standardError.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
-standardError.message = Rhowch gynnig arall arni yn nes ymlaen.
+global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – Rhoi gwybod am TAW drwy feddalwedd – GOV.UK
+global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
+global.error.InternalServerError500.message = Rhowch gynnig arall arni yn nes ymlaen.
+global.error.badRequest400.title = Cais drwg – 400
+global.error.badRequest400.heading = Cais drwg
+global.error.badRequest400.message = Gwiriwch eich bod wedi nodi’r cyfeiriad gwe cywir.
+global.error.pageNotFound404.title = Heb ddod o hyd i’r dudalen – 404
+global.error.pageNotFound404.heading = Ni ellir dod o hyd i’r dudalen hon
+global.error.pageNotFound404.message = Gwiriwch eich bod wedi nodi’r cyfeiriad gwe cywir.
 
 # Choose return frequency dates messages
 chooseDatesForm.frequency.missing = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
