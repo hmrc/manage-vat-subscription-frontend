@@ -234,7 +234,12 @@
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
         </p>
 
-        <a id="finish" class="button" href="@appConfig.agentClientLookupAgentAction" role="button">@messages("common.finish")</a>
+        <a id="finish"
+            onclick="sendGAEvent('finish', 'change', 'change-business-details', true)"
+            class="button"
+            href="@appConfig.agentClientLookupAgentAction"
+            role="button">@messages("common.finish")
+        </a>
     }
 }
 
