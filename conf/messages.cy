@@ -28,6 +28,7 @@ common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.
 common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
 common.agent.updateClient2 = i roi diweddariad.
+common.agent.changeClient = Newid cleient
 
 global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – Rhoi gwybod am TAW drwy feddalwedd – GOV.UK
 global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
@@ -65,7 +66,7 @@ not_signed_up.heading = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.text = Mae’n rhaid i chi
 not_signed_up.link = gofrestru i ddefnyddio meddalwedd er mwyn cyflwyno’ch Ffurflenni TAW.
 
-featureSwitch.title = 
+featureSwitch.title =
 featureSwitch.heading = Nodweddion
 featureSwitch.submit = Cyflwyno
 features.simpleAuth.enabled =
