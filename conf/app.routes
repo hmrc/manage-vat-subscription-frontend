@@ -30,7 +30,7 @@ GET         /change-client-vat-number                        controllers.agentCl
 GET         /initialise-payment-journey                      controllers.PaymentsController.sendToPayments
 
 #Sign Out Routes
-GET         /sign-out                                        controllers.SignOutController.signOut(authorised: Boolean, timeout: Boolean ?= false)
+GET         /sign-out                                        controllers.SignOutController.signOut(authorised: Boolean)
 GET         /time-out                                        controllers.SignOutController.timeout
 
 #Language Controller

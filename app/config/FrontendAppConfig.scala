@@ -43,9 +43,8 @@ trait AppConfig extends ServicesConfig {
   val signInUrl: String
   val features: Features
   val govUkCohoNameChangeUrl: String
-  val surveyUrl: String
-  val signOutExitSurveyUrl: String
-  val signOutTimeoutUrl: String
+  def surveyUrl(identifier: String): String
+  def signOutExitSurveyUrl(identifier: String): String
   val unauthorisedSignOutUrl: String
   val addressLookupCallbackUrl: String
   def addressLookupService: String
@@ -125,15 +124,13 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override val features = new Features
 
   private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
-  override lazy val surveyUrl = s"$surveyBaseUrl/$contactFormServiceIdentifier"
+  override def surveyUrl(identifier: String): String = s"$surveyBaseUrl/$identifier"
 
   private lazy val governmentGatewayHost: String = getString(Keys.governmentGatewayHost)
 
-  override lazy val signOutExitSurveyUrl = s"$governmentGatewayHost/gg/sign-out?continue=$surveyUrl"
+  override def signOutExitSurveyUrl(identifier: String): String =
+    s"$governmentGatewayHost/gg/sign-out?continue=${surveyUrl(identifier)}"
   override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
-
-  private lazy val timeoutUrl = host + controllers.routes.SignOutController.timeout().url
-  override lazy val signOutTimeoutUrl = s"$governmentGatewayHost/gg/sign-out?continue=$timeoutUrl"
 
   override lazy val addressLookupUrlHost: String = getString(Keys.addressLookupFrontendHost)
 

@@ -20,23 +20,35 @@ import com.google.inject.{Inject, Singleton}
 import config.AppConfig
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent}
+import services.EnrolmentsAuthService
+import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.retrieve.Retrievals
+import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.play.HeaderCarrierConverter
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
 import scala.concurrent.Future
 
 @Singleton
 class SignOutController @Inject()(val messagesApi: MessagesApi,
-                                  implicit val appConfig: AppConfig
-                                 ) extends FrontendController with I18nSupport {
+                                  enrolmentsAuthService: EnrolmentsAuthService)
+                                 (implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
 
-  def signOut(showExitSurvey: Boolean, timeout: Boolean = false): Action[AnyContent] = Action { implicit request =>
-    val redirectUrl: String = (timeout, showExitSurvey) match {
-      case (true, _) => appConfig.signOutTimeoutUrl
-      case (_, true) => appConfig.signOutExitSurveyUrl
-      case (_, false) => appConfig.unauthorisedSignOutUrl
+  def signOut(authorised: Boolean): Action[AnyContent] = Action.async { implicit request =>
+    implicit val hc: HeaderCarrier =
+      HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+
+    if(authorised) {
+      enrolmentsAuthService.authorised.retrieve(Retrievals.affinityGroup) {
+        case Some(AffinityGroup.Agent) => Future.successful("VATCA")
+        case _ => Future.successful("VATC")
+      }.map(contactFormIdentifier => Redirect(appConfig.signOutExitSurveyUrl(contactFormIdentifier)))
+    } else {
+      Future.successful(Redirect(appConfig.unauthorisedSignOutUrl))
     }
-    Redirect(redirectUrl)
   }
 
-  val timeout: Action[AnyContent] = Action { implicit request => Unauthorized(views.html.errors.sessionTimeout()) }
+  val timeout: Action[AnyContent] = Action { implicit request =>
+    Redirect(appConfig.unauthorisedSignOutUrl)
+  }
 }
