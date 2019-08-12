@@ -46,7 +46,7 @@
               timeout: @appConfig.timeoutPeriod,
               countdown: @appConfig.timeoutCountdown,
               keepAliveUrl: '@{controllers.routes.CustomerCircumstanceDetailsController.redirect().url}',
-              signOutUrl: '@{controllers.routes.SignOutController.signOut(false, true).url}'
+              signOutUrl: '@{controllers.routes.SignOutController.signOut(authorised = false).url}'
             });
             var dialogOpen;
         }

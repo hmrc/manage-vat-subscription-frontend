@@ -37,9 +37,9 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val whitelistExcludedPaths: Seq[Call] = Nil
   override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/vat-through-software"
   override val signInUrl: String = "sign-in"
-  override val signOutExitSurveyUrl: String = "/some-gg-signout-url"
+  override def signOutExitSurveyUrl(identifier: String): String = s"/some-gg-signout-url/$identifier"
   override val unauthorisedSignOutUrl: String = ""
-  override val surveyUrl: String = "/some-survey-url"
+  override def surveyUrl(identifier: String): String = s"/some-survey-url/$identifier"
   override val features: Features = new Features
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"
   override val addressLookupCallbackUrl: String = ""
@@ -70,7 +70,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val partyTypes: Seq[String] = Seq("2","4","7","11","50","52","59","62")
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
-  override val signOutTimeoutUrl: String = "/gg/signout-for-timeout"
   override val vatAgentClientLookupFrontendUrl: String = "/vaclf"
   override def agentClientLookupUrl: String = "/agent-client-lookup"
   override def agentClientUnauthorisedUrl: String = "agent-client-unauthorised"
