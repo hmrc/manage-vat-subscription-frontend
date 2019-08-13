@@ -34,8 +34,8 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
       document.title shouldBe viewMessages.title
     }
 
-    s"have the correct page heading of '${viewMessages.title1}'" in {
-      elementText("h1") shouldBe viewMessages.title1
+    s"have the correct page heading of '${viewMessages.heading}'" in {
+      elementText("h1") shouldBe viewMessages.heading
     }
 
     s"have a the back link with correct text and url '${back}'" in {
