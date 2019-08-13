@@ -68,7 +68,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Business Address confirmation view" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.titleAgent
+            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.title
           }
         }
 
@@ -89,7 +89,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Business Address confirmation view" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.titleAgent
+            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.title
           }
         }
       }
