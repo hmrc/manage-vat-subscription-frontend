@@ -72,7 +72,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockReturnFr
           }
 
           "render the Confirm Dates Page" in {
-            document.title shouldBe Messages.ConfirmPage.heading
+            document.title shouldBe Messages.ConfirmPage.title
           }
         }
 

@@ -88,7 +88,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates - Business tax account - GOV.UK"
             }
           }
 
@@ -114,7 +114,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates - Business tax account - GOV.UK"
             }
           }
         }
@@ -229,7 +229,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates - Business tax account - GOV.UK"
             }
           }
         }
