@@ -45,7 +45,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
 
-  val titleSuffixAgent  = " - Update your client's VAT details - GOV.UK"
+  val titleSuffixUser = " - Business tax account - GOV.UK"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this

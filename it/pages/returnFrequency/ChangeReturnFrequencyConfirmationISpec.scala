@@ -103,7 +103,7 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
           res should have(
             httpStatus(FORBIDDEN),
-            pageTitle(Messages("unauthorised.agent.title" , titleSuffixAgent))
+            pageTitle(Messages("unauthorised.agent.title") + titleSuffixUser)
           )
         }
       }
