@@ -16,10 +16,11 @@
 
 package assets.messages
 
-object ChangeBusinessNamePageMessages {
+object ChangeBusinessNamePageMessages extends BaseMessages {
 
-  val title = "Change the business name"
-  val h1 = title
+  val title = "Change the business name" + titleSuffixUser
+  val title1 = "Change the business name"
+  val h1 = title1
 
   val p1: String => String = name => s"The business name is currently $name. You’ll be taken to Companies House to change it."
   val p2 = "Changing the business name costs:"

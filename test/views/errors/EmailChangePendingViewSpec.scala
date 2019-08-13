@@ -21,7 +21,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class EmailChangePendingViewSpec extends ViewBaseSpec {
+class EmailChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   object Selectors {
     val heading = "h1"
@@ -52,7 +52,7 @@ class EmailChangePendingViewSpec extends ViewBaseSpec {
     }
 
     "have the correct text for the back link" in {
-      elementText(Selectors.backLink) shouldBe BaseMessages.back
+      elementText(Selectors.backLink) shouldBe back
     }
 
     "have the correct back link location" in {

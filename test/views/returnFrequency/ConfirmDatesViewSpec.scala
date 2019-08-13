@@ -22,18 +22,18 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class ConfirmDatesViewSpec extends ViewBaseSpec {
+class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Confirm Dates page" should {
 
     lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.ConfirmPage.heading}'" in {
-      document.title shouldBe viewMessages.ConfirmPage.heading
+    s"have the correct document title of '${viewMessages.ConfirmPage.title}'" in {
+      document.title shouldBe viewMessages.ConfirmPage.title
     }
-    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
-      elementText(".link-back") shouldBe BaseMessages.back
+    s"have a the back link with correct text and url '${back}'" in {
+      elementText(".link-back") shouldBe back
       element(".link-back").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
     }
 
@@ -82,8 +82,8 @@ class ConfirmDatesViewSpec extends ViewBaseSpec {
 
     "have a confirm button" which {
 
-      s"has the text '${BaseMessages.confirmAndContinue}'" in {
-        elementText("#continue-button") shouldBe BaseMessages.confirmAndContinue
+      s"has the text '${confirmAndContinue}'" in {
+        elementText("#continue-button") shouldBe confirmAndContinue
       }
 
       "posts data to the server" in {

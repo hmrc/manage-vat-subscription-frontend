@@ -16,9 +16,10 @@
 
 package assets.messages
 
-object AgentJourneyDisabledPageMessages {
+object AgentJourneyDisabledPageMessages extends BaseMessages {
 
-  val title = "You cannot change your client’s business details yet"
+  val title = "You cannot change your client’s business details yet" + titleSuffixUser
+  val heading = "You cannot change your client’s business details yet"
   val p1 = "Agents cannot change their client’s business details yet."
   val p2 = "If your client needs to change their business details, they need to sign in using their own Government Gateway details."
 

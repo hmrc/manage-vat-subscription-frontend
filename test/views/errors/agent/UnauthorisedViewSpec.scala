@@ -38,7 +38,7 @@ import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 import assets.messages.{AgentUnauthorisedPageMessages => Messages}
 
-class UnauthorisedViewSpec extends ViewBaseSpec {
+class UnauthorisedViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the unauthorised page" should {
 
@@ -58,7 +58,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct service name" in {
-      elementText(Selectors.serviceName) shouldBe BaseMessages.agentServiceName
+      elementText(Selectors.serviceName) shouldBe agentServiceName
     }
 
     s"have a the correct page heading" in {
@@ -74,7 +74,7 @@ class UnauthorisedViewSpec extends ViewBaseSpec {
     }
 
     s"have a Sign out button" in {
-      elementText(Selectors.button) shouldBe BaseMessages.signOut
+      elementText(Selectors.button) shouldBe signOut
     }
 
     s"have a link to sign out" in {

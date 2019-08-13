@@ -29,7 +29,7 @@ import org.jsoup.nodes.Document
 import utils.ImplicitDateFormatter._
 import views.ViewBaseSpec
 
-class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
+class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Customer Details page" when {
 
@@ -49,7 +49,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
 
       "have the correct service name" in {
-        elementText(".header__menu__proposition-name") shouldBe BaseMessages.clientServiceName
+        elementText(".header__menu__proposition-name") shouldBe clientServiceName
       }
 
       s"have a the correct page heading '${viewMessages.h1}'" in {
@@ -57,9 +57,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       }
 
       "display a breadcrumb trail which" in {
-        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
-        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
-        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
 
         element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
         element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
@@ -304,9 +304,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "display a breadcrumb trail" in {
-        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe BaseMessages.breadcrumbBta
-        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe BaseMessages.breadcrumbVat
-        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe BaseMessages.breadcrumbBizDeets
+        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
+        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
+        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
       }
 
       "have a section for business address" which {
@@ -527,11 +527,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "have the correct service name" in {
-          elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
+          elementText(".header__menu__proposition-name") shouldBe agentServiceName
         }
 
-        s"have a the correct page heading '${viewMessages.agentTitle}'" in {
-          elementText("h1") shouldBe viewMessages.agentTitle
+        s"have a the correct page heading '${viewMessages.agentHeading}'" in {
+          elementText("h1") shouldBe viewMessages.agentHeading
         }
 
         "display the 'Change client' link" in {
@@ -599,11 +599,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec {
         }
 
         "have the correct service name" in {
-          elementText(".header__menu__proposition-name") shouldBe BaseMessages.agentServiceName
+          elementText(".header__menu__proposition-name") shouldBe agentServiceName
         }
 
-        s"have a the correct page heading '${viewMessages.agentTitle}'" in {
-          elementText("h1") shouldBe viewMessages.agentTitle
+        s"have a the correct page heading '${viewMessages.agentHeading}'" in {
+          elementText("h1") shouldBe viewMessages.agentHeading
         }
 
         "display the 'change another clients details' link" in {

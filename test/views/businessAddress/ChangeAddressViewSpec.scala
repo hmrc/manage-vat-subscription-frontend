@@ -23,7 +23,7 @@ import play.twirl.api.Html
 import views.ViewBaseSpec
 import views.html.{businessAddress => views}
 
-class ChangeAddressViewSpec extends ViewBaseSpec {
+class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
 
   "the ChangeAddressConfirmationView for an individual" should {
 
@@ -34,12 +34,12 @@ class ChangeAddressViewSpec extends ViewBaseSpec {
       document.title shouldBe viewMessages.title
     }
 
-    s"have the correct page heading of '${viewMessages.title}'" in {
-      elementText("h1") shouldBe viewMessages.title
+    s"have the correct page heading of '${viewMessages.title1}'" in {
+      elementText("h1") shouldBe viewMessages.title1
     }
 
-    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
-      elementText("#content > article > a.link-back") shouldBe BaseMessages.back
+    s"have a the back link with correct text and url '${back}'" in {
+      elementText("#content > article > a.link-back") shouldBe back
       element("#content > article > a.link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
 
@@ -63,8 +63,8 @@ class ChangeAddressViewSpec extends ViewBaseSpec {
 
     s"have a button to continue" which {
 
-      s"has the correct text of '${BaseMessages.continue}" in {
-        elementText("#content > article > a.button") shouldBe BaseMessages.continue
+      s"has the correct text of '${continue}" in {
+        elementText("#content > article > a.button") shouldBe continue
       }
 
       s"has the correct link to '${controllers.routes.BusinessAddressController.initialiseJourney().url}'" in {

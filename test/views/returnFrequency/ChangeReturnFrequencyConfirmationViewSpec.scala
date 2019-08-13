@@ -22,7 +22,7 @@ import views.ViewBaseSpec
 import assets.messages.{BaseMessages, ReturnFrequencyMessages => viewMessages}
 import assets.BaseTestConstants.agentEmail
 
-class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
+class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Dates Received page for an individual" when {
 
@@ -32,9 +32,9 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
 
-      s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
+      s"have the correct document title of '${viewMessages.ReceivedPage.title}'" in {
         mockConfig.features.useContactPreferences(false)
-        document.title shouldBe viewMessages.ReceivedPage.heading
+        document.title shouldBe viewMessages.ReceivedPage.title
       }
 
       s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
@@ -67,8 +67,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
       "have the correct finish button" which {
 
-        s"has the text '${BaseMessages.finish}'" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the text '${finish}'" in {
+          elementText("#finish") shouldBe finish
         }
 
         "has link back to customer details page" in {
@@ -82,9 +82,9 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       lazy val view = views.html.returnFrequency.change_return_frequency_confirmation(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
+      s"have the correct document title of '${viewMessages.ReceivedPage.title}'" in {
         mockConfig.features.useContactPreferences(true)
-        document.title shouldBe viewMessages.ReceivedPage.heading
+        document.title shouldBe viewMessages.ReceivedPage.title
       }
 
       s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
@@ -109,8 +109,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
       "have the correct finish button" which {
 
-        s"has the text '${BaseMessages.finish}'" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the text '${finish}'" in {
+          elementText("#finish") shouldBe finish
         }
 
         "has link back to customer details page" in {
@@ -125,8 +125,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       mockConfig.features.useContactPreferences(true)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
-        document.title shouldBe viewMessages.ReceivedPage.heading
+      s"have the correct document title of '${viewMessages.ReceivedPage.title}'" in {
+        document.title shouldBe viewMessages.ReceivedPage.title
       }
 
       s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
@@ -151,8 +151,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
       "have the correct finish button" which {
 
-        s"has the text '${BaseMessages.finish}'" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the text '${finish}'" in {
+          elementText("#finish") shouldBe finish
         }
 
         "has link back to customer details page" in {
@@ -167,8 +167,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
       mockConfig.features.useContactPreferences(true)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
-        document.title shouldBe viewMessages.ReceivedPage.heading
+      s"have the correct document title of '${viewMessages.ReceivedPage.title}'" in {
+        document.title shouldBe viewMessages.ReceivedPage.title
       }
 
       s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
@@ -193,8 +193,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
       "have the correct finish button" which {
 
-        s"has the text '${BaseMessages.finish}'" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the text '${finish}'" in {
+          elementText("#finish") shouldBe finish
         }
 
         "has link back to customer details page" in {
@@ -218,12 +218,12 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
-          document.title shouldBe viewMessages.ReceivedPage.heading
+        s"have the correct document title of '${viewMessages.ReceivedPage.titleAgent}'" in {
+          document.title shouldBe viewMessages.ReceivedPage.titleAgent
         }
 
-        s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
-          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
+        s"have a correct page heading of '${viewMessages.ReceivedPage.heading2}'" in {
+          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading2
         }
 
         s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {
@@ -246,8 +246,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
         "have the correct finish button" which {
 
-          s"has the text '${BaseMessages.finish}'" in {
-            elementText("#finish") shouldBe BaseMessages.finish
+          s"has the text '${finish}'" in {
+            elementText("#finish") shouldBe finish
           }
 
           "has link back to customer details page" in {
@@ -265,12 +265,12 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct document title of '${viewMessages.ReceivedPage.heading}'" in {
-          document.title shouldBe viewMessages.ReceivedPage.heading
+        s"have the correct document title of '${viewMessages.ReceivedPage.titleAgent}'" in {
+          document.title shouldBe viewMessages.ReceivedPage.titleAgent
         }
 
-        s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
-          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
+        s"have a correct page heading of '${viewMessages.ReceivedPage.heading2}'" in {
+          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading2
         }
 
         s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {
@@ -293,8 +293,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec {
 
         "have the correct finish button" which {
 
-          s"has the text '${BaseMessages.finish}'" in {
-            elementText("#finish") shouldBe BaseMessages.finish
+          s"has the text '${finish}'" in {
+            elementText("#finish") shouldBe finish
           }
 
           "has link back to customer details page" in {

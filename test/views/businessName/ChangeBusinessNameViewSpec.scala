@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class ChangeBusinessNameViewSpec extends ViewBaseSpec {
+class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Change Business Name page" should {
 
@@ -50,8 +50,8 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec {
       document.title shouldBe viewMessages.title
     }
 
-    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
-      elementText(Selectors.backLink) shouldBe BaseMessages.back
+    s"have a the back link with correct text and url '${back}'" in {
+      elementText(Selectors.backLink) shouldBe back
       element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
 
