@@ -52,8 +52,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         elementText(".header__menu__proposition-name") shouldBe clientServiceName
       }
 
-      s"have a the correct page heading '${viewMessages.h1}'" in {
-        elementText("h1") shouldBe viewMessages.h1
+      s"have a the correct page heading '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
       }
 
       "display a breadcrumb trail which" in {

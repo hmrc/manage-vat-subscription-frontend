@@ -17,10 +17,8 @@
 package utils
 
 import assets.BaseTestConstants._
-import com.codahale.metrics.SharedMetricRegistries
 import common.SessionKeys
 import config.ServiceErrorHandler
-import controllers.returnFrequency.ChooseDatesController
 import mocks.MockAppConfig
 import models.User
 import org.scalatest.BeforeAndAfterEach

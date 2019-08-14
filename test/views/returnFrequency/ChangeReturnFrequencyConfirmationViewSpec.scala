@@ -222,8 +222,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec with BaseMe
           document.title shouldBe viewMessages.ReceivedPage.titleAgent
         }
 
-        s"have a correct page heading of '${viewMessages.ReceivedPage.heading2}'" in {
-          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading2
+        s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
+          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
         }
 
         s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {
@@ -269,8 +269,8 @@ class ChangeReturnFrequencyConfirmationViewSpec extends ViewBaseSpec with BaseMe
           document.title shouldBe viewMessages.ReceivedPage.titleAgent
         }
 
-        s"have a correct page heading of '${viewMessages.ReceivedPage.heading2}'" in {
-          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading2
+        s"have a correct page heading of '${viewMessages.ReceivedPage.heading}'" in {
+          elementText("#page-heading") shouldBe viewMessages.ReceivedPage.heading
         }
 
         s"have the correct h2 '${viewMessages.ReceivedPage.h2}'" in {

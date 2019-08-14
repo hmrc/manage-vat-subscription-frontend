@@ -19,10 +19,9 @@ package assets.messages
 object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
 
   val title = "Your business details" + titleSuffixUser
-  val title1 = "Your business details"
+  val heading = "Your business details"
   val agentTitle = "Your client's VAT details" + titleSuffixAgent
   val agentHeading= "Your client's VAT details"
-  val h1 = title1
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
@@ -69,5 +68,4 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val optOut: String = "Opt out"
   val optedIn: String = "Opted in"
   val optOutRequested: String = "Opt out requested"
-  override val finish = "Finish"
 }

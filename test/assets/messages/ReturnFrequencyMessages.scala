@@ -42,7 +42,6 @@ object ReturnFrequencyMessages extends BaseMessages {
     val title = "We have received the new VAT Return dates" + titleSuffixUser
     val titleAgent = "We have received the new VAT Return dates" + titleSuffixAgent
     val heading = "We have received the new VAT Return dates"
-    val heading2 = "We have received the new VAT Return dates"
     val h2 = "What happens next"
     val p1 = "Check your online business tax account within 2 working days to see if your request has been accepted."
     val p2 = "If this change is accepted:"
