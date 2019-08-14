@@ -52,8 +52,8 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${ChangeBusinessNamePageMessages.h1}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.h1
+      s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
       }
     }
 

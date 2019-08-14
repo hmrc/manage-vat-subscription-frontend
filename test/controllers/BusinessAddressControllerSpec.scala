@@ -70,7 +70,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangeAddressPageMessages.title}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeAddressPageMessages.title
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeAddressPageMessages.heading
       }
     }
 

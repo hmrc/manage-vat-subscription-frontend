@@ -21,7 +21,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class NotSignedUpViewSpec extends ViewBaseSpec {
+class NotSignedUpViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Not Signed Up page" should {
 
@@ -47,7 +47,7 @@ class NotSignedUpViewSpec extends ViewBaseSpec {
     "A Sign Out button" which {
 
       "has the correct text" in {
-        elementText(".button") shouldBe BaseMessages.signOut
+        elementText(".button") shouldBe signOut
       }
 
       "has a URL to the sign out controller" in {

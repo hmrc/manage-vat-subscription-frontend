@@ -19,28 +19,28 @@ package views.utils
 import _root_.utils.TestUtil
 import assets.messages.BaseMessages
 
-class ServiceNameUtilSpec extends TestUtil {
+class ServiceNameUtilSpec extends TestUtil with BaseMessages {
 
   "ServiceNameUtil.generateHeader" when {
 
     "given a User who is an Agent" should {
 
-      s"return the agent service name ${BaseMessages.agentServiceName}" in {
-        ServiceNameUtil.generateHeader(agentUser,messages) shouldBe BaseMessages.agentServiceName
+      s"return the agent service name ${agentServiceName}" in {
+        ServiceNameUtil.generateHeader(agentUser,messages) shouldBe agentServiceName
       }
     }
 
     "given a User who is not an Agent" should {
 
-      s"return the client service name ${BaseMessages.clientServiceName}" in {
-        ServiceNameUtil.generateHeader(user,messages) shouldBe BaseMessages.clientServiceName
+      s"return the client service name ${clientServiceName}" in {
+        ServiceNameUtil.generateHeader(user,messages) shouldBe clientServiceName
       }
     }
 
     "NOT given a user" should {
 
-      s"return the client service name ${BaseMessages.clientServiceName}" in {
-        ServiceNameUtil.generateHeader(request,messages) shouldBe BaseMessages.clientServiceName
+      s"return the client service name ${clientServiceName}" in {
+        ServiceNameUtil.generateHeader(request,messages) shouldBe clientServiceName
       }
     }
 

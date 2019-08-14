@@ -16,7 +16,7 @@
 
 package assets.messages
 
-object ReturnFrequencyMessages {
+object ReturnFrequencyMessages extends BaseMessages {
 
   val option1Jan = "January, April, July and October"
   val option2Feb = "February, May, August and November"
@@ -24,12 +24,14 @@ object ReturnFrequencyMessages {
   val option4Monthly = "Every month"
 
   object ChoosePage {
+    val title = "Choose the new VAT Return dates" + titleSuffixUser
     val heading = "Choose the new VAT Return dates"
     val question = "The VAT Return dates are currently"
     val error = "Select the new VAT Return dates"
   }
 
   object ConfirmPage {
+    val title = "Confirm the new VAT Return dates" + titleSuffixUser
     val heading = "Confirm the new VAT Return dates"
     val newDates = "The new VAT Return dates are"
     val changeLink = "Change the VAT Return dates"
@@ -37,6 +39,8 @@ object ReturnFrequencyMessages {
   }
 
   object ReceivedPage {
+    val title = "We have received the new VAT Return dates" + titleSuffixUser
+    val titleAgent = "We have received the new VAT Return dates" + titleSuffixAgent
     val heading = "We have received the new VAT Return dates"
     val h2 = "What happens next"
     val p1 = "Check your online business tax account within 2 working days to see if your request has been accepted."

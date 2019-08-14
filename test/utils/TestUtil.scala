@@ -19,7 +19,6 @@ package utils
 import assets.BaseTestConstants._
 import common.SessionKeys
 import config.ServiceErrorHandler
-import controllers.returnFrequency.ChooseDatesController
 import mocks.MockAppConfig
 import models.User
 import org.scalatest.BeforeAndAfterEach
@@ -33,6 +32,7 @@ import play.filters.csrf.CSRF.Token
 import play.filters.csrf.{CSRFConfigProvider, CSRFFilter}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
+import com.codahale.metrics.SharedMetricRegistries
 
 import scala.concurrent.ExecutionContext
 
@@ -42,6 +42,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     super.beforeEach()
     mockConfig.features.simpleAuth(false)
     mockConfig.features.agentAccess(true)
+    SharedMetricRegistries.clear()
   }
 
   lazy val injector: Injector = app.injector

@@ -21,7 +21,7 @@ import play.api.libs.json.{JsObject, Json}
 import assets.messages.{AddressLookupMessages, BaseMessages}
 
 
-object CustomerAddressTestConstants {
+object CustomerAddressTestConstants extends BaseMessages {
 
   val addressLine1 = "line 1"
   val addressLine2 = "line 2"
@@ -112,7 +112,7 @@ object CustomerAddressTestConstants {
 
   val clientAddressLookupJson: JsObject = Json.obj(fields =
     "continueUrl" -> "/lookup-address/confirmed",
-    "navTitle" -> BaseMessages.clientServiceName,
+    "navTitle" -> clientServiceName,
     "ukMode" -> true,
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
@@ -125,10 +125,10 @@ object CustomerAddressTestConstants {
       "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
       "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
-      "submitLabel" -> BaseMessages.continue
+      "submitLabel" -> continue
     ),
     "editPage" -> Json.obj(
-      "submitLabel" -> BaseMessages.continue
+      "submitLabel" -> continue
     ),
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,
@@ -139,7 +139,7 @@ object CustomerAddressTestConstants {
 
   val agentAddressLookupJson: JsObject = Json.obj(fields =
     "continueUrl" -> "/lookup-address/confirmed",
-    "navTitle" -> BaseMessages.agentServiceName,
+    "navTitle" -> agentServiceName,
     "ukMode" -> true,
     "showPhaseBanner" -> true,
     "lookupPage" -> Json.obj(
@@ -152,10 +152,10 @@ object CustomerAddressTestConstants {
       "title" -> AddressLookupMessages.selectHeading,
       "heading" -> AddressLookupMessages.selectHeading,
       "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
-      "submitLabel" -> BaseMessages.continue
+      "submitLabel" -> continue
     ),
     "editPage" -> Json.obj(
-      "submitLabel" -> BaseMessages.continue
+      "submitLabel" -> continue
     ),
     "confirmPage" -> Json.obj(
       "title" -> AddressLookupMessages.confirmHeading,

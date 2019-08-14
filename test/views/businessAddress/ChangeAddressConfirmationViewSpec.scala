@@ -25,7 +25,7 @@ import assets.messages.{ChangeAddressConfirmationPageMessages => viewMessages}
 import assets.messages.BaseMessages
 import assets.BaseTestConstants.agentEmail
 
-class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
+class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
   "the ChangeAddressConfirmationView for an individual" when {
 
@@ -39,8 +39,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct page heading of '${viewMessages.title}'" in {
-        elementText("h1") shouldBe viewMessages.title
+      s"have the correct page heading of '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
       }
 
       s"have the correct p1 of '${viewMessages.p1}'" in {
@@ -57,8 +57,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${BaseMessages.finish}" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the correct text of '${finish}" in {
+          elementText("#finish") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
@@ -77,8 +77,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct page heading of '${viewMessages.title}'" in {
-        elementText("h1") shouldBe viewMessages.title
+      s"have the correct page heading of '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
       }
 
       s"have the correct p1 of '${viewMessages.digitalPref}'" in {
@@ -95,8 +95,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${BaseMessages.finish}" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the correct text of '${finish}" in {
+          elementText("#finish") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
@@ -115,8 +115,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct page heading of '${viewMessages.title}'" in {
-        elementText("h1") shouldBe viewMessages.title
+      s"have the correct page heading of '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
       }
 
       s"have the correct p1 of '${viewMessages.paperPref}'" in {
@@ -133,8 +133,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${BaseMessages.finish}" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the correct text of '${finish}" in {
+          elementText("#finish") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
@@ -153,8 +153,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         document.title shouldBe viewMessages.title
       }
 
-      s"have the correct page heading of '${viewMessages.title}'" in {
-        elementText("h1") shouldBe viewMessages.title
+      s"have the correct page heading of '${viewMessages.heading}'" in {
+        elementText("h1") shouldBe viewMessages.heading
       }
 
       s"have the correct p1 of '${viewMessages.contactPrefError}'" in {
@@ -171,8 +171,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${BaseMessages.finish}" in {
-          elementText("#finish") shouldBe BaseMessages.finish
+        s"has the correct text of '${finish}" in {
+          elementText("#finish") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
@@ -194,12 +194,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct document title of '${viewMessages.title}'" in {
-          document.title shouldBe viewMessages.title
+        s"have the correct document title of '${viewMessages.titleAgent}'" in {
+          document.title shouldBe viewMessages.titleAgent
         }
 
-        s"have the correct page heading of '${viewMessages.title}'" in {
-          elementText("h1") shouldBe viewMessages.title
+        s"have the correct page heading of '${viewMessages.heading}'" in {
+          elementText("h1") shouldBe viewMessages.heading
         }
 
         s"have the correct p1 of '${viewMessages.p1Agent}'" in {
@@ -218,8 +218,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
         s"have a button to finish" which {
 
-          s"has the correct text of '${BaseMessages.finish}" in {
-            elementText("#finish") shouldBe BaseMessages.finish
+          s"has the correct text of '${finish}" in {
+            elementText("#finish") shouldBe finish
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
@@ -236,12 +236,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct document title of '${viewMessages.title}'" in {
-          document.title shouldBe viewMessages.title
+        s"have the correct document title of '${viewMessages.titleAgent}'" in {
+          document.title shouldBe viewMessages.titleAgent
         }
 
-        s"have the correct page heading of '${viewMessages.title}'" in {
-          elementText("h1") shouldBe viewMessages.title
+        s"have the correct page heading of '${viewMessages.heading}'" in {
+          elementText("h1") shouldBe viewMessages.heading
         }
 
         s"have the correct p1 of '${viewMessages.p1Agent}'" in {
@@ -260,8 +260,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec {
 
         "have a button to finish" which {
 
-          s"has the correct text of '${BaseMessages.finish}" in {
-            elementText("#finish") shouldBe BaseMessages.finish
+          s"has the correct text of '${finish}" in {
+            elementText("#finish") shouldBe finish
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {

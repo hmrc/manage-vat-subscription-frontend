@@ -24,7 +24,7 @@ import org.jsoup.nodes.Document
 import play.api.data.Form
 import views.ViewBaseSpec
 
-class ChooseDatesViewSpec extends ViewBaseSpec {
+class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the Choose dates page with no errors" should {
 
@@ -33,8 +33,8 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.chooseDates(form,Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.ChoosePage.heading}'" in {
-      document.title shouldBe viewMessages.ChoosePage.heading
+    s"have the correct document title of '${viewMessages.ChoosePage.title}'" in {
+      document.title shouldBe viewMessages.ChoosePage.title
     }
 
     s"have a the correct page heading of '${viewMessages.ChoosePage.heading}'" in {
@@ -57,11 +57,11 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     }
 
 
-    s"have a continue button has the text '${BaseMessages.continue}'" in {
-      elementText("#continue") shouldBe BaseMessages.continue
+    s"have a continue button has the text '${continue}'" in {
+      elementText("#continue") shouldBe continue
     }
-    s"have a the back link with correct text and url '${BaseMessages.back}'" in {
-      elementText(".link-back") shouldBe BaseMessages.back
+    s"have a the back link with correct text and url '${back}'" in {
+      elementText(".link-back") shouldBe back
       element(".link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
   }
@@ -74,8 +74,8 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     lazy val view = views.html.returnFrequency.chooseDates(form,Monthly)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct document title of '${viewMessages.ChoosePage.heading}'" in {
-      document.title shouldBe viewMessages.ChoosePage.heading
+    s"have the correct document title of '${viewMessages.ChoosePage.title}'" in {
+      document.title shouldBe viewMessages.ChoosePage.title
     }
 
     s"have a the correct page heading of '${viewMessages.ChoosePage.heading}'" in {
@@ -83,7 +83,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec {
     }
 
     s"should display an error" in {
-      elementText("#error-summary-display") shouldBe s"${BaseMessages.errorHeading} ${viewMessages.ChoosePage.error}"
+      elementText("#error-summary-display") shouldBe s"${errorHeading} ${viewMessages.ChoosePage.error}"
     }
 
     s"have a the correct current return dates of '${viewMessages.ChoosePage.question} ${viewMessages.option4Monthly}'" in {

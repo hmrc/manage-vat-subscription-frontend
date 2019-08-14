@@ -16,8 +16,8 @@
 
 package assets.messages
 
-object EmailChangePendingMessages {
-  val title = "We are reviewing your request"
+object EmailChangePendingMessages extends BaseMessages {
+  val title = "We are reviewing your request" + titleSuffixUser
   val heading = "You already have a change pending"
   val p1 = "You have already requested to change your email address. " +
     "While this change is pending you are unable to change your principal place of business."

@@ -37,7 +37,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
 
-class AgentJourneyDisabledViewSpec extends ViewBaseSpec {
+class AgentJourneyDisabledViewSpec extends ViewBaseSpec with BaseMessages {
 
   "Rendering the unauthorised page" should {
 
@@ -57,11 +57,11 @@ class AgentJourneyDisabledViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct service name" in {
-      elementText(Selectors.serviceName) shouldBe BaseMessages.agentServiceName
+      elementText(Selectors.serviceName) shouldBe agentServiceName
     }
 
     s"have a the correct page heading" in {
-      elementText(Selectors.pageHeading) shouldBe Messages.title
+      elementText(Selectors.pageHeading) shouldBe Messages.heading
     }
 
     s"have the correct info in the first paragraph on the page" in {
@@ -73,7 +73,7 @@ class AgentJourneyDisabledViewSpec extends ViewBaseSpec {
     }
 
     s"have a Sign out button" in {
-      elementText(Selectors.button) shouldBe BaseMessages.signOut
+      elementText(Selectors.button) shouldBe signOut
     }
 
     s"have a link to sign out" in {

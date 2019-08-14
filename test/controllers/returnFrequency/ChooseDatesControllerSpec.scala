@@ -25,8 +25,9 @@ import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
 import assets.BaseTestConstants._
+import assets.messages.ReturnFrequencyMessages
 
-class ChooseDatesControllerSpec extends ControllerBaseSpec {
+class ChooseDatesControllerSpec extends ControllerBaseSpec{
 
   object TestChooseDatesController extends ChooseDatesController(
     messagesApi, mockAuthPredicate,mockInFlightReturnPeriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
@@ -88,7 +89,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
 
@@ -114,7 +115,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
         }
@@ -229,7 +230,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec {
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe "Choose the new VAT Return dates"
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
         }

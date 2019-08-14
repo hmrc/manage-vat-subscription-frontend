@@ -21,6 +21,7 @@ common.finish = Finish
 common.clientService = Business tax account
 common.agentService = Update your client''s VAT details
 common.newTab = (opens in a new tab)
+common.pageTitle = {0} - {1} - GOV.UK
 
 common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
@@ -199,3 +200,4 @@ emailChangePending.title = We are reviewing your request
 emailChangePending.heading = You already have a change pending
 emailChangePending.infoOne = You have already requested to change your email address. While this change is pending you are unable to change your principal place of business.
 emailChangePending.infoTwo = We will usually update your details within 2 working days.
+
