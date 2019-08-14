@@ -89,7 +89,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).select("title").text shouldBe ReturnFrequencyMessages.ChoosePage.title
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
 
@@ -115,7 +115,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).select("title").text shouldBe ReturnFrequencyMessages.ChoosePage.title
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
         }
@@ -230,7 +230,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).select("title").text shouldBe ReturnFrequencyMessages.ChoosePage.title
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
             }
           }
         }
