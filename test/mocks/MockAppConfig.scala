@@ -38,7 +38,7 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/vat-through-software"
   override val signInUrl: String = "sign-in"
   override def signOutExitSurveyUrl(identifier: String): String = s"/some-gg-signout-url/$identifier"
-  override val unauthorisedSignOutUrl: String = ""
+  override val unauthorisedSignOutUrl: String = "/unauth-signout"
   override def surveyUrl(identifier: String): String = s"/some-survey-url/$identifier"
   override val features: Features = new Features
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"

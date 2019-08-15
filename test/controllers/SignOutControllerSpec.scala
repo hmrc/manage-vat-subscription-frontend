@@ -22,7 +22,7 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
-import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.auth.core.{AffinityGroup, MissingBearerToken}
 
 import scala.concurrent.Future
 
@@ -30,7 +30,7 @@ class SignOutControllerSpec extends ControllerBaseSpec {
 
   val controller: SignOutController = new SignOutController(messagesApi, mockEnrolmentsAuthService)
 
-  def mockAuth(authResult: Option[AffinityGroup]): Any =
+  def mockAuth(authResult: Future[Option[AffinityGroup]]): Any =
     when(mockAuthConnector.authorise(any(), any[Retrieval[Option[AffinityGroup]]]())(any(), any()))
       .thenReturn(authResult)
 
@@ -41,7 +41,7 @@ class SignOutControllerSpec extends ControllerBaseSpec {
       "the user is an agent" should {
 
         lazy val result: Future[Result] = {
-          mockAuth(Some(AffinityGroup.Agent))
+          mockAuth(Future.successful(Some(AffinityGroup.Agent)))
           controller.signOut(authorised = true)(request)
         }
 
@@ -57,7 +57,7 @@ class SignOutControllerSpec extends ControllerBaseSpec {
       "the user is a principal entity" should {
 
         lazy val result: Future[Result] = {
-          mockAuth(Some(AffinityGroup.Individual))
+          mockAuth(Future.successful(Some(AffinityGroup.Individual)))
           controller.signOut(authorised = true)(request)
         }
 
@@ -67,6 +67,22 @@ class SignOutControllerSpec extends ControllerBaseSpec {
 
         "redirect to the correct survey url" in {
           redirectLocation(result) shouldBe Some(mockConfig.signOutExitSurveyUrl("VATC"))
+        }
+      }
+
+      "there is an authorisation exception" should {
+
+        lazy val result: Future[Result] = {
+          mockAuth(Future.failed(MissingBearerToken()))
+          controller.signOut(authorised = true)(request)
+        }
+
+        "return 303" in {
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the unauthorised sign out URL" in {
+          redirectLocation(result) shouldBe Some(mockConfig.unauthorisedSignOutUrl)
         }
       }
     }
