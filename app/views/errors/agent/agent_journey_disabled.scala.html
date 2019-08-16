@@ -37,7 +37,9 @@
 
 
     <a data-journey-click="agent_unauthorised:sign-out:agent-journey-disabled"
-       class="button" href="@controllers.routes.SignOutController.signOut(authorised = true)">
+       class="button"
+       role="button"
+       href="@controllers.routes.SignOutController.signOut(authorised = true)">
         @Messages("base.sign-out")
     </a>
 }

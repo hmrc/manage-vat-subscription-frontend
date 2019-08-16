@@ -45,7 +45,7 @@
 
     <a href="@controllers.routes.BusinessAddressController.initialiseJourney().url"
        onclick="sendGAEvent('business-address','continue','change-business-address', @user.isAgent)"
-       class="button" type="submit">
+       class="button" role="button" type="submit">
         @messages("common.continue")
     </a>
 
