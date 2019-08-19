@@ -98,12 +98,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "has the correct address output" in {
           elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
           elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.ppob.address.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelMaxIndividual.ppob.address.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
-          elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
         }
 
         "has a change link" which {
@@ -318,12 +313,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "has the correct address output" in {
           elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line1
           elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line3.get
-          elementText("#businessAddress li:nth-child(4)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line4.get
-          elementText("#businessAddress li:nth-child(5)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.line5.get
-          elementText("#businessAddress li:nth-child(6)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.postCode.get
-          elementText("#businessAddress li:nth-child(7)") shouldBe
-            CountryCodes.getCountry(customerInformationModelMaxIndividual.ppob.address.countryCode)(mockConfig).get
+          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.address.postCode.get
         }
 
         "has Pending instead of a change link" which {
