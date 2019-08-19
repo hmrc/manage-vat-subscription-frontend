@@ -69,12 +69,11 @@
                 <fieldset>
                     <legend>
                         <h3>Which API1365 Version should be used?</h3>
+                        <h4>This field is mandatory - no error handling around this</h4>
                     </legend>
                     @views.html.templates.inputs.radioGroup(
                         field = form("vatSubscriptionFeatures.Api1365Version"),
                         choices = Seq(
-                            (Api1365R5.id, "API1365 R5"),
-                            (Api1365R6.id, "API1365 R6"),
                             (Api1365R7.id, "API1365 R7"),
                             (Api1365R7.id, "API1365 R11")
                         ),
