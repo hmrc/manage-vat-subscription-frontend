@@ -30,5 +30,6 @@ case class FeatureSwitchModel(
                                makingTaxDigitalSectionEnabled: Boolean,
                                languageFeatureEnabled: Boolean,
                                useOverseasIndicatorEnabled: Boolean,
-                               changeClientFeature: Boolean
+                               changeClientFeature: Boolean,
+                               useNewAddressLookupFeature: Boolean
                              )

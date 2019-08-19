@@ -47,7 +47,8 @@ object FeatureSwitchForm {
       ConfigKeys.makingTaxDigitalSectionFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
-      ConfigKeys.changeClientFeature -> boolean
+      ConfigKeys.changeClientFeature -> boolean,
+      ConfigKeys.useNewAddressLookupFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 
