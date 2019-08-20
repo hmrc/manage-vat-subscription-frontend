@@ -25,6 +25,9 @@ GET        /vat-through-software/account/test-only/address-lookup-stub/view     
 POST       /vat-through-software/account/test-only/address-lookup-stub/api/init       testOnly.controllers.StubAddressLookupController.initialiseJourney
 
 # NOCSRF
+POST       /vat-through-software/account/test-only/address-lookup-stub/api/v2/init    testOnly.controllers.StubAddressLookupController.initialiseJourney
+
+# NOCSRF
 POST        /vat-through-software/account/test-only/populate-stub                     testOnly.controllers.DynamicStubController.populateStub
 
 # NOCSRF

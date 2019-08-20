@@ -36,6 +36,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
   override def beforeEach() {
     mockAppConfig.features.useContactPreferences(false)
+    mockAppConfig.features.useNewAddressLookupFeature(false)
     super.beforeEach()
   }
 

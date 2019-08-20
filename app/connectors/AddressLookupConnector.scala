@@ -30,12 +30,16 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupConnector @Inject()(val http: HttpClient,
-                                       val config: AppConfig) {
+                                       implicit val config: AppConfig) {
 
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
 
-    val url = s"${config.addressLookupService}/api/init"
+    val url = if(config.features.useNewAddressLookupFeature()){
+      s"${config.addressLookupService}/api/v2/init"
+    } else {
+      s"${config.addressLookupService}/api/init"
+    }
 
     http.POST[AddressLookupJsonBuilder, HttpPostResult[AddressLookupOnRampModel]](
       url,addressLookupJsonBuilder

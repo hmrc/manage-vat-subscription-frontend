@@ -34,38 +34,58 @@
 
         <h2>Sent Json</h2>
         <dl class="govuk-check-your-answers cya-questions-short form-group">
-            @row("continueUrl", stubModel.continueUrl)
-            @row("navTitle", stubModel.navTitle.get)
-            @row("showPhaseBanner",stubModel.showPhaseBanner.get.toString)
-            @row("ukMode",stubModel.ukMode.get.toString)
-            <br>
+            @row("continueUrl", stubModel.options.continueUrl)
+            @row("navTitle", stubModel.labels.en.appLevelLabels.navTitle.get)
+            @row("welsh navTitle", stubModel.labels.cy.appLevelLabels.navTitle.get)
+            @row("showPhaseBanner",stubModel.options.showPhaseBanner.get.toString)
+            @row("ukMode",stubModel.options.ukMode.get.toString)
+        <br>
 
-            <h2>Lookup Page Json</h2>
-            @stubModel.lookupPage.map{ lookupPage =>
+        <h2>Lookup Page Json</h2>
+            @stubModel.labels.en.lookupPageLabels.map{ lookupPage =>
                 @row("title",lookupPage.title.get)
                 @row("heading",lookupPage.heading.get)
                 @row("filterLabel",lookupPage.filterLabel.get)
                 @row("postcodeLabel",lookupPage.postcodeLabel.get)
             }
-            <br>
 
-            <h2>Select Page Json</h2>
-            @stubModel.selectPage.map{ selectPage =>
+            @stubModel.labels.cy.lookupPageLabels.map{ lookupPage =>
+                @row("welsh title",lookupPage.title.get)
+                @row("welsh heading",lookupPage.heading.get)
+                @row("welsh filterLabel",lookupPage.filterLabel.get)
+                @row("welsh postcodeLabel",lookupPage.postcodeLabel.get)
+            }
+        <br>
+
+        <h2>Select Page Json</h2>
+            @stubModel.labels.en.selectPageLabels.map{ selectPage =>
                 @row("title",selectPage.title.get)
                 @row("heading",selectPage.heading.get)
                 @row("submitLabel",selectPage.submitLabel.get)
             }
-            <br>
 
-            <h2>Confirm Page Json</h2>
-            @stubModel.confirmPage.map{ confirmPage =>
+            @stubModel.labels.cy.selectPageLabels.map{ selectPage =>
+                @row("welsh title",selectPage.title.get)
+                @row("welsh heading",selectPage.heading.get)
+                @row("welsh submitLabel",selectPage.submitLabel.get)
+            }
+        <br>
+
+        <h2>Confirm Page Json</h2>
+            @stubModel.labels.en.confirmPageLabels.map{ confirmPage =>
                 @row("title",confirmPage.title.get)
                 @row("heading",confirmPage.heading.get)
                 @row("showConfirmChangeText",confirmPage.showConfirmChangeText.get.toString)
             }
+
+            @stubModel.labels.cy.confirmPageLabels.map{ confirmPage =>
+                @row("welsh title",confirmPage.title.get)
+                @row("welsh heading",confirmPage.heading.get)
+                @row("welsh showConfirmChangeText",confirmPage.showConfirmChangeText.get.toString)
+            }
         </dl>
 
         <a class="form-group button" role="button" type="submit" id="continue-button"
-        href="@stubModel.continueUrl">Submit</a>
+        href="@stubModel.options.continueUrl">Submit</a>
     }
 }

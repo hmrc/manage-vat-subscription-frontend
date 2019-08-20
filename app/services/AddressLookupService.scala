@@ -30,7 +30,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector,
-                                     appConfig: AppConfig) {
+                                     implicit val appConfig: AppConfig) {
 
   def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {
     addressLookupConnector.getAddress(id)
