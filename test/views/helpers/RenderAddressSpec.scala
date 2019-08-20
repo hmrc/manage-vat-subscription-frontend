@@ -74,9 +74,13 @@ class RenderAddressSpec extends ViewBaseSpec {
       "Render the 2nd address line" in {
         document.select(s"li:nth-child(2)").text shouldBe "2"
       }
+      "Not render the country code" in {
+        document.select(s"li:nth-child(3)").text shouldBe ""
+
+      }
     }
 
-    "Render only lines of an address that are populated and are required to display with a full adress" should {
+    "Render only lines of an address that are populated and are required to display with a full address" should {
       val address = PPOBAddress("1",
         Some("2"),
         Some("3"),
