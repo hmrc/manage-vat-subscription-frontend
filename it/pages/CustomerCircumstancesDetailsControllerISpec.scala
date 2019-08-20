@@ -102,13 +102,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               res should have(
                 elementText("#businessAddress li:nth-of-type(1)")(ppobMax.address.line1),
                 elementText("#businessAddress li:nth-of-type(2)")(ppobMax.address.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.line3.get),
-                elementText("#businessAddress li:nth-of-type(4)")(ppobMax.address.line4.get),
-                elementText("#businessAddress li:nth-of-type(5)")(ppobMax.address.line5.get),
-                elementText("#businessAddress li:nth-of-type(6)")(ppobMax.address.postCode.get),
-                elementText("#businessAddress li:nth-of-type(7)")(
-                  CountryCodes.getCountry(ppobMax.address.countryCode).get
-                )
+                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.postCode.get)
               )
 
               And("Bank details is displayed")
@@ -269,13 +263,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               res should have(
                 elementText("#businessAddress li:nth-of-type(1)")(ppobMax.address.line1),
                 elementText("#businessAddress li:nth-of-type(2)")(ppobMax.address.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.line3.get),
-                elementText("#businessAddress li:nth-of-type(4)")(ppobMax.address.line4.get),
-                elementText("#businessAddress li:nth-of-type(5)")(ppobMax.address.line5.get),
-                elementText("#businessAddress li:nth-of-type(6)")(ppobMax.address.postCode.get),
-                elementText("#businessAddress li:nth-of-type(7)")(
-                  CountryCodes.getCountry(ppobMax.address.countryCode).get
-                )
+                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.postCode.get)
               )
 
               And("Bank details is displayed")

@@ -38,15 +38,10 @@ class RenderAddressSpec extends ViewBaseSpec {
       lazy val view = views.html.helpers.render_address(address)(messages, mockConfig)
       lazy val document = Jsoup.parse(view.body)
 
-
-      "Render address lines 1 to 6" in {
-        for (i <- 1 to 6) {
+      "Render address lines 1 and 2" in {
+        for (i <- 1 to 2) {
           document.select(s"li:nth-child($i)").text shouldBe s"$i"
         }
-      }
-
-      "Render the correct Country for the Postcode" in {
-        document.select(s"li:nth-child(7)").text shouldBe "United Kingdom"
       }
     }
 
@@ -59,9 +54,61 @@ class RenderAddressSpec extends ViewBaseSpec {
       "Render the first address line" in {
         document.select(s"li:nth-child(1)").text shouldBe "1"
       }
+      "Not render the 2nd address line" in {
+        document.select(s"li:nth-child(2)").text shouldBe ""
+      }
+      "Not render the postcode" in {
+        document.select(s"li:nth-child(3)").text shouldBe ""
+      }
+    }
 
-      "Render the country code" in {
-        document.select(s"li:nth-child(2)").text shouldBe "United Kingdom"
+    "Render only lines of an address that are populated and are required to display" should {
+      val address = PPOBAddress("1", Some("2"), None, None, None, None, "GB")
+
+      val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      val document = Jsoup.parse(view.body)
+
+      "Render the first address line" in {
+        document.select(s"li:nth-child(1)").text shouldBe "1"
+      }
+      "Render the 2nd address line" in {
+        document.select(s"li:nth-child(2)").text shouldBe "2"
+      }
+      "Not render the country code" in {
+        document.select(s"li:nth-child(3)").text shouldBe ""
+
+      }
+    }
+
+    "Render only lines of an address that are populated and are required to display with a full address" should {
+      val address = PPOBAddress("1",
+        Some("2"),
+        Some("3"),
+        Some("4"),
+        Some("5"),
+        Some("6"),
+        "GB")
+
+      val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      val document = Jsoup.parse(view.body)
+
+      "Render the first address line" in {
+        document.select(s"li:nth-child(1)").text shouldBe "1"
+      }
+      "Render the 2nd address line" in {
+        document.select(s"li:nth-child(2)").text shouldBe "2"
+      }
+      "Render the postcode as line 3" in {
+        document.select(s"li:nth-child(3)").text shouldBe "6"
+      }
+      "Not render the 4th address line" in {
+        document.select(s"li:nth-child(4)").text shouldBe ""
+      }
+      "Not render the 5th address line" in {
+        document.select(s"li:nth-child(5)").text shouldBe ""
+      }
+      "Not render the 6th address line" in {
+        document.select(s"li:nth-child(6)").text shouldBe ""
       }
     }
   }
