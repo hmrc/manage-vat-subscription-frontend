@@ -32,6 +32,9 @@ object CustomerAddressTestConstants extends BaseMessages {
   val countryName = "United Kingdom"
   val countryCode = "UK"
 
+  val phaseBannerHtml = "This is a new service – your <a id='beta-banner-feedback' href='/feedback'>feedback</a> will help us to improve it."
+  val phaseBannerHtmlCy = "Gwasanaeth newydd yw hwn – bydd eich <a id='beta-banner-feedback' href='/feedback'>adborth</a> yn ein helpu i’w wella."
+
   val customerAddressMax = AddressModel(
     addressLine1,
     addressLine2,
@@ -169,6 +172,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
       "ukMode" -> true,
       "timeoutConfig" -> Json.obj(
@@ -179,7 +183,8 @@ object CustomerAddressTestConstants extends BaseMessages {
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> clientServiceName
+          "navTitle" -> clientServiceName,
+          "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.selectHeading,
@@ -204,7 +209,8 @@ object CustomerAddressTestConstants extends BaseMessages {
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> AddressLookupMessages.clientServiceNameCy
+          "navTitle" -> AddressLookupMessages.clientServiceNameCy,
+          "phaseBannerHtml" -> phaseBannerHtmlCy
         ),
         "selectPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.selectHeadingCy,
@@ -234,6 +240,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
       "ukMode" -> true,
       "timeoutConfig" -> Json.obj(
@@ -244,7 +251,8 @@ object CustomerAddressTestConstants extends BaseMessages {
     "labels" -> Json.obj(
       "en" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> agentServiceName
+          "navTitle" -> agentServiceName,
+          "phaseBannerHtml" -> phaseBannerHtml
         ),
         "selectPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.selectHeading,
@@ -269,7 +277,8 @@ object CustomerAddressTestConstants extends BaseMessages {
       ),
       "cy" -> Json.obj(
         "appLevelLabels" -> Json.obj(
-          "navTitle" -> AddressLookupMessages.agentServiceNameCy
+          "navTitle" -> AddressLookupMessages.agentServiceNameCy,
+          "phaseBannerHtml" -> phaseBannerHtmlCy
         ),
         "selectPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.selectHeadingCy,

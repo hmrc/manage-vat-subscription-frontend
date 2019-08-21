@@ -27,6 +27,7 @@ case class StubAddressLookupJourneyConfig(version: Int,
                                           labels: Labels)
 
 case class Options(continueUrl: String,
+                   deskProServiceName: Option[String] = None,
                    showPhaseBanner: Option[Boolean] = Some(false),
                    ukMode: Option[Boolean] = None,
                    timeoutConfig: TimeoutConfig)
@@ -40,7 +41,8 @@ case class EnCy(appLevelLabels: AppLevelLabels,
                 lookupPageLabels: Option[LookupPage],
                 confirmPageLabels: Option[ConfirmPage])
 
-case class AppLevelLabels(navTitle: Option[String] = None)
+case class AppLevelLabels(navTitle: Option[String] = None,
+                          phaseBannerHtml: Option[String] = None)
 
 case class SelectPage(title: Option[String] = None,
                       heading: Option[String] = None,
