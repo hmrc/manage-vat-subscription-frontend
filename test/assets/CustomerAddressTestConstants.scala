@@ -19,6 +19,7 @@ package assets
 import models.customerAddress.AddressModel
 import play.api.libs.json.{JsObject, Json}
 import assets.messages.{AddressLookupMessages, BaseMessages}
+import config.AppConfig
 
 
 object CustomerAddressTestConstants extends BaseMessages {
@@ -30,6 +31,9 @@ object CustomerAddressTestConstants extends BaseMessages {
   val postcode = "aa1 1aa"
   val countryName = "United Kingdom"
   val countryCode = "UK"
+
+  val phaseBannerHtml = "This is a new service – your <a id='beta-banner-feedback' href='/feedback'>feedback</a> will help us to improve it."
+  val phaseBannerHtmlCy = "Gwasanaeth newydd yw hwn – bydd eich <a id='beta-banner-feedback' href='/feedback'>adborth</a> yn ein helpu i’w wella."
 
   val customerAddressMax = AddressModel(
     addressLine1,
@@ -161,6 +165,142 @@ object CustomerAddressTestConstants extends BaseMessages {
       "title" -> AddressLookupMessages.confirmHeading,
       "heading" -> AddressLookupMessages.confirmHeading,
       "showConfirmChangeText" -> false
+    )
+  )
+
+  val clientAddressLookupV2Json: JsObject = Json.obj(fields =
+    "version" -> 2,
+    "options" -> Json.obj(
+      "continueUrl" -> "/lookup-address/confirmed",
+      "deskProServiceName" -> "VATC",
+      "showPhaseBanner" -> true,
+      "ukMode" -> true,
+      "timeoutConfig" -> Json.obj(
+        "timeoutAmount" -> 1800,
+        "timeoutUrl" -> "/unauth-signout"
+      )
+    ),
+    "labels" -> Json.obj(
+      "en" -> Json.obj(
+        "appLevelLabels" -> Json.obj(
+          "navTitle" -> clientServiceName,
+          "phaseBannerHtml" -> phaseBannerHtml
+        ),
+        "selectPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.selectHeading,
+          "heading" -> AddressLookupMessages.selectHeading,
+          "submitLabel" -> continue,
+          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
+        ),
+        "lookupPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.startHeading,
+          "heading" -> AddressLookupMessages.startHeading,
+          "filterLabel" -> AddressLookupMessages.filter,
+          "postcodeLabel" -> AddressLookupMessages.postcode
+        ),
+        "confirmPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.confirmHeading,
+          "heading" -> AddressLookupMessages.confirmHeading,
+          "showConfirmChangeText" -> false
+        ),
+        "editPageLabels" -> Json.obj(
+          "submitLabel" -> continue
+        )
+      ),
+      "cy" -> Json.obj(
+        "appLevelLabels" -> Json.obj(
+          "navTitle" -> AddressLookupMessages.clientServiceNameCy,
+          "phaseBannerHtml" -> phaseBannerHtmlCy
+        ),
+        "selectPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.selectHeadingCy,
+          "heading" -> AddressLookupMessages.selectHeadingCy,
+          "submitLabel" -> AddressLookupMessages.continueCy,
+          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkTextCy
+        ),
+        "lookupPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.startHeadingCy,
+          "heading" -> AddressLookupMessages.startHeadingCy,
+          "filterLabel" -> AddressLookupMessages.filterCy,
+          "postcodeLabel" -> AddressLookupMessages.postcodeCy
+        ),
+        "confirmPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.confirmHeadingCy,
+          "heading" -> AddressLookupMessages.confirmHeadingCy,
+          "showConfirmChangeText" -> false
+        ),
+        "editPageLabels" -> Json.obj(
+          "submitLabel" -> AddressLookupMessages.continueCy
+        )
+      )
+    )
+  )
+
+  val agentAddressLookupV2Json: JsObject = Json.obj(fields =
+    "version" -> 2,
+    "options" -> Json.obj(
+      "continueUrl" -> "/lookup-address/confirmed",
+      "deskProServiceName" -> "VATC",
+      "showPhaseBanner" -> true,
+      "ukMode" -> true,
+      "timeoutConfig" -> Json.obj(
+        "timeoutAmount" -> 1800,
+        "timeoutUrl" -> "/unauth-signout"
+      )
+    ),
+    "labels" -> Json.obj(
+      "en" -> Json.obj(
+        "appLevelLabels" -> Json.obj(
+          "navTitle" -> agentServiceName,
+          "phaseBannerHtml" -> phaseBannerHtml
+        ),
+        "selectPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.selectHeading,
+          "heading" -> AddressLookupMessages.selectHeading,
+          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
+          "submitLabel" -> continue
+        ),
+        "lookupPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.startHeading,
+          "heading" -> AddressLookupMessages.startHeading,
+          "filterLabel" -> AddressLookupMessages.filter,
+          "postcodeLabel" -> AddressLookupMessages.postcode
+        ),
+        "confirmPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.confirmHeading,
+          "heading" -> AddressLookupMessages.confirmHeading,
+          "showConfirmChangeText" -> false
+        ),
+        "editPageLabels" -> Json.obj(
+          "submitLabel" -> continue
+        )
+      ),
+      "cy" -> Json.obj(
+        "appLevelLabels" -> Json.obj(
+          "navTitle" -> AddressLookupMessages.agentServiceNameCy,
+          "phaseBannerHtml" -> phaseBannerHtmlCy
+        ),
+        "selectPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.selectHeadingCy,
+          "heading" -> AddressLookupMessages.selectHeadingCy,
+          "submitLabel" -> AddressLookupMessages.continueCy,
+          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkTextCy
+        ),
+        "lookupPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.startHeadingCy,
+          "heading" -> AddressLookupMessages.startHeadingCy,
+          "filterLabel" -> AddressLookupMessages.filterCy,
+          "postcodeLabel" -> AddressLookupMessages.postcodeCy
+        ),
+        "confirmPageLabels" -> Json.obj(
+          "title" -> AddressLookupMessages.confirmHeadingCy,
+          "heading" -> AddressLookupMessages.confirmHeadingCy,
+          "showConfirmChangeText" -> false
+        ),
+        "editPageLabels" -> Json.obj(
+          "submitLabel" -> AddressLookupMessages.continueCy
+        )
+      )
     )
   )
 

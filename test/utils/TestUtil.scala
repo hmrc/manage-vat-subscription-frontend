@@ -42,6 +42,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     super.beforeEach()
     mockConfig.features.simpleAuth(false)
     mockConfig.features.agentAccess(true)
+    mockConfig.features.useNewAddressLookupFeature(false)
     SharedMetricRegistries.clear()
   }
 

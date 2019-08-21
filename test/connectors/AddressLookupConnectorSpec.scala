@@ -83,25 +83,53 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
     val continueUrl = "continue-url"
     def initaliseJourneyResult: Future[HttpPostResult[AddressLookupOnRampModel]] =
-      TestAddressLookupConnector.initialiseJourney(AddressLookupJsonBuilder(continueUrl)(user,messages))
+      TestAddressLookupConnector.initialiseJourney(AddressLookupJsonBuilder(continueUrl)(user,messages, mockConfig))
 
     "for initialiseJourney method" when {
 
-      "when given a successful response" should {
+      "using v1 of address lookup frontend" when {
 
-        "return a Right with an AddressLookupOnRampModel" in {
-          val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
-          setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(successfulResponse)
-          await(initaliseJourneyResult) shouldBe successfulResponse
+        "when given a successful response" should {
+
+          "return a Right with an AddressLookupOnRampModel" in {
+            val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(successfulResponse)
+            await(initaliseJourneyResult) shouldBe successfulResponse
+          }
+        }
+
+        "given a non successful response should" should {
+
+          "return an Left with an ErrorModel" in {
+            val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(failedResponse)
+            await(initaliseJourneyResult) shouldBe failedResponse
+          }
         }
       }
 
-      "given a non successful response should" should {
+      "using v2 of address lookup frontend" when {
 
-        "return an Left with an ErrorModel" in {
-          val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
-          setupMockHttpPost(s"${mockConfig.addressLookupService}/api/init")(failedResponse)
-          await(initaliseJourneyResult) shouldBe failedResponse
+        "when given a successful response" should {
+
+          "return a Right with an AddressLookupOnRampModel" in {
+            mockConfig.features.useNewAddressLookupFeature(true)
+
+            val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            setupMockHttpPost(s"${mockConfig.addressLookupService}/api/v2/init")(successfulResponse)
+            await(initaliseJourneyResult) shouldBe successfulResponse
+          }
+        }
+
+        "given a non successful response should" should {
+
+          "return an Left with an ErrorModel" in {
+            mockConfig.features.useNewAddressLookupFeature(true)
+
+            val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            setupMockHttpPost(s"${mockConfig.addressLookupService}/api/v2/init")(failedResponse)
+            await(initaliseJourneyResult) shouldBe failedResponse
+          }
         }
       }
     }
