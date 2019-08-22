@@ -18,7 +18,7 @@ package assets.messages
 
 object AgentUnauthorisedPageMessages extends BaseMessages {
 
-  val title = "You can’t use this service yet" + titleSuffixUser
+  val title = "You can’t use this service yet" + titleSuffixOther
   val pageHeading = "You can’t use this service yet"
   val instructions = "To use this service, you need to set up an agent services account."
 

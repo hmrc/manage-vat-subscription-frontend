@@ -20,6 +20,7 @@ common.errorSummary.heading = Mae gennych un neu fwy o wallau
 common.finish = Gorffen
 common.clientService = Cyfrif Treth Busnes
 common.agentService = Diweddaru manylion TAW eich cleient
+common.makingTaxDigitalForVat = Troi Treth yn Ddigidol ar gyfer TAW
 common.newTab = (yn agor tab newydd)
 
 common.agent.changeClient.youCan = Gallwch

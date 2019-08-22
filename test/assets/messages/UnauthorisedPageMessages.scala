@@ -18,7 +18,7 @@ package assets.messages
 
 object UnauthorisedPageMessages extends BaseMessages {
 
-  val title = "Unauthorised access" + titleSuffixUser
+  val title = "Unauthorised access" + titleSuffixOther
   val pageHeading = "Unauthorised access"
   val instructions = "Here are some instructions about what you should do next."
 
