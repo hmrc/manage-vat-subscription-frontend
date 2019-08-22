@@ -178,7 +178,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(FORBIDDEN),
-            pageTitle(Messages("unauthorised.agent.title") + titleSuffixUser)
+            pageTitle(Messages("unauthorised.agent.title") + titleSuffixOther)
           )
         }
       }

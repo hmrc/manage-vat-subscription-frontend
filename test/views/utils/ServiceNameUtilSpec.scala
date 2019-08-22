@@ -40,7 +40,7 @@ class ServiceNameUtilSpec extends TestUtil with BaseMessages {
     "NOT given a user" should {
 
       s"return the client service name ${clientServiceName}" in {
-        ServiceNameUtil.generateHeader(request,messages) shouldBe clientServiceName
+        ServiceNameUtil.generateHeader(request,messages) shouldBe otherServiceName
       }
     }
 
