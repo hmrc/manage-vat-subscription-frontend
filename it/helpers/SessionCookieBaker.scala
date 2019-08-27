@@ -22,6 +22,7 @@ import play.api.libs.Crypto
 import uk.gov.hmrc.crypto.{CompositeSymmetricCrypto, PlainText}
 import uk.gov.hmrc.http.SessionKeys
 import IntegrationTestConstants._
+import play.api.http.HeaderNames
 
 object SessionCookieBaker {
   private val cookieKey = "gvBoGdgzqG1AarzF1LY0zQ=="
@@ -56,7 +57,7 @@ object SessionCookieBaker {
     ) ++ additionalData
   }
 
-  def bakeSessionCookie(additionalData: Map[String, String] = Map(), timeStampRollback: Long = 0): String = {
-    cookieValue(cookieData(additionalData, timeStampRollback))
+  def bakeSessionCookie(additionalData: Map[String, String] = Map(), timeStampRollback: Long = 0, inWelsh: Boolean = false): String = {
+    cookieValue(cookieData(additionalData, timeStampRollback)) + (if(additionalData.exists(_ == ("PLAY_LANG", "cy"))){"; PLAY_LANG=cy"})
   }
 }

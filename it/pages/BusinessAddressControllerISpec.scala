@@ -16,12 +16,14 @@
 
 package pages
 
+import assets.BusinessAddressITConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, organisation}
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
+import play.api.Logger
 import play.api.http.Status._
 import play.api.i18n.Messages
 import play.api.libs.json.Json
@@ -32,6 +34,7 @@ import stubs.{BusinessAddressStub, ContactPreferencesStub, VatSubscriptionStub}
 class BusinessAddressControllerISpec extends BasePageISpec {
 
   val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
+  val sessionVrnAndWelsh: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, "PLAY_LANG" -> "cy")
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   override def beforeEach() {
@@ -47,7 +50,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
   "Calling the .show action" when {
 
-    def show(sessionVrn: String): WSResponse = get("/change-business-address", session)
+    def show(): WSResponse = get("/change-business-address", session)
 
     "the user is an Agent" when {
 
@@ -62,7 +65,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
 
           When("I call the change business address page")
-          val res = show(VRN)
+          val res = show()
 
           res should have(
             httpStatus(OK),
@@ -75,7 +78,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
   "Calling BusinessAddressController.initialiseJourney" when {
 
-    def show(sessionVrn: String): WSResponse = get("/change-business-address/ppob-handoff", session)
+    def show(additionalCookies: Map[String, String] = session): WSResponse = get("/change-business-address/ppob-handoff", additionalCookies)
 
     "A valid AddressLookupOnRampModel is returned from Address Lookup" should {
 
@@ -92,7 +95,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Business Address change page")
-        val res = show(VRN)
+        val res = show()
 
         res should have(
           httpStatus(SEE_OTHER),
@@ -113,12 +116,103 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
-        val res = show(VRN)
+        val res = show()
 
         res should have(
           httpStatus(SEE_OTHER),
           redirectURI("redirect/url")
         )
+      }
+    }
+
+    "Address-lookup-frontend Version2 is enabled" when {
+
+      "the local language is set to Welsh" should {
+
+        "handoff to address lookup frontend with the correct english and welsh messages" in {
+
+          mockAppConfig.features.useNewAddressLookupFeature(true)
+          mockAppConfig.features.stubAddressLookup(false)
+
+          given.user.isAuthenticated
+
+          And("A successful response with minimum details is returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+
+          And("a url is returned from the Address Lookup Service")
+          BusinessAddressStub.postInitV2Journey(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
+
+          When("I call to show the Business Address change page")
+          val res = show(sessionVrnAndWelsh)
+
+
+          val alfBody = Json.stringify(Json.obj(
+            "labels" -> Json.obj(
+              "en" -> Json.obj(
+                "lookupPageLabels" -> Json.obj(
+                  "title" -> s"$startHeading"
+                )
+              ),
+              "cy" -> Json.obj(
+                "lookupPageLabels" -> Json.obj(
+                  "title" -> s"$startHeadingCy"
+                )
+              )
+            )
+          ))
+
+          Then("The handoff to Address-Lookup-Frontend has been made with correct english and welsh titles")
+          BusinessAddressStub.verifyWithBody("/api/v2/init", alfBody)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI("redirect/url")
+          )
+        }
+      }
+
+      "the local language is set to English" should {
+
+        "handoff to address lookup frontend with the correct english and welsh messages" in {
+
+          mockAppConfig.features.useNewAddressLookupFeature(true)
+          mockAppConfig.features.stubAddressLookup(false)
+
+          given.user.isAuthenticated
+
+          And("A successful response with minimum details is returned for an Organisation")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+
+          And("a url is returned from the Address Lookup Service")
+          BusinessAddressStub.postInitV2Journey(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
+
+          When("I call to show the Business Address change page")
+          val res = show()
+
+
+          val alfBody = Json.stringify(Json.obj(
+            "labels" -> Json.obj(
+              "en" -> Json.obj(
+                "lookupPageLabels" -> Json.obj(
+                  "title" -> s"$startHeading"
+                )
+              ),
+              "cy" -> Json.obj(
+                "lookupPageLabels" -> Json.obj(
+                  "title" -> s"$startHeadingCy"
+                )
+              )
+            )
+          ))
+
+          Then("The handoff to Address-Lookup-Frontend has been made with correct english and welsh titles")
+          BusinessAddressStub.verifyWithBody("/api/v2/init", alfBody)
+
+          res should have(
+            httpStatus(SEE_OTHER),
+            redirectURI("redirect/url")
+          )
+        }
       }
     }
 
@@ -134,7 +228,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         BusinessAddressStub.postInitJourney(BAD_REQUEST, AddressLookupOnRampModel("redirect/url"))
 
         When("I call to show the Customer Circumstances page")
-        val res = show(VRN)
+        val res = show()
 
         res should have(
           httpStatus(INTERNAL_SERVER_ERROR)
