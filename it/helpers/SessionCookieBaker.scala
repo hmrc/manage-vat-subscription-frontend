@@ -57,7 +57,7 @@ object SessionCookieBaker {
     ) ++ additionalData
   }
 
-  def bakeSessionCookie(additionalData: Map[String, String] = Map(), timeStampRollback: Long = 0, inWelsh: Boolean = false): String = {
+  def bakeSessionCookie(additionalData: Map[String, String] = Map(), timeStampRollback: Long = 0): String = {
     cookieValue(cookieData(additionalData, timeStampRollback)) + (if(additionalData.exists(_ == ("PLAY_LANG", "cy"))){"; PLAY_LANG=cy"})
   }
 }

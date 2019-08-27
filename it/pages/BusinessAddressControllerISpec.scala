@@ -23,7 +23,6 @@ import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, o
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
-import play.api.Logger
 import play.api.http.Status._
 import play.api.i18n.Messages
 import play.api.libs.json.Json
