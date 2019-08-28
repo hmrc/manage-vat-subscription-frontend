@@ -57,8 +57,4 @@ object BusinessAddressStub extends WireMockMethods {
     when(method = PUT, uri = subscriptionUri(VRN))
       .thenReturn(status = status, body = response)
   }
-
-  def verifyWithBody(uri: String, body: String): Unit = {
-    verify(postRequestedFor(urlMatching(uri)).withRequestBody(equalToJson(body, true, true)))
-  }
 }

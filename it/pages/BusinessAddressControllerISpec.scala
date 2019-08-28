@@ -161,7 +161,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           Then("The handoff to Address-Lookup-Frontend has been made with correct english and welsh titles")
-          BusinessAddressStub.verifyWithBody("/api/v2/init", alfBody)
+          verifyWithBody("/api/v2/init", alfBody)
 
           res should have(
             httpStatus(SEE_OTHER),
@@ -205,7 +205,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           Then("The handoff to Address-Lookup-Frontend has been made with correct english and welsh titles")
-          BusinessAddressStub.verifyWithBody("/api/v2/init", alfBody)
+          verifyWithBody("/api/v2/init", alfBody)
 
           res should have(
             httpStatus(SEE_OTHER),
