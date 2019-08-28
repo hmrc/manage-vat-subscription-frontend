@@ -19,11 +19,6 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.IntegrationTestConstants.VRN
 import helpers.WireMockMethods
-import models.circumstanceInfo.CircumstanceDetails
-import models.core.SubscriptionUpdateResponseModel
-import models.customerAddress.AddressLookupOnRampModel
-import play.api.http.HeaderNames.LOCATION
-import play.api.http.Status.{ACCEPTED, BAD_REQUEST, OK}
 import play.api.libs.json.{JsObject, JsValue, Json}
 
 object ContactPreferencesStub extends WireMockMethods {

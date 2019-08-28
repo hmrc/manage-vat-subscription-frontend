@@ -16,14 +16,13 @@
 
 package stubs
 
-import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.IntegrationTestConstants.VRN
 import helpers.WireMockMethods
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.HeaderNames.LOCATION
-import play.api.http.Status.{ACCEPTED, BAD_REQUEST, OK}
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.http.Status.OK
+import play.api.libs.json.{JsValue, Json}
 
 object BusinessAddressStub extends WireMockMethods {
 
