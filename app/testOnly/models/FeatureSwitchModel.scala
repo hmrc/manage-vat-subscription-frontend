@@ -27,7 +27,7 @@ case class FeatureSwitchModel(
                                stubContactPreferences: Boolean,
                                useContactPreferences: Boolean,
                                allowAgentBankAccountChange: Boolean,
-                               makingTaxDigitalSectionEnabled: Boolean,
+                               showContactNumbersAndWebsite: Boolean,
                                languageFeatureEnabled: Boolean,
                                useOverseasIndicatorEnabled: Boolean,
                                changeClientFeature: Boolean,

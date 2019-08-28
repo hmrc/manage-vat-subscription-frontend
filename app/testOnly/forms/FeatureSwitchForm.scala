@@ -44,7 +44,7 @@ object FeatureSwitchForm {
       ConfigKeys.stubContactPreferencesFeature -> boolean,
       ConfigKeys.useContactPreferencesFeature -> boolean,
       ConfigKeys.allowAgentBankAccountChange -> boolean,
-      ConfigKeys.makingTaxDigitalSectionFeature -> boolean,
+      ConfigKeys.contactNumbersAndWebsiteFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,

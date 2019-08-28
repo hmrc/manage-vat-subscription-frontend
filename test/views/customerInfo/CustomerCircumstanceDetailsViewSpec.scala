@@ -36,7 +36,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
     mockConfig.features.registrationStatus(true)
     mockConfig.features.contactDetailsSection(true)
     mockConfig.features.allowAgentBankAccountChange(false)
-    mockConfig.features.makingTaxDigitalSection(true)
     mockConfig.features.useLanguageSelector(true)
 
     "Viewing for an Individual without any pending changes" should {
@@ -798,24 +797,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
       }
     }
 
-    "the making tax digital feature switch is false" should {
-
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "hide the making tax digital section" in {
-        mockConfig.features.makingTaxDigitalSection(false)
-        elementExtinct("#mtd-section")
-      }
-    }
-
     "the user has a non-MTD mandation status" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNonMtd)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "hide the making tax digital section" in {
-        mockConfig.features.makingTaxDigitalSection(true)
         elementExtinct("#mtd-section")
       }
     }
