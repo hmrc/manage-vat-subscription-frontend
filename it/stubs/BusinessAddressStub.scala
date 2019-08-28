@@ -19,22 +19,26 @@ package stubs
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.IntegrationTestConstants.VRN
 import helpers.WireMockMethods
-import models.circumstanceInfo.CircumstanceDetails
-import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.HeaderNames.LOCATION
-import play.api.http.Status.{ACCEPTED, BAD_REQUEST, OK}
-import play.api.libs.json.{JsObject, JsValue, Json}
+import play.api.http.Status.OK
+import play.api.libs.json.{JsValue, Json}
 
 object BusinessAddressStub extends WireMockMethods {
 
   private val subscriptionUri: String => String = vrn => s"/vat-subscription/$vrn/ppob"
   private val addressUri = "/api/confirmed.*"
   private val initUri = "/api/init"
+  private val initUriV2 = "/api/v2/init"
   private val fullAddressUri: String => String = vrn => s"/vat-subscription/$vrn/full-information"
 
-  def postInitJourney(status: Int, response: AddressLookupOnRampModel): StubMapping = {
-    when(method = POST, uri = initUri)
+  def postInitJourney(status: Int, response: AddressLookupOnRampModel, body: Option[String] = None): StubMapping = {
+    when(method = POST, uri = initUri, body = body)
+      .thenReturn(status = status, headers = Map(LOCATION -> response.redirectUrl))
+  }
+
+  def postInitV2Journey(status: Int, response: AddressLookupOnRampModel, body: Option[String] = None): StubMapping = {
+    when(method = POST, uri = initUriV2, body = body)
       .thenReturn(status = status, headers = Map(LOCATION -> response.redirectUrl))
   }
 
@@ -52,5 +56,4 @@ object BusinessAddressStub extends WireMockMethods {
     when(method = PUT, uri = subscriptionUri(VRN))
       .thenReturn(status = status, body = response)
   }
-
 }

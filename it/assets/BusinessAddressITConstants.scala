@@ -14,20 +14,14 @@
  * limitations under the License.
  */
 
-package stubs
+package assets
 
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import helpers.IntegrationTestConstants.VRN
-import helpers.WireMockMethods
-import play.api.libs.json.{JsObject, JsValue, Json}
+import config.AppConfig
+import play.api.libs.json.Json
 
-object ContactPreferencesStub extends WireMockMethods {
+object BusinessAddressITConstants {
 
-  private val contactPrefUri: String => String = vrn => s"/contact-preferences/vat/vrn/$vrn"
-
-  def getContactPrefs(status: Int, response: JsValue): StubMapping = {
-    when(method = GET, uri = contactPrefUri(VRN))
-      .thenReturn(status = status, body = response)
-  }
+  val startHeading = "What is the new principal place of business?"
+  val startHeadingCy = "Beth yw’r prif fan busnes newydd?"
 
 }

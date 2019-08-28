@@ -62,7 +62,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
   object Version2 {
 
-    val eng: Messages = messages
+    val eng: Messages = Messages(Lang("en"), messages.messages)
     val wel: Messages = Messages(Lang("cy"), messages.messages)
 
     val version: Int = 2

@@ -16,6 +16,7 @@
 
 package helpers
 
+import com.github.tomakehurst.wiremock.client.WireMock.{equalToJson, postRequestedFor, urlMatching, verify}
 import common.SessionKeys
 import config.AppConfig
 import models.payments.PaymentStartModel
@@ -158,4 +159,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   def toFormData[T](form: Form[T], data: T): Map[String, Seq[String]] =
     form.fill(data).data map { case (k, v) => k -> Seq(v) }
 
+  def verifyWithBody(uri: String, body: String): Unit = {
+    verify(postRequestedFor(urlMatching(uri)).withRequestBody(equalToJson(body, true, true)))
+  }
 }
