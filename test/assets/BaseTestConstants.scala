@@ -29,5 +29,5 @@ object BaseTestConstants {
   val testMtdVatEnrolment: Enrolment = Enrolment(EnrolmentKeys.vatEnrolmentId).withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
   val formBundle = "XA1234567"
   val agentEmail = "agentEmail@test.com"
-  val internalServerErrorTitle = "There is a problem with the service - VAT reporting through software - GOV.UK"
+  val internalServerErrorTitle = "There is a problem with the service - VAT - GOV.UK"
 }

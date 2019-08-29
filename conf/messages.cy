@@ -19,8 +19,8 @@ common.fullStop = .
 common.errorSummary.heading = Mae gennych un neu fwy o wallau
 common.finish = Gorffen
 common.clientService = Cyfrif Treth Busnes
-common.agentService = Diweddaru manylion TAW eich cleient
 common.vat = TAW
+common.agentService = Manylion TAW eich cleient
 common.newTab = (yn agor tab newydd)
 
 common.agent.changeClient.youCan = Gallwch
@@ -31,7 +31,7 @@ common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
 common.agent.updateClient2 = i roi diweddariad.
 common.agent.changeClient = Newid cleient
 
-global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – Rhoi gwybod am TAW drwy feddalwedd – GOV.UK
+global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – TAW – GOV.UK
 global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
 global.error.InternalServerError500.message = Rhowch gynnig arall arni yn nes ymlaen.
 global.error.badRequest400.title = Cais drwg – 400
