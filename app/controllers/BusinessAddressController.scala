@@ -51,7 +51,7 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         Redirect(response.redirectUrl)
-      case Left(_) => Logger.debug(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) => Logger.warn(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
     }
   }
@@ -62,10 +62,10 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
             Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
-          case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
+          case Left(_) => Logger.warn(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
-      case Left(_) => Logger.debug(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) => Logger.warn(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
         Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
