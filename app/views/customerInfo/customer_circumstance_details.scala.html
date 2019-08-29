@@ -206,6 +206,69 @@
     </div>
 }
 
+@customerPhoneNumbers(landlineNumber: Option[String], mobileNumber: Option[String]) = {
+    <div>
+        <dt id="vat-phone-numbers-text" class="cya-question">
+            @messages("customer_details.phoneNumbers.heading")
+        </dt>
+        <dd id="vat-phone-numbers" class="cya-answer">
+            @messages("customer_details.phoneNumbers.landline", landlineNumber.getOrElse(messages("customer_details.notProvided")))
+            <br>
+            @messages("customer_details.phoneNumbers.mobile", mobileNumber.getOrElse(messages("customer_details.notProvided")))
+        </dd>
+        <dd class="cya-change">
+            @if(circumstances.pendingPhoneNumber) {
+                <span id="vat-phone-numbers-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
+                    @messages("customer_details.pending")
+                </span>
+            } else {
+                <a id="vat-phone-numbers-status"
+                   onclick="sendGAEvent('telephone', 'change', 'change-telephone', @user.isAgent)"
+                   href="@appConfig.vatCorrespondenceChangePhoneNumbersUrl"
+                   aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
+                    @(landlineNumber, mobileNumber) match {
+                        case (None, None) => { @messages("customer_details.add") }
+                        case _ => { @messages("customer_details.change") }
+                    }
+                </a>
+            }
+        </dd>
+    </div>
+}
+
+@customerWebsite(websiteAddress: Option[String]) = {
+    <div>
+        <dt id="vat-website-address-text" class="cya-question">
+            @messages("customer_details.websiteAddress.heading")
+        </dt>
+        <dd id="vat-website-address" class="cya-answer">
+            @websiteAddress.getOrElse(messages("customer_details.notProvided"))
+        </dd>
+        <dd class="cya-change">
+            @if(circumstances.pendingPhoneNumber) {
+                <span id="vat-website-address-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.websiteAddress.pending.hidden")">
+                    @messages("customer_details.pending")
+                </span>
+            } else {
+                <a id="vat-website-address-status"
+                   onclick="sendGAEvent('business-website', 'change', 'business-website', @user.isAgent)"
+                   href="@appConfig.vatCorrespondenceChangeWebsiteUrl"
+                   aria-label="@messages("customer_details.websiteAddress.change.hidden",
+                                         websiteAddress.getOrElse(messages("customer_details.notProvided")))">
+                    @websiteAddress match {
+                        case Some(_) => { @messages("customer_details.change") }
+                        case None => { @messages("customer_details.add") }
+                    }
+                </a>
+            }
+        </dd>
+    </div>
+}
+
 @oldChangeClientLink = {
     @if(!appConfig.features.changeClientFeature()) {
         <p id="change-client-text">
@@ -320,6 +383,13 @@
                         case (None, Some(pendingEmail)) => customerEmailAddress(circumstances.pendingEmail, true)
                         case _ => customerEmailAddress(approvedEmailAddress, false)
                     }
+                }
+                @if(appConfig.features.showContactNumbersAndWebsite()) {
+                    @customerPhoneNumbers(
+                        circumstances.pendingLandline.fold(circumstances.landlineNumber)(Some(_)),
+                        circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_))
+                    )
+                    @customerWebsite(circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)))
                 }
             </dl>
         </div>

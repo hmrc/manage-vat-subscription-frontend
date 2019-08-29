@@ -23,7 +23,6 @@ import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import models.circumstanceInfo.{CircumstanceDetails, MTDfBMandated}
-import models.customerAddress.CountryCodes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import utils.ImplicitDateFormatter._
@@ -35,6 +34,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     mockConfig.features.registrationStatus(true)
     mockConfig.features.contactDetailsSection(true)
+    mockConfig.features.showContactNumbersAndWebsite(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
 
@@ -165,6 +165,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "has a contact details header" in {
           elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
         }
+      }
+
+      "have a section for email address" which {
 
         "has the heading" in {
           elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
@@ -187,6 +190,62 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
             element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+          }
+        }
+      }
+
+      "have a section for phone numbers" which {
+
+        "has the heading" in {
+          elementText("#vat-phone-numbers-text") shouldBe viewMessages.phoneNumbersHeading
+        }
+
+        "has the correct value for the phone numbers" in {
+          elementText("#vat-phone-numbers") shouldBe
+            s"Landline: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get} " +
+            s"Mobile: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#vat-phone-numbers-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
+            element("#vat-phone-numbers-status").attr("aria-label") shouldBe
+              viewMessages.changePhoneNumbersHidden
+          }
+
+          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+            element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
+          }
+        }
+      }
+
+      "have a section for website address" which {
+
+        "has the heading" in {
+          elementText("#vat-website-address-text") shouldBe viewMessages.websiteAddressHeading
+        }
+
+        "has the correct value for the website address" in {
+          elementText("#vat-website-address") shouldBe customerInformationModelMaxIndividual.ppob.websiteAddress.get
+        }
+
+        "has a change link" which {
+
+          s"has the wording '${viewMessages.change}'" in {
+            elementText("#vat-website-address-status") shouldBe viewMessages.change
+          }
+
+          s"has the correct aria label text '${viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)}'" in {
+            element("#vat-website-address-status").attr("aria-label") shouldBe
+              viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)
+          }
+
+          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+            element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
           }
         }
       }
@@ -271,7 +330,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
       }
     }
 
-    "viewing for an individual with no email address" should {
+    "viewing for an individual with no email address, phone number or website" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -280,7 +339,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         elementText("#vat-email-address") shouldBe "Not provided"
       }
 
-      "display an 'Add' link" which {
+      "display an 'Add' link for changing the email address" which {
 
         "has the correct text" in {
           elementText("#vat-email-address-status") shouldBe "Add"
@@ -288,6 +347,36 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         "links to the correspondence details service" in {
           element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+        }
+      }
+
+      "display the 'Not provided' text in place of the phone numbers" in {
+        elementText("#vat-phone-numbers") shouldBe "Landline: Not provided Mobile: Not provided"
+      }
+
+      "display an 'Add' link for changing the phone numbers" which {
+
+        "has the correct text" in {
+          elementText("#vat-phone-numbers-status") shouldBe "Add"
+        }
+
+        "links to the correspondence details service" in {
+          element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
+        }
+      }
+
+      "display the 'Not provided' text in place of the website address" in {
+        elementText("#vat-website-address") shouldBe "Not provided"
+      }
+
+      "display an 'Add' link for changing the website address" which {
+
+        "has the correct text" in {
+          elementText("#vat-website-address-status") shouldBe "Add"
+        }
+
+        "links to the correspondence details service" in {
+          element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
         }
       }
     }
@@ -406,6 +495,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "has a contact details header" in {
           elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
         }
+      }
+
+      "have a section for email address" which {
 
         "has the heading" in {
           elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
@@ -418,6 +510,39 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         s"has the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
           element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.pendingEmailAddressHidden
+        }
+      }
+
+      "have a section for phone numbers" which {
+
+        "has the heading" in {
+          elementText("#vat-phone-numbers-text") shouldBe viewMessages.phoneNumbersHeading
+        }
+
+        "has the correct value for the phone numbers" in {
+          elementText("#vat-phone-numbers") shouldBe
+            s"Landline: ${customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.contactDetails.get.phoneNumber.get} " +
+            s"Mobile: ${customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.contactDetails.get.mobileNumber.get}"
+        }
+
+        s"has the correct aria label text '${viewMessages.pendingPhoneNumbersHidden}'" in {
+          element("#vat-phone-numbers-status").attr("aria-label") shouldBe viewMessages.pendingPhoneNumbersHidden
+        }
+      }
+
+      "have a section for website address" which {
+
+        "has the heading" in {
+          elementText("#vat-website-address-text") shouldBe viewMessages.websiteAddressHeading
+        }
+
+        "has the correct value for the website address" in {
+          elementText("#vat-website-address") shouldBe
+            customerInformationModelOrganisationPending.pendingChanges.get.ppob.get.websiteAddress.get
+        }
+
+        s"has the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
+          element("#vat-website-address-status").attr("aria-label") shouldBe viewMessages.pendingWebsiteAddressHidden
         }
       }
 
@@ -745,6 +870,22 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
       "contact details section is hidden" in {
         mockConfig.features.contactDetailsSection(false)
         elementExtinct("#contact-details-section")
+      }
+    }
+
+    "the showPhoneNumbersAndWebsite feature switch is false" should {
+
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "the phone numbers section is hidden" in {
+        mockConfig.features.showContactNumbersAndWebsite(false)
+        elementExtinct("#vat-phone-numbers")
+      }
+
+      "the website section is hidden" in {
+        mockConfig.features.showContactNumbersAndWebsite(false)
+        elementExtinct("#vat-website-address")
       }
     }
 
