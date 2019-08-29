@@ -33,16 +33,6 @@
     }
 }
 
-@pendingEmailAddress = @{
-    circumstances.pendingChanges.flatMap{
-        _.ppob.flatMap{
-            _.contactDetails.flatMap{
-                _.emailAddress
-            }
-        }
-    }
-}
-
 @registrationStatus() ={
     @deregistration_helper(circumstances, findDeregStatus(circumstances))
 }
@@ -324,10 +314,10 @@
             <dl class="govuk-check-your-answers cya-questions-short">
                 @{
                     val approvedEmailAddress = circumstances.ppob.contactDetails.flatMap(_.emailAddress)
-                    (approvedEmailAddress, pendingEmailAddress) match {
+                    (approvedEmailAddress, circumstances.pendingEmail) match {
                         case (Some(approvedEmail), Some(pendingEmail)) if(!pendingEmail.equals(approvedEmail)) =>
-                            customerEmailAddress(pendingEmailAddress, true)
-                        case (None, Some(pendingEmail)) => customerEmailAddress(pendingEmailAddress, true)
+                            customerEmailAddress(circumstances.pendingEmail, true)
+                        case (None, Some(pendingEmail)) => customerEmailAddress(circumstances.pendingEmail, true)
                         case _ => customerEmailAddress(approvedEmailAddress, false)
                     }
                 }
