@@ -75,7 +75,6 @@ features.agentAccess.enabled = Mynediad asiant
 features.registrationStatus.enabled = Statws cofrestru
 features.contactDetailsSection.enabled = Adran manylion cyswllt
 features.addDetailRows.enabled = Ychwanegu rhesi manylion
-features.makingTaxDigitalSection.enabled = Adran Troi Treth yn Ddigidol
 features.useLanguageSelector.enabled =
 
 customer_details.title = Manylion eich busnes

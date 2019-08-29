@@ -335,7 +335,7 @@
         </div>
     }
 
-    @if(appConfig.features.makingTaxDigitalSection() && circumstances.mandationStatus != NonMTDfB && user.isAgent){
+    @if(circumstances.mandationStatus != NonMTDfB && user.isAgent){
         <div id="mtd-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">

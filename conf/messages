@@ -70,7 +70,6 @@ features.agentAccess.enabled = Agent access
 features.registrationStatus.enabled = Registration status
 features.contactDetailsSection.enabled = Contact details section
 features.addDetailRows.enabled = Add detail rows
-features.makingTaxDigitalSection.enabled = Making Tax Digital section
 features.useLanguageSelector.enabled = Language switch
 features.useOverseasIndicator.enabled = Overseas Indicator Switch
 features.changeClientFeature.enabled = Enable change client links and Finish links where appropriate

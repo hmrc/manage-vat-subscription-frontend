@@ -51,7 +51,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             stubContactPreferences = appConfig.features.stubContactPreferences(),
             useContactPreferences = appConfig.features.useContactPreferences(),
             allowAgentBankAccountChange = appConfig.features.allowAgentBankAccountChange(),
-            makingTaxDigitalSectionEnabled = appConfig.features.makingTaxDigitalSection(),
+            showContactNumbersAndWebsite = appConfig.features.showContactNumbersAndWebsite(),
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
@@ -80,7 +80,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
     appConfig.features.useContactPreferences(model.useContactPreferences)
     appConfig.features.allowAgentBankAccountChange(model.allowAgentBankAccountChange)
-    appConfig.features.makingTaxDigitalSection(model.makingTaxDigitalSectionEnabled)
+    appConfig.features.showContactNumbersAndWebsite(model.showContactNumbersAndWebsite)
     appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
