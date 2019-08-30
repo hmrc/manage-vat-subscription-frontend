@@ -1,0 +1,103 @@
+/*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views.errors
+
+import assets.messages.{BaseMessages, ChangePendingMessages}
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import views.ViewBaseSpec
+
+class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
+
+  object Selectors {
+    val heading = "h1"
+    val paragraphOne = "article > p:nth-child(3)"
+    val paragraphTwo = "article > p:nth-child(4)"
+    val backLink = ".link-back"
+    val listItemOne = "article ul li:nth-child(1)"
+    val listItemTwo = "article ul li:nth-child(2)"
+  }
+
+  "The change pending view" should {
+
+    lazy val view = views.html.errors.changePending("changePending.email")(user, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct title" in {
+      document.title shouldBe ChangePendingMessages.title
+    }
+
+    "have the correct heading" in {
+      elementText(Selectors.heading) shouldBe ChangePendingMessages.heading
+    }
+
+    "have the correct information in the first paragraph including email change" in {
+      elementText(Selectors.paragraphOne) shouldBe ChangePendingMessages.p1 + ChangePendingMessages.emailChange
+    }
+
+    "have the correct information in the second paragraph" in {
+      elementText(Selectors.paragraphTwo) shouldBe ChangePendingMessages.p2
+    }
+
+    "have the correct first list item" in {
+      elementText(Selectors.listItemOne) shouldBe ChangePendingMessages.listItem1
+    }
+
+    "have the correct second list item" in {
+      elementText(Selectors.listItemTwo) shouldBe ChangePendingMessages.listItem2
+    }
+
+    "have the correct text for the back link" in {
+      elementText(Selectors.backLink) shouldBe back
+    }
+
+    "have the correct back link location" in {
+      element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.redirect().url
+    }
+  }
+
+  "The change pending view" should {
+
+    lazy val view = views.html.errors.changePending("changePending.ppob")(user, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct information in the first paragraph including ppob change" in {
+      elementText(Selectors.paragraphOne) shouldBe ChangePendingMessages.p1 + ChangePendingMessages.ppobChange
+    }
+  }
+
+  "The change pending view" should {
+
+    lazy val view = views.html.errors.changePending("changePending.phone")(user, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct information in the first paragraph including phone change" in {
+      elementText(Selectors.paragraphOne) shouldBe ChangePendingMessages.p1 + ChangePendingMessages.phoneChange
+    }
+  }
+
+  "The change pending view" should {
+
+    lazy val view = views.html.errors.changePending("changePending.website")(user, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+
+    "have the correct information in the first paragraph including website change" in {
+      elementText(Selectors.paragraphOne) shouldBe ChangePendingMessages.p1 + ChangePendingMessages.websiteChange
+    }
+  }
+
+}

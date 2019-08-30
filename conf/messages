@@ -190,7 +190,6 @@ contact_preference.paper = We will send a letter to your principal place of busi
 contact_preference.contactPrefError = We will send you an update within 15 working days.
 contact_preference.contact = Make sure your contact details are up to date.
 
-
 address_lookupPage.title = What is the new business address?
 address_lookupPage.heading = What is the new principal place of business?
 address_lookupPage.filter = Property name or number
@@ -204,8 +203,13 @@ breadcrumb.bta = Business tax account
 breadcrumb.yourVatDetails = Your VAT details
 breadcrumb.changeBusinessDetails = Change of business details
 
-emailChangePending.title = We are reviewing your request
-emailChangePending.heading = You already have a change pending
-emailChangePending.infoOne = You have already requested to change your email address. While this change is pending you are unable to change your principal place of business.
-emailChangePending.infoTwo = We will usually update your details within 2 working days.
-
+changePending.title = You already have a change pending
+changePending.heading = You already have a change pending
+changePending.infoOne = You recently requested to change the {0}.
+changePending.infoTwo = This change is pending and until this is confirmed, you cannot change your:
+changePending.listItem1 = principal place of business
+changePending.listItem2 = email address
+changePending.ppob = principal place of business
+changePending.email = business email address
+changePending.phone = business telephone numbers
+changePending.website = business website address

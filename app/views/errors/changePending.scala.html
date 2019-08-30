@@ -14,13 +14,17 @@
  * limitations under the License.
  *@
 
-@()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
+@(changeType: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@views.html.main_template(title = messages("emailChangePending.title"), appConfig = appConfig) {
+@views.html.main_template(title = messages("changePending.title"), appConfig = appConfig) {
 
  <a class="link-back" href="@controllers.routes.CustomerCircumstanceDetailsController.redirect">@messages("base.back")</a>
 
- <h1 class="heading-large">@messages("emailChangePending.heading")</h1>
- <p>@messages("emailChangePending.infoOne")</p>
- <p>@messages("emailChangePending.infoTwo")</p>
+ <h1 class="heading-large">@messages("changePending.heading")</h1>
+ <p>@messages("changePending.infoOne", messages(changeType))</p>
+ <p>@messages("changePending.infoTwo")</p>
+ <ul class="list list-bullet">
+  <li>@messages("changePending.listItem1")</li>
+  <li>@messages("changePending.listItem2")</li>
+ </ul>
 }

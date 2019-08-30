@@ -16,10 +16,15 @@
 
 package assets.messages
 
-object EmailChangePendingMessages extends BaseMessages {
-  val title = "We are reviewing your request" + titleSuffixUser
+object ChangePendingMessages extends BaseMessages {
+  val title: String = "You already have a change pending" + titleSuffixUser
   val heading = "You already have a change pending"
-  val p1 = "You have already requested to change your email address. " +
-    "While this change is pending you are unable to change your principal place of business."
-  val p2 = "We will usually update your details within 2 working days."
+  val p1 = "You recently requested to change the "
+  val ppobChange = "principal place of business."
+  val emailChange = "business email address."
+  val phoneChange = "business telephone numbers."
+  val websiteChange = "business website address."
+  val p2 = "This change is pending and until this is confirmed, you cannot change your:"
+  val listItem1 = "principal place of business"
+  val listItem2 = "email address"
 }
