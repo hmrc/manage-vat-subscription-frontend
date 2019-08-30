@@ -20,7 +20,7 @@ common.errorSummary.heading = You have one or more errors
 common.finish = Finish
 common.clientService = Business tax account
 common.agentService = Update your client''s VAT details
-common.makingTaxDigitalForVat = Making Tax Digital for VAT
+common.vat = VAT
 common.newTab = (opens in a new tab)
 common.pageTitle = {0} - {1} - GOV.UK
 
