@@ -30,18 +30,6 @@ import utils.ImplicitDateFormatter._
 import views.ViewBaseSpec
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages {
-
-    "Rendering the page with the footer" should {
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-      "render the accessibility report link" in {
-        element("#accessibilityLink").`val` shouldBe "accessibilityLink"
-      }
-      "render the report link with the correct url" in {
-        element("#accessibilityLink").attr("href") shouldBe "/vat-through-software/accessibility-report"
-      }
-    }
-
   "Rendering the Customer Details page" when {
 
     mockConfig.features.registrationStatus(true)
@@ -56,6 +44,13 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       s"have the correct document title '${viewMessages.title}'" in {
         document.title shouldBe viewMessages.title
+      }
+
+      "render the accessibility text in the footer" in {
+        elementText("#footer > div > div > div.footer-meta-inner > ul > li:nth-child(2) > a") shouldBe "Accessibility"
+      }
+      "render the report link with the correct url" in {
+        element("#footer > div > div > div.footer-meta-inner > ul > li:nth-child(2) > a").attr("href") shouldBe "/vat-through-software/accessibility-report"
       }
 
       "have the correct service name" in {

@@ -15,6 +15,9 @@
  *@
 
 @import views.utils.ServiceNameUtil
+@import layouts.{govuk_template => hmrcGovUkTemplate}
+@import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
+@import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
 
 @(appConfig: config.AppConfig,
   title: String,
@@ -30,10 +33,6 @@
   serviceName: Option[String] = None,
   showSignOut: Boolean = true
 )(implicit request: Request[_], messages: Messages)
-
-@import layouts.{govuk_template => hmrcGovUkTemplate}
-@import uk.gov.hmrc.play.views.html.{layouts => uiLayouts}
-@import uk.gov.hmrc.play.views.html.{helpers => uiHelpers}
 
 @linkElem = {
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/stylesheet.css")'>
@@ -100,7 +99,7 @@
 
 @footerTop = {}
 
-@footerLinks = {@if(appConfig.accessibilityReportEnabled){<a id="accessibilityLink" class="accessibilityLink" href=@appConfig.accessibilityReportUrl> Accessibility </a>}}
+@footerLinks = {}
 
 @phaseBanner = {
     <div class="beta-banner">
@@ -148,4 +147,4 @@
       sidebar = sidebar)
 }
 
-@hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links(Some(footerLinks))), true)(content)
+@hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links(None, None, if(appConfig.accessibilityReportEnabled) {Some(appConfig.accessibilityReportUrl)} else{None} )), true)(content)
