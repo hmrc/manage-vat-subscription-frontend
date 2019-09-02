@@ -31,6 +31,17 @@ import views.ViewBaseSpec
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages {
 
+    "Rendering the page with the footer" should {
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+      "render the accessibility report link" in {
+        element("#accessibilityLink").`val` shouldBe "accessibilityLink"
+      }
+      "render the report link with the correct url" in {
+        element("#accessibilityLink").attr("href") shouldBe "/vat-through-software/accessibility-report"
+      }
+    }
+
   "Rendering the Customer Details page" when {
 
     mockConfig.features.registrationStatus(true)
