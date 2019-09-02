@@ -20,8 +20,8 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
 
   val title = "Your business details" + titleSuffixUser
   val heading = "Your business details"
-  val agentTitle = "Your client's VAT details" + titleSuffixAgent
-  val agentHeading= "Your client's VAT details"
+  val agentTitle = "Your client’s VAT details" + titleSuffixAgent
+  val agentHeading= "Your client’s VAT details"
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"

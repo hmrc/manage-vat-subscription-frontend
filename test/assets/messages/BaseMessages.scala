@@ -19,8 +19,8 @@ package assets.messages
 trait BaseMessages {
 
   val clientServiceName = "Business tax account"
-  val agentServiceName = "Update your client's VAT details"
   val otherServiceName = "VAT"
+  val agentServiceName = "Your client’s VAT details"
 
   val continue = "Continue"
   val confirm = "Confirm"
@@ -35,7 +35,8 @@ trait BaseMessages {
   val breadcrumbVat = "Your VAT details"
   val breadcrumbBizDeets = "Change of business details"
   val titleSuffixUser = " - Business tax account - GOV.UK"
-  val titleSuffixAgent  = " - Update your client's VAT details - GOV.UK"
   val titleSuffixOther = " - VAT - GOV.UK"
+  val titleSuffixAgent  = " - Your client’s VAT details - GOV.UK"
+
 
 }

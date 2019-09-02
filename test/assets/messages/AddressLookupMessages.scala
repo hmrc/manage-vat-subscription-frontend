@@ -36,5 +36,5 @@ object AddressLookupMessages {
   val continueCy = "Yn eich blaen"
 
   val clientServiceNameCy = "Cyfrif Treth Busnes"
-  val agentServiceNameCy = "Diweddaru manylion TAW eich cleient"
+  val agentServiceNameCy = "Manylion TAW eich cleient"
 }
