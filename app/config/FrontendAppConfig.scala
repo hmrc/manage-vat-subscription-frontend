@@ -66,6 +66,8 @@ trait AppConfig extends ServicesConfig {
   val deregisterForVat: String
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
+  val vatCorrespondenceChangePhoneNumbersUrl: String
+  val vatCorrespondenceChangeWebsiteUrl: String
   val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
@@ -182,6 +184,8 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
     s"&backUrl=${ContinueUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
 
   override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
+  override lazy val vatCorrespondenceChangePhoneNumbersUrl: String = getString(Keys.vatCorrespondenceChangePhoneNumbersUrl)
+  override lazy val vatCorrespondenceChangeWebsiteUrl: String = getString(Keys.vatCorrespondenceChangeWebsiteUrl)
 
   override lazy val partyTypes: Seq[String] = getStringSeq(Keys.partyTypes)
 

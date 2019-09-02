@@ -34,12 +34,21 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
                                partyType: Option[String]) {
 
   val ppobAddress: PPOBAddress = ppob.address
+  val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
+  val mobileNumber: Option[String] = ppob.contactDetails.flatMap(_.mobileNumber)
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
   val pendingDeregistration: Boolean = changeIndicators.fold(false)(_.deregister)
   val pendingEmail: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.emailAddress)))
   val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
+  val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
+  val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
+  val pendingPhoneNumber: Boolean = (pendingLandline, pendingMobile) match {
+    case (None, None) => false
+    case _ => true
+  }
+  val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)
