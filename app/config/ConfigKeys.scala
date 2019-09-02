@@ -90,4 +90,7 @@ object ConfigKeys {
   val contactPreferencesService: String = "contact-preferences"
 
   val vatOptOutUrl: String = "vat-opt-out-frontend.url"
+
+  val accessibilityReportEnabled: String = "accessibilityReport.enabled"
+  val accessibilityReportUrl: String = "accessibilityReport.url"
 }
