@@ -186,7 +186,6 @@ contact_preference.paper = Byddwn yn anfon llythyr i’ch prif fan busnes i roi 
 contact_preference.contactPrefError = Byddwn yn anfon diweddariad atoch cyn pen 15 diwrnod gwaith.
 contact_preference.contact = Sicrhewch fod eich manylion cyswllt wedi’u diweddaru.
 
-
 address_lookupPage.title = Beth yw cyfeiriad newydd y busnes?
 address_lookupPage.heading = Beth yw’r prif fan busnes newydd?
 address_lookupPage.filter = Enw neu rif yr eiddo
@@ -201,7 +200,13 @@ breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatDetails = Eich manylion TAW
 breadcrumb.changeBusinessDetails = Newid o ran manylion busnes
 
-emailChangePending.title = Rydym wrthi’n adolygu’ch cais
-emailChangePending.heading = Mae gennych newid ar y gweill yn barod
-emailChangePending.infoOne = Rydych wedi gwneud cais i newid eich cyfeiriad e-bost yn barod. Tra bo’r newid hwn ar y gweill, ni allwch newid eich prif fan busnes.
-emailChangePending.infoTwo = Byddwn fel arfer yn diweddaru’ch manylion cyn pen 2 ddiwrnod gwaith.
+changePending.title = Mae gennych newid ar y gweill yn barod
+changePending.heading = Mae gennych newid ar y gweill yn barod
+changePending.infoOne = Gwnaethoch gais yn ddiweddar i newid {0}.
+changePending.infoTwo = Mae’r newid hwn ar y gwell a hyd nes y caiff ei gadarnhau, ni allwch newid eich:
+changePending.listItem1 = prif leoliad busnes
+changePending.listItem2 = cyfeiriad e-bost
+changePending.ppob = prif leoliad busnes.
+changePending.email = cyfeiriad e-bost y busnes.
+changePending.phone = rhif ffôn y busnes.
+changePending.website = cyfeiriad we y busnes.

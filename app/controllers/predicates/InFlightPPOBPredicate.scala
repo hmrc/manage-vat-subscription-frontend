@@ -23,7 +23,7 @@ import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{ActionRefiner, Result}
-import play.api.mvc.Results.Ok
+import play.api.mvc.Results.Conflict
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
@@ -61,11 +61,10 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
 
       (circumstanceDetails.samePPOB, circumstanceDetails.sameEmail, circumstanceDetails.samePhone,
         circumstanceDetails.sameMobile, circumstanceDetails.sameWebsite) match {
-        case (false, _, _, _, _) => Left(Ok(changePending("changePending.ppob")))
-        case (_, false, _, _, _) => Left(Ok(changePending("changePending.email")))
-        case (_, _, false, _, _) => Left(Ok(changePending("changePending.telephone")))
-        case (_, _, _, false, _) => Left(Ok(changePending("changePending.telephone")))
-        case (_, _, _, _, false) => Left(Ok(changePending("changePending.website")))
+        case (false, _, _, _, _) => Left(Conflict(changePending("changePending.ppob")))
+        case (_, false, _, _, _) => Left(Conflict(changePending("changePending.email")))
+        case (_, _, false, _, _) |  (_, _, _, false, _) => Left(Conflict(changePending("changePending.telephone")))
+        case (_, _, _, _, false) => Left(Conflict(changePending("changePending.website")))
         case _ => Right(user)
       }
   }

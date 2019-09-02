@@ -46,8 +46,8 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -75,8 +75,8 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -92,8 +92,8 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -109,8 +109,8 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -126,8 +126,8 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
       lazy val document = Jsoup.parse(bodyOf(result))
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {

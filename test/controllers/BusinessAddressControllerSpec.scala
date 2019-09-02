@@ -81,8 +81,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         TestBusinessAddressController.show(request)
       }
 
-      "return OK (200)" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "return HTML" in {
@@ -240,8 +240,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           controller.initialiseJourney(request)
         }
 
-        "return OK (200)" in {
-          status(result) shouldBe Status.OK
+        "return 409 Conflict" in {
+          status(result) shouldBe Status.CONFLICT
         }
 
         "return HTML" in {
