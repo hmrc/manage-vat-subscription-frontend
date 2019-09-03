@@ -81,6 +81,7 @@ trait AppConfig extends ServicesConfig {
   val routeToSwitchLanguage :String => Call
   val accessibilityReportEnabled : Boolean
   val accessibilityReportUrl : String
+  val accessibilityReportHost : String
 }
 
 @Singleton
@@ -229,6 +230,8 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
 
-  override val accessibilityReportEnabled : Boolean = getBoolean(Keys.accessibilityReportEnabled)
-  override val accessibilityReportUrl : String = getString(Keys.accessibilityReportUrl)
+  override lazy val accessibilityReportEnabled : Boolean = getBoolean(Keys.accessibilityReportFeature)
+  override val accessibilityReportHost : String = getString(Keys.accessibilityReportHost)
+  override val accessibilityReportUrl : String = getString(Keys.accessibilityReportHost) + getString(Keys.accessibilityReportUrl)
+
 }

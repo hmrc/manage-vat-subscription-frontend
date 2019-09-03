@@ -55,7 +55,8 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
-            useNewAddressLookupFeature = appConfig.features.useNewAddressLookupFeature()
+            useNewAddressLookupFeature = appConfig.features.useNewAddressLookupFeature(),
+            accessibilityReportFeature = appConfig.features.accessibilityReportFeature()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -85,6 +86,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
     appConfig.features.useNewAddressLookupFeature(model.useNewAddressLookupFeature)
+    appConfig.features.accessibilityReportFeature(model.accessibilityReportFeature)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

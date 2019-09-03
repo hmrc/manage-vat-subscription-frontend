@@ -48,8 +48,8 @@ object FeatureSwitchForm {
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
-      ConfigKeys.useNewAddressLookupFeature -> boolean
+      ConfigKeys.useNewAddressLookupFeature -> boolean,
+      ConfigKeys.accessibilityReportFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
-
 }

@@ -147,4 +147,14 @@
       sidebar = sidebar)
 }
 
-@hmrcGovUkTemplate(Some(title), bodyClasses)(head, bodyEnd, insideHeader, afterHeader, footerTop, Some(uiLayouts.footer_links(None, None, if(appConfig.accessibilityReportEnabled) {Some(appConfig.accessibilityReportUrl)} else{None} )), true)(content)
+@hmrcGovUkTemplate(Some(title), bodyClasses)(
+    head,
+    bodyEnd,
+    insideHeader,
+    afterHeader,
+    footerTop,
+    Some(uiLayouts.footer_links(
+        None,
+        None,
+        if(appConfig.features.accessibilityReportFeature()) Some(appConfig.accessibilityReportUrl) else None )),
+    true)(content)

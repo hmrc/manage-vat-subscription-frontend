@@ -86,5 +86,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val agentClientLookupAgentAction: String = "/agent-action"
 
   override val accessibilityReportEnabled : Boolean = true
-  override val accessibilityReportUrl : String = "/vat-through-software/accessibility-report"
+  override val accessibilityReportUrl : String = "/vat-through-software/accessibility-statement"
+  override val accessibilityReportHost : String = "http://localhost:9152"
 }
