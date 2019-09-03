@@ -31,6 +31,7 @@ object PPOBAddressTestConstants {
   val countryCode = "GB"
 
   val website = "www.test.com"
+  val websitePending = "www.pendingwebsite.com"
 
   val phoneNumber = "01234 567890"
   val mobileNumber = "07700 123456"

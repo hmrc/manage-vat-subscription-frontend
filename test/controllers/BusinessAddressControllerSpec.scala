@@ -19,7 +19,7 @@ package controllers
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
-import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, EmailChangePendingMessages}
+import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, ChangePendingMessages}
 import audit.models.ContactPreferenceAuditModel
 import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockContactPreferenceService}
 import models.contactPreferences.ContactPreference
@@ -43,7 +43,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     object TestBusinessAddressController extends BusinessAddressController(
       messagesApi,
       mockAuthPredicate,
-      mockInflightEmailPredicate,
+      mockInFlightPPOBPredicate,
       mockAddressLookupService,
       mockContactPreferenceService,
       mockBusinessAddressService,
@@ -81,8 +81,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         TestBusinessAddressController.show(request)
       }
 
-      "return OK (200)" in {
-        status(result) shouldBe Status.OK
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
       }
 
       "return HTML" in {
@@ -90,8 +90,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${EmailChangePendingMessages.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe EmailChangePendingMessages.heading
+      s"have the heading '${ChangePendingMessages.heading}'" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangePendingMessages.heading
       }
     }
   }
@@ -107,7 +107,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       new BusinessAddressController(
         messagesApi,
         mockAuthPredicate,
-        mockInflightEmailPredicate,
+        mockInFlightPPOBPredicate,
         mockAddressLookupService,
         mockContactPreferenceService,
         mockBusinessAddressService,
@@ -203,7 +203,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       new BusinessAddressController(
         messagesApi,
         mockAuthPredicate,
-        mockInflightEmailPredicate,
+        mockInFlightPPOBPredicate,
         mockAddressLookupService,
         mockContactPreferenceService,
         mockBusinessAddressService,
@@ -240,8 +240,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           controller.initialiseJourney(request)
         }
 
-        "return OK (200)" in {
-          status(result) shouldBe Status.OK
+        "return 409 Conflict" in {
+          status(result) shouldBe Status.CONFLICT
         }
 
         "return HTML" in {
@@ -249,8 +249,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           charset(result) shouldBe Some("utf-8")
         }
 
-        s"have the heading '${EmailChangePendingMessages.heading}'" in {
-          Jsoup.parse(bodyOf(result)).select("h1").text shouldBe EmailChangePendingMessages.heading
+        s"have the heading '${ChangePendingMessages.heading}'" in {
+          Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangePendingMessages.heading
         }
       }
     }
@@ -275,7 +275,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
     lazy val controller = new BusinessAddressController(
       messagesApi,
       mockAuthPredicate,
-      mockInflightEmailPredicate,
+      mockInFlightPPOBPredicate,
       mockAddressLookupService,
       mockContactPreferenceService,
       mockBusinessAddressService,

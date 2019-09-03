@@ -36,6 +36,8 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val ppobAddress: PPOBAddress = ppob.address
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
   val mobileNumber: Option[String] = ppob.contactDetails.flatMap(_.mobileNumber)
+  val email: Option[String] = ppob.contactDetails.flatMap(_.emailAddress)
+  val website: Option[String] = ppob.websiteAddress
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
@@ -44,11 +46,19 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
   val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
   val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
+
   val pendingPhoneNumber: Boolean = (pendingLandline, pendingMobile) match {
     case (None, None) => false
     case _ => true
   }
+
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
+
+  val samePPOB: Boolean = pendingPPOBAddress.contains(ppobAddress)
+  val sameEmail: Boolean = pendingEmail == email
+  val samePhone: Boolean = pendingLandline == landlineNumber
+  val sameMobile: Boolean = pendingMobile == mobileNumber
+  val sameWebsite: Boolean = pendingWebsite == website
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)

@@ -288,6 +288,25 @@ object CircumstanceDetailsTestConstants {
     partyType = Some("other")
   )
 
+  val customerInformationPendingPPOBOrganisation: CircumstanceDetails = CircumstanceDetails(
+    mandationStatus = MTDfBMandated,
+    customerDetails = organisation,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = None,
+    deregistration = Some(deregModel),
+    changeIndicators = Some(
+      ChangeIndicators(
+        ppob = true,
+        bankDetails = false,
+        returnPeriod = false,
+        deregister = false)
+    ),
+    pendingChanges = None,
+    partyType = Some("other")
+  )
+
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
     mandationStatus = MTDfBMandated,
     customerDetails = individual,
@@ -339,39 +358,69 @@ object CircumstanceDetailsTestConstants {
     partyType = None
   )
 
-  val customerInformationPendingEmailModel: CircumstanceDetails = CircumstanceDetails(
-    mandationStatus = MTDfBMandated,
-    customerDetails = customerDetailsMin,
-    flatRateScheme = None,
-    ppob = ppobModelMax,
-    bankDetails = None,
-    returnPeriod = None,
-    deregistration = None,
-    changeIndicators = Some(
-      ChangeIndicators(
-        ppob = true,
-        bankDetails = false,
-        returnPeriod = false,
-        deregister = false
-      )
-    ),
+  val customerInformationPendingEmailModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
     pendingChanges = Some(PendingChanges(
       Some(PPOB(
         ppobAddressModelMax,
-        Some(ContactDetails(
-          Some(phoneNumber),
-          Some(mobileNumber),
-          Some(faxNumber),
-          Some(emailPending),
-          Some(emailVerified)
-        )),
+        Some(contactDetailsModelMax.copy(emailAddress = Some(emailPending))),
         Some(website)
       )),
       None,
       None,
       None
-    )),
-    partyType = None
+    ))
+  )
+
+  val customerInformationPendingPPOBModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
+    pendingChanges = Some(PendingChanges(
+      Some(PPOB(
+        ppobAddressModelMaxPending,
+        Some(contactDetailsModelMax),
+        Some(website)
+      )),
+      None,
+      None,
+      None
+    ))
+  )
+
+  val customerInformationPendingPhoneModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
+    pendingChanges = Some(PendingChanges(
+      Some(PPOB(
+        ppobAddressModelMax,
+        Some(contactDetailsModelMax.copy(phoneNumber = Some(phoneNumberPending))),
+        Some(website)
+      )),
+      None,
+      None,
+      None
+    ))
+  )
+
+  val customerInformationPendingMobileModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
+    pendingChanges = Some(PendingChanges(
+      Some(PPOB(
+        ppobAddressModelMax,
+        Some(contactDetailsModelMax.copy(mobileNumber = Some(mobileNumberPending))),
+        Some(website)
+      )),
+      None,
+      None,
+      None
+    ))
+  )
+
+  val customerInformationPendingWebsiteModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
+    pendingChanges = Some(PendingChanges(
+      Some(PPOB(
+        ppobAddressModelMax,
+        Some(contactDetailsModelMax),
+        Some(websitePending)
+      )),
+      None,
+      None,
+      None
+    ))
   )
 
   val customerInformationNonMtd: CircumstanceDetails = customerInformationModelMin.copy(mandationStatus = NonMTDfB)

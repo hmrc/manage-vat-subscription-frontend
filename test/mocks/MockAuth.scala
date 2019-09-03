@@ -76,8 +76,8 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
       mockConfig
     )
 
-  val mockInflightEmailPredicate: InflightEmailPredicate =
-    new InflightEmailPredicate(
+  val mockInFlightPPOBPredicate: InFlightPPOBPredicate =
+    new InFlightPPOBPredicate(
       mockCustomerDetailsService,
       serviceErrorHandler,
       messagesApi,
