@@ -22,12 +22,17 @@ import org.jsoup.nodes.Document
 class GovUkWrapperSpec extends ViewBaseSpec {
 
   "Gov Uk Wrapper" when {
+
     "accessibilityReport feature switch is on" should {
+
       mockConfig.features.accessibilityReportFeature(true)
+
       lazy val view = views.html.govuk_wrapper(appConfig = mockConfig , title = "test") (request = request , messages = messages)
       lazy implicit val document: Document = Jsoup.parse(view.body)
+
       "contain a link to the Accessibility statement" which {
         val selector = ".platform-help-links > li:nth-child(2) > a"
+
         "contains the correct URL" in {
           element(selector).attr("href") shouldBe mockConfig.accessibilityReportUrl
         }
