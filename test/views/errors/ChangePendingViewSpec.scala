@@ -82,7 +82,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.phone")(user, messages, mockConfig)
+    lazy val view = views.html.errors.changePending("changePending.telephone")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct information in the first paragraph including phone change" in {

@@ -211,5 +211,5 @@ changePending.listItem1 = principal place of business
 changePending.listItem2 = email address
 changePending.ppob = principal place of business
 changePending.email = business email address
-changePending.phone = business telephone numbers
+changePending.telephone = business telephone numbers
 changePending.website = business website address
