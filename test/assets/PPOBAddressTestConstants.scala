@@ -94,7 +94,7 @@ object PPOBAddressTestConstants {
 
   val ppobModelMax = PPOB(ppobAddressModelMax,Some(contactDetailsModelMax), Some(website))
 
-  val ppobModelMaxPending = PPOB(ppobAddressModelMaxPending,Some(contactDetailsModelMaxPending), Some(website))
+  val ppobModelMaxPending = PPOB(ppobAddressModelMaxPending,Some(contactDetailsModelMaxPending), Some(websitePending))
 
   val ppobModelMin = PPOB(ppobAddressModelMin,None,None)
 

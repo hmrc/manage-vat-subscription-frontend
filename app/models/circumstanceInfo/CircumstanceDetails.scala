@@ -46,12 +46,6 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
   val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
   val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
-
-  val pendingPhoneNumber: Boolean = (pendingLandline, pendingMobile) match {
-    case (None, None) => false
-    case _ => true
-  }
-
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
 
   val samePPOB: Boolean = pendingPPOBAddress.contains(ppobAddress)

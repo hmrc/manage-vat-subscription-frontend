@@ -206,7 +206,7 @@
     </div>
 }
 
-@customerPhoneNumbers(landlineNumber: Option[String], mobileNumber: Option[String]) = {
+@customerPhoneNumbers(landlineNumber: Option[String], mobileNumber: Option[String], pendingPhoneNumbers: Boolean) = {
     <div>
         <dt id="vat-phone-numbers-text" class="cya-question">
             @messages("customer_details.phoneNumbers.heading")
@@ -217,7 +217,7 @@
             @messages("customer_details.phoneNumbers.mobile", mobileNumber.getOrElse(messages("customer_details.notProvided")))
         </dd>
         <dd class="cya-change">
-            @if(circumstances.pendingPhoneNumber) {
+            @if(pendingPhoneNumbers) {
                 <span id="vat-phone-numbers-status"
                       class="bold"
                       aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
@@ -238,7 +238,7 @@
     </div>
 }
 
-@customerWebsite(websiteAddress: Option[String]) = {
+@customerWebsite(websiteAddress: Option[String], pendingWebsite: Boolean) = {
     <div>
         <dt id="vat-website-address-text" class="cya-question">
             @messages("customer_details.websiteAddress.heading")
@@ -247,7 +247,7 @@
             @websiteAddress.getOrElse(messages("customer_details.notProvided"))
         </dd>
         <dd class="cya-change">
-            @if(circumstances.pendingPhoneNumber) {
+            @if(pendingWebsite) {
                 <span id="vat-website-address-status"
                       class="bold"
                       aria-label="@messages("customer_details.websiteAddress.pending.hidden")">
@@ -375,21 +375,20 @@
         <div id="contact-details-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
-                @{
-                    val approvedEmailAddress = circumstances.ppob.contactDetails.flatMap(_.emailAddress)
-                    (approvedEmailAddress, circumstances.pendingEmail) match {
-                        case (Some(approvedEmail), Some(pendingEmail)) if(!pendingEmail.equals(approvedEmail)) =>
-                            customerEmailAddress(circumstances.pendingEmail, true)
-                        case (None, Some(pendingEmail)) => customerEmailAddress(circumstances.pendingEmail, true)
-                        case _ => customerEmailAddress(approvedEmailAddress, false)
-                    }
-                }
+                @customerEmailAddress(
+                    circumstances.pendingEmail.fold(circumstances.email)(Some(_)),
+                    circumstances.pendingChanges.isDefined && !circumstances.sameEmail
+                )
                 @if(appConfig.features.showContactNumbersAndWebsite()) {
                     @customerPhoneNumbers(
                         circumstances.pendingLandline.fold(circumstances.landlineNumber)(Some(_)),
-                        circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_))
+                        circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_)),
+                        circumstances.pendingChanges.isDefined && (!circumstances.samePhone || !circumstances.sameMobile)
                     )
-                    @customerWebsite(circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)))
+                    @customerWebsite(
+                        circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)),
+                        circumstances.pendingChanges.isDefined && !circumstances.sameWebsite
+                    )
                 }
             </dl>
         </div>
