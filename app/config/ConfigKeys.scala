@@ -50,6 +50,7 @@ object ConfigKeys {
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
   val useNewAddressLookupFeature: String = "features.useNewAddressLookupFeature.enabled"
+  val accessibilityReportFeature: String = "features.accessibilityReport.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
@@ -92,4 +93,7 @@ object ConfigKeys {
   val contactPreferencesService: String = "contact-preferences"
 
   val vatOptOutUrl: String = "vat-opt-out-frontend.url"
+
+  val accessibilityReportHost: String = "accessibilityReport.host"
+  val accessibilityReportUrl: String = "accessibilityReport.url"
 }

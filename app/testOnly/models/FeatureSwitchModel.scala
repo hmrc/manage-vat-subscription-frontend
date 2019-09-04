@@ -31,5 +31,6 @@ case class FeatureSwitchModel(
                                languageFeatureEnabled: Boolean,
                                useOverseasIndicatorEnabled: Boolean,
                                changeClientFeature: Boolean,
-                               useNewAddressLookupFeature: Boolean
+                               useNewAddressLookupFeature: Boolean,
+                               accessibilityReportFeature : Boolean
                              )

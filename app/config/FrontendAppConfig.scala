@@ -81,6 +81,7 @@ trait AppConfig extends ServicesConfig {
   val vatOptOutUrl: String
   def languageMap:Map[String,Lang]
   val routeToSwitchLanguage :String => Call
+  val accessibilityReportUrl : String
 }
 
 @Singleton
@@ -230,4 +231,8 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   )
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
+
+  private lazy val accessibilityReportHost : String = getString(Keys.accessibilityReportHost)
+  override lazy val accessibilityReportUrl : String = accessibilityReportHost + getString(Keys.accessibilityReportUrl)
+
 }
