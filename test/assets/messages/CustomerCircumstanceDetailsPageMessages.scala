@@ -18,9 +18,9 @@ package assets.messages
 
 object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
 
-  val title = "Your business details" + titleSuffixUser
+  val title: String = "Your business details" + titleSuffixUser
   val heading = "Your business details"
-  val agentTitle = "Your client’s VAT details" + titleSuffixAgent
+  val agentTitle: String = "Your client’s VAT details" + titleSuffixAgent
   val agentHeading= "Your client’s VAT details"
 
   val individualNameHeading = "Individual name"
@@ -39,7 +39,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val pending = "Pending"
   val howToRegister = "How to register (opens in a new tab)"
 
-  val registrationStatusHeading = "Your registration"
+  val registrationStatusHeading = "VAT registration"
   val aboutHeading = "About the business"
   val contactDetailsHeading = "Contact details"
   val mtdSectionHeading = "Making Tax Digital"
