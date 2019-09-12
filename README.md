@@ -5,7 +5,7 @@
 [![Download](https://api.bintray.com/packages/hmrc/releases/manage-vat-subscription-frontend/images/download.svg)](https://bintray.com/hmrc/releases/manage-vat-subscription-frontend/_latestVersion)
 
 ## Summary
-This is the repository for the Manage Vat Subscription frontend.
+This is the repository for the Manage Vat Subscription frontend. 
 
 This service provides end users with a mechanism to manage their VAT subscription.
 It allows the users to both view and change their Business name, Business address, bank account details (for repayments) and their VAT return dates.
