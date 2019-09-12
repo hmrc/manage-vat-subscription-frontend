@@ -35,6 +35,7 @@
 )(implicit request: Request[_], messages: Messages)
 
 @linkElem = {
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/palette.css")'>
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/stylesheet.css")'>
 }
 
@@ -157,4 +158,4 @@
         None,
         None,
         if(appConfig.features.accessibilityReportFeature()) Some(appConfig.accessibilityReportUrl) else None )),
-    true)(content)
+    nav = true)(content)
