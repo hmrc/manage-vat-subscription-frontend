@@ -49,7 +49,8 @@ object FeatureSwitchForm {
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
       ConfigKeys.useNewAddressLookupFeature -> boolean,
-      ConfigKeys.accessibilityReportFeature -> boolean
+      ConfigKeys.accessibilityReportFeature -> boolean,
+      ConfigKeys.useVatReturnPeriodFrontend -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }

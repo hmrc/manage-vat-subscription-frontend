@@ -51,6 +51,7 @@ object ConfigKeys {
   val changeClientFeature: String = "features.changeClientFeature.enabled"
   val useNewAddressLookupFeature: String = "features.useNewAddressLookupFeature.enabled"
   val accessibilityReportFeature: String = "features.accessibilityReport.enabled"
+  val useVatReturnPeriodFrontend: String = "features.useVatReturnPeriodFrontend.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
