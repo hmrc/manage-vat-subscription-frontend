@@ -41,7 +41,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
-    implicit val req = request
+    implicit val req: Request[A] = request
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments =>
         (isAgent(affinityGroup), allEnrolments) match {
@@ -61,8 +61,8 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
         Logger.debug("[AuthPredicate][invokeBlock] - No active session, redirect to GG sign in")
         Redirect(appConfig.signInUrl)
       case _: AuthorisationException =>
-        Logger.warn("[AuthPredicate][invokeBlock] - Unauthorised exception, rendering Unauthorised view")
-        Forbidden(views.html.errors.unauthorised())
+        Logger.warn("[AuthPredicate][invokeBlock] - Unauthorised exception, rendering Internal Server error page")
+        serviceErrorHandler.showInternalServerError
     }
   }
 

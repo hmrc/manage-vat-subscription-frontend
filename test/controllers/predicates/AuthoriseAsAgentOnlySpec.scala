@@ -101,10 +101,10 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
       "a user with an authorisation exception" should {
 
-        "return 403 (Forbidden)" in {
+        "return 500 (Internal Server Error)" in {
           mockUnauthorised()
           val result = target(request)
-          status(result) shouldBe Status.FORBIDDEN
+          status(result) shouldBe Status.INTERNAL_SERVER_ERROR
         }
       }
     }

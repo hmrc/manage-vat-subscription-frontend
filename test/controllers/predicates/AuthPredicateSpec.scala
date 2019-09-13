@@ -58,17 +58,17 @@ class AuthPredicateSpec extends MockAuth {
             }
           }
 
-          "an unauthorised result is returned from Auth" should {
+          "an authroised exception is returned from Auth" should {
 
             lazy val result = await(target(fakeRequestWithClientsVRN))
 
-            "return Forbidden (403)" in {
+            "return Internal server error (500)" in {
               mockUnauthorised()
-              status(result) shouldBe Status.FORBIDDEN
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
             }
 
-            "render the Unauthorised page" in {
-              Jsoup.parse(bodyOf(result)).title shouldBe UnauthorisedPageMessages.title
+            "render the Internal server error page" in {
+              Jsoup.parse(bodyOf(result)).title shouldBe internalServerErrorTitle
             }
           }
         }
