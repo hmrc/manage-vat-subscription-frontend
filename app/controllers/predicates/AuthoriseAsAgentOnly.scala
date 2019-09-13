@@ -62,8 +62,8 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
           Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, redirect to GG Sign In")
           Redirect(appConfig.signInUrl)
         case _: AuthorisationException =>
-          Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Unauthorised view")
-          Forbidden(views.html.errors.unauthorised())
+          Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Internal Server Error view")
+          serviceErrorHandler.showInternalServerError
       }
     } else {
       Future.successful(Unauthorized(views.html.errors.agent.agent_journey_disabled()))

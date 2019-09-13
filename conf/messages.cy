@@ -49,9 +49,6 @@ sessionTimeout.helpOne = I reoli’ch cyfrif TAW, bydd yn rhaid i chi
 sessionTimeout.helpTwo = fewngofnodi
 sessionTimeout.helpThree = gan ddefnyddio’ch Dynodydd Defnyddiwr (ID) ar gyfer Porth y Llywodraeth.
 
-unauthorised.title = Mynediad heb awdurdod
-unauthorised.instructions = Dyma gyfarwyddiadau ar yr hyn y dylech ei wneud nesaf.
-
 unauthorised.agent.title = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 unauthorised.agent.useThisService = I ddefnyddio’r gwasanaeth hwn, bydd angen i chi
 unauthorised.agent.setUpAccount = agor cyfrif gwasanaethau asiantau
