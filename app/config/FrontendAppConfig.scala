@@ -79,9 +79,10 @@ trait AppConfig extends ServicesConfig {
   val contactPreferencesService: String
   def contactPreferencesUrl(vrn: String): String
   val vatOptOutUrl: String
-  def languageMap:Map[String,Lang]
-  val routeToSwitchLanguage :String => Call
-  val accessibilityReportUrl : String
+  def languageMap: Map[String,Lang]
+  val routeToSwitchLanguage: String => Call
+  val accessibilityReportUrl: String
+  val vatReturnPeriodFrontendUrl: String
 }
 
 @Singleton
@@ -232,7 +233,9 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
 
-  private lazy val accessibilityReportHost : String = getString(Keys.accessibilityReportHost)
-  override lazy val accessibilityReportUrl : String = accessibilityReportHost + getString(Keys.accessibilityReportUrl)
+  private lazy val accessibilityReportHost: String = getString(Keys.accessibilityReportHost)
+  override lazy val accessibilityReportUrl: String = accessibilityReportHost + getString(Keys.accessibilityReportUrl)
 
+  private lazy val vatReturnPeriodFrontendHost: String = getString(ConfigKeys.vatReturnPeriodFrontendHost)
+  override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + getString(ConfigKeys.vatReturnPeriodFrontendUrl)
 }

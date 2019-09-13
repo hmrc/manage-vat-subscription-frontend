@@ -32,249 +32,309 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
   "Rendering the Customer Details page" when {
 
-    mockConfig.features.registrationStatus(true)
-    mockConfig.features.contactDetailsSection(true)
-    mockConfig.features.showContactNumbersAndWebsite(true)
-    mockConfig.features.allowAgentBankAccountChange(false)
-    mockConfig.features.useLanguageSelector(true)
+    "Viewing for an Individual without any pending changes" when {
 
-    "Viewing for an Individual without any pending changes" should {
+      "registered for VAT" when {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+        "useVatReturnPeriodFrontend feature switch is off" should {
 
-      s"have the correct document title '${viewMessages.title}'" in {
-        document.title shouldBe viewMessages.title
-      }
+          lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+          lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      "have the correct service name" in {
-        elementText(".header__menu__proposition-name") shouldBe clientServiceName
-      }
-
-      s"have a the correct page heading '${viewMessages.heading}'" in {
-        elementText("h1") shouldBe viewMessages.heading
-      }
-
-      "display a breadcrumb trail which" in {
-        elementText(".breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
-        elementText(".breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
-        elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
-
-        element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
-        element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
-      }
-
-      "have a section for registration status" which {
-
-        "has a registration header" in {
-          elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
-        }
-
-        "has a registration status header" in {
-          elementText("#registration-status-text") shouldBe viewMessages.statusText
-        }
-
-        "displays the correct registration status" in {
-          elementText("#registration-status") shouldBe viewMessages.deregStatus(toLongDate(pastDate))
-        }
-
-        "has the 'how to register' link" in {
-          elementText("#registration-status-link") shouldBe viewMessages.howToRegister
-          element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
-        }
-      }
-
-      "has an about header" in {
-        elementText("#content > article > div:nth-child(3) > h2") shouldBe viewMessages.aboutHeading
-      }
-
-      "have a section for business address" which {
-
-        "has the heading" in {
-          elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
-        }
-
-        "has the correct address output" in {
-          elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
-          elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
-          elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#place-of-business-status") shouldBe viewMessages.change
+          s"have the correct document title '${viewMessages.title}'" in {
+            document.title shouldBe viewMessages.title
           }
 
-          s"has the correct aria label text '${viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)}'" in {
-            element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
+          "have the correct service name" in {
+            elementText(".header__menu__proposition-name") shouldBe clientServiceName
           }
 
-          s"has a link to ${controllers.routes.BusinessAddressController.show().url}" in {
-            element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
-          }
-        }
-      }
-
-      "have a section for repayment Bank Account details" which {
-
-        "has the heading" in {
-          elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
-        }
-
-        "has a the correct Account Number" which {
-
-          "has the correct heading for the Account Number" in {
-            elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+          s"have a the correct page heading '${viewMessages.heading}'" in {
+            elementText("h1") shouldBe viewMessages.heading
           }
 
-          "has the correct value for the account number" in {
-            elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
-          }
-        }
+          "display a breadcrumb trail which" in {
+            elementText(".breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
+            elementText(".breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
+            elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
 
-        "has a the correct Sort Code" which {
-
-          "has the correct heading for the Sort Code" in {
-            elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+            element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
+            element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
           }
 
-          "has the correct value for the account number" in {
-            elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
-          }
-        }
+          "have a section for registration status" which {
 
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#bank-details-status") shouldBe viewMessages.change
-          }
-
-          s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
-            element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
-          }
-
-          s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
-            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
-          }
-        }
-      }
-
-      "have a section for contact details" which {
-
-        "has a contact details header" in {
-          elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
-        }
-      }
-
-      "have a section for email address" which {
-
-        "has the heading" in {
-          elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
-        }
-
-        "has the correct value for the email address" in {
-          elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-email-address-status") shouldBe viewMessages.change
-          }
-
-          s"has the correct aria label text '${viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)}'" in {
-            element("#vat-email-address-status").attr("aria-label") shouldBe
-              viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
-          }
-
-          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
-            element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
-          }
-        }
-      }
-
-      "have a section for phone numbers" which {
-
-        "has the heading" in {
-          elementText("#vat-phone-numbers-text") shouldBe viewMessages.phoneNumbersHeading
-        }
-
-        "has the correct value for the phone numbers" in {
-          elementText("#vat-phone-numbers") shouldBe
-            s"Landline: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get} " +
-            s"Mobile: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-phone-numbers-status") shouldBe viewMessages.change
-          }
-
-          s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
-            element("#vat-phone-numbers-status").attr("aria-label") shouldBe
-              viewMessages.changePhoneNumbersHidden
-          }
-
-          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
-            element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
-          }
-        }
-      }
-
-      "have a section for website address" which {
-
-        "has the heading" in {
-          elementText("#vat-website-address-text") shouldBe viewMessages.websiteAddressHeading
-        }
-
-        "has the correct value for the website address" in {
-          elementText("#vat-website-address") shouldBe customerInformationModelMaxIndividual.ppob.websiteAddress.get
-        }
-
-        "has a change link" which {
-
-          s"has the wording '${viewMessages.change}'" in {
-            elementText("#vat-website-address-status") shouldBe viewMessages.change
-          }
-
-          s"has the correct aria label text '${viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)}'" in {
-            element("#vat-website-address-status").attr("aria-label") shouldBe
-              viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)
-          }
-
-          s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
-            element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
-          }
-        }
-      }
-
-      "not display the 'change another clients details' link" in {
-        elementExtinct("#change-client-text")
-      }
-
-      "display a progressive disclosure" which {
-
-        "contains help text" which {
-
-          lazy val progressiveDisclosure = element("details")
-
-          "contains the correct text" in {
-            progressiveDisclosure.select("summary").text() shouldEqual viewMessages.changeNotListed
-          }
-
-          "contains content" which {
-
-            lazy val helpContent = progressiveDisclosure.select("div > p")
-
-            "displays the correct text" in {
-              helpContent.text() shouldEqual viewMessages.helpText
+            "has a registration header" in {
+              elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
             }
 
-            s"has a link to ${mockConfig.govUkChangeVatRegistrationDetails}" in {
-              helpContent.select("a").attr("href") shouldEqual mockConfig.govUkChangeVatRegistrationDetails
+            "has a registration status header" in {
+              elementText("#registration-status-text") shouldBe viewMessages.statusText
             }
+
+            "displays the correct registration status" in {
+              elementText("#registration-status") shouldBe viewMessages.registeredStatus
+            }
+          }
+
+          "has an about header" in {
+            elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
+          }
+
+          "have a section for business address" which {
+
+            "has the heading" in {
+              elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
+            }
+
+            "has the correct address output" in {
+              elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
+              elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
+              elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#place-of-business-status") shouldBe viewMessages.change
+              }
+
+              s"has the correct aria label text '${viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)}'" in {
+                element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
+              }
+
+              s"has a link to ${controllers.routes.BusinessAddressController.show().url}" in {
+                element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
+              }
+            }
+          }
+
+          "have a section for repayment Bank Account details" which {
+
+            "has the heading" in {
+              elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+            }
+
+            "has a the correct Account Number" which {
+
+              "has the correct heading for the Account Number" in {
+                elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+              }
+
+              "has the correct value for the account number" in {
+                elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+              }
+            }
+
+            "has a the correct Sort Code" which {
+
+              "has the correct heading for the Sort Code" in {
+                elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+              }
+
+              "has the correct value for the account number" in {
+                elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+              }
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#bank-details-status") shouldBe viewMessages.change
+              }
+
+              s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
+                element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
+              }
+
+              s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+                element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+              }
+            }
+          }
+
+          "have a section for return frequency" which {
+
+            "has the correct heading" in {
+              elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+            }
+
+            "has the correct current frequency" in {
+              elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#vat-return-dates-status") shouldBe viewMessages.change
+              }
+
+              s"has a link to ${controllers.returnFrequency.routes.ChooseDatesController.show().url}" in {
+                element("#vat-return-dates-status").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
+              }
+            }
+          }
+
+          "have a section for contact details" which {
+
+            "has a contact details header" in {
+              elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
+            }
+          }
+
+          "have a section for email address" which {
+
+            "has the heading" in {
+              elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
+            }
+
+            "has the correct value for the email address" in {
+              elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#vat-email-address-status") shouldBe viewMessages.change
+              }
+
+              s"has the correct aria label text '${viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)}'" in {
+                element("#vat-email-address-status").attr("aria-label") shouldBe
+                  viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
+              }
+
+              s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+              }
+            }
+          }
+
+          "have a section for phone numbers" which {
+
+            "has the heading" in {
+              elementText("#vat-phone-numbers-text") shouldBe viewMessages.phoneNumbersHeading
+            }
+
+            "has the correct value for the phone numbers" in {
+              elementText("#vat-phone-numbers") shouldBe
+                s"Landline: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get} " +
+                  s"Mobile: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#vat-phone-numbers-status") shouldBe viewMessages.change
+              }
+
+              s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
+                element("#vat-phone-numbers-status").attr("aria-label") shouldBe
+                  viewMessages.changePhoneNumbersHidden
+              }
+
+              s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
+              }
+            }
+          }
+
+          "have a section for website address" which {
+
+            "has the heading" in {
+              elementText("#vat-website-address-text") shouldBe viewMessages.websiteAddressHeading
+            }
+
+            "has the correct value for the website address" in {
+              elementText("#vat-website-address") shouldBe customerInformationModelMaxIndividual.ppob.websiteAddress.get
+            }
+
+            "has a change link" which {
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#vat-website-address-status") shouldBe viewMessages.change
+              }
+
+              s"has the correct aria label text '${viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)}'" in {
+                element("#vat-website-address-status").attr("aria-label") shouldBe
+                  viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)
+              }
+
+              s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
+              }
+            }
+          }
+
+          "not display the 'change another clients details' link" in {
+            elementExtinct("#change-client-text")
+          }
+
+          "display a progressive disclosure" which {
+
+            "contains help text" which {
+
+              lazy val progressiveDisclosure = element("details")
+
+              "contains the correct text" in {
+                progressiveDisclosure.select("summary").text() shouldEqual viewMessages.changeNotListed
+              }
+
+              "contains content" which {
+
+                lazy val helpContent = progressiveDisclosure.select("div > p")
+
+                "displays the correct text" in {
+                  helpContent.text() shouldEqual viewMessages.helpText
+                }
+
+                s"has a link to ${mockConfig.govUkChangeVatRegistrationDetails}" in {
+                  helpContent.select("a").attr("href") shouldEqual mockConfig.govUkChangeVatRegistrationDetails
+                }
+              }
+            }
+          }
+        }
+
+        "useVatReturnPeriodFrontend feature switch is on" should {
+
+          lazy val view = {
+            mockConfig.features.useVatReturnPeriodFrontend(true)
+            views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+          }
+
+          lazy implicit val document: Document = Jsoup.parse(view.body)
+
+          "have a section for return frequency" which {
+
+            s"has a change link to ${mockConfig.vatReturnPeriodFrontendUrl}" in {
+              element("#vat-return-dates-status").attr("href") shouldBe mockConfig.vatReturnPeriodFrontendUrl
+            }
+          }
+        }
+      }
+
+      "deregistered for VAT" should {
+
+        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividualDeregistered)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "have a section for registration status" which {
+
+          "has a registration header" in {
+            elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
+          }
+
+          "has a registration status header" in {
+            elementText("#registration-status-text") shouldBe viewMessages.statusText
+          }
+
+          "displays the correct registration status" in {
+            elementText("#registration-status") shouldBe viewMessages.deregStatus(toLongDate(pastDate))
+          }
+
+          "has the 'how to register' link" in {
+            elementText("#registration-status-link") shouldBe viewMessages.howToRegister
+            element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
           }
         }
       }
@@ -762,7 +822,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
       }
     }
 
-
     "the registration feature switch is disabled" should {
 
       lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
@@ -770,7 +829,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "not have a registration section" in {
         mockConfig.features.registrationStatus(false)
-        elementText("div.form-group:nth-child(3) > h2:nth-child(1)") shouldBe viewMessages.aboutHeading
+        elementText("div.form-group:nth-child(2) > h2:nth-child(1)") shouldBe viewMessages.aboutHeading
         document.select("#registration-status-text").isEmpty shouldBe true
         document.select("#registration-status").isEmpty shouldBe true
         document.select("#registration-status-link").isEmpty shouldBe true
@@ -822,7 +881,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     "the registration status is false - deregistration set to a past date" should {
 
-      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+      lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividualDeregistered)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "registration section displays the following" in {

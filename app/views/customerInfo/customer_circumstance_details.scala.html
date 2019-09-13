@@ -149,10 +149,11 @@
                         </span>
                     } else {
                         <a id="vat-return-dates-status"
-                           onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
-                           href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
-                           aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
-                        @messages("customer_details.change")
+                            onclick="sendGAEvent('return-frequency','change','change-business-details', @user.isAgent)"
+                            href="@{if(appConfig.features.useVatReturnPeriodFrontend()) appConfig.vatReturnPeriodFrontendUrl
+                                   else controllers.returnFrequency.routes.ChooseDatesController.show()}"
+                            aria-label="@messages("customer_details.returnFrequency.change.hidden",render_return_frequency(period))">
+                            @messages("customer_details.change")
                         </a>
                     }
                 }
