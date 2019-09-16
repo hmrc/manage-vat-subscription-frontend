@@ -75,7 +75,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.ChoosePage.title}'" in {
-      document.title shouldBe viewMessages.ChoosePage.title
+      document.title shouldBe viewMessages.ChoosePageWithErrors.title
     }
 
     s"have a the correct page heading of '${viewMessages.ChoosePage.heading}'" in {
