@@ -40,8 +40,6 @@
 
   @errorSummary("common.errorSummary.heading", form)
 
-  @headings(messages("return_frequency.heading"))
-
   @helpers.form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
 
       <div class="form-group" data-metrics="return-frequency:view:change-vat-return-dates;@user.isAgent" id="period-option">
