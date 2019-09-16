@@ -29,7 +29,7 @@ trait BaseMessages {
   val signOut = "Sign out"
   val finish = "Finish"
   val back = "Back"
-  val errorHeading = "You have one or more errors"
+  val errorHeading = "There is a problem"
 
   val breadcrumbBta = "Business tax account"
   val breadcrumbVat = "Your VAT details"
