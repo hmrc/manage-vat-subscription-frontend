@@ -51,6 +51,7 @@ object ConfigKeys {
   val changeClientFeature: String = "features.changeClientFeature.enabled"
   val useNewAddressLookupFeature: String = "features.useNewAddressLookupFeature.enabled"
   val accessibilityReportFeature: String = "features.accessibilityReport.enabled"
+  val useVatReturnPeriodFrontend: String = "features.useVatReturnPeriodFrontend.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
@@ -96,4 +97,7 @@ object ConfigKeys {
 
   val accessibilityReportHost: String = "accessibilityReport.host"
   val accessibilityReportUrl: String = "accessibilityReport.url"
+
+  val vatReturnPeriodFrontendHost: String = "vat-return-period-frontend.host"
+  val vatReturnPeriodFrontendUrl: String = "vat-return-period-frontend.url"
 }
