@@ -52,8 +52,8 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         s"""
            |  <div>
            |    <fieldset>
-           |      <legend class="visuallyhidden">
-           |        <h1>$labelText</h1>
+           |      <legend>
+           |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
            |      ${generateExpectedRadioMarkup("value1", "display1")}
@@ -80,8 +80,8 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         s"""
            |  <div>
            |     <fieldset>
-           |      <legend class="visuallyhidden">
-           |        <h1>$labelText</h1>
+           |      <legend>
+           |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
            |      ${generateExpectedRadioMarkup("value1", "display1")}
@@ -108,8 +108,8 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         s"""
            |  <div class="form-field--error">
            |    <fieldset>
-           |      <legend class="visuallyhidden">
-           |        <h1>$labelText</h1>
+           |      <legend>
+           |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
            |      <span class="error-notification">$errorMessage</span>
@@ -138,8 +138,8 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         s"""
            |<div>
            |    <fieldset>
-           |      <legend class="visuallyhidden">
-           |        <h1>$labelText</h1>
+           |      <legend>
+           |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
            |      $additionalContent
