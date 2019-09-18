@@ -82,7 +82,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("#page-heading") shouldBe viewMessages.ChoosePage.heading
     }
 
-    s"should display an error" in {
+    s"display an error" in {
       elementText("#error-summary-display") shouldBe s"${errorHeading} ${viewMessages.ChoosePage.error}"
     }
 
