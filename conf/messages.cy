@@ -17,6 +17,7 @@ common.confirmAndContinue = Cadarnhau ac yn eich blaen
 common.saveAndContinue = Cadw ac yn eich blaen
 common.fullStop = .
 common.errorSummary.heading = Mae gennych un neu fwy o wallau
+common.error.prefixTitle = Gwall: {0}
 common.finish = Gorffen
 common.clientService = Cyfrif Treth Busnes
 common.vat = TAW

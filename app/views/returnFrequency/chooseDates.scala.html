@@ -32,7 +32,7 @@
 }
 
 @views.html.main_template(
-  title = messages("return_frequency.title"),
+  title = if(form.errors.nonEmpty) messages("common.error.prefixTitle", messages("return_frequency.title")) else messages("return_frequency.title"),
   bodyClasses = None,
   appConfig = appConfig) {
 
