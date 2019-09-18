@@ -26,8 +26,8 @@
 <div @if(elements.hasErrors){ class="form-field--error"}>
 
     <fieldset>
-        <legend class="visuallyhidden">
-            <h1>@question</h1>
+        <legend>
+            <h1 id="page-heading" class="heading-large">@question</h1>
         </legend>
 
         @additionalContent.map { content => @content }

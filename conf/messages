@@ -17,6 +17,7 @@ common.confirmAndContinue = Confirm and continue
 common.saveAndContinue = Save and continue
 common.fullStop = .
 common.errorSummary.heading = There is a problem
+common.error.prefixTitle = Error: {0}
 common.finish = Finish
 common.clientService = Business tax account
 common.vat = VAT

@@ -17,6 +17,7 @@ common.confirmAndContinue = Cadarnhau ac yn eich blaen
 common.saveAndContinue = Cadw ac yn eich blaen
 common.fullStop = .
 common.errorSummary.heading = Mae problem wedi codi
+common.error.prefixTitle = Gwall: {0}
 common.finish = Gorffen
 common.clientService = Cyfrif Treth Busnes
 common.vat = TAW

@@ -229,8 +229,8 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
               status(result) shouldBe Status.BAD_REQUEST
             }
 
-            s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
+            s"have the title 'Error: Choose the new VAT Return dates'" in {
+              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePageWithErrors.title
             }
           }
         }

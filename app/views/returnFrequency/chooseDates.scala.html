@@ -32,15 +32,13 @@
 }
 
 @views.html.main_template(
-  title = messages("return_frequency.title"),
+  title = if(form.errors.nonEmpty) messages("common.error.prefixTitle", messages("return_frequency.title")) else messages("return_frequency.title"),
   bodyClasses = None,
   appConfig = appConfig) {
 
   @back_to_business_details()
 
   @errorSummary("common.errorSummary.heading", form)
-
-  @headings(messages("return_frequency.heading"))
 
   @helpers.form(action = controllers.returnFrequency.routes.ChooseDatesController.submit) {
 
