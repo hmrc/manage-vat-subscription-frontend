@@ -1,0 +1,10 @@
+# Pull Request Checklist
+* [ ] Branch is rebased with master
+* [ ] Added Unit Tests for changed functionality
+* [ ] Ran `sbt clean compile coverage test it:test coverageReport`, all tests pass and coverage meets minimum
+* [ ] Checked libraries are up to date with `sbt validate`. (If applicable) library updates are done in a separate, single commit
+* [ ] Ran Acceptance tests as per the story. If any query ping in group slack and confirm the AT's repo
+* [ ] Ran Performance tests as per the story. If any query ping in group slack and confirm the PT's repo
+* [ ] (If applicable) raised app-config-* PRs
+* [ ] (If applicable) ran Wave test for changes to views
+* [ ] (If applicable) added Integration Test
