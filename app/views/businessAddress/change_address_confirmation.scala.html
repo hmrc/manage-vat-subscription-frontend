@@ -22,15 +22,13 @@
     @if(appConfig.features.changeClientFeature()) {
         <p id="change-client-text">
             <a id="change-client-link"
-            onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("common.agent.changeClient")</a>
         </p>
     } else {
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
-            id="change-client-link"
+            <a id="change-client-link"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("common.agent.changeClient.link")</a>.
         </p>
