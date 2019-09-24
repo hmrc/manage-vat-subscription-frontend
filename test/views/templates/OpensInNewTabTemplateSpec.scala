@@ -29,7 +29,7 @@ class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
 
     val expectedMarkup = Html(
       s"""
-         |<a href="$link" target="_blank" data-journey-click="$event">$linkText (opens in a new tab)</a>
+         |<a href="$link" target="_blank" >$linkText (opens in a new tab)</a>
       """.stripMargin
     )
 
