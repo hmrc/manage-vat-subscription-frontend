@@ -25,7 +25,6 @@ class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
 
     val link = "/link"
     val linkText = "link text"
-    val event = "ga-tag-name"
 
     val expectedMarkup = Html(
       s"""
@@ -33,7 +32,7 @@ class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
       """.stripMargin
     )
 
-    val markup = openInNewTab(link, linkText, Some(event))
+    val markup = openInNewTab(link, linkText)
 
     "return the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
