@@ -20,7 +20,9 @@ import play.api.libs.json.{Format, Json}
 
 case class VatSubscriptionFeatureSwitchModel(Api1363Version: Api1363Version,
                                              Api1365Version: Api1365Version,
-                                             stubDes: Boolean)
+                                             stubDes: Boolean,
+                                             enableAnnualAccounting: Boolean
+                                            )
 
 object VatSubscriptionFeatureSwitchModel {
   implicit val format: Format[VatSubscriptionFeatureSwitchModel] = Json.format[VatSubscriptionFeatureSwitchModel]
