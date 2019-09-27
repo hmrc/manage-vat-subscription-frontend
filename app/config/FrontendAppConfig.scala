@@ -32,8 +32,6 @@ import uk.gov.hmrc.play.config.ServicesConfig
 import scala.io.Source
 
 trait AppConfig extends ServicesConfig {
-  val analyticsToken: String
-  val analyticsHost: String
   val reportAProblemPartialUrl: String
   val reportAProblemNonJSUrl: String
   val whitelistEnabled: Boolean
@@ -98,8 +96,6 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override lazy val contactFrontendService: String = baseUrl("contact-frontend")
   override lazy val contactFormServiceIdentifier: String = "VATC"
 
-  override lazy val analyticsToken: String = getString(Keys.googleAnalyticsToken)
-  override lazy val analyticsHost: String = getString(Keys.googleAnalyticsHost)
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
 

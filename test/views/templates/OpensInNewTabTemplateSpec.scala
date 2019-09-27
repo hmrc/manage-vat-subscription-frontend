@@ -25,15 +25,14 @@ class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
 
     val link = "/link"
     val linkText = "link text"
-    val event = "ga-tag-name"
 
     val expectedMarkup = Html(
       s"""
-         |<a href="$link" target="_blank" data-journey-click="$event">$linkText (opens in a new tab)</a>
+         |<a href="$link" target="_blank" >$linkText (opens in a new tab)</a>
       """.stripMargin
     )
 
-    val markup = openInNewTab(link, linkText, Some(event))
+    val markup = openInNewTab(link, linkText)
 
     "return the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)

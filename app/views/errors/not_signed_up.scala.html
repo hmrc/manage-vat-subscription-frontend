@@ -22,14 +22,13 @@
 
     @headings(messages("not_signed_up.heading"))
 
-    <p data-metrics="unauthorised:view:not-enrolled">
+    <p >
         @messages("not_signed_up.text") <a href="@appConfig.govUkSoftwareGuidanceUrl">@messages("not_signed_up.link")</a>
     </p>
 
 
 
-    <a onclick="sendGAEvent('unauthorised','sign-out','not-enrolled', false)"
-       href="@routes.SignOutController.signOut(true)"
+    <a href="@routes.SignOutController.signOut(true)"
        class="button"
        role="button">
         @messages("base.sign-out")

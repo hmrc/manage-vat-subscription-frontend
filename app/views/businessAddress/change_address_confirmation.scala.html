@@ -22,15 +22,13 @@
     @if(appConfig.features.changeClientFeature()) {
         <p id="change-client-text">
             <a id="change-client-link"
-            onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("common.agent.changeClient")</a>
         </p>
     } else {
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
-            <a onclick="sendGAEvent('select-client','change','change-business-address-confirmation', true)"
-            id="change-client-link"
+            <a id="change-client-link"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
             @messages("common.agent.changeClient.link")</a>.
         </p>
@@ -42,8 +40,8 @@
     bodyClasses = None,
     appConfig = appConfig) {
 
-    <div data-metrics="business-address:view:change-business-address-confirmation;@user.isAgent" class="govuk-box-highlight">
-        <h1 class="heading-xlarge" data-metrics="business-address:view:change-business-address-confirmation;@user.isAgent">@messages("change_address_confirmation.title")</h1>
+    <div >
+        <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
     </div>
 
     <h2>@messages("change_address_confirmation.h2")</h2>
@@ -84,7 +82,7 @@
 
     }
 
-    <a onclick="sendGAEvent('business-address','finish','change-business-address-confirmation', @user.isAgent)"
+    <a
        id="finish"
        href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'
        class="button"

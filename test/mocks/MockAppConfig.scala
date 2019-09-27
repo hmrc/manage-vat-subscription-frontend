@@ -28,8 +28,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
 
   override val mode: Mode = Mode.Test
 
-  override val analyticsToken: String = ""
-  override val analyticsHost: String = ""
   override val reportAProblemPartialUrl: String = ""
   override val reportAProblemNonJSUrl: String = ""
   override val whitelistEnabled: Boolean = false

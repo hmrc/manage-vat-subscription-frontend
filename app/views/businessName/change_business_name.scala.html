@@ -28,7 +28,7 @@
 
     @headings(messages("change_business_name.h1"))
 
-    <p data-metrics="business-name:view:change-business-name;@user.isAgent">
+    <p >
         @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
         @messages("change_business_name.p2")
     </p>
@@ -50,8 +50,7 @@
         <li>@messages("change_business_name.p5.bullet3")</li>
     </ul>
 
-    <a onclick="sendGAEvent('business-name','click-companies-house','change-business-name', @user.isAgent)"
-       id="continue"
+    <a id="continue"
        target="_blank"
        href="@controllers.routes.ChangeBusinessNameController.handOffToCOHO().url"
        type="submit">@messages("change_business_name.link")</a>

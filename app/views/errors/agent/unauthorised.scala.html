@@ -27,15 +27,13 @@
 
     @headings(Messages("unauthorised.agent.title"))
 
-    <p data-metrics="agent_unauthorised:view:not-enrolled">
+    <p >
         @Messages("unauthorised.agent.useThisService")
-        <a onclick="sendGAEvent('unauthorised','click-agent-services','not-enrolled', true)"
-           href="@appConfig.agentServicesGovUkGuidance">
+        <a href="@appConfig.agentServicesGovUkGuidance">
             @Messages("unauthorised.agent.setUpAccount")</a>@Messages("common.fullStop")
     </p>
 
-    <a onclick="sendGAEvent('unauthorised','sign-out','not-enrolled', true)"
-       class="button"
+    <a class="button"
        role="button"
        href="@controllers.routes.SignOutController.signOut(authorised = false)">
         @Messages("base.sign-out")
