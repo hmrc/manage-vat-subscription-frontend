@@ -368,17 +368,18 @@
             <dl class="govuk-check-your-answers cya-questions-short">
                 @customerEmailAddress(
                     circumstances.pendingEmail.fold(circumstances.email)(Some(_)),
-                    circumstances.pendingChanges.isDefined && !circumstances.sameEmail
+                    circumstances.pendingEmail.isDefined && !circumstances.sameEmail
                 )
                 @if(appConfig.features.showContactNumbersAndWebsite()) {
                     @customerPhoneNumbers(
                         circumstances.pendingLandline.fold(circumstances.landlineNumber)(Some(_)),
                         circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_)),
-                        circumstances.pendingChanges.isDefined && (!circumstances.samePhone || !circumstances.sameMobile)
+                        (circumstances.pendingLandline.isDefined || circumstances.pendingMobile.isDefined) &&
+                (!circumstances.samePhone || !circumstances.sameMobile)
                     )
                     @customerWebsite(
                         circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)),
-                        circumstances.pendingChanges.isDefined && !circumstances.sameWebsite
+                        circumstances.pendingWebsite.isDefined && !circumstances.sameWebsite
                     )
                 }
             </dl>

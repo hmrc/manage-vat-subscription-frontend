@@ -27,6 +27,7 @@ object FeatureSwitchForm {
   val api1363Version: String = "Api1363Version"
   val latestApi1363Version: String = "latestApi1363Version"
   val stubDes: String = "stubDes"
+  val enableAnnualAccounting: String = "enableAnnualAccounting"
 
   val form: Form[FeatureSwitchModel] = Form(
     mapping(
@@ -37,7 +38,8 @@ object FeatureSwitchForm {
       "vatSubscriptionFeatures" -> mapping(
           api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),
           api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id),
-          stubDes -> boolean
+          stubDes -> boolean,
+          enableAnnualAccounting -> boolean
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,

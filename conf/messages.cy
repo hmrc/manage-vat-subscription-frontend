@@ -6,6 +6,7 @@ feedback.title = Rhoi adborth
 feedback.before = Gwasanaeth newydd yw hwn – bydd eich
 feedback.link = adborth
 feedback.after = yn ein helpu i’w wella.
+banner.phaseName = BETA
 
 common.day = Diwrnod
 common.month = Mis
