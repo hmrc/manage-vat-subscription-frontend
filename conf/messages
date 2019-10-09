@@ -168,6 +168,7 @@ return_frequency.January = January, April, July and October
 return_frequency.February = February, May, August and November
 return_frequency.March = March, June, September and December
 return_frequency.Monthly = Every month
+return_frequency.Annually = Annually
 
 confirm_return_frequency.title = Confirm the new VAT Return dates
 confirm_return_frequency.heading = Confirm the new VAT Return dates

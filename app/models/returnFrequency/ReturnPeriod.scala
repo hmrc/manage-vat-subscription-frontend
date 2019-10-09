@@ -49,14 +49,22 @@ case object Monthly extends ReturnPeriod {
   override val auditValue: String = "Every month"
 }
 
+case object Annual extends ReturnPeriod {
+  override val internalId: String = "AN"
+  override val id: String = "Annually"
+  override val auditValue: String = "Annually"
+}
 
 object ReturnPeriod {
+
+  val validAnnualPeriodKeys = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
 
   def apply(arg: String): Option[ReturnPeriod] = arg match {
     case Jan.id => Some(Jan)
     case Feb.id => Some(Feb)
     case Mar.id => Some(Mar)
     case Monthly.id => Some(Monthly)
+    case Annual.id => Some(Annual)
     case unknown =>
       Logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
       None
@@ -70,6 +78,7 @@ object ReturnPeriod {
       case Feb.internalId => Feb
       case Mar.internalId => Mar
       case Monthly.internalId => Monthly
+      case otherPeriodKey if validAnnualPeriodKeys.contains(otherPeriodKey) => Annual
     }
   } yield value
 

@@ -43,5 +43,10 @@ class RenderReturnFrequencySpec extends ViewBaseSpec {
       val view = views.html.helpers.render_return_frequency(Monthly)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option4Monthly
     }
+
+    "Render the correct test for Annual" in {
+      val view = views.html.helpers.render_return_frequency(Annual)(messages)
+      view.body.trim shouldBe ReturnFrequencyMessages.option5Annually
+    }
   }
 }

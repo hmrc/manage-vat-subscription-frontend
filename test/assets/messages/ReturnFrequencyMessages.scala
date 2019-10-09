@@ -22,6 +22,7 @@ object ReturnFrequencyMessages extends BaseMessages {
   val option2Feb = "February, May, August and November"
   val option3Mar = "March, June, September and December"
   val option4Monthly = "Every month"
+  val option5Annually = "Annually"
 
   object ChoosePageWithErrors {
     val title = "Error: Choose the new VAT Return dates" + titleSuffixUser
