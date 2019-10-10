@@ -126,6 +126,8 @@ customer_details.makingTaxDigital.optedIn = Wedi optio i mewn
 customer_details.makingTaxDigital.optOutRequested = Wedi gwneud cais i optio allan
 customer_details.makingTaxDigital.optOutChange.hidden = Newid y statws o ‘wedi optio i mewn’
 customer_details.makingTaxDigital.optOutPending.hidden = Mae’r newid i optio allan o’r cynllun Troi Treth yn Ddigidol ar gyfer Busnes ar y gweill
+customer_details.phoneNumbers.landline.heading = Rhif ffôn llinell dir
+customer_details.phoneNumbers.mobile.heading = Rhif ffôn symudol
 
 change_business_name.title = Newid enw’r busnes
 change_business_name.h1 = Newid enw’r busnes
@@ -207,5 +209,6 @@ changePending.listItem1 = prif leoliad busnes
 changePending.listItem2 = cyfeiriad e-bost
 changePending.ppob = prif leoliad busnes
 changePending.email = cyfeiriad e-bost y busnes
-changePending.telephone = rhif ffôn y busnes
+changePending.landline = rhif ffôn llinell dir y busnes
+changePending.mobile = rhif ffôn symudol y busnes
 changePending.website = cyfeiriad we y busnes

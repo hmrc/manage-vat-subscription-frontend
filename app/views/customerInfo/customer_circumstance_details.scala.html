@@ -202,35 +202,62 @@
     </div>
 }
 
-@customerPhoneNumbers(landlineNumber: Option[String], mobileNumber: Option[String], pendingPhoneNumbers: Boolean) = {
-    <div>
-        <dt id="vat-phone-numbers-text" class="cya-question">
-            @messages("customer_details.phoneNumbers.heading")
-        </dt>
-        <dd id="vat-phone-numbers" class="cya-answer">
-            @messages("customer_details.phoneNumbers.landline", landlineNumber.getOrElse(messages("customer_details.notProvided")))
-            <br>
-            @messages("customer_details.phoneNumbers.mobile", mobileNumber.getOrElse(messages("customer_details.notProvided")))
-        </dd>
-        <dd class="cya-change">
-            @if(pendingPhoneNumbers) {
-                <span id="vat-phone-numbers-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
-            } else {
-                <a id="vat-phone-numbers-status"
-                   href="@appConfig.vatCorrespondenceChangePhoneNumbersUrl"
-                   aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
-                    @(landlineNumber, mobileNumber) match {
-                        case (None, None) => { @messages("customer_details.add") }
-                        case _ => { @messages("customer_details.change") }
-                    }
-                </a>
-            }
-        </dd>
-    </div>
+@customerLandlineNumber(landlineNumber: Option[String], pendingLandlineNumber: Boolean) = {
+<div>
+    <dt id="vat-landline-number-text" class="cya-question">
+        @messages("customer_details.phoneNumbers.landline.heading")
+    </dt>
+    <dd id="vat-landline-number" class="cya-answer">
+        @landlineNumber.getOrElse(messages("customer_details.notProvided"))
+    </dd>
+    <dd class="cya-change">
+        @if(pendingLandlineNumber) {
+        <span id="vat-landline-number-status"
+              class="bold"
+              aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
+        @messages("customer_details.pending")
+        </span>
+        } else {
+        <a id="vat-landline-number-status"
+           href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl"
+           aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
+        @landlineNumber match {
+        case None => { @messages("customer_details.add") }
+        case _ => { @messages("customer_details.change") }
+        }
+        </a>
+        }
+    </dd>
+</div>
+}
+
+@customerMobileNumber(mobileNumber: Option[String], pendingMobileNumber: Boolean) = {
+<div>
+    <dt id="vat-mobile-number-text" class="cya-question">
+        @messages("customer_details.phoneNumbers.mobile.heading")
+    </dt>
+    <dd id="vat-mobile-number" class="cya-answer">
+        @mobileNumber.getOrElse(messages("customer_details.notProvided"))
+    </dd>
+    <dd class="cya-change">
+        @if(pendingMobileNumber) {
+        <span id="vat-mobile-number-status"
+              class="bold"
+              aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
+        @messages("customer_details.pending")
+        </span>
+        } else {
+        <a id="vat-mobile-number-status"
+           href="@appConfig.vatCorrespondenceChangeMobileNumberUrl"
+           aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
+        @mobileNumber match {
+        case None => { @messages("customer_details.add") }
+        case _ => { @messages("customer_details.change") }
+        }
+        </a>
+        }
+    </dd>
+</div>
 }
 
 @customerWebsite(websiteAddress: Option[String], pendingWebsite: Boolean) = {
@@ -371,11 +398,13 @@
                     circumstances.pendingEmail.isDefined && !circumstances.sameEmail
                 )
                 @if(appConfig.features.showContactNumbersAndWebsite()) {
-                    @customerPhoneNumbers(
+                    @customerLandlineNumber(
                         circumstances.pendingLandline.fold(circumstances.landlineNumber)(Some(_)),
+                        (circumstances.pendingLandline.isDefined) && (!circumstances.samePhone)
+                    )
+                    @customerMobileNumber(
                         circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_)),
-                        (circumstances.pendingLandline.isDefined || circumstances.pendingMobile.isDefined) &&
-                (!circumstances.samePhone || !circumstances.sameMobile)
+                        (circumstances.pendingMobile.isDefined) && (!circumstances.sameMobile)
                     )
                     @customerWebsite(
                         circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)),

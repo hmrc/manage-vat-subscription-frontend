@@ -213,31 +213,58 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
 
-              "have a section for phone numbers" which {
+              "have a section for landline number" which {
 
                 "has the heading" in {
-                  elementText("#vat-phone-numbers-text") shouldBe viewMessages.phoneNumbersHeading
+                  elementText("#vat-landline-number-text") shouldBe viewMessages.landlineNumberHeading
                 }
 
                 "has the correct value for the phone numbers" in {
-                  elementText("#vat-phone-numbers") shouldBe
-                    s"Landline: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get} " +
-                      s"Mobile: ${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
+                  elementText("#vat-landline-number") shouldBe
+                    s"${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get}"
                 }
 
                 "has a change link" which {
 
                   s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-phone-numbers-status") shouldBe viewMessages.change
+                    elementText("#vat-landline-number-status") shouldBe viewMessages.change
                   }
 
                   s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
-                    element("#vat-phone-numbers-status").attr("aria-label") shouldBe
+                    element("#vat-landline-number-status").attr("aria-label") shouldBe
                       viewMessages.changePhoneNumbersHidden
                   }
 
                   s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
-                    element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
+                    element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
+                  }
+                }
+              }
+
+              "have a section for mobile numbers" which {
+
+                "has the heading" in {
+                  elementText("#vat-mobile-number-text") shouldBe viewMessages.mobileNumberHeading
+                }
+
+                "has the correct value for the phone numbers" in {
+                  elementText("#vat-mobile-number") shouldBe
+                    s"${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
+                }
+
+                "has a change link" which {
+
+                  s"has the wording '${viewMessages.change}'" in {
+                    elementText("#vat-mobile-number-status") shouldBe viewMessages.change
+                  }
+
+                  s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
+                    element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                      viewMessages.changePhoneNumbersHidden
+                  }
+
+                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                    element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
                   }
                 }
               }
@@ -405,7 +432,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "with no email address, phone number or website" should {
+      "with no email address, landline number, mobile number or website" should {
 
         lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationModelMin)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -425,18 +452,33 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           }
         }
 
-        "display the 'Not provided' text in place of the phone numbers" in {
-          elementText("#vat-phone-numbers") shouldBe "Landline: Not provided Mobile: Not provided"
+        "display the 'Not provided' text in place of the landline number" in {
+          elementText("#vat-landline-number") shouldBe "Not provided"
         }
 
-        "display an 'Add' link for changing the phone numbers" which {
+        "display the 'Not provided' text in place of the mobile number" in {
+          elementText("#vat-mobile-number") shouldBe "Not provided"
+        }
+
+        "display an 'Add' link for changing the landline number" which {
 
           "has the correct text" in {
-            elementText("#vat-phone-numbers-status") shouldBe "Add"
+            elementText("#vat-landline-number-status") shouldBe "Add"
           }
 
           "links to the correspondence details service" in {
-            element("#vat-phone-numbers-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangePhoneNumbersUrl
+            element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
+          }
+        }
+
+        "display an 'Add' link for changing the mobile number" which {
+
+          "has the correct text" in {
+            elementText("#vat-mobile-number-status") shouldBe "Add"
+          }
+
+          "links to the correspondence details service" in {
+            element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
           }
         }
 
