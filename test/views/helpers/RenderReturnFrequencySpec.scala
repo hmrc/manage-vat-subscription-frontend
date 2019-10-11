@@ -24,24 +24,29 @@ class RenderReturnFrequencySpec extends ViewBaseSpec {
 
   "The RenderReturnFrequency helper" should {
 
-    "Render the correct test for a Jan quarter" in {
+    "Render the correct text for a Jan quarter" in {
       val view = views.html.helpers.render_return_frequency(Jan)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option1Jan
     }
 
-    "Render the correct test for a Feb quarter" in {
+    "Render the correct text for a Feb quarter" in {
       val view = views.html.helpers.render_return_frequency(Feb)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option2Feb
     }
 
-    "Render the correct test for a March quarter" in {
+    "Render the correct text for a March quarter" in {
       val view = views.html.helpers.render_return_frequency(Mar)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option3Mar
     }
 
-    "Render the correct test for a Monthly quarter" in {
+    "Render the correct text for a Monthly quarter" in {
       val view = views.html.helpers.render_return_frequency(Monthly)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option4Monthly
+    }
+
+    "Render the correct text for Annual" in {
+      val view = views.html.helpers.render_return_frequency(Annual)(messages)
+      view.body.trim shouldBe ReturnFrequencyMessages.option5Annually
     }
   }
 }

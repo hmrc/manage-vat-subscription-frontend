@@ -163,6 +163,7 @@ return_frequency.January = Ionawr, Ebrill, Gorffennaf a Hydref
 return_frequency.February = Chwefror, Mai, Awst a Thachwedd
 return_frequency.March = Mawrth, Mehefin, Medi a Rhagfyr
 return_frequency.Monthly = Bob mis
+return_frequency.Annually = Blynyddol
 
 confirm_return_frequency.title = Cadarnhewch y dyddiadau newydd ar gyfer Ffurflenni TAW
 confirm_return_frequency.heading = Cadarnhewch y dyddiadau newydd ar gyfer Ffurflenni TAW
