@@ -214,13 +214,13 @@
         @if(pendingLandlineNumber) {
         <span id="vat-landline-number-status"
               class="bold"
-              aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
+              aria-label="@messages("customer_details.phoneNumbers.landline.pending.hidden")">
         @messages("customer_details.pending")
         </span>
         } else {
         <a id="vat-landline-number-status"
            href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
+           aria-label="@messages("customer_details.phoneNumbers.landline.change.hidden")">
         @landlineNumber match {
         case None => { @messages("customer_details.add") }
         case _ => { @messages("customer_details.change") }
@@ -243,13 +243,13 @@
         @if(pendingMobileNumber) {
         <span id="vat-mobile-number-status"
               class="bold"
-              aria-label="@messages("customer_details.phoneNumbers.pending.hidden")">
+              aria-label="@messages("customer_details.phoneNumbers.mobile.pending.hidden")">
         @messages("customer_details.pending")
         </span>
         } else {
         <a id="vat-mobile-number-status"
            href="@appConfig.vatCorrespondenceChangeMobileNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.change.hidden")">
+           aria-label="@messages("customer_details.phoneNumbers.mobile.change.hidden")">
         @mobileNumber match {
         case None => { @messages("customer_details.add") }
         case _ => { @messages("customer_details.change") }

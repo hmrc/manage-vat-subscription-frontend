@@ -128,6 +128,10 @@ customer_details.makingTaxDigital.optOutChange.hidden = Newid y statws o ‘wedi
 customer_details.makingTaxDigital.optOutPending.hidden = Mae’r newid i optio allan o’r cynllun Troi Treth yn Ddigidol ar gyfer Busnes ar y gweill
 customer_details.phoneNumbers.landline.heading = Rhif ffôn llinell dir
 customer_details.phoneNumbers.mobile.heading = Rhif ffôn symudol
+customer_details.phoneNumbers.landline.change.hidden = Change the landline number
+customer_details.phoneNumbers.landline.pending.hidden = Change to landline number is pending
+customer_details.phoneNumbers.mobile.change.hidden = Change the mobile number
+customer_details.phoneNumbers.mobile.pending.hidden = Change to mobile number is pending
 
 change_business_name.title = Newid enw’r busnes
 change_business_name.h1 = Newid enw’r busnes

@@ -235,7 +235,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                       viewMessages.changePhoneNumbersHidden
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                  s"has a link to ${mockConfig.vatCorrespondenceChangeLandlineNumberUrl}" in {
                     element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
                   }
                 }
@@ -263,7 +263,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                       viewMessages.changePhoneNumbersHidden
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                  s"has a link to ${mockConfig.vatCorrespondenceChangeMobileNumberUrl}" in {
                     element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
                   }
                 }
