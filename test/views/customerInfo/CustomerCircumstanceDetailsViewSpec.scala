@@ -230,9 +230,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                     elementText("#vat-landline-number-status") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
+                  s"has the correct aria label text '${viewMessages.changeLandlineNumbersHidden}'" in {
                     element("#vat-landline-number-status").attr("aria-label") shouldBe
-                      viewMessages.changePhoneNumbersHidden
+                      viewMessages.changeLandlineNumbersHidden
                   }
 
                   s"has a link to ${mockConfig.vatCorrespondenceChangeLandlineNumberUrl}" in {
@@ -258,9 +258,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                     elementText("#vat-mobile-number-status") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changePhoneNumbersHidden}'" in {
+                  s"has the correct aria label text '${viewMessages.changeMobileNumbersHidden}'" in {
                     element("#vat-mobile-number-status").attr("aria-label") shouldBe
-                      viewMessages.changePhoneNumbersHidden
+                      viewMessages.changeMobileNumbersHidden
                   }
 
                   s"has a link to ${mockConfig.vatCorrespondenceChangeMobileNumberUrl}" in {
