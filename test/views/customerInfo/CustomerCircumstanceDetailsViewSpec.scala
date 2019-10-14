@@ -403,6 +403,76 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
             }
           }
+          "with pending email" should {
+
+            lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingEmailModel)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-email-address-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+              element("#vat-email-address-status").attr("aria-label") shouldBe
+                viewMessages.pendingEmailAddressHidden
+            }
+          }
+          "with pending PPOB" should {
+
+            lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingPPOBModel)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#place-of-business-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+              element("#place-of-business-status").attr("aria-label") shouldBe
+                viewMessages.pendingBusinessAddressHidden
+            }
+          }
+          "with pending Landline" should {
+
+            lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingPhoneModel)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+              element("#vat-landline-number-status").attr("aria-label") shouldBe
+                viewMessages.pendingLandlineNumbersHidden
+            }
+          }
+          "with pending Mobile" should {
+
+            lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingMobileModel)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+              element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                viewMessages.pendingMobileNumbersHidden
+            }
+          }
+          "with pending Website" should {
+
+            lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingWebsiteModel)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-website-address-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+              element("#vat-website-address-status").attr("aria-label") shouldBe
+                viewMessages.pendingWebsiteAddressHidden
+            }
+          }
         }
       }
 
