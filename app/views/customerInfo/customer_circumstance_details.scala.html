@@ -220,7 +220,8 @@
         } else {
         <a id="vat-landline-number-status"
            href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.landline.change.hidden")">
+           aria-label="@messages("customer_details.phoneNumbers.landline.change.hidden",
+                                    landlineNumber.getOrElse(messages("customer_details.notProvided")))">
         @landlineNumber match {
         case None => { @messages("customer_details.add") }
         case _ => { @messages("customer_details.change") }
@@ -249,7 +250,8 @@
         } else {
         <a id="vat-mobile-number-status"
            href="@appConfig.vatCorrespondenceChangeMobileNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.mobile.change.hidden")">
+           aria-label="@messages("customer_details.phoneNumbers.mobile.change.hidden",
+                                    mobileNumber.getOrElse(messages("customer_details.notProvided")))">
         @mobileNumber match {
         case None => { @messages("customer_details.add") }
         case _ => { @messages("customer_details.change") }
