@@ -769,20 +769,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
     }
-
-    "the contactDetailsSection feature switch is disabled" should {
-
-      lazy val view = {
-        mockConfig.features.contactDetailsSection(false)
-        views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(user, messages, mockConfig)
-      }
-
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "contact details section is hidden" in {
-        elementExtinct("#contact-details-section")
-      }
-    }
+  }
 
     "the showPhoneNumbersAndWebsite feature switch is disabled" should {
 
@@ -822,5 +809,4 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         elementExtinct("#place-of-business-status")
       }
     }
-  }
 }

@@ -36,7 +36,6 @@ object ConfigKeys {
 
   val vatSubscription: String = "vat-subscription"
 
-  val contactDetailsSectionFeature: String = "features.contactDetailsSection.enabled"
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"

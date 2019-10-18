@@ -24,6 +24,7 @@ import play.api.mvc.{Action, AnyContent, Result}
 import testOnly.connectors.VatSubscriptionFeaturesConnector
 import testOnly.forms.FeatureSwitchForm
 import testOnly.models.FeatureSwitchModel
+import testOnly.views.html.{stubAddressLookup, stubAgentClientLookup}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
@@ -41,7 +42,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
         Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
         val form = FeatureSwitchForm.form.fill(
           FeatureSwitchModel(
-            contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
@@ -69,7 +69,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
   }
 
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
-    appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
