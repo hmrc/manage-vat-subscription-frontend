@@ -26,7 +26,6 @@ class Features @Inject()(implicit config: Configuration) {
 
   val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature)
   val agentAccess = new Feature(ConfigKeys.agentAccessFeature)
-  val registrationStatus = new Feature(ConfigKeys.registrationStatusFeature)
   val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature)
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)

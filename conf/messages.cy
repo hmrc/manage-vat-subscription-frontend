@@ -71,7 +71,6 @@ featureSwitch.heading = Nodweddion
 featureSwitch.submit = Cyflwyno
 features.simpleAuth.enabled =
 features.agentAccess.enabled = Mynediad asiant
-features.registrationStatus.enabled = Statws cofrestru
 features.contactDetailsSection.enabled = Adran manylion cyswllt
 features.addDetailRows.enabled = Ychwanegu rhesi manylion
 features.useLanguageSelector.enabled =

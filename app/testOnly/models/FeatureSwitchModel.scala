@@ -19,7 +19,6 @@ package testOnly.models
 case class FeatureSwitchModel(
                                simpleAuthEnabled: Boolean,
                                agentAccessEnabled: Boolean,
-                               registrationStatusEnabled: Boolean,
                                contactDetailsSectionEnabled: Boolean,
                                vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
                                stubAgentClientLookup: Boolean,

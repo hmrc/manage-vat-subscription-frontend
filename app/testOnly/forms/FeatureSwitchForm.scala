@@ -33,7 +33,6 @@ object FeatureSwitchForm {
     mapping(
       ConfigKeys.simpleAuthFeature -> boolean,
       ConfigKeys.agentAccessFeature -> boolean,
-      ConfigKeys.registrationStatusFeature -> boolean,
       ConfigKeys.contactDetailsSectionFeature -> boolean,
       "vatSubscriptionFeatures" -> mapping(
           api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),

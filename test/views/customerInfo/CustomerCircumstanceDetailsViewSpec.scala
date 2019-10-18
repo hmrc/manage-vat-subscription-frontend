@@ -403,6 +403,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
             }
           }
+
           "with pending email" should {
 
             lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingEmailModel)(user, messages, mockConfig)
@@ -417,6 +418,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 viewMessages.pendingEmailAddressHidden
             }
           }
+
           "with pending PPOB" should {
 
             lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingPPOBModel)(user, messages, mockConfig)
@@ -431,6 +433,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 viewMessages.pendingBusinessAddressHidden
             }
           }
+
           "with pending Landline" should {
 
             lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingPhoneModel)(user, messages, mockConfig)
@@ -445,6 +448,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 viewMessages.pendingLandlineNumbersHidden
             }
           }
+
           "with pending Mobile" should {
 
             lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingMobileModel)(user, messages, mockConfig)
@@ -459,6 +463,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 viewMessages.pendingMobileNumbersHidden
             }
           }
+
           "with pending Website" should {
 
             lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationPendingWebsiteModel)(user, messages, mockConfig)
@@ -762,20 +767,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "hide the making tax digital section" in {
           elementExtinct("#mtd-section")
         }
-      }
-    }
-
-    "the registrationStatus feature switch is disabled" should {
-
-      lazy val view = {
-        mockConfig.features.registrationStatus(false)
-        views.html.customerInfo.customer_circumstance_details(customerInformationNoPendingIndividual)(user, messages, mockConfig)
-      }
-
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      "not have a registration section" in {
-        elementExtinct("#registration-section")
       }
     }
 

@@ -43,7 +43,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
           FeatureSwitchModel(
             simpleAuthEnabled = appConfig.features.simpleAuth(),
             agentAccessEnabled = appConfig.features.agentAccess(),
-            registrationStatusEnabled = appConfig.features.registrationStatus(),
             contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
@@ -75,7 +74,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
     appConfig.features.simpleAuth(model.simpleAuthEnabled)
     appConfig.features.agentAccess(model.agentAccessEnabled)
-    appConfig.features.registrationStatus(model.registrationStatusEnabled)
     appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
