@@ -25,7 +25,6 @@ case class FeatureSwitchModel(
                                stubAgentClientLookup: Boolean,
                                stubAddressLookup: Boolean,
                                stubContactPreferences: Boolean,
-                               useContactPreferences: Boolean,
                                allowAgentBankAccountChange: Boolean,
                                showContactNumbersAndWebsite: Boolean,
                                languageFeatureEnabled: Boolean,

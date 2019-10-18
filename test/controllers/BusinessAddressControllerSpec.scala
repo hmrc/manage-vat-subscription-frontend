@@ -289,8 +289,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is successful" should {
 
         lazy val result = {
-          mockConfig.features.useContactPreferences(false)
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+          mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)
         }
 
@@ -311,8 +311,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is unsuccessful" should {
 
         lazy val result = {
-          mockConfig.features.useContactPreferences(false)
           mockCustomerDetailsError()
+          mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)
         }
 
@@ -331,33 +331,11 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
     }
 
-    "the user is not an agent and the 'useContactPreferences is disabled'" should {
-
-      lazy val result = {
-        mockConfig.features.useContactPreferences(false)
-        controller.confirmation("non-agent")(request)
-      }
-
-      "return 200" in {
-        status(result) shouldBe Status.OK
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
-
-      "render the Business Address confirmation view" in {
-        Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
-      }
-    }
-
-    "the user is not an agent and the 'useContactPreferences is enabled'" when {
+    "the user is not an agent" when {
 
       "contactPreference is set to 'DIGITAL'" should {
 
         lazy val result = {
-          mockConfig.features.useContactPreferences(true)
           mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("non-agent")(request)
         }
@@ -391,7 +369,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference is set to 'PAPER'" should {
 
         lazy val result = {
-          mockConfig.features.useContactPreferences(true)
           mockContactPreferenceSuccess(ContactPreference("PAPER"))
           controller.confirmation("non-agent")(request)
         }
@@ -415,7 +392,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference returns an error" should {
 
         lazy val result = {
-          mockConfig.features.useContactPreferences(true)
           mockContactPreferenceError()
           controller.confirmation("non-agent")(request)
         }

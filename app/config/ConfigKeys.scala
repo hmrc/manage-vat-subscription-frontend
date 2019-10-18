@@ -43,7 +43,6 @@ object ConfigKeys {
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
-  val useContactPreferencesFeature: String = "features.useContactPreferences.enabled"
   val allowAgentBankAccountChange: String = "features.allowAgentBankAccountChange.enabled"
   val contactNumbersAndWebsiteFeature: String = "features.showContactNumbersAndWebsite.enabled"
   val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"

@@ -49,7 +49,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
-            useContactPreferences = appConfig.features.useContactPreferences(),
             allowAgentBankAccountChange = appConfig.features.allowAgentBankAccountChange(),
             showContactNumbersAndWebsite = appConfig.features.showContactNumbersAndWebsite(),
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
@@ -80,7 +79,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
-    appConfig.features.useContactPreferences(model.useContactPreferences)
     appConfig.features.allowAgentBankAccountChange(model.allowAgentBankAccountChange)
     appConfig.features.showContactNumbersAndWebsite(model.showContactNumbersAndWebsite)
     appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
