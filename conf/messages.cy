@@ -69,7 +69,6 @@ not_signed_up.link = gofrestru i ddefnyddio meddalwedd er mwyn cyflwyno’ch Ffu
 featureSwitch.title =
 featureSwitch.heading = Nodweddion
 featureSwitch.submit = Cyflwyno
-features.agentAccess.enabled = Mynediad asiant
 features.contactDetailsSection.enabled = Adran manylion cyswllt
 features.addDetailRows.enabled = Ychwanegu rhesi manylion
 features.useLanguageSelector.enabled =

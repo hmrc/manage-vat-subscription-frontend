@@ -108,16 +108,5 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
         }
       }
     }
-
-    "Agent access is disabled" should {
-
-      "show agent journey disabled page" in {
-        mockConfig.features.agentAccess(false)
-        mockAgentAuthorised()
-        val result = target(request)
-        status(result) shouldBe Status.UNAUTHORIZED
-        Jsoup.parse(bodyOf(result)).title shouldBe AgentJourneyDisabledPageMessages.title
-      }
-    }
   }
 }

@@ -59,7 +59,6 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       }
 
       "render the page for a agent signed up to agent services" in {
-        mockAppConfig.features.agentAccess(true)
 
         given.agent.isSignedUpToAgentServices
 
@@ -124,7 +123,6 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       "if a valid ReturnPeriod is returned" should {
 
         "render the ChangeReturnFrequencyConfirmation page" in {
-          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
           ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
@@ -144,7 +142,6 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
       "if an invalid model is posted" should {
 
         "Render the Internal Server Error page" in {
-          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
           And("I stub an error response from the Payments service")
           ReturnFrequencyStub.putSubscriptionError()
@@ -165,7 +162,6 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec {
 
         "render the Agent Unauthorised page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
           And("I stub a successful response from the Payments service")
           ReturnFrequencyStub.putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
