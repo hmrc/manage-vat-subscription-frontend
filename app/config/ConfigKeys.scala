@@ -36,7 +36,6 @@ object ConfigKeys {
 
   val vatSubscription: String = "vat-subscription"
 
-  val simpleAuthFeature: String = "features.simpleAuth.enabled"
   val agentAccessFeature: String = "features.agentAccess.enabled"
   val registrationStatusFeature: String = "features.registrationStatus.enabled"
   val contactDetailsSectionFeature: String = "features.contactDetailsSection.enabled"

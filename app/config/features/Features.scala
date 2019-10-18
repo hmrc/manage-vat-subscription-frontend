@@ -24,7 +24,6 @@ import play.api.Configuration
 @Singleton
 class Features @Inject()(implicit config: Configuration) {
 
-  val simpleAuth = new Feature(ConfigKeys.simpleAuthFeature)
   val agentAccess = new Feature(ConfigKeys.agentAccessFeature)
   val registrationStatus = new Feature(ConfigKeys.registrationStatusFeature)
   val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature)
