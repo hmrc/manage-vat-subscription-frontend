@@ -24,21 +24,17 @@ class FeaturesSpec extends TestUtil {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    features.simpleAuth(false)
     features.agentAccess(true)
   }
 
   "The Auth Features" should {
 
     "return its current state" in {
-      features.simpleAuth() shouldBe false
       features.agentAccess() shouldBe true
     }
 
     "switch to a new state" in {
-      features.simpleAuth(true)
       features.agentAccess(false)
-      features.simpleAuth() shouldBe true
       features.agentAccess() shouldBe false
     }
   }

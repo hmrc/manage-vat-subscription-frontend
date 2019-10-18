@@ -41,7 +41,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
         Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
         val form = FeatureSwitchForm.form.fill(
           FeatureSwitchModel(
-            simpleAuthEnabled = appConfig.features.simpleAuth(),
             agentAccessEnabled = appConfig.features.agentAccess(),
             registrationStatusEnabled = appConfig.features.registrationStatus(),
             contactDetailsSectionEnabled = appConfig.features.contactDetailsSection(),
@@ -73,7 +72,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
   }
 
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
-    appConfig.features.simpleAuth(model.simpleAuthEnabled)
     appConfig.features.agentAccess(model.agentAccessEnabled)
     appConfig.features.registrationStatus(model.registrationStatusEnabled)
     appConfig.features.contactDetailsSection(model.contactDetailsSectionEnabled)
