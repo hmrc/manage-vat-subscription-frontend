@@ -120,6 +120,12 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               res should have(
                 elementText("#vat-email-address")("test@test.com")
               )
+
+              And("Registration status is displayed")
+              res should have(
+                elementText("#registration-status-text")(expectedValue = "Status"),
+                elementText("#registration-status")(expectedValue = "Deregistration requested")
+              )
             }
           }
         }
@@ -168,45 +174,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 isElementVisible("#business-name")(isVisible = false)
               )
             }
-          }
-        }
-
-        "the Registration Status Feature is enabled" should {
-
-          "Render the Customer Circumstances page with the Registration section visible" in {
-            mockAppConfig.features.registrationStatus(true)
-            given.user.isAuthenticated
-
-            And("A successful response with all details is returned for an Organisation")
-            VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation))
-
-            When("I call to show the Customer Circumstances page")
-            val res = show(Some(VRN))
-
-            res should have(
-              httpStatus(OK),
-              elementText("#registration-status-text")(expectedValue = "Status"),
-              elementText("#registration-status")(expectedValue = "Deregistration requested")
-            )
-          }
-        }
-
-        "the Registration Status Feature is disabled" should {
-
-          "Render the Customer Circumstances page without the Registration section visible" in {
-            mockAppConfig.features.registrationStatus(false)
-            given.user.isAuthenticated
-
-            And("A successful response with all details is returned for an Organisation")
-            VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation))
-
-            When("I call to show the Customer Circumstances page")
-            val res = show(Some(VRN))
-
-            res should have(
-              httpStatus(OK),
-              isElementVisible("#registration-status-text")(isVisible = false)
-            )
           }
         }
       }

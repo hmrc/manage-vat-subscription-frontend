@@ -65,7 +65,6 @@ featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
 features.agentAccess.enabled = Agent access
-features.registrationStatus.enabled = Registration status
 features.contactDetailsSection.enabled = Contact details section
 features.addDetailRows.enabled = Add detail rows
 features.useLanguageSelector.enabled = Language switch
