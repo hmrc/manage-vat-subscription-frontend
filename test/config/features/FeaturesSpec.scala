@@ -27,13 +27,13 @@ class FeaturesSpec extends TestUtil {
     features.useVatReturnPeriodFrontend(false)
   }
 
-  "The Auth Features" should {
+  "A Feature" should {
 
-    "return its current state" in {
+    "returns its current state" in {
       features.useVatReturnPeriodFrontend() shouldBe false
     }
 
-    "switch to a new state" in {
+    "switches to a new state" in {
       features.useVatReturnPeriodFrontend(true)
       features.useVatReturnPeriodFrontend() shouldBe true
     }
