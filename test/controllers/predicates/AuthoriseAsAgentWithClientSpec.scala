@@ -36,57 +36,54 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
 
   "The AuthoriseAsAgentWithClientSpec" when {
 
-    "Agent access is enabled" when {
+    "the agent is authorised with a Client VRN in session" should {
 
-      "the agent is authorised with a Client VRN in session" should {
+      "return 200" in {
+        mockAgentAuthorised()
+        val result = target(fakeRequestWithClientsVRN)
+        status(result) shouldBe Status.OK
+      }
+    }
 
-        "return 200" in {
-          mockAgentAuthorised()
-          val result = target(fakeRequestWithClientsVRN)
-          status(result) shouldBe Status.OK
-        }
+    "an agent has not selected their Client (No Client VRN in session)" should {
+
+      lazy val result = target(request)
+
+      "return 303 (SEE_OTHER) redirect" in {
+        mockAgentAuthorised()
+        status(result) shouldBe Status.SEE_OTHER
       }
 
-      "an agent has not selected their Client (No Client VRN in session)" should {
+      "redirect to the Select Your Client controller" in {
+        redirectLocation(result) shouldBe Some(mockConfig.agentClientLookupUrl)
+      }
+    }
 
-        lazy val result = target(request)
+    "the agent is not authenticated" should {
 
-        "return 303 (SEE_OTHER) redirect" in {
-          mockAgentAuthorised()
-          status(result) shouldBe Status.SEE_OTHER
-        }
+      lazy val result = target(fakeRequestWithClientsVRN)
 
-        "redirect to the Select Your Client controller" in {
-          redirectLocation(result) shouldBe Some(mockConfig.agentClientLookupUrl)
-        }
+      "return 303 (Redirect)" in {
+        mockMissingBearerToken()
+        status(result) shouldBe Status.SEE_OTHER
       }
 
-      "the agent is not authenticated" should {
+      "redirect to the session-timout view" in {
+        redirectLocation(result) shouldBe Some(mockConfig.signInUrl)
+      }
+    }
 
-        lazy val result = target(fakeRequestWithClientsVRN)
+    "the agent is not authorised" should {
 
-        "return 303 (Redirect)" in {
-          mockMissingBearerToken()
-          status(result) shouldBe Status.SEE_OTHER
-        }
+      lazy val result = target(fakeRequestWithClientsVRN)
 
-        "redirect to the session-timout view" in {
-          redirectLocation(result) shouldBe Some(mockConfig.signInUrl)
-        }
+      "return 303 (SEE_OTHER)" in {
+        mockUnauthorised()
+        status(result) shouldBe Status.SEE_OTHER
       }
 
-      "the agent is not authorised" should {
-
-        lazy val result = target(fakeRequestWithClientsVRN)
-
-        "return 303 (SEE_OTHER)" in {
-          mockUnauthorised()
-          status(result) shouldBe Status.SEE_OTHER
-        }
-
-        s"redirect location to ${mockConfig.agentClientUnauthorisedUrl}" in {
-          redirectLocation(result) shouldBe Some(mockConfig.agentClientUnauthorisedUrl)
-        }
+      s"redirect location to ${mockConfig.agentClientUnauthorisedUrl}" in {
+        redirectLocation(result) shouldBe Some(mockConfig.agentClientUnauthorisedUrl)
       }
     }
   }
