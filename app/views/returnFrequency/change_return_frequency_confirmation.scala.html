@@ -65,29 +65,12 @@
 
         @changeClientLink
     } else {
-
-        @if(appConfig.features.useContactPreferences()){
-
-            @contactPref match {
-                case Some("DIGITAL") => {<p>@messages("contact_preference.digital")</p>}
-                case Some("PAPER") => {<p>@messages("contact_preference.paper")</p>}
-                case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
-            }
-            <p>@messages("contact_preference.contact")</p>
-
-        } else {
-
-            <p>@messages("received_frequency.p1")</p>
-
-            <p>@messages("received_frequency.p2")</p>
-
-            <ul class="list list-bullet">
-                <li>@messages("received_frequency.bullet1")</li>
-                <li>@messages("received_frequency.bullet2")</li>
-            </ul>
-
+        @contactPref match {
+            case Some("DIGITAL") => {<p>@messages("contact_preference.digital")</p>}
+            case Some("PAPER") => {<p>@messages("contact_preference.paper")</p>}
+            case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
         }
-
+        <p>@messages("contact_preference.contact")</p>
     }
 
     <a  id="finish"

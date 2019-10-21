@@ -17,11 +17,13 @@
 package pages.returnFrequency
 
 import config.FrontendAppConfig
-import helpers.IntegrationTestConstants.clientVRN
+import helpers.IntegrationTestConstants.{clientVRN, customerCircumstancesDetailsMin, organisation}
 import pages.BasePageISpec
 import play.api.i18n.Messages
+import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
+import stubs.{ContactPreferencesStub, VatSubscriptionStub}
 
 class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
@@ -29,7 +31,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   override def beforeEach() {
-    mockAppConfig.features.useContactPreferences(false)
     super.beforeEach()
   }
 
@@ -42,6 +43,12 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
       "render the return frequency confirmation page" in {
 
         given.user.isAuthenticated
+
+        And("A successful response is returned from contact preferences")
+        ContactPreferencesStub.getContactPrefs(OK, Json.obj("preference" -> "DIGITAL"))
+
+        And("A successful response is returned from vat subscription")
+        VatSubscriptionStub.getClientDetailsSuccess("999999999")(customerCircumstancesDetailsMin(organisation))
 
         When("I call to show the Confirm Return Frequency Page")
         val res = show()
@@ -63,6 +70,9 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
           mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
+
+          And("A successful response is returned from contact preferences")
+          ContactPreferencesStub.getContactPrefs(OK, Json.obj("preference" -> "DIGITAL"))
 
           When("I call to show the Confirm Return Frequency Page")
           val res = show(Some(clientVRN))

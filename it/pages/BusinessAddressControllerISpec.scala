@@ -37,13 +37,11 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   override def beforeEach() {
-    mockAppConfig.features.useContactPreferences(false)
     mockAppConfig.features.useNewAddressLookupFeature(false)
     super.beforeEach()
   }
 
   override def afterEach() {
-    mockAppConfig.features.useContactPreferences(false)
     super.afterEach()
   }
 
@@ -418,8 +416,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
     "the user is an individual" should {
 
       "render the confirmation page" in {
-
-        mockAppConfig.features.useContactPreferences(true)
 
         given.user.isAuthenticated
 

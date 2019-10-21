@@ -53,7 +53,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         "the call to the customer details service is successful" should {
 
           lazy val result = {
-            mockConfig.features.useContactPreferences(false)
+            mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
           }
@@ -76,6 +76,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           lazy val result = {
             mockCustomerDetailsError()
+            mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
             TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
           }
 
@@ -94,34 +95,10 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         }
       }
 
-      "the user is not an agent and the 'useContactPreference' feature is disabled" should {
-
-        lazy val result = {
-          mockConfig.features.useContactPreferences(false)
-          TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
-        }
-        lazy val document = Jsoup.parse(bodyOf(result))
-
-        "return 200" in {
-          status(result) shouldBe Status.OK
-        }
-
-        "return HTML" in {
-          contentType(result) shouldBe Some("text/html")
-          charset(result) shouldBe Some("utf-8")
-        }
-
-        "render the Change Return Frequency Confirmation Page" in {
-          document.title shouldBe Messages.ReceivedPage.title
-          document.select("#content article p:nth-of-type(1)").text() shouldBe Messages.ReceivedPage.p1
-        }
-      }
-
-      "the user is not an agent and the 'useContactPreference' feature is enabled" when {
+      "the user is not an agent" when {
 
         "display the correct content for a user that has a digital contact preference" should {
           lazy val result = {
-            mockConfig.features.useContactPreferences(true)
             mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
             TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
           }
@@ -155,7 +132,6 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         "display the correct content for a user that has a paper contact preference" should {
 
           lazy val result = {
-            mockConfig.features.useContactPreferences(true)
             mockContactPreferenceSuccess(ContactPreference("PAPER"))
             TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
           }
@@ -180,7 +156,6 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         "display the correct content when an error is returned from contactPreferences" should {
 
           lazy val result = {
-            mockConfig.features.useContactPreferences(true)
             mockContactPreferenceError()
             TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
           }

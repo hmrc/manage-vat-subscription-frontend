@@ -178,10 +178,6 @@ confirm_return_frequency.changeLink = Change the VAT Return dates
 received_frequency.title = We have received the new VAT Return dates
 received_frequency.heading = We have received the new VAT Return dates
 received_frequency.subheading = What happens next
-received_frequency.p1 = Check your online business tax account within 2 working days to see if your request has been accepted.
-received_frequency.p2 = If this change is accepted:
-received_frequency.bullet1 = we will send a confirmation letter to your principal place of business within 10 working days
-received_frequency.bullet2 = the business must submit this period''s return before following the new VAT Return dates
 received_frequency.agent.p1-1 = We will send an email to
 received_frequency.agent.p1-2 = within 2 working days telling you whether or not the request has been accepted.
 

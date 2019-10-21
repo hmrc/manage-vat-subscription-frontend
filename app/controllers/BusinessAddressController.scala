@@ -86,21 +86,17 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    if (appConfig.features.useContactPreferences()) {
-      contactPreferenceService.getContactPreference(user.vrn).map {
-        case Right(cPref) =>
+    contactPreferenceService.getContactPreference(user.vrn).map {
+      case Right(cPref) =>
 
-          auditService.extendedAudit(
-            ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-            Some(controllers.routes.ChangeBusinessNameController.show().url)
-          )
+        auditService.extendedAudit(
+          ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
+          Some(controllers.routes.ChangeBusinessNameController.show().url)
+        )
 
-          Ok(views.html.businessAddress.change_address_confirmation(contactPref = Some(cPref.preference)))
-        case Left(_) =>
-          Ok(views.html.businessAddress.change_address_confirmation())
-      }
-    } else {
-      Future.successful(Ok(views.html.businessAddress.change_address_confirmation()))
+        Ok(views.html.businessAddress.change_address_confirmation(contactPref = Some(cPref.preference)))
+      case Left(_) =>
+        Ok(views.html.businessAddress.change_address_confirmation())
     }
   }
 }

@@ -29,51 +29,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
   "the ChangeAddressConfirmationView for an individual" when {
 
-    "'useContactPreferences' is disabled" should {
-
-      lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-      s"have the correct document title of '${viewMessages.title}'" in {
-        mockConfig.features.useContactPreferences(false)
-        document.title shouldBe viewMessages.title
-      }
-
-      s"have the correct page heading of '${viewMessages.heading}'" in {
-        elementText("h1") shouldBe viewMessages.heading
-      }
-
-      s"have the correct p1 of '${viewMessages.p1}'" in {
-        paragraph(1) shouldBe viewMessages.p1
-      }
-
-      s"have the correct p2 of '${viewMessages.p2}'" in {
-        paragraph(2) shouldBe viewMessages.p2
-      }
-
-      "not display the 'change another clients details' link" in {
-        elementExtinct("#change-client-text")
-      }
-
-      s"have a button to finish" which {
-
-        s"has the correct text of '${finish}" in {
-          elementText("#finish") shouldBe finish
-        }
-
-        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
-        }
-      }
-    }
-
-    "'useContactPreferences' is enabled and set to 'DIGITAL'" should {
+    "contact preference is set to 'DIGITAL'" should {
 
       lazy val view: Html = views.change_address_confirmation(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
-        mockConfig.features.useContactPreferences(true)
         document.title shouldBe viewMessages.title
       }
 
@@ -105,13 +66,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
-    "'useContactPreferences' is enabled and set to 'PAPER'" should {
+    "contact preference is set to 'PAPER'" should {
 
       lazy val view: Html = views.change_address_confirmation(contactPref = Some("PAPER"))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
-        mockConfig.features.useContactPreferences(true)
         document.title shouldBe viewMessages.title
       }
 
@@ -143,13 +103,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
-    "'useContactPreferences' is enabled, but an error is returned" should {
+    "an error is returned from contact preferences" should {
 
       lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
-        mockConfig.features.useContactPreferences(true)
         document.title shouldBe viewMessages.title
       }
 
