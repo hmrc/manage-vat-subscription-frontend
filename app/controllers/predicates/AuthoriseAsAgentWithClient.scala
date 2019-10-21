@@ -53,30 +53,26 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
 
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
     implicit val req = request
-    if(appConfig.features.agentAccess()) {
-      request.session.get(SessionKeys.CLIENT_VRN) match {
-        case Some(vrn) =>
-          Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
-          enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
-            case None ~ _ =>
-              Future.successful(serviceErrorHandler.showInternalServerError)
-            case _ ~ allEnrolments =>
-              val user = User(vrn, active = true, Some(arn(allEnrolments)))
-              block(user)
-          } recover {
-            case _: NoActiveSession =>
-              Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, redirect to GG Sign In")
-              Redirect(appConfig.signInUrl)
-            case _: AuthorisationException =>
-              Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
-              Redirect(appConfig.agentClientUnauthorisedUrl)
-          }
-        case _ =>
-          Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
-          Future.successful(Redirect(appConfig.agentClientLookupUrl))
-      }
-    } else {
-      Future.successful(Unauthorized(views.html.errors.agent.agent_journey_disabled()))
+    request.session.get(SessionKeys.CLIENT_VRN) match {
+      case Some(vrn) =>
+        Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
+        enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
+          case None ~ _ =>
+            Future.successful(serviceErrorHandler.showInternalServerError)
+          case _ ~ allEnrolments =>
+            val user = User(vrn, active = true, Some(arn(allEnrolments)))
+            block(user)
+        } recover {
+          case _: NoActiveSession =>
+            Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, redirect to GG Sign In")
+            Redirect(appConfig.signInUrl)
+          case _: AuthorisationException =>
+            Logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
+            Redirect(appConfig.agentClientUnauthorisedUrl)
+        }
+      case _ =>
+        Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
+        Future.successful(Redirect(appConfig.agentClientLookupUrl))
     }
   }
 }

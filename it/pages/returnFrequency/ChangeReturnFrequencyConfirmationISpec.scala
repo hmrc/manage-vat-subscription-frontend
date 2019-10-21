@@ -68,7 +68,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "render the return frequency confirmation page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           And("A successful response is returned from contact preferences")
@@ -88,7 +87,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "redirect to Enter Client VRN page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
@@ -105,7 +103,6 @@ class ChangeReturnFrequencyConfirmationISpec extends BasePageISpec {
 
         "render the unauthorised error page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")

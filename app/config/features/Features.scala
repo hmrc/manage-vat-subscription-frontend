@@ -24,7 +24,6 @@ import play.api.Configuration
 @Singleton
 class Features @Inject()(implicit config: Configuration) {
 
-  val agentAccess = new Feature(ConfigKeys.agentAccessFeature)
   val contactDetailsSection = new Feature(ConfigKeys.contactDetailsSectionFeature)
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)

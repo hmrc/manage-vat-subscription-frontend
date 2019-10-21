@@ -277,7 +277,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Redirect to the stubbed Client Lookup page" in {
 
-              mockAppConfig.features.agentAccess(true)
               mockAppConfig.features.stubAgentClientLookup(true)
 
               given.agent.isSignedUpToAgentServices
@@ -300,7 +299,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               "Redirect to the VACLF Client Lookup page" in {
 
-                mockAppConfig.features.agentAccess(true)
                 mockAppConfig.features.stubAgentClientLookup(false)
 
                 given.agent.isSignedUpToAgentServices
@@ -319,7 +317,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               "Redirect to the stubbed Client Lookup page" in {
 
-                mockAppConfig.features.agentAccess(true)
                 mockAppConfig.features.stubAgentClientLookup(true)
 
                 given.agent.isSignedUpToAgentServices
@@ -343,7 +340,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
         "Render the unauthorised view asking them to sign up for Agent Services" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isNotSignedUpToAgentServices
 
           When("I call to show the Customer Circumstances page")

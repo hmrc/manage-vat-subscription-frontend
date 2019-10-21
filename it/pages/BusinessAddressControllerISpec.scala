@@ -55,7 +55,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         "Render the Select a Client page" in {
 
-          mockAppConfig.features.agentAccess(true)
           given.agent.isSignedUpToAgentServices
 
           And("A successful response with minimum details is returned for an Organisation")
@@ -297,7 +296,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "redirect to the ChangeAddressConfirmationPage page" in {
 
-        mockAppConfig.features.agentAccess(true)
         mockAppConfig.features.stubAddressLookup(false)
 
         given.agent.isSignedUpToAgentServices

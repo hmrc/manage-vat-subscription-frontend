@@ -64,7 +64,6 @@ not_signed_up.link = sign up to use software to submit your VAT returns.
 featureSwitch.title = Feature switches
 featureSwitch.heading = Features
 featureSwitch.submit = Submit
-features.agentAccess.enabled = Agent access
 features.contactDetailsSection.enabled = Contact details section
 features.addDetailRows.enabled = Add detail rows
 features.useLanguageSelector.enabled = Language switch

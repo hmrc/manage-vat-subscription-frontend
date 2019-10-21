@@ -24,18 +24,18 @@ class FeaturesSpec extends TestUtil {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    features.agentAccess(true)
+    features.useVatReturnPeriodFrontend(false)
   }
 
-  "The Auth Features" should {
+  "A Feature" should {
 
-    "return its current state" in {
-      features.agentAccess() shouldBe true
+    "returns its current state" in {
+      features.useVatReturnPeriodFrontend() shouldBe false
     }
 
-    "switch to a new state" in {
-      features.agentAccess(false)
-      features.agentAccess() shouldBe false
+    "switches to a new state" in {
+      features.useVatReturnPeriodFrontend(true)
+      features.useVatReturnPeriodFrontend() shouldBe true
     }
   }
 }
