@@ -34,6 +34,5 @@ class Features @Inject()(implicit config: Configuration) {
   val useOverseasIndicator = new Feature(ConfigKeys.useOverseasIndicator)
   val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
   val useNewAddressLookupFeature = new Feature(ConfigKeys.useNewAddressLookupFeature)
-  val accessibilityReportFeature = new Feature(ConfigKeys.accessibilityReportFeature)
   val useVatReturnPeriodFrontend = new Feature(ConfigKeys.useVatReturnPeriodFrontend)
 }
