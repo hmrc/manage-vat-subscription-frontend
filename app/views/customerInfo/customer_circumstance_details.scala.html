@@ -391,7 +391,6 @@
         </dl>
     </div>
 
-    @if(appConfig.features.contactDetailsSection()){
         <div id="contact-details-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
@@ -415,7 +414,6 @@
                 }
             </dl>
         </div>
-    }
 
     @if(circumstances.mandationStatus != NonMTDfB && user.isAgent){
         <div id="mtd-section" class="form-group">
