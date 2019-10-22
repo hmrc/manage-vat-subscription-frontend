@@ -24,6 +24,5 @@ case class FeatureSwitchModel(
                                allowAgentBankAccountChange: Boolean,
                                showContactNumbersAndWebsite: Boolean,
                                languageFeatureEnabled: Boolean,
-                               changeClientFeature: Boolean,
                                useVatReturnPeriodFrontend: Boolean
                              )
