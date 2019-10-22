@@ -40,7 +40,6 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    mockConfig.features.useNewAddressLookupFeature(false)
     mockConfig.features.showContactNumbersAndWebsite(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
@@ -50,7 +49,6 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
 
   override def afterEach(): Unit = {
     super.beforeEach()
-    mockConfig.features.useNewAddressLookupFeature(false)
     mockConfig.features.showContactNumbersAndWebsite(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)

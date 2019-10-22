@@ -24,27 +24,14 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
 
   "AddressLookupJsonBuilder" should {
 
-    "Serialize to old address lookup JSON when using addressLookup v1" when {
-
-      "the continueUrl is given and the user is not an agent" in {
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user,messages, mockConfig)) shouldBe clientAddressLookupJson
-      }
-
-      "the continueUrl is given and the user is an agent" in {
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser,messages, mockConfig)) shouldBe agentAddressLookupJson
-      }
-    }
-
     "Serialize to new address lookup Json when using addressLookup v2" when {
 
       "the continueUrl is given and the user is not an agent" in {
-        mockConfig.features.useNewAddressLookupFeature(true)
 
         Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user,messages, mockConfig)) shouldBe clientAddressLookupV2Json
       }
 
       "the continueUrl is given and the user is an agent" in {
-        mockConfig.features.useNewAddressLookupFeature(true)
 
         Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser,messages, mockConfig)) shouldBe agentAddressLookupV2Json
       }

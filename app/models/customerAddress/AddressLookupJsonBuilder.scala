@@ -109,7 +109,7 @@ object AddressLookupJsonBuilder {
 
     implicit val writes: Writes[AddressLookupJsonBuilder] = new Writes[AddressLookupJsonBuilder] {
       def writes(data: AddressLookupJsonBuilder): JsObject =
-        if(data.conf.features.useNewAddressLookupFeature()){
+        {
           Json.obj(fields =
             "version" -> 2,
             "options" -> Json.obj(
@@ -142,23 +142,6 @@ object AddressLookupJsonBuilder {
               )
             )
           )
-        } else {
-          Json.obj(fields =
-
-            "continueUrl" -> data.continueUrl,
-            "showPhaseBanner" -> data.showPhaseBanner,
-            "navTitle" -> data.Version1.navTitle,
-            "ukMode" -> data.ukMode,
-
-            "lookupPage" -> data.Version1.lookupPage,
-
-            "selectPage" -> data.Version1.selectPage,
-
-            "editPage" -> data.Version1.editPage,
-
-            "confirmPage" -> data.Version1.confirmPage
-          )
         }
-
     }
   }

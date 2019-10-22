@@ -26,6 +26,5 @@ case class FeatureSwitchModel(
                                languageFeatureEnabled: Boolean,
                                useOverseasIndicatorEnabled: Boolean,
                                changeClientFeature: Boolean,
-                               useNewAddressLookupFeature: Boolean,
                                useVatReturnPeriodFrontend: Boolean
                              )
