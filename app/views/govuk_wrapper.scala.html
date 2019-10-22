@@ -157,5 +157,5 @@
     Some(uiLayouts.footer_links(
         None,
         None,
-        if(appConfig.features.accessibilityReportFeature()) Some(appConfig.accessibilityReportUrl) else None )),
+        Some(appConfig.accessibilityReportUrl))),
     nav = true)(content)

@@ -52,7 +52,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
             useNewAddressLookupFeature = appConfig.features.useNewAddressLookupFeature(),
-            accessibilityReportFeature = appConfig.features.accessibilityReportFeature(),
             useVatReturnPeriodFrontend = appConfig.features.useVatReturnPeriodFrontend()
           )
         )
@@ -79,7 +78,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
     appConfig.features.useNewAddressLookupFeature(model.useNewAddressLookupFeature)
-    appConfig.features.accessibilityReportFeature(model.accessibilityReportFeature)
     appConfig.features.useVatReturnPeriodFrontend(model.useVatReturnPeriodFrontend)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
