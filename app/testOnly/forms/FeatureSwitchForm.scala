@@ -44,7 +44,6 @@ object FeatureSwitchForm {
       ConfigKeys.allowAgentBankAccountChange -> boolean,
       ConfigKeys.contactNumbersAndWebsiteFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
-      ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
       ConfigKeys.useNewAddressLookupFeature -> boolean,
       ConfigKeys.accessibilityReportFeature -> boolean,

@@ -49,7 +49,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             allowAgentBankAccountChange = appConfig.features.allowAgentBankAccountChange(),
             showContactNumbersAndWebsite = appConfig.features.showContactNumbersAndWebsite(),
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
-            useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
             useNewAddressLookupFeature = appConfig.features.useNewAddressLookupFeature(),
             accessibilityReportFeature = appConfig.features.accessibilityReportFeature(),
@@ -76,7 +75,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.allowAgentBankAccountChange(model.allowAgentBankAccountChange)
     appConfig.features.showContactNumbersAndWebsite(model.showContactNumbersAndWebsite)
     appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
-    appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
     appConfig.features.useNewAddressLookupFeature(model.useNewAddressLookupFeature)
     appConfig.features.accessibilityReportFeature(model.accessibilityReportFeature)

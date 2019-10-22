@@ -67,7 +67,6 @@ featureSwitch.submit = Submit
 features.contactDetailsSection.enabled = Contact details section
 features.addDetailRows.enabled = Add detail rows
 features.useLanguageSelector.enabled = Language switch
-features.useOverseasIndicator.enabled = Overseas Indicator Switch
 features.changeClientFeature.enabled = Enable change client links and Finish links where appropriate
 
 customer_details.title = Your business details

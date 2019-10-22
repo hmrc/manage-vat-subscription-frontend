@@ -25,7 +25,6 @@ case class FeatureSwitchModel(
                                allowAgentBankAccountChange: Boolean,
                                showContactNumbersAndWebsite: Boolean,
                                languageFeatureEnabled: Boolean,
-                               useOverseasIndicatorEnabled: Boolean,
                                changeClientFeature: Boolean,
                                useNewAddressLookupFeature: Boolean,
                                accessibilityReportFeature: Boolean,
