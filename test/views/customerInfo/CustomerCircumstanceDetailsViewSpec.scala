@@ -643,7 +643,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "the allowAgentBankAccountChange feature is set to true" should {
 
           lazy val view = {
-            mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(true)
             views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
           }
@@ -668,11 +667,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             elementText("h1") shouldBe viewMessages.agentHeading
           }
 
-          "display the 'Change client' link" in {
+/*          "display the 'Change client' link" in {
             elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
             element("#change-client-link").attr("href") shouldBe
               controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-          }
+          }*/
 
           "display the Finish button" in {
             val finishSelector = "#finish"
@@ -695,7 +694,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "the allowAgentBankAccountChange feature is set to false" should {
 
           lazy val view = {
-            mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(false)
             views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
           }
@@ -711,7 +709,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
       "changeClient feature switch is off" should {
 
         lazy val view = {
-          mockConfig.features.changeClientFeature(false)
           views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
         }
 

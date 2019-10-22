@@ -30,6 +30,5 @@ class Features @Inject()(implicit config: Configuration) {
   val allowAgentBankAccountChange = new Feature(ConfigKeys.allowAgentBankAccountChange)
   val showContactNumbersAndWebsite = new Feature(ConfigKeys.contactNumbersAndWebsiteFeature)
   val useLanguageSelector = new Feature(ConfigKeys.useLanguageSelectorFeature)
-  val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
   val useVatReturnPeriodFrontend = new Feature(ConfigKeys.useVatReturnPeriodFrontend)
 }

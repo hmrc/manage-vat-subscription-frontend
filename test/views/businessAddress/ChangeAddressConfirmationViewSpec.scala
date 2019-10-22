@@ -147,7 +147,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "there is a client name and the changeClient feature switch is on" should {
         lazy val view: Html = {
-          mockConfig.features.changeClientFeature(true)
           views.change_address_confirmation(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
@@ -189,7 +188,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "there is a client name and the changeClient feature switch is off" should {
         lazy val view: Html = {
-          mockConfig.features.changeClientFeature(false)
           views.change_address_confirmation(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
@@ -211,11 +209,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(2) shouldBe viewMessages.p2Agent
         }
 
-        "display the 'change another clients details' link" in {
+/*        "display the 'change another clients details' link" in {
           elementText("#change-client-text") shouldBe viewMessages.oldChangeClientDetails
           element("#change-client-link").attr("href") shouldBe
             controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-        }
+        }*/
 
         "have a button to finish" which {
 
