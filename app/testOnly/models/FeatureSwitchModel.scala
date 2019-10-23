@@ -16,15 +16,14 @@
 
 package testOnly.models
 
-case class FeatureSwitchModel(
-                               vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
-                               stubAgentClientLookup: Boolean,
-                               stubAddressLookup: Boolean,
-                               stubContactPreferences: Boolean,
-                               allowAgentBankAccountChange: Boolean,
-                               showContactNumbersAndWebsite: Boolean,
-                               languageFeatureEnabled: Boolean,
-                               useOverseasIndicatorEnabled: Boolean,
-                               changeClientFeature: Boolean,
-                               useVatReturnPeriodFrontend: Boolean
-                             )
+case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
+                              stubAgentClientLookup: Boolean,
+                              stubAddressLookup: Boolean,
+                              stubContactPreferences: Boolean,
+                              allowAgentBankAccountChange: Boolean,
+                              showContactNumbersAndWebsite: Boolean,
+                              languageFeatureEnabled: Boolean,
+                              useOverseasIndicatorEnabled: Boolean,
+                              changeClientFeature: Boolean,
+                              useVatReturnPeriodFrontend: Boolean,
+                              mtdSignUp: Boolean)
