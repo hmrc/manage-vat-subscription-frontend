@@ -51,7 +51,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
-            useNewAddressLookupFeature = appConfig.features.useNewAddressLookupFeature(),
             useVatReturnPeriodFrontend = appConfig.features.useVatReturnPeriodFrontend()
           )
         )
@@ -76,7 +75,6 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
     appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
-    appConfig.features.useNewAddressLookupFeature(model.useNewAddressLookupFeature)
     appConfig.features.useVatReturnPeriodFrontend(model.useVatReturnPeriodFrontend)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>

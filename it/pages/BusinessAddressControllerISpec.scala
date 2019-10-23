@@ -36,14 +36,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   val sessionVrnAndWelsh: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, "PLAY_LANG" -> "cy")
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
-  override def beforeEach() {
-    mockAppConfig.features.useNewAddressLookupFeature(false)
-    super.beforeEach()
-  }
-
-  override def afterEach() {
-    super.afterEach()
-  }
 
   "Calling the .show action" when {
 
@@ -76,58 +68,12 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
     def show(additionalCookies: Map[String, String] = session): WSResponse = get("/change-business-address/ppob-handoff", additionalCookies)
 
-    "A valid AddressLookupOnRampModel is returned from Address Lookup" should {
-
-      "render the page Redirect to AddressLookup" in {
-
-        mockAppConfig.features.stubAddressLookup(false)
-
-        given.user.isAuthenticated
-
-        And("A successful response with minimum details is returned for an Organisation")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
-
-        And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
-
-        When("I call to show the Business Address change page")
-        val res = show()
-
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI("redirect/url")
-        )
-      }
-
-      "render the page for a agent signed up to agent services" in {
-
-        mockAppConfig.features.stubAddressLookup(false)
-
-        given.agent.isSignedUpToAgentServices
-
-        And("A successful response with minimum details is returned for an Organisation")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
-
-        And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
-
-        When("I call to show the Customer Circumstances page")
-        val res = show()
-
-        res should have(
-          httpStatus(SEE_OTHER),
-          redirectURI("redirect/url")
-        )
-      }
-    }
-
     "Address-lookup-frontend Version2 is enabled" when {
 
       "the local language is set to Welsh" should {
 
         "handoff to address lookup frontend with the correct english and welsh messages" in {
 
-          mockAppConfig.features.useNewAddressLookupFeature(true)
           mockAppConfig.features.stubAddressLookup(false)
 
           given.user.isAuthenticated
@@ -171,7 +117,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         "handoff to address lookup frontend with the correct english and welsh messages" in {
 
-          mockAppConfig.features.useNewAddressLookupFeature(true)
           mockAppConfig.features.stubAddressLookup(false)
 
           given.user.isAuthenticated
@@ -212,25 +157,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       }
     }
 
-    "An Error Model is returned from Address Lookup" should {
-
-      "show internal server error" in {
-
-        mockAppConfig.features.stubAddressLookup(false)
-
-        given.agent.isSignedUpToAgentServices
-
-        And("a url is returned from the Address Lookup Service")
-        BusinessAddressStub.postInitJourney(BAD_REQUEST, AddressLookupOnRampModel("redirect/url"))
-
-        When("I call to show the Customer Circumstances page")
-        val res = show()
-
-        res should have(
-          httpStatus(INTERNAL_SERVER_ERROR)
-        )
-      }
-    }
   }
 
   "Calling BusinessAddressController.callback" when {

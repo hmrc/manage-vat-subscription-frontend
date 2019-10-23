@@ -44,7 +44,6 @@ object ConfigKeys {
   val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
-  val useNewAddressLookupFeature: String = "features.useNewAddressLookupFeature.enabled"
   val useVatReturnPeriodFrontend: String = "features.useVatReturnPeriodFrontend.enabled"
 
   // GOV UK
