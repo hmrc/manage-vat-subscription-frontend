@@ -292,7 +292,7 @@
     </div>
 }
 
-@newChangeClientLink = {
+@changeClientLink = {
         <p id="change-client-text">
             <a id="change-client-link"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
@@ -435,6 +435,6 @@
     </details>
 
     @if(user.isAgent){
-        @newChangeClientLink
+        @changeClientLink
     }
 }
