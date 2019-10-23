@@ -103,22 +103,22 @@ class CustomerDetailsSpec extends UnitSpec {
 
     "Deserialize from JSON" when {
 
-      "all optional fields are populated for release 10" in {
+      "all optional fields are populated" in {
         customerDetailsJsonMax.as[CustomerDetails](CustomerDetails.reads) shouldBe customerDetailsMax
       }
 
-      "no optional fields are returned for release 10" in {
+      "no optional fields are returned" in {
         customerDetailsJsonMin.as[CustomerDetails](CustomerDetails.reads) shouldBe customerDetailsMin
       }
     }
 
     "Serialize to JSON" when {
 
-      "all optional fields are populated for release 10" in {
+      "all optional fields are populated" in {
         Json.toJson(customerDetailsMax)(CustomerDetails.writes) shouldBe customerDetailsJsonMax
       }
 
-      "no optional fields are returned for release 10" in {
+      "no optional fields are returned" in {
         Json.toJson(customerDetailsMin)(CustomerDetails.writes) shouldBe customerDetailsJsonMin
       }
 

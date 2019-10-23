@@ -64,11 +64,11 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
 
   "Deserialize from JSON" when {
 
-    "succeeds when all registration fields are populated for release 10" in {
+    "succeeds when all registration fields are populated" in {
       customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads) shouldBe customerInformationModelMaxOrganisation
     }
 
-    "succeeds when optional values are not supplied for release 10" in {
+    "succeeds when optional values are not supplied" in {
       customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads) shouldBe customerInformationModelMin
     }
 
@@ -76,11 +76,11 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
 
   "Serialize to JSON" when {
 
-    "succeeds when all registration fields are populated for release 10" in {
+    "succeeds when all registration fields are populated" in {
       Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes) shouldBe customerInformationJsonMaxOrganisation
     }
 
-    "succeeds when optional values are not supplied for release 10" in {
+    "succeeds when optional values are not supplied" in {
       Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes) shouldBe customerInformationJsonMin
     }
   }
