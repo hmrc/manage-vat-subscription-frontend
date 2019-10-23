@@ -36,13 +36,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   val sessionVrnAndWelsh: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, "PLAY_LANG" -> "cy")
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
-  override def beforeEach() {
-    super.beforeEach()
-  }
-
-  override def afterEach() {
-    super.afterEach()
-  }
 
   "Calling the .show action" when {
 
