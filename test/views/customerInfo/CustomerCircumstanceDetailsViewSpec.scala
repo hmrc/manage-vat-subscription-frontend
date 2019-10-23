@@ -667,11 +667,13 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             elementText("h1") shouldBe viewMessages.agentHeading
           }
 
-/*          "display the 'Change client' link" in {
+          "display the 'Change client' link" in {
+            println("----------------------------AHHHHHHH---------------------------")
+            println(view)
             elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
             element("#change-client-link").attr("href") shouldBe
               controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-          }*/
+          }
 
           "display the Finish button" in {
             val finishSelector = "#finish"
@@ -703,20 +705,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           "not display the Change Bank Account details row" in {
             elementExtinct("#bank-details-text")
           }
-        }
-      }
-
-      "changeClient feature switch is off" should {
-
-        lazy val view = {
-          views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "not display the Finish button" in {
-          val finishSelector = "#finish-button"
-          elementExtinct(finishSelector)
         }
       }
 
