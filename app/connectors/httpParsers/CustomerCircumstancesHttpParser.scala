@@ -32,7 +32,7 @@ object CustomerCircumstancesHttpParser {
       response.status match {
         case Status.OK => {
           Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
-          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(true)).fold(
+          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads).fold(
             invalid => {
               Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
               Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")

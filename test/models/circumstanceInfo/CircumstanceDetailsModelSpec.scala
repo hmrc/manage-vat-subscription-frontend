@@ -65,42 +65,23 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
   "Deserialize from JSON" when {
 
     "succeeds when all registration fields are populated for release 10" in {
-      customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads(true)) shouldBe customerInformationModelMaxOrganisation
-    }
-
-    "succeeds when all registration fields are populated for release 8" in {
-      customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMaxOrganisationR8
+      customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads) shouldBe customerInformationModelMaxOrganisation
     }
 
     "succeeds when optional values are not supplied for release 10" in {
-      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(true)) shouldBe customerInformationModelMin
+      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads) shouldBe customerInformationModelMin
     }
 
-    "succeeds when optional values are not supplied for release 8" in {
-      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMinR8
-    }
-
-    "succeeds when optional values are not supplied for release 8, and overseas is set to false, even if true in Json" in {
-      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMinR8
-    }
   }
 
   "Serialize to JSON" when {
 
     "succeeds when all registration fields are populated for release 10" in {
-      Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes(true)) shouldBe customerInformationJsonMaxOrganisation
-    }
-
-    "succeeds when all registration fields are populated for release 8 (no overseas indicator written to json)" in {
-      Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes(false)) shouldBe customerInformationJsonMaxOrganisationR8
+      Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes) shouldBe customerInformationJsonMaxOrganisation
     }
 
     "succeeds when optional values are not supplied for release 10" in {
-      Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)) shouldBe customerInformationJsonMin
-    }
-
-    "succeeds when optional values are not supplied for release 8" in {
-      Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(false)) shouldBe customerInformationJsonMinR8
+      Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes) shouldBe customerInformationJsonMin
     }
   }
 }

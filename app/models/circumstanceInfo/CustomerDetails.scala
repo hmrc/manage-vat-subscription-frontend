@@ -48,8 +48,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
   private val welshIndicatorPath = __ \ "welshIndicator"
   private val overseasIndicatorPath = __ \ "overseasIndicator"
 
-  implicit val reads: Boolean => Reads[CustomerDetails] = isRelease10 =>
-    if(isRelease10) {
+  implicit val reads =
       for {
         firstName <- firstNamePath.readOpt[String]
         lastname <- lastNamePath.readOpt[String]
@@ -67,26 +66,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         hasFlatRateScheme,
         overseasIndicator
       )
-    } else {
-      for {
-        firstName <- firstNamePath.readOpt[String]
-        lastname <- lastNamePath.readOpt[String]
-        orgName <- organisationNamePath.readOpt[String]
-        tradingName <- tradingNamePath.readOpt[String]
-        welshIndicator <- welshIndicatorPath.readOpt[Boolean]
-        hasFlatRateScheme <- hasFrsPath.read[Boolean]
-      } yield CustomerDetails(
-        firstName,
-        lastname,
-        orgName,
-        tradingName,
-        welshIndicator,
-        hasFlatRateScheme,
-        overseasIndicator = false
-      )
-    }
 
-  implicit val writes: Boolean => Writes[CustomerDetails] = isRelease10 => Writes {
+  implicit val writes: Writes[CustomerDetails] = Writes {
     model =>
       jsonObjNoNulls(
         "firstName" -> model.firstName,
@@ -94,7 +75,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         "organisationName" -> model.organisationName,
         "tradingName" -> model.tradingName,
         "welshIndicator" -> model.welshIndicator,
-        "hasFlatRateScheme" -> model.hasFlatRateScheme
-      ) ++ (if(isRelease10) Json.obj("overseasIndicator" -> model.overseasIndicator) else Json.obj())
+        "hasFlatRateScheme" -> model.hasFlatRateScheme,
+        "overseasIndicator" -> model.overseasIndicator)
   }
 }
