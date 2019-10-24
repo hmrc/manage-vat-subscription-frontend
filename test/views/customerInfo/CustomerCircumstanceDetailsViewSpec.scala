@@ -668,8 +668,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           }
 
           "display the 'Change client' link" in {
-            println("----------------------------AHHHHHHH---------------------------")
-            println(view)
             elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
             element("#change-client-link").attr("href") shouldBe
               controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
