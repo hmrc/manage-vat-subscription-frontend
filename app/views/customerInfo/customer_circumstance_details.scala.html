@@ -292,17 +292,7 @@
     </div>
 }
 
-@oldChangeClientLink = {
-    @if(!appConfig.features.changeClientFeature()) {
-        <p id="change-client-text">
-            @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link"
-            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
-        </p>
-    }
-}
-@newChangeClientLink = {
-    @if(appConfig.features.changeClientFeature()) {
+@changeClientLink = {
         <p id="change-client-text">
             <a id="change-client-link"
             href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
@@ -313,7 +303,6 @@
             href="@appConfig.agentClientLookupAgentAction"
             role="button">@messages("common.finish")
         </a>
-    }
 }
 
 @views.html.main_template(
@@ -431,10 +420,6 @@
         </dl>
     </div>
 
-    @if(user.isAgent) {
-        @oldChangeClientLink
-    }
-
     <details>
         <summary>
             <span class="summary" >@messages("customer_details.changeNotListed")</span>
@@ -450,6 +435,6 @@
     </details>
 
     @if(user.isAgent){
-        @newChangeClientLink
+        @changeClientLink
     }
 }

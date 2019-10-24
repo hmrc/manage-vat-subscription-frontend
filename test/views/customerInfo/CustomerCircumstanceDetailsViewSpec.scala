@@ -643,7 +643,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "the allowAgentBankAccountChange feature is set to true" should {
 
           lazy val view = {
-            mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(true)
             views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
           }
@@ -695,7 +694,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "the allowAgentBankAccountChange feature is set to false" should {
 
           lazy val view = {
-            mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(false)
             views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
           }
@@ -705,21 +703,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           "not display the Change Bank Account details row" in {
             elementExtinct("#bank-details-text")
           }
-        }
-      }
-
-      "changeClient feature switch is off" should {
-
-        lazy val view = {
-          mockConfig.features.changeClientFeature(false)
-          views.html.customerInfo.customer_circumstance_details(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "not display the Finish button" in {
-          val finishSelector = "#finish-button"
-          elementExtinct(finishSelector)
         }
       }
 
