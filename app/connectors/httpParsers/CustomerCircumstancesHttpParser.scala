@@ -16,27 +16,23 @@
 
 package connectors.httpParsers
 
-import config.features.Features
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import play.api.http.Status
-import play.api.{Configuration, Logger, Play}
+import play.api.Logger
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 object CustomerCircumstancesHttpParser {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
-    implicit val config: Configuration = Play.current.configuration
-    private val features: Features = new Features
-
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CircumstanceDetails] = {
 
       response.status match {
         case Status.OK => {
           Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
-          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(features.useOverseasIndicator())).fold(
+          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads).fold(
             invalid => {
               Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
               Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")

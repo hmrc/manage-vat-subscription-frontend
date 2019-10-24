@@ -203,7 +203,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes))
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -236,7 +236,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes))
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -269,7 +269,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes))
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
@@ -317,7 +317,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes))
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))

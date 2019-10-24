@@ -73,9 +73,9 @@ object CircumstanceDetails extends JsonReadUtil {
   private val pendingChangesPath = __ \ "pendingChanges"
   private val partyTypePath = __ \ "partyType"
 
-  implicit val reads: Boolean => Reads[CircumstanceDetails] = isRelease10 => (
+  implicit val reads: Reads[CircumstanceDetails] = (
     mandationStatusPath.read[MandationStatus] and
-      customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isRelease10)) and
+      customerDetailsPath.read[CustomerDetails] and
       flatRateSchemePath.readOpt[FlatRateScheme] and
       ppobPath.read[PPOB] and
       bankDetailsPath.readOpt[BankDetails] and
@@ -86,9 +86,9 @@ object CircumstanceDetails extends JsonReadUtil {
       partyTypePath.readOpt[String]
     )(CircumstanceDetails.apply _)
 
-  implicit val writes: Boolean => Writes[CircumstanceDetails] = isRelease10 => (
+  implicit val writes: Writes[CircumstanceDetails] = (
     mandationStatusPath.write[MandationStatus] and
-      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes(isRelease10)) and
+      customerDetailsPath.write[CustomerDetails] and
       flatRateSchemePath.writeNullable[FlatRateScheme] and
       ppobPath.write[PPOB] and
       bankDetailsPath.writeNullable[BankDetails] and
