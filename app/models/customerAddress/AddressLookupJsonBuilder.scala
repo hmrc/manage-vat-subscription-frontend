@@ -31,35 +31,6 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
 
-  object Version1 {
-
-    val navTitle: String = ServiceNameUtil.generateHeader
-
-    val lookupPage: Map[String, String] = Map(
-      "title" -> messages("address_lookupPage.heading"),
-      "heading" -> messages("address_lookupPage.heading"),
-      "filterLabel" -> messages("address_lookupPage.filter"),
-      "postcodeLabel" -> messages("address_lookupPage.postcode")
-    )
-
-    val selectPage: Map[String, String] = Map(
-      "title" -> messages("address_lookupPage.selectPage.heading"),
-      "heading" -> messages("address_lookupPage.selectPage.heading"),
-      "editAddressLinkText" -> messages("address_lookupPage.selectPage.editLink"),
-      "submitLabel" -> messages("common.continue")
-    )
-
-    val editPage: Map[String, String] = Map(
-      "submitLabel" -> messages("common.continue")
-    )
-
-    val confirmPage: JsObject = Json.obj(
-      "title" -> messages("address_lookupPage.confirmPage.heading"),
-      "heading" -> messages("address_lookupPage.confirmPage.heading"),
-      "showConfirmChangeText" -> false
-    )
-  }
-
   object Version2 {
 
     val eng: Messages = Messages(Lang("en"), messages.messages)
