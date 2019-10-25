@@ -18,10 +18,11 @@
 @import helper.CSRF
 @import testOnly.models._
 @import testOnly.forms.FeatureSwitchForm
+@import views.html.templates.inputs.singleCheckbox
 
 @(form: Form[FeatureSwitchModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@views.html.main_template(title = messages("featureSwitch.title"), bodyClasses = None, appConfig = appConfig) {
+@views.html.main_template(title = messages("featureSwitch.title"), appConfig = appConfig) {
 
   @helper.form(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
       @CSRF.formField
@@ -31,15 +32,16 @@
               <legend>
                   <p class="bold-medium" style="margin-bottom:10px;">Manage VAT Subscription Frontend Features</p>
               </legend>
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.stubAgentClientLookupFeature), "Stub Agent Client Lookup")
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.stubAddressLookupFeature), "Stub Address Lookup")
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.stubContactPreferencesFeature), "Stub Contact Preferences")
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.allowAgentBankAccountChange), "Allow Agents to change Bank Account")
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.contactNumbersAndWebsiteFeature), "Show entry point to change contact numbers and website")
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useLanguageSelectorFeature), messages(ConfigKeys.useLanguageSelectorFeature))
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useOverseasIndicator), messages(ConfigKeys.useOverseasIndicator))
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.changeClientFeature), messages(ConfigKeys.changeClientFeature))
-              @views.html.templates.inputs.singleCheckbox(form(ConfigKeys.useVatReturnPeriodFrontend), "Use vat-return-period-frontend microservice")
+              @singleCheckbox(form(ConfigKeys.stubAgentClientLookupFeature), "Stub Agent Client Lookup")
+              @singleCheckbox(form(ConfigKeys.stubAddressLookupFeature), "Stub Address Lookup")
+              @singleCheckbox(form(ConfigKeys.stubContactPreferencesFeature), "Stub Contact Preferences")
+              @singleCheckbox(form(ConfigKeys.allowAgentBankAccountChange), "Allow Agents to change Bank Account")
+              @singleCheckbox(form(ConfigKeys.contactNumbersAndWebsiteFeature), "Show entry point to change contact numbers and website")
+              @singleCheckbox(form(ConfigKeys.useLanguageSelectorFeature), messages(ConfigKeys.useLanguageSelectorFeature))
+              @singleCheckbox(form(ConfigKeys.useOverseasIndicator), messages(ConfigKeys.useOverseasIndicator))
+              @singleCheckbox(form(ConfigKeys.changeClientFeature), messages(ConfigKeys.changeClientFeature))
+              @singleCheckbox(form(ConfigKeys.useVatReturnPeriodFrontend), "Use vat-return-period-frontend microservice")
+              @singleCheckbox(form(ConfigKeys.mtdSignUpFeature), "MTD sign up enabled")
           </fieldset>
       </div>
 
@@ -47,9 +49,9 @@
                 <legend>
                     <p class="bold-medium" style="margin-bottom:10px;">Vat Subscription Backend Features</p>
                 </legend>
-                @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.stubDes"), "Use Vat-Subscription-Dynamic-Stub instead of DES (QA only)")
+                @singleCheckbox(form("vatSubscriptionFeatures.stubDes"), "Use Vat-Subscription-Dynamic-Stub instead of DES (QA only)")
 
-                @views.html.templates.inputs.singleCheckbox(form("vatSubscriptionFeatures.enableAnnualAccounting"), "Enable Annual Accounting")
+                @singleCheckbox(form("vatSubscriptionFeatures.enableAnnualAccounting"), "Enable Annual Accounting")
 
                 <fieldset>
                     <legend>
