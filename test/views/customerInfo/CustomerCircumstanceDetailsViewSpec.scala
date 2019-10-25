@@ -759,9 +759,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "client is non-MTDfB" should {
+      "client is non-MTDfB and the feature switch for MTD sign up is off" should {
 
-        lazy val view = views.html.customerInfo.customer_circumstance_details(customerInformationNonMtd)(user, messages, mockConfig)
+        lazy val view = {
+          mockConfig.features.mtdSignUp(false)
+          views.html.customerInfo.customer_circumstance_details(customerInformationNonMtd)(user, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "hide the making tax digital section" in {

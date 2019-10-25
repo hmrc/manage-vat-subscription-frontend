@@ -15,17 +15,18 @@
  *@
 
 @import models.circumstanceInfo.CircumstanceDetails
+@import models.circumstanceInfo.NonMTDfB
 
-@(circumstances: CircumstanceDetails)(implicit messages: Messages, appConfig: config.AppConfig)
+@(circumstances: CircumstanceDetails, vrn: String)(implicit messages: Messages, appConfig: config.AppConfig)
 
 <div>
   <dt id="opt-in-text" class="cya-question">
     @messages("customer_details.status")
   </dt>
   <dd id="opt-in" class="cya-answer">
-    @circumstances.pendingMandationStatus match {
-      case Some(_) => { @messages("customer_details.makingTaxDigital.optOutRequested") }
-      case None => { @messages("customer_details.makingTaxDigital.optedIn") }
+    @(circumstances.mandationStatus, circumstances.pendingMandationStatus) match {
+      case (_, Some(NonMTDfB)) | (NonMTDfB, None) => { @messages("customer_details.makingTaxDigital.optedOut") }
+      case _ => { @messages("customer_details.makingTaxDigital.optedIn") }
     }
   </dd>
   <dd class="cya-change">
@@ -37,9 +38,15 @@
           @messages("customer_details.pending")
         </span>
       }
+      case None if circumstances.mandationStatus == NonMTDfB => {
+        <a id="opt-in-status"
+           href="@appConfig.mtdSignUpUrl(vrn)"
+           aria-label="@messages("customer_details.makingTaxDigital.optOutChange.hidden")">
+          @messages("customer_details.makingTaxDigital.signUp")
+        </a>
+      }
       case None => {
         <a id="opt-in-status"
-           onclick="sentGAEvent('opt-out','change','change-mtd-status', false)"
            href="@appConfig.vatOptOutUrl"
            aria-label="@messages("customer_details.makingTaxDigital.optOutChange.hidden")">
           @messages("customer_details.makingTaxDigital.optOut")
