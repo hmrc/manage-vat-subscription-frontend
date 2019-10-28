@@ -44,15 +44,8 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
     mockConfig.features.useVatReturnPeriodFrontend(false)
+    mockConfig.features.mtdSignUp(true)
     SharedMetricRegistries.clear()
-  }
-
-  override def afterEach(): Unit = {
-    super.beforeEach()
-    mockConfig.features.showContactNumbersAndWebsite(true)
-    mockConfig.features.allowAgentBankAccountChange(false)
-    mockConfig.features.useLanguageSelector(true)
-    mockConfig.features.useVatReturnPeriodFrontend(false)
   }
 
   lazy val injector: Injector = app.injector

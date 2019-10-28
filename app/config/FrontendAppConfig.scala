@@ -78,6 +78,7 @@ trait AppConfig extends ServicesConfig {
   val contactPreferencesService: String
   def contactPreferencesUrl(vrn: String): String
   val vatOptOutUrl: String
+  val mtdSignUpUrl: String => String
   def languageMap: Map[String,Lang]
   val routeToSwitchLanguage: String => Call
   val accessibilityReportUrl: String
@@ -223,6 +224,7 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
     }
 
   override lazy val vatOptOutUrl: String = getString(Keys.vatOptOutUrl)
+  override lazy val mtdSignUpUrl: String => String = (vrn: String) => s"${getString(Keys.mtdSignUpUrl)}/$vrn"
 
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),

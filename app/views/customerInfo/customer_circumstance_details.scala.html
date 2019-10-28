@@ -415,11 +415,11 @@
             </dl>
         </div>
 
-    @if(circumstances.mandationStatus != NonMTDfB && user.isAgent){
+    @if(user.isAgent && !(circumstances.mandationStatus == NonMTDfB && !appConfig.features.mtdSignUp())) {
         <div id="mtd-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
-            @views.html.helpers.mtd_section_helper(circumstances)
+                @views.html.helpers.mtd_section_helper(circumstances, user.vrn)
             </dl>
         </div>
     }
