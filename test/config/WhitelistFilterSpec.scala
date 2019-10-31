@@ -16,39 +16,32 @@
 
 package config
 
-import mocks.MockAppConfig
-import org.scalatestplus.play.PlaySpec
-import org.scalatestplus.play.guice.GuiceOneServerPerSuite
-import play.api.{Application, Configuration}
+import org.jsoup.Jsoup
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.mvc.{Action, Call}
-import play.api.test.Helpers._
-import play.api.mvc.Results.Ok
 import play.api.test.FakeRequest
+import play.api.test.Helpers._
+import play.api.{Application, Configuration}
 import utils.TestUtil
 
 class WhitelistFilterSpec extends TestUtil {
 
+  val controllerRoute: String = controllers.routes.ChangeBusinessNameController.show().url
+
   override implicit lazy val app: Application =
     new GuiceApplicationBuilder()
-    .configure(Configuration(
-      "whitelist.enabled" -> true
-    ))
-    .routes({
-      case ("GET", "/hello-world") => Action(Ok("success"))
-      case _ => Action(Ok("failure"))
-    })
-    .build()
+      .configure(Configuration(
+        "whitelist.enabled" -> true
+      )).build()
 
   "WhitelistFilter" when {
 
     "supplied with a non-whitelisted IP" should {
 
-      lazy val fakeRequest = FakeRequest("GET", "/hello-world").withHeaders(
+      lazy val fakeRequest = FakeRequest("GET", controllerRoute).withHeaders(
         "True-Client-IP" -> "127.0.0.2"
       )
 
-      Call(fakeRequest.method, fakeRequest.uri)
+//      Call(fakeRequest.method, fakeRequest.uri)
 
       lazy val Some(result) = route(app, fakeRequest)
 
@@ -63,18 +56,18 @@ class WhitelistFilterSpec extends TestUtil {
 
     "supplied with a whitelisted IP" should {
 
-      lazy val fakeRequest = FakeRequest("GET", "/hello-world").withHeaders(
+      lazy val fakeRequest = FakeRequest("GET", controllerRoute).withHeaders(
         "True-Client-IP" -> "127.0.0.1"
       )
 
       lazy val Some(result) = route(app, fakeRequest)
 
-      "return status of 200" in {
-        status(result) shouldBe 200
+      "return status of 401" in {
+        status(result) shouldBe 401
       }
 
-      "return success" in {
-        contentAsString(result) shouldBe "success"
+      "return the session timeout page" in {
+        Jsoup.parse(bodyOf(result)).select("h1").text() shouldBe "Your session has timed out"
       }
     }
   }

@@ -16,21 +16,29 @@
 
 package controllers.returnFrequency
 
+import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.ReturnPeriodTestConstants._
+import assets.messages.ReturnFrequencyMessages
 import common.SessionKeys
 import controllers.ControllerBaseSpec
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentType, _}
-import assets.BaseTestConstants._
-import assets.messages.ReturnFrequencyMessages
+import views.html.returnFrequency.ChooseDatesView
 
 class ChooseDatesControllerSpec extends ControllerBaseSpec{
 
   object TestChooseDatesController extends ChooseDatesController(
-    messagesApi, mockAuthPredicate,mockInFlightReturnPeriodPredicate, mockCustomerDetailsService, serviceErrorHandler, mockConfig)
+    mockAuthPredicate,
+    mockInFlightReturnPeriodPredicate,
+    mockCustomerDetailsService,
+    serviceErrorHandler,
+    inject[ChooseDatesView],
+    mcc,
+    mockConfig,
+    ec)
 
   "ChooseDatesController 'show' method" when {
 
@@ -89,7 +97,7 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
             }
 
             s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
+              messages(Jsoup.parse(bodyOf(result)).select("h1").text()) shouldBe ReturnFrequencyMessages.ChoosePage.heading
             }
           }
 
@@ -111,11 +119,11 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
             }
 
             "have the January radio option selected" in {
-              Jsoup.parse(bodyOf(result)).select("#period-option-march").attr("checked") shouldBe "checked"
+              messages(Jsoup.parse(bodyOf(result)).select("#period-option-march").attr("checked")) shouldBe "checked"
             }
 
-            s"have the title 'Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePage.title
+            s"have the heading 'Choose the new VAT Return dates'" in {
+              messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ReturnFrequencyMessages.ChoosePage.heading
             }
           }
         }
@@ -229,8 +237,8 @@ class ChooseDatesControllerSpec extends ControllerBaseSpec{
               status(result) shouldBe Status.BAD_REQUEST
             }
 
-            s"have the title 'Error: Choose the new VAT Return dates'" in {
-              Jsoup.parse(bodyOf(result)).title() shouldBe ReturnFrequencyMessages.ChoosePageWithErrors.title
+            s"have the heading 'Choose the new VAT Return dates'" in {
+              messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ReturnFrequencyMessages.ChoosePageWithErrors.heading
             }
           }
         }

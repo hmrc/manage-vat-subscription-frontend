@@ -17,13 +17,11 @@
 package controllers.agentClientRelationship
 
 import audit.AuditService
-import audit.models.{AuthenticateAgentAuditModel, GetClientBusinessNameAuditModel}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthoriseAsAgentWithClient
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
@@ -31,12 +29,12 @@ import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import scala.concurrent.Future
 
 @Singleton
-class ConfirmClientVrnController @Inject()(val messagesApi: MessagesApi,
-                                           val authenticate: AuthoriseAsAgentWithClient,
+class ConfirmClientVrnController @Inject()(val authenticate: AuthoriseAsAgentWithClient,
                                            val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                            val serviceErrorHandler: ServiceErrorHandler,
                                            val auditService: AuditService,
-                                           implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                           val mcc: MessagesControllerComponents,
+                                           implicit val appConfig: AppConfig) extends FrontendController(mcc) with I18nSupport {
 
   def changeClient: Action[AnyContent] = authenticate.async {
     implicit user =>

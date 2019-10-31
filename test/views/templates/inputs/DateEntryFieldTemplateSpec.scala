@@ -16,12 +16,15 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.DateInputForm
 import play.api.data.Field
 import play.twirl.api.Html
+import testOnly.forms.test.DateInputForm
+import views.html.templates.inputs.DateEntryField
 import views.templates.TemplateBaseSpec
 
 class DateEntryFieldTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: DateEntryField = inject[DateEntryField]
 
   "Rendering the numberNoError input" should {
 
@@ -42,7 +45,7 @@ class DateEntryFieldTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
     )
 
-    val markup = views.html.templates.inputs.dateEntryField(field, label, formClass, hasErrors)
+    val markup = injectedView(field, label, formClass, hasErrors)
 
     "generate the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)

@@ -17,11 +17,10 @@
 package connectors
 
 import config.AppConfig
-import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
+import connectors.httpParsers.CustomerCircumstancesHttpParser
 import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import javax.inject.{Inject, Singleton}
-
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.UpdateReturnPeriod
@@ -34,7 +33,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SubscriptionConnector @Inject()(val http: HttpClient,
-                                      val config: AppConfig) {
+                                      val config: AppConfig,
+                                        customerCircumstancesHttpParser: CustomerCircumstancesHttpParser) {
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
@@ -45,7 +45,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
-    http.GET(url)(CustomerCircumstanceReads, headerCarrier, ec)
+    http.GET(url)(customerCircumstancesHttpParser.CustomerCircumstanceReads, headerCarrier, ec)
   }
 
   def updatePPOB(vrn: String, ppob: UpdatePPOB)

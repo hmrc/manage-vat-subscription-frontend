@@ -19,8 +19,11 @@ package views.helpers
 import models.circumstanceInfo._
 import org.jsoup.Jsoup
 import views.ViewBaseSpec
+import views.html.helpers.RenderAddress
 
 class RenderAddressSpec extends ViewBaseSpec {
+
+  val injectedView: RenderAddress = inject[RenderAddress]
 
   "The RenderAddress helper" when {
 
@@ -35,7 +38,7 @@ class RenderAddressSpec extends ViewBaseSpec {
         "GB"
       )
 
-      lazy val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      lazy val view = injectedView(address)(messages, mockConfig)
       lazy val document = Jsoup.parse(view.body)
 
       "Render address lines 1 and 2" in {
@@ -48,7 +51,7 @@ class RenderAddressSpec extends ViewBaseSpec {
     "Render only lines of an address that are populated" should {
       val address = PPOBAddress("1", None, None, None, None, None, "GB")
 
-      val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      val view = injectedView(address)(messages, mockConfig)
       val document = Jsoup.parse(view.body)
 
       "Render the first address line" in {
@@ -65,7 +68,7 @@ class RenderAddressSpec extends ViewBaseSpec {
     "Render only lines of an address that are populated and are required to display" should {
       val address = PPOBAddress("1", Some("2"), None, None, None, None, "GB")
 
-      val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      val view = injectedView(address)(messages, mockConfig)
       val document = Jsoup.parse(view.body)
 
       "Render the first address line" in {
@@ -89,7 +92,7 @@ class RenderAddressSpec extends ViewBaseSpec {
         Some("6"),
         "GB")
 
-      val view = views.html.helpers.render_address(address)(messages, mockConfig)
+      val view = injectedView(address)(messages, mockConfig)
       val document = Jsoup.parse(view.body)
 
       "Render the first address line" in {

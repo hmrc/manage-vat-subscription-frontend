@@ -19,14 +19,13 @@ package config
 import javax.inject.Inject
 import play.api.i18n.MessagesApi
 import play.api.mvc.Results.InternalServerError
-import play.api.mvc.{Request, RequestHeader, Result}
+import play.api.mvc.{Request, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.http.FrontendErrorHandler
-import views.html.errors.standardError
+import views.html.errors.StandardError
 
-import scala.concurrent.Future
-
-class ServiceErrorHandler @Inject()(val messagesApi: MessagesApi,
+class ServiceErrorHandler @Inject()(standardError: StandardError,
+                                    val messagesApi: MessagesApi,
                                     implicit val appConfig: AppConfig) extends FrontendErrorHandler {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)

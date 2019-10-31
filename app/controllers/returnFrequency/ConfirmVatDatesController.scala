@@ -27,12 +27,13 @@ import javax.inject.{Inject, Singleton}
 import models.User
 import models.returnFrequency._
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.{CustomerCircumstanceDetailsService, ReturnFrequencyService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import views.html.returnFrequency.ConfirmDatesView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
@@ -41,8 +42,10 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
                                           val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           val auditService: AuditService,
                                           val pendingReturnFrequency: InFlightReturnFrequencyPredicate,
+                                          confirmDatesView: ConfirmDatesView,
+                                          val mcc: MessagesControllerComponents,
                                           implicit val appConfig: AppConfig,
-                                          implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
+                                          implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   val show: Action[AnyContent] = (authenticate andThen pendingReturnFrequency) { implicit user =>
     user.session.get(SessionKeys.NEW_RETURN_FREQUENCY).fold {
@@ -50,7 +53,7 @@ class ConfirmVatDatesController @Inject()(val authenticate: AuthPredicate,
       Redirect(controllers.returnFrequency.routes.ChooseDatesController.show().url)
     } { newReturnFrequency =>
       ReturnPeriod(newReturnFrequency) match {
-        case Some(newFrequency) => Ok(views.html.returnFrequency.confirm_dates(newFrequency))
+        case Some(newFrequency) => Ok(confirmDatesView(newFrequency))
         case None => serviceErrorHandler.showInternalServerError
       }
     }

@@ -17,7 +17,6 @@
 package controllers.agentClientRelationship
 
 import common.SessionKeys
-import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import play.api.http.Status
 import play.api.test.Helpers._
@@ -25,11 +24,11 @@ import play.api.test.Helpers._
 class ConfirmClientVrnControllerSpec extends ControllerBaseSpec {
 
   object TestConfirmClientVrnControllerSpec extends ConfirmClientVrnController(
-    messagesApi,
     mockAuthAsAgentWithClient,
     mockCustomerDetailsService,
-    app.injector.instanceOf[ServiceErrorHandler],
+    serviceErrorHandler,
     mockAuditingService,
+    mcc,
     mockConfig
   )
 

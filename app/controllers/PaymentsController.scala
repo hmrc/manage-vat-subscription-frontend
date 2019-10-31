@@ -22,22 +22,23 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightRepaymentBankAccountPredicate}
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{CustomerCircumstanceDetailsService, PaymentsService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class PaymentsController @Inject()(val messagesApi: MessagesApi,
-                                   val authenticate: AuthPredicate,
+class PaymentsController @Inject()(val authenticate: AuthPredicate,
                                    val serviceErrorHandler: ServiceErrorHandler,
                                    val paymentsService: PaymentsService,
                                    val auditService: AuditService,
                                    val subscriptionService: CustomerCircumstanceDetailsService,
                                    val inFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate,
-                                   implicit val config: AppConfig) extends FrontendController with I18nSupport {
+                                   val mcc: MessagesControllerComponents,
+                                   implicit val config: AppConfig,
+                                   implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   val sendToPayments: Action[AnyContent] = (authenticate andThen inFlightRepaymentBankAccountPredicate).async { implicit user =>
     subscriptionService.getCustomerCircumstanceDetails(user.vrn).flatMap {

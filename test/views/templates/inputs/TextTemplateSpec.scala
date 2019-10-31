@@ -16,12 +16,15 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.TextInputForm
 import play.api.data.{Field, FormError}
 import play.twirl.api.Html
+import testOnly.forms.test.TextInputForm
+import views.html.templates.inputs.Text
 import views.templates.TemplateBaseSpec
 
 class TextTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: Text = inject[Text]
 
   "Rendering the text input" when {
 
@@ -52,7 +55,7 @@ class TextTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.text(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -82,7 +85,7 @@ class TextTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.text(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -114,7 +117,7 @@ class TextTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.text(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -140,7 +143,7 @@ class TextTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.text(field, labelText, None)
+      val markup = injectedView(field, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

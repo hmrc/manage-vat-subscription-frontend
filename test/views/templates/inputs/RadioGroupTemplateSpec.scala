@@ -16,13 +16,15 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.TextInputForm
 import play.api.data.{Field, FormError}
 import play.twirl.api.Html
-import views.html.templates.inputs.radioGroup
+import testOnly.forms.test.TextInputForm
+import views.html.templates.inputs.RadioGroup
 import views.templates.TemplateBaseSpec
 
 class RadioGroupTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: RadioGroup = inject[RadioGroup]
 
   val fieldName = "fieldName"
   val labelText = "labelText"
@@ -67,7 +69,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText, None)
+      val markup = injectedView(field, choices, labelText, None)
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
@@ -94,7 +96,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText, None)
+      val markup = injectedView(field, choices, labelText, None)
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
@@ -124,7 +126,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText, None)
+      val markup = injectedView(field, choices, labelText, None)
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }
@@ -155,7 +157,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = radioGroup(field, choices, labelText, Some(additionalContent))
+      val markup = injectedView(field, choices, labelText, Some(additionalContent))
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
   }

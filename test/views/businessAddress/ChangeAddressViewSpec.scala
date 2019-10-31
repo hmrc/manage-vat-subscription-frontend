@@ -21,13 +21,15 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.ViewBaseSpec
-import views.html.{businessAddress => views}
+import views.html.businessAddress.ChangeAddressView
 
 class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
 
+  val injectedView: ChangeAddressView = inject[ChangeAddressView]
+
   "the ChangeAddressConfirmationView for an individual" should {
 
-    lazy val view: Html = views.change_address()(user, messages, mockConfig)
+    lazy val view: Html = injectedView()(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
@@ -38,7 +40,7 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("h1") shouldBe viewMessages.heading
     }
 
-    s"have a the back link with correct text and url '${back}'" in {
+    s"have a the back link with correct text and url '$back'" in {
       elementText("#content > article > a.link-back") shouldBe back
       element("#content > article > a.link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
@@ -63,7 +65,7 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have a button to continue" which {
 
-      s"has the correct text of '${continue}" in {
+      s"has the correct text of '$continue" in {
         elementText("#content > article > a.button") shouldBe continue
       }
 

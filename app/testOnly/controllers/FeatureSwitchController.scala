@@ -19,21 +19,24 @@ package testOnly.controllers
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import testOnly.connectors.VatSubscriptionFeaturesConnector
 import testOnly.forms.FeatureSwitchForm
 import testOnly.models.FeatureSwitchModel
-import testOnly.views.html.{stubAddressLookup, stubAgentClientLookup}
+import testOnly.views.html.FeatureSwitchView
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSubscriptionFeaturesConnector,
-                                         val messagesApi: MessagesApi, implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport {
+class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSubscriptionFeaturesConnector,
+                                        featureSwitchView: FeatureSwitchView,
+                                        implicit val mcc: MessagesControllerComponents,
+                                        implicit val ec: ExecutionContext,
+                                        implicit val appConfig: AppConfig)
+  extends FrontendController(mcc) with I18nSupport {
 
   val featureSwitch: Action[AnyContent] = Action.async { implicit request =>
 
@@ -56,7 +59,7 @@ class FeatureSwitchController @Inject()( vatSubscriptionFeaturesConnector: VatSu
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
-        Ok(testOnly.views.html.featureSwitch(form))
+        Ok(featureSwitchView(form))
     }
   }
 

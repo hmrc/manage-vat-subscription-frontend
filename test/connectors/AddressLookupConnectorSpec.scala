@@ -36,7 +36,6 @@ import assets.BaseTestConstants._
 import assets.CustomerAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
-import models.core.ErrorModel
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
@@ -83,7 +82,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
     val continueUrl = "continue-url"
     def initaliseJourneyResult: Future[HttpPostResult[AddressLookupOnRampModel]] =
-      TestAddressLookupConnector.initialiseJourney(AddressLookupJsonBuilder(continueUrl)(user,messages, mockConfig))
+      TestAddressLookupConnector.initialiseJourney(AddressLookupJsonBuilder(continueUrl)(user, messagesApi, mockConfig))
 
     "for initialiseJourney method" when {
 

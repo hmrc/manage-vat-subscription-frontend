@@ -16,31 +16,29 @@
 
 package controllers.predicates
 
-import javax.inject.{Inject, Singleton}
-
 import audit.AuditService
-import audit.models.AuthenticateAgentAuditModel
 import common.{EnrolmentKeys, SessionKeys}
 import config.{AppConfig, ServiceErrorHandler}
-import models.{AgentUser, User}
+import javax.inject.{Inject, Singleton}
+import models.User
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
-import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import services.EnrolmentsAuthService
+import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
                                            val auditService: AuditService,
                                            val serviceErrorHandler: ServiceErrorHandler,
-                                           implicit val messagesApi: MessagesApi,
-                                           implicit val appConfig: AppConfig
-                                          )
-  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
+                                           override val mcc: MessagesControllerComponents,
+                                           implicit val appConfig: AppConfig,
+                                           implicit val executionContext: ExecutionContext)
+  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] {
 
   private def delegatedAuthRule(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
@@ -51,8 +49,9 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
     case Enrolment("HMRC-AS-AGENT", EnrolmentIdentifier(_, arnValue) :: _, _, _) => arnValue
   }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
 
+  override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
-    implicit val req = request
+    implicit val req: Request[A] = request
     request.session.get(SessionKeys.CLIENT_VRN) match {
       case Some(vrn) =>
         Logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")

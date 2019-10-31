@@ -16,13 +16,16 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.TextInputForm
 import play.api.data.{Field, FormError}
 import play.twirl.api.Html
+import testOnly.forms.test.TextInputForm
+import views.html.templates.inputs.CheckboxList
 import views.templates.TemplateBaseSpec
-import views.html.templates.inputs.checkboxList
 
 class CheckboxListTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: CheckboxList = inject[CheckboxList]
+
   val fieldName: String = "fieldName"
   val question: String = "question"
   val choices: Seq[(String, String)] = Seq(("choice1", "value1"), ("choice2", "value2"), ("choice3", "value3"), ("choice4", "value4"))
@@ -68,7 +71,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices, subtext)
+      val markup = injectedView(field, question, choices, subtext)
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -99,7 +102,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices, None, Seq("value2", "value4"))
+      val markup = injectedView(field, question, choices, None, Seq("value2", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -130,7 +133,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices, None, Seq("value1", "value2", "value3", "value4"))
+      val markup = injectedView(field, question, choices, None, Seq("value1", "value2", "value3", "value4"))
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }
@@ -164,7 +167,7 @@ class CheckboxListTemplateSpec extends TemplateBaseSpec {
          """.stripMargin
       )
 
-      val markup = checkboxList(field, question, choices)
+      val markup = injectedView(field, question, choices)
 
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)
     }

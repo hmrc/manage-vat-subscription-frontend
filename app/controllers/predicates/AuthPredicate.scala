@@ -22,23 +22,30 @@ import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{ActionBuilder, ActionFunction, Request, Result}
+import play.api.mvc._
 import services.EnrolmentsAuthService
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
+import views.html.errors.NotSignedUpView
+import views.html.errors.agent.UnauthorisedView
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
-                              val messagesApi: MessagesApi,
+class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
+                              enrolmentsAuthService: EnrolmentsAuthService,
                               val authenticateAsAgentWithClient: AuthoriseAsAgentWithClient,
                               val serviceErrorHandler: ServiceErrorHandler,
-                              implicit val appConfig: AppConfig
-                             ) extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[User] with ActionFunction[Request, User] {
+                              unauthorisedView: UnauthorisedView,
+                              notSignedUpView: NotSignedUpView,
+                              override val mcc: MessagesControllerComponents,
+                              implicit val appConfig: AppConfig,
+                              implicit val executionContext: ExecutionContext)
+  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] {
 
+  override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
 
     implicit val req: Request[A] = request
@@ -70,7 +77,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     }
     else {
       Logger.debug(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-      Future.successful(Forbidden(views.html.errors.agent.unauthorised()))
+      Future.successful(Forbidden(unauthorisedView()))
     }
 
   private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
@@ -80,7 +87,7 @@ class AuthPredicate @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
     }
     else {
       Logger.debug(s"[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment. $enrolments")
-      Future.successful(Forbidden(views.html.errors.not_signed_up()))
+      Future.successful(Forbidden(notSignedUpView()))
     }
 }
 

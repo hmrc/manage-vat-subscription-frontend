@@ -16,18 +16,19 @@
 
 package mocks
 
+import _root_.services.EnrolmentsAuthService
+import assets.BaseTestConstants._
+import audit.AuditService
 import controllers.predicates._
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.mockito.stubbing.OngoingStubbing
-import _root_.services.EnrolmentsAuthService
-import audit.AuditService
-import config.ServiceErrorHandler
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
-import assets.BaseTestConstants._
-import mocks.services.MockCustomerCircumstanceDetailsService
+import views.html.errors.agent.UnauthorisedView
+import views.html.errors.{ChangePendingView, NotSignedUpView}
 
 import scala.concurrent.Future
 
@@ -53,34 +54,42 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
   val mockAuthAsAgentWithClient: AuthoriseAsAgentWithClient =
     new AuthoriseAsAgentWithClient(
       mockEnrolmentsAuthService,
-      injector.instanceOf[AuditService],
-      injector.instanceOf[ServiceErrorHandler],
-      messagesApi,
-      mockConfig
+      inject[AuditService],
+      serviceErrorHandler,
+      mcc,
+      mockConfig,
+      ec
     )
 
   val mockAuthPredicate: AuthPredicate =
     new AuthPredicate(
-      mockEnrolmentsAuthService,
       messagesApi,
+      mockEnrolmentsAuthService,
       mockAuthAsAgentWithClient,
-      injector.instanceOf[ServiceErrorHandler],
-      mockConfig
+      serviceErrorHandler,
+      inject[UnauthorisedView],
+      inject[NotSignedUpView],
+      mcc,
+      mockConfig,
+      ec
     )
 
   val mockAgentOnlyAuthPredicate: AuthoriseAsAgentOnly =
     new AuthoriseAsAgentOnly(
       mockEnrolmentsAuthService,
-      messagesApi,
-      injector.instanceOf[ServiceErrorHandler],
-      mockConfig
+      serviceErrorHandler,
+      inject[UnauthorisedView],
+      mcc,
+      mockConfig,
+      ec
     )
 
   val mockInFlightPPOBPredicate: InFlightPPOBPredicate =
     new InFlightPPOBPredicate(
       mockCustomerDetailsService,
       serviceErrorHandler,
-      messagesApi,
+      inject[ChangePendingView],
+      mcc,
       mockConfig,
       ec
     )
@@ -89,7 +98,7 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
     new InFlightReturnFrequencyPredicate(
       mockCustomerDetailsService,
       serviceErrorHandler,
-      messagesApi,
+      mcc,
       mockConfig,
       ec
     )
@@ -98,7 +107,7 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
     new InFlightRepaymentBankAccountPredicate(
       mockCustomerDetailsService,
       serviceErrorHandler,
-      messagesApi,
+      mcc,
       mockConfig,
       ec
     )

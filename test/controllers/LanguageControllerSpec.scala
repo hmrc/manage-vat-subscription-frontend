@@ -16,16 +16,15 @@
 
 package controllers
 
-import play.api.Play
 import play.api.http.Status.SEE_OTHER
-import play.api.mvc.{AnyContentAsEmpty, Cookie}
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 
 class LanguageControllerSpec extends ControllerBaseSpec {
-  lazy val controller = new LanguageController(mockConfig, messagesApi)
+  lazy val controller = new LanguageController(mockConfig, mcc)
 
-  lazy val emptyFakeRequest = FakeRequest()
+  lazy val emptyFakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
   lazy val fRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest("get", "aurl").withHeaders(REFERER -> "thisIsMyNextLocation")
 
@@ -35,14 +34,14 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         lazy val result = controller.switchToLanguage("english")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
+        cookies(result).get("PLAY_LANG").get.value shouldBe "en"
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
       "Welsh is passed in" in {
         lazy val result = controller.switchToLanguage("cymraeg")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "cy", None, "/", None, secure = false, httpOnly = true))
+        cookies(result).get("PLAY_LANG").get.value shouldBe "cy"
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
     }
@@ -51,7 +50,7 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         lazy val result = controller.switchToLanguage("dovahtongue")(fRequest)
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
+        cookies(result).get("PLAY_LANG").get.value shouldBe "en"
         redirectLocation(result) shouldBe Some("thisIsMyNextLocation")
       }
     }
@@ -62,7 +61,7 @@ class LanguageControllerSpec extends ControllerBaseSpec {
         val expectedResponse = controllers.routes.CustomerCircumstanceDetailsController.redirect().url
 
         status(result) shouldBe SEE_OTHER
-        cookies(result).get(Play.langCookieName(messagesApi)) shouldBe Some(Cookie("PLAY_LANG", "en", None, "/", None, secure = false, httpOnly = true))
+        cookies(result).get("PLAY_LANG").get.value shouldBe "en"
         redirectLocation(result) shouldBe Some(expectedResponse)
       }
     }

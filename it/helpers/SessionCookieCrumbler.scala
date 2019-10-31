@@ -16,15 +16,18 @@
 
 package helpers
 
-import play.api.libs.Crypto
+import play.api.http.SecretConfiguration
+import play.api.libs.crypto.DefaultCookieSigner
 import play.api.libs.ws.{WSCookie, WSResponse}
 import uk.gov.hmrc.crypto.{CompositeSymmetricCrypto, Crypted}
 
 object SessionCookieCrumbler {
+
   private val cookieKey = "gvBoGdgzqG1AarzF1LY0zQ=="
+  private val cookieSigner = new DefaultCookieSigner(SecretConfiguration(cookieKey))
 
   private def crumbleCookie(cookie: WSCookie) = {
-    val crypted = Crypted(cookie.value.get)
+    val crypted = Crypted(cookie.value)
     val decrypted = CompositeSymmetricCrypto.aesGCM(cookieKey, Seq()).decrypt(crypted).value
 
     def decode(data: String): Map[String, String] = {
@@ -34,7 +37,7 @@ object SessionCookieCrumbler {
 
       val key = "yNhI04vHs9<_HWbC`]20u`37=NGLGYY5:0Tg5?y`W<NoJnXWqmjcgZBec@rOxb^G".getBytes
 
-      if (Crypto.sign(map, key) != mac) {
+      if (cookieSigner.sign(map, key) != mac) {
         throw new RuntimeException("Cookie MAC didn't match content, this should never happen")
       }
       val Regex = """(.*)=(.*)""".r

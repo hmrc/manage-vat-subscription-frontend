@@ -16,16 +16,16 @@
 
 package controllers.predicates
 
-import assets.messages.{AgentJourneyDisabledPageMessages, AgentUnauthorisedPageMessages}
+import assets.BaseTestConstants._
+import assets.messages.AgentUnauthorisedPageMessages
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
-import assets.BaseTestConstants._
+import play.api.test.Helpers._
 
 import scala.concurrent.Future
-import play.api.test.Helpers._
 
 class AuthoriseAsAgentOnlySpec extends MockAuth {
 
@@ -59,7 +59,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
         }
 
         "render the Unauthorised Agent page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe AgentUnauthorisedPageMessages.pageHeading
         }
       }
     }
@@ -85,7 +85,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
     "a user with no active session" should {
 
-      lazy val result = target(request)
+      lazy val result = await(target(request))
 
       "return 303 (Redirect)" in {
         mockMissingBearerToken()
@@ -101,7 +101,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
       "return 500 (Internal Server Error)" in {
         mockUnauthorised()
-        val result = target(request)
+        val result = await(target(request))
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }

@@ -19,33 +19,36 @@ package views.helpers
 import assets.messages.ReturnFrequencyMessages
 import models.returnFrequency._
 import views.ViewBaseSpec
+import views.html.helpers.RenderReturnFrequency
 
 class RenderReturnFrequencySpec extends ViewBaseSpec {
+
+  val injectedView: RenderReturnFrequency = inject[RenderReturnFrequency]
 
   "The RenderReturnFrequency helper" should {
 
     "Render the correct text for a Jan quarter" in {
-      val view = views.html.helpers.render_return_frequency(Jan)(messages)
+      val view = injectedView(Jan)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option1Jan
     }
 
     "Render the correct text for a Feb quarter" in {
-      val view = views.html.helpers.render_return_frequency(Feb)(messages)
+      val view = injectedView(Feb)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option2Feb
     }
 
     "Render the correct text for a March quarter" in {
-      val view = views.html.helpers.render_return_frequency(Mar)(messages)
+      val view = injectedView(Mar)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option3Mar
     }
 
     "Render the correct text for a Monthly quarter" in {
-      val view = views.html.helpers.render_return_frequency(Monthly)(messages)
+      val view = injectedView(Monthly)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option4Monthly
     }
 
     "Render the correct text for Annual" in {
-      val view = views.html.helpers.render_return_frequency(Annual)(messages)
+      val view = injectedView(Annual)(messages)
       view.body.trim shouldBe ReturnFrequencyMessages.option5Annually
     }
   }

@@ -20,8 +20,11 @@ import assets.messages.{BaseMessages, ChangePendingMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.errors.ChangePendingView
 
 class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
+
+  val injectedView: ChangePendingView = inject[ChangePendingView]
 
   object Selectors {
     val heading = "h1"
@@ -34,7 +37,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.email")(user, messages, mockConfig)
+    lazy val view = injectedView("changePending.email")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct title" in {
@@ -72,7 +75,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.ppob")(user, messages, mockConfig)
+    lazy val view = injectedView("changePending.ppob")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct information in the first paragraph including ppob change" in {
@@ -82,7 +85,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.landline")(user, messages, mockConfig)
+    lazy val view = injectedView("changePending.landline")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct information in the first paragraph including landine change" in {
@@ -92,7 +95,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.mobile")(user, messages, mockConfig)
+    lazy val view = injectedView("changePending.mobile")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct information in the first paragraph including mobile change" in {
@@ -102,7 +105,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
   "The change pending view" should {
 
-    lazy val view = views.html.errors.changePending("changePending.website")(user, messages, mockConfig)
+    lazy val view = injectedView("changePending.website")(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct information in the first paragraph including website change" in {

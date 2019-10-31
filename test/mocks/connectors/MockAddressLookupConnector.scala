@@ -22,7 +22,7 @@ import models.customerAddress.{AddressLookupOnRampModel, AddressModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future

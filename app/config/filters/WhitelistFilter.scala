@@ -16,12 +16,11 @@
 
 package config.filters
 
-import javax.inject.{Inject, Singleton}
-
 import akka.stream.Materializer
 import config.AppConfig
-import org.asynchttpclient.util.HttpConstants.Methods
+import javax.inject.{Inject, Singleton}
 import play.api.mvc.{Call, RequestHeader, Result}
+import play.shaded.ahc.org.asynchttpclient.util.HttpConstants.Methods
 import uk.gov.hmrc.whitelist.AkamaiWhitelistFilter
 
 import scala.concurrent.Future

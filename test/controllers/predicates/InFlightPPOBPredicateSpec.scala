@@ -51,7 +51,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the 'change pending' error page" in {
-        document.title shouldBe ChangePendingMessages.title
+        messages(document.select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -80,7 +80,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the 'change pending' error page" in {
-        document.title shouldBe ChangePendingMessages.title
+        messages(document.select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -97,7 +97,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the 'change pending' error page" in {
-        document.title shouldBe ChangePendingMessages.title
+        messages(document.select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -114,7 +114,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the 'change pending' error page" in {
-        document.title shouldBe ChangePendingMessages.title
+        messages(document.select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -131,7 +131,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the 'change pending' error page" in {
-        document.title shouldBe ChangePendingMessages.title
+        messages(document.select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -148,7 +148,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the technical difficulties page" in {
-        document.title shouldBe "There is a problem with the service - VAT - GOV.UK"
+        messages(document.title) shouldBe "There is a problem with the service - VAT - GOV.UK"
       }
     }
   }

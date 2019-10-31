@@ -33,14 +33,15 @@ import scala.concurrent.ExecutionContext
 class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService {
 
   object TestPaymentController extends PaymentsController(
-    messagesApi,
     mockAuthPredicate,
     serviceErrorHandler,
     mockPaymentsService,
     mockAuditingService,
     mockCustomerDetailsService,
     mockInFlightRepaymentBankAccountPredicate,
-    mockConfig
+    mcc,
+    mockConfig,
+    ec
   )
 
   "Calling the sendToPayments method for an individual" when {

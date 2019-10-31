@@ -18,12 +18,15 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import views.html.GovukWrapper
 
 class GovUkWrapperSpec extends ViewBaseSpec {
 
+  val injectedView: GovukWrapper = inject[GovukWrapper]
+
   "Gov Uk Wrapper" should {
 
-    lazy val view = views.html.govuk_wrapper(appConfig = mockConfig, title = "test")(request = request, messages = messages)
+    lazy val view = injectedView(appConfig = mockConfig, title = "test")(request = request, messages = messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "contain a link to the Accessibility statement" which {

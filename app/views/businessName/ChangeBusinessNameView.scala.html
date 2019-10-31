@@ -1,0 +1,60 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import templates.Headings
+@import helpers.BackToBusinessDetails
+
+@this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails)
+
+@(organisationName: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+
+@mainTemplate(
+    title = messages("change_business_name.title"),
+    bodyClasses = None,
+    appConfig = appConfig) {
+
+    @backToBusinessDetails()
+
+    @headings(messages("change_business_name.h1"))
+
+    <p >
+        @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
+        @messages("change_business_name.p2")
+    </p>
+
+    <p>@messages("change_business_name.p3")</p>
+    <ul class="list list-bullet">
+        <li>@Html(messages("change_business_name.bullet1"))</li>
+        <li>@Html(messages("change_business_name.bullet2"))</li>
+    </ul>
+
+    <p>@messages("change_business_name.p4")</p>
+
+    <p>@messages("change_business_name.p5")</p>
+    <ul class="list list-bullet">
+        <li>
+            <a href="@appConfig.govUkVat484Form" target="_blank">@messages("change_business_name.p5.bullet1")</a>
+        </li>
+        <li>@messages("change_business_name.p5.bullet2")</li>
+        <li>@messages("change_business_name.p5.bullet3")</li>
+    </ul>
+
+    <a id="continue"
+       target="_blank"
+       href="@controllers.routes.ChangeBusinessNameController.handOffToCOHO().url"
+       type="submit">@messages("change_business_name.link")</a>
+
+}

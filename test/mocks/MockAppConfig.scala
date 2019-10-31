@@ -18,15 +18,12 @@ package mocks
 
 import config.AppConfig
 import config.features.Features
-import play.api.{Configuration, Mode}
-import play.api.Mode.Mode
+import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
 class MockAppConfig(implicit val runModeConfiguration: Configuration) extends AppConfig {
-
-  override val mode: Mode = Mode.Test
 
   override val reportAProblemPartialUrl: String = ""
   override val reportAProblemNonJSUrl: String = ""

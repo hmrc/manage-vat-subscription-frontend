@@ -17,12 +17,15 @@
 package views.businessName
 
 import assets.CustomerDetailsTestConstants.orgName
-import assets.messages.{BaseMessages,ChangeBusinessNamePageMessages => viewMessages}
+import assets.messages.{BaseMessages, ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.businessName.ChangeBusinessNameView
 
 class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
+
+  val injectedView: ChangeBusinessNameView = inject[ChangeBusinessNameView]
 
   "Rendering the Change Business Name page" should {
 
@@ -43,14 +46,14 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
       val backLink = ".link-back"
     }
 
-    lazy val view = views.html.businessName.change_business_name(orgName)(user, messages, mockConfig)
+    lazy val view = injectedView(orgName)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.title}'" in {
       document.title shouldBe viewMessages.title
     }
 
-    s"have a the back link with correct text and url '${back}'" in {
+    s"have a the back link with correct text and url '$back'" in {
       elementText(Selectors.backLink) shouldBe back
       element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
