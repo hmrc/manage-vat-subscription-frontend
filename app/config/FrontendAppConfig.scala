@@ -16,8 +16,6 @@
 
 package config
 
-import java.util.Base64
-
 import config.features.Features
 import config.{ConfigKeys => Keys}
 import javax.inject.{Inject, Singleton}
@@ -33,10 +31,6 @@ import scala.io.Source
 trait AppConfig {
   val reportAProblemPartialUrl: String
   val reportAProblemNonJSUrl: String
-  val whitelistEnabled: Boolean
-  val whitelistedIps: Seq[String]
-  val whitelistExcludedPaths: Seq[Call]
-  val shutterPage: String
   val signInUrl: String
   val features: Features
   val govUkCohoNameChangeUrl: String
@@ -98,16 +92,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, sc: Ser
 
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
-
-  private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
-    .decode(sc.getString(key)), "UTF-8"))
-    .map(_.split(",")).getOrElse(Array.empty).toSeq
-
-  override lazy val whitelistEnabled: Boolean = sc.getBoolean(Keys.whitelistEnabled)
-  override lazy val whitelistedIps: Seq[String] = whitelistConfig(Keys.whitelistedIps)
-  override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig(Keys.whitelistExcludedPaths).map(path => Call("GET", path))
-  override lazy val shutterPage: String = sc.getString(Keys.whitelistShutterPage)
-
   private lazy val signInBaseUrl: String = sc.getString(Keys.signInBaseUrl)
 
   override lazy val signInContinueBaseUrl: String = sc.getString(Keys.signInContinueBaseUrl)
