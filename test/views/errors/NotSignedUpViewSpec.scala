@@ -20,12 +20,15 @@ import assets.messages.{BaseMessages, NotSignedUpPageMessages => Messages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.errors.NotSignedUpView
 
 class NotSignedUpViewSpec extends ViewBaseSpec with BaseMessages {
 
+  val injectedView: NotSignedUpView = inject[NotSignedUpView]
+
   "Rendering the Not Signed Up page" should {
 
-    lazy val view = views.html.errors.not_signed_up()(request, messages, mockConfig)
+    lazy val view = injectedView()(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct document title" in {

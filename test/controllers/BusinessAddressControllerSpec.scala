@@ -32,6 +32,7 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 import uk.gov.hmrc.http.HeaderCarrier
+import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -41,16 +42,19 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
   "Calling the .show action" when {
 
     object TestBusinessAddressController extends BusinessAddressController(
-      messagesApi,
       mockAuthPredicate,
       mockInFlightPPOBPredicate,
       mockAddressLookupService,
       mockContactPreferenceService,
       mockBusinessAddressService,
       mockCustomerDetailsService,
+      inject[ChangeAddressView],
+      inject[ChangeAddressConfirmationView],
       serviceErrorHandler,
       mockAuditingService,
-      mockConfig
+      mcc,
+      mockConfig,
+      ec
     )
 
     "the user is authorised and does not have any conflicting inflight data" should {
@@ -69,8 +73,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         charset(result) shouldBe Some("utf-8")
       }
 
-      s"have the heading '${ChangeAddressPageMessages.title}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeAddressPageMessages.heading
+      s"have the heading '${ChangeAddressPageMessages.heading}'" in {
+        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressPageMessages.heading
       }
     }
 
@@ -91,7 +95,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangePendingMessages.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangePendingMessages.heading
+        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
   }
@@ -105,16 +109,19 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       setupMockBusinessAddress(businessAddressResponse)
 
       new BusinessAddressController(
-        messagesApi,
         mockAuthPredicate,
         mockInFlightPPOBPredicate,
         mockAddressLookupService,
         mockContactPreferenceService,
         mockBusinessAddressService,
         mockCustomerDetailsService,
+        inject[ChangeAddressView],
+        inject[ChangeAddressConfirmationView],
         serviceErrorHandler,
         mockAuditingService,
-        mockConfig)
+        mcc,
+        mockConfig,
+        ec)
     }
 
     "address lookup service returns success" when {
@@ -201,16 +208,19 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       setupMockInitialiseJourney(addressLookupResponse)
 
       new BusinessAddressController(
-        messagesApi,
         mockAuthPredicate,
         mockInFlightPPOBPredicate,
         mockAddressLookupService,
         mockContactPreferenceService,
         mockBusinessAddressService,
         mockCustomerDetailsService,
+        inject[ChangeAddressView],
+        inject[ChangeAddressConfirmationView],
         serviceErrorHandler,
         mockAuditingService,
-        mockConfig)
+        mcc,
+        mockConfig,
+        ec)
     }
 
     "address lookup service returns success" when {
@@ -250,7 +260,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         s"have the heading '${ChangePendingMessages.heading}'" in {
-          Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangePendingMessages.heading
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
         }
       }
     }
@@ -273,16 +283,19 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
   "calling .confirmation" when {
 
     lazy val controller = new BusinessAddressController(
-      messagesApi,
       mockAuthPredicate,
       mockInFlightPPOBPredicate,
       mockAddressLookupService,
       mockContactPreferenceService,
       mockBusinessAddressService,
       mockCustomerDetailsService,
+      inject[ChangeAddressView],
+      inject[ChangeAddressConfirmationView],
       serviceErrorHandler,
       mockAuditingService,
-      mockConfig)
+      mcc,
+      mockConfig,
+      ec)
 
     "the user is an agent" when {
 
@@ -304,7 +317,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
 
@@ -326,7 +339,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe ChangeAddressConfirmationPageMessages.title
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
     }
@@ -361,8 +374,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.digitalPref
+          messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digitalPref
         }
       }
 
@@ -384,8 +397,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.paperPref
+          messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.paperPref
         }
       }
 
@@ -407,8 +420,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          document.title shouldBe ChangeAddressConfirmationPageMessages.title
-          document.select("#content article p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+          messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
         }
       }
     }

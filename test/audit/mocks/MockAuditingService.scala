@@ -20,7 +20,7 @@ import audit.AuditService
 import audit.models.ExtendedAuditModel
 import org.mockito.Mockito._
 import org.mockito.{AdditionalMatchers, ArgumentMatchers}
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUtil
 

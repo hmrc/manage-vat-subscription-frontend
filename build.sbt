@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import play.core.PlayVersion
+import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings._
 import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.versioning.SbtGitVersioning
-import play.core.PlayVersion
-import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
@@ -55,25 +55,26 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc" %% "bootstrap-play-25" % "5.1.0",
-  "uk.gov.hmrc" %% "play-partials" % "6.9.0-play-25",
-  "uk.gov.hmrc" %% "play-whitelist-filter" % "3.1.0-play-25",
-  "uk.gov.hmrc" %% "govuk-template" % "5.43.0-play-25",
-  "uk.gov.hmrc" %% "play-ui" % "8.3.0-play-25",
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.1.0",
+  "uk.gov.hmrc" %% "play-partials" % "6.9.0-play-26",
+  "uk.gov.hmrc" %% "govuk-template" % "5.43.0-play-26",
+  "uk.gov.hmrc" %% "play-ui" % "8.3.0-play-26",
   "org.typelevel" %% "cats" % "0.9.0",
-  "uk.gov.hmrc" %% "play-language" % "3.4.0"
+  "uk.gov.hmrc" %% "play-language" % "4.2.0-play-26",
+  "com.typesafe.play" %% "play-json-joda" % "2.6.0-RC1"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-25" % scope,
-  "org.scalatest" %% "scalatest" % "3.0.5" % scope,
+  "uk.gov.hmrc" %% "bootstrap-play-26" % "1.1.0" % scope classifier "tests",
+  "uk.gov.hmrc" %% "hmrctest" % "3.9.0-play-26" % scope,
+  "org.scalatest" %% "scalatest" % "3.0.8" % scope,
   "org.pegdown" % "pegdown" % "1.6.0" % scope,
-  "org.jsoup" % "jsoup" % "1.11.3" % scope,
+  "org.jsoup" % "jsoup" % "1.12.1" % scope,
   "com.typesafe.play" %% "play-test" % PlayVersion.current % scope,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0" % scope,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % scope,
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % scope,
-  "com.github.tomakehurst" % "wiremock" % "2.21.0" % scope,
-  "org.mockito" % "mockito-core" % "2.13.0" % scope
+  "com.github.tomakehurst" % "wiremock-jre8" % "2.25.1" % scope,
+  "org.mockito" % "mockito-core" % "2.28.2" % scope
 )
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {

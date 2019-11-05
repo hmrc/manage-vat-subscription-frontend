@@ -18,12 +18,12 @@ package models.customerAddress
 
 import config.AppConfig
 import models.User
+import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
-import play.api.i18n.{Lang, Messages}
 import views.utils.ServiceNameUtil
 
 
-case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_], messages: Messages, config: AppConfig) {
+case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_], messagesApi: MessagesApi, config: AppConfig) {
 
   // general journey overrides
   val showPhaseBanner: Boolean = true
@@ -33,8 +33,8 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
   object Version2 {
 
-    val eng: Messages = Messages(Lang("en"), messages.messages)
-    val wel: Messages = Messages(Lang("cy"), messages.messages)
+    val eng: Messages = MessagesImpl(Lang("en"), messagesApi)
+    val wel: Messages = MessagesImpl(Lang("cy"), messagesApi)
 
     val version: Int = 2
 

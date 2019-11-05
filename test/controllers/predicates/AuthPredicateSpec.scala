@@ -56,7 +56,7 @@ class AuthPredicateSpec extends MockAuth {
           }
         }
 
-        "an authroised exception is returned from Auth" should {
+        "an authorised exception is returned from Auth" should {
 
           lazy val result = await(target(fakeRequestWithClientsVRN))
 

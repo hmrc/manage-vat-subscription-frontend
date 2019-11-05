@@ -17,9 +17,12 @@
 package views.templates
 
 import play.twirl.api.Html
-import views.html.templates.openInNewTab
+import views.html.templates.OpenInNewTab
 
 class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: OpenInNewTab = inject[OpenInNewTab]
+
 
   "Calling openInNewTab" should {
 
@@ -32,7 +35,7 @@ class OpensInNewTabTemplateSpec extends TemplateBaseSpec {
       """.stripMargin
     )
 
-    val markup = openInNewTab(link, linkText)
+    val markup = injectedView(link, linkText)
 
     "return the correct markup" in {
       formatHtml(markup) shouldBe formatHtml(expectedMarkup)

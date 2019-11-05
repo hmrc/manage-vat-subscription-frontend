@@ -20,18 +20,21 @@ import config.AppConfig
 import controllers.predicates.AuthPredicate
 import javax.inject.Inject
 import models.customerAddress.AddressModel
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc.{Action, AnyContent}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import play.mvc.Http.HeaderNames
+import testOnly.views.html.StubAddressLookupView
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class StubAddressLookupController @Inject()(val messagesApi: MessagesApi,
-                                            val authenticate: AuthPredicate,
+class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
+                                            stubAddressLookupView: StubAddressLookupView,
+                                            implicit val mcc:MessagesControllerComponents,
+                                            implicit val ec: ExecutionContext,
                                             implicit val appConfig: AppConfig)
-  extends FrontendController with I18nSupport {
+  extends FrontendController(mcc) with I18nSupport {
 
   def initialiseJourney(): Action[JsValue] = Action.async(parse.json) { implicit user =>
     Future.successful(
@@ -41,7 +44,7 @@ class StubAddressLookupController @Inject()(val messagesApi: MessagesApi,
   }
 
   def show(): Action[AnyContent] = authenticate { implicit user =>
-    Ok(testOnly.views.html.stubAddressLookup())
+    Ok(stubAddressLookupView())
   }
 
   def callback(id: String): Action[AnyContent] = authenticate { implicit user =>

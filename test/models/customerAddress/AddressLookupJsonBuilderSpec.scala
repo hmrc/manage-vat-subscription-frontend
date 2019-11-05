@@ -28,12 +28,12 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
 
       "the continueUrl is given and the user is not an agent" in {
 
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user,messages, mockConfig)) shouldBe clientAddressLookupV2Json
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user, messagesApi, mockConfig)) shouldBe clientAddressLookupV2Json
       }
 
       "the continueUrl is given and the user is an agent" in {
 
-        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser,messages, mockConfig)) shouldBe agentAddressLookupV2Json
+        Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser, messagesApi, mockConfig)) shouldBe agentAddressLookupV2Json
       }
     }
   }

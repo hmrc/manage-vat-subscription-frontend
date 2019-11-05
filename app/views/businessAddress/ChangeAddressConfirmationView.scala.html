@@ -1,0 +1,89 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import templates.UpdateClient
+
+@this(mainTemplate: MainTemplate, updateClient: UpdateClient)
+
+@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+
+@changeClientLink = {
+    @if(appConfig.features.changeClientFeature()) {
+        <p id="change-client-text">
+            <a id="change-client-link"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+            @messages("common.agent.changeClient")</a>
+        </p>
+    } else {
+        <p id="change-client-text">
+            @messages("common.agent.changeClient.youCan")
+            <a id="change-client-link"
+            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
+            @messages("common.agent.changeClient.link")</a>.
+        </p>
+    }
+}
+
+@mainTemplate(
+    title = messages("change_address_confirmation.title"),
+    bodyClasses = None,
+    appConfig = appConfig) {
+
+    <div >
+        <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
+    </div>
+
+    <h2>@messages("change_address_confirmation.h2")</h2>
+
+    @if(user.isAgent){
+
+        @agentEmail match {
+
+            case Some(email) => {
+                <p>@messages("change_address_confirmation.agent.p1-1")
+                    <strong class="bold">@email</strong>
+                    @messages("change_address_confirmation.agent.p1-2")</p>
+                @updateClient(clientName)
+            }
+
+            case None => {
+                <p>@messages("common.agent.confirmationLetter")</p>
+                @updateClient(clientName)
+            }
+        }
+
+        @changeClientLink
+    } else {
+
+        @contactPref match {
+            case Some("DIGITAL") => {<p id="preference-message">@messages("contact_preference.digital")</p>}
+            case Some("PAPER") => {<p id="preference-message">@messages("contact_preference.paper")</p>}
+            case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
+        }
+        <p>@messages("contact_preference.contact")</p>
+
+    }
+
+    <a
+       id="finish"
+       href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'
+       class="button"
+       role="button"
+       type="submit">
+        @messages("common.finish")
+    </a>
+
+}

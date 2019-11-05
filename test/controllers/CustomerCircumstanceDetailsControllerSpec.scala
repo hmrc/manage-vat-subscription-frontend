@@ -16,19 +16,19 @@
 
 package controllers
 
-import assets.ReturnPeriodTestConstants.{returnPeriodJan,returnPeriodFeb}
+import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
+import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
-import config.ServiceErrorHandler
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
-import assets.BaseTestConstants._
+import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
 
@@ -37,10 +37,12 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
     mockCustomerDetailsService,
-    app.injector.instanceOf[ServiceErrorHandler],
+    serviceErrorHandler,
     mockAuditingService,
+    inject[CustomerCircumstanceDetailsView],
+    mcc,
     mockConfig,
-    messagesApi
+    ec
   )
 
   "Calling the .show action" when {
@@ -73,7 +75,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
       }
 
       "render the CustomerDetails Page" in {
-        document.title shouldBe Messages.title
+        messages(document.select("h1").text) shouldBe Messages.heading
       }
 
       "remove the data" in {

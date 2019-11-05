@@ -16,27 +16,26 @@
 
 package connectors.httpParsers
 
-import config.features.Features
+import config.AppConfig
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
+import play.api.Logger
 import play.api.http.Status
-import play.api.{Configuration, Logger, Play}
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-object CustomerCircumstancesHttpParser {
+@Singleton
+class CustomerCircumstancesHttpParser @Inject()(implicit appConfig: AppConfig) {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
-
-    implicit val config: Configuration = Play.current.configuration
-    private val features: Features = new Features
 
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CircumstanceDetails] = {
 
       response.status match {
-        case Status.OK => {
+        case Status.OK =>
           Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
-          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(features.useOverseasIndicator())).fold(
+          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(appConfig.features.useOverseasIndicator())).fold(
             invalid => {
               Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
               Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
@@ -44,7 +43,7 @@ object CustomerCircumstancesHttpParser {
             },
             valid => Right(valid)
           )
-        }
+
         case status =>
           Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))

@@ -21,25 +21,30 @@ import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import views.html.businessName.ChangeBusinessNameView
+
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
                                              val auditService: AuditService,
+                                             changeBusinessNameView: ChangeBusinessNameView,
+                                             val mcc: MessagesControllerComponents,
                                              implicit val appConfig: AppConfig,
-                                             implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
+                                             implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
-          Ok(views.html.businessName.change_business_name(circumstances.customerDetails.organisationName.get))
+          Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

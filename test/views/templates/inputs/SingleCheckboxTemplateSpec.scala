@@ -19,9 +19,12 @@ package views.templates.inputs
 import play.api.data.Field
 import play.twirl.api.Html
 import testOnly.forms.FeatureSwitchForm
+import views.html.templates.inputs.SingleCheckbox
 import views.templates.TemplateBaseSpec
 
 class SingleCheckboxTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: SingleCheckbox = inject[SingleCheckbox]
 
   "Rendering the singleCheckbox input" when {
 
@@ -42,7 +45,7 @@ class SingleCheckboxTemplateSpec extends TemplateBaseSpec {
            |""".stripMargin
       )
 
-      val markup = views.html.templates.inputs.singleCheckbox(field, label)
+      val markup = injectedView(field, label)
 
       "render the expected markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -63,7 +66,7 @@ class SingleCheckboxTemplateSpec extends TemplateBaseSpec {
            |""".stripMargin
       )
 
-      val markup = views.html.templates.inputs.singleCheckbox(field, label)
+      val markup = injectedView(field, label)
 
       "render the expected markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -83,7 +86,7 @@ class SingleCheckboxTemplateSpec extends TemplateBaseSpec {
            |""".stripMargin
       )
 
-      val markup = views.html.templates.inputs.singleCheckbox(field, label)
+      val markup = injectedView(field, label)
 
       "render the expected markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

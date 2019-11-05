@@ -16,43 +16,45 @@
 
 package controllers.predicates
 
-import javax.inject.{Inject, Singleton}
-
 import common.EnrolmentKeys
 import config.{AppConfig, ServiceErrorHandler}
+import javax.inject.{Inject, Singleton}
 import models.AgentUser
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
-import uk.gov.hmrc.auth.core.retrieve.{Retrievals, ~}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
+import views.html.errors.agent.UnauthorisedView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
-                                     val messagesApi: MessagesApi,
                                      val serviceErrorHandler: ServiceErrorHandler,
-                                     implicit val appConfig: AppConfig)
-  extends FrontendController with AuthBasePredicate with I18nSupport with ActionBuilder[AgentUser] with ActionFunction[Request, AgentUser] {
+                                     unauthorisedView: UnauthorisedView,
+                                     override val mcc: MessagesControllerComponents,
+                                     implicit val appConfig: AppConfig,
+                                     implicit val executionContext: ExecutionContext)
+  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[AgentUser, AnyContent] with ActionFunction[Request, AgentUser] {
 
+  override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], f: AgentUser[A] => Future[Result]): Future[Result] = {
 
-    implicit val req = request
+    implicit val req: Request[A] = request
 
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
-      case Some(affinityGroup) ~ allEnrolments => {
-        (isAgent(affinityGroup), allEnrolments) match {
-          case (true, _) =>
-            Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
-            checkAgentEnrolment(allEnrolments, f)
-          case (_, _) =>
-            Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
-            Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")))
+      case Some(affinityGroup) ~ allEnrolments => (isAgent(affinityGroup), allEnrolments) match {
+        case (true, _) =>
+          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
+          checkAgentEnrolment(allEnrolments, f)
+        case (_, _) =>
+          Logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
+          Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")))
         }
-      }
+
       case _ =>
         Logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
         Future.successful(serviceErrorHandler.showInternalServerError)
@@ -74,6 +76,6 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
     else {
       Logger.debug(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
       Logger.warn(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment")
-      Future.successful(Forbidden(views.html.errors.agent.unauthorised()))
+      Future.successful(Forbidden(unauthorisedView()))
     }
 }

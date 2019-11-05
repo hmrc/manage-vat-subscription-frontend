@@ -17,9 +17,7 @@
 package helpers
 
 import com.github.tomakehurst.wiremock.client.WireMock.{equalToJson, postRequestedFor, urlMatching, verify}
-import common.SessionKeys
 import config.AppConfig
-import models.payments.PaymentStartModel
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.scalatest.concurrent.{Eventually, IntegrationPatience, ScalaFutures}
@@ -27,7 +25,7 @@ import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Matchers, TestSuite
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.data.Form
 import play.api.http.HeaderNames
-import play.api.i18n.{Lang, Messages, MessagesApi}
+import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
@@ -42,9 +40,9 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   val mockPort: String = WireMockHelper.wmPort.toString
   val appContextRoute: String = "/vat-through-software/account"
 
-  implicit lazy val appConfig = app.injector.instanceOf[AppConfig]
+  implicit lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
-  implicit lazy val messages: Messages = Messages(Lang("en-GB"), messagesApi)
+  implicit lazy val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
 
   val titleSuffixUser = " - Business tax account - GOV.UK"
   val titleSuffixOther = " - VAT - GOV.UK"
@@ -149,7 +147,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
 
   def buildRequest(path: String, additionalCookies: Map[String, String] = Map.empty): WSRequest =
     client.url(s"http://localhost:$port$appContextRoute$path")
-      .withHeaders(HeaderNames.COOKIE -> SessionCookieBaker.bakeSessionCookie(additionalCookies), "Csrf-Token" -> "nocheck")
+      .withHttpHeaders(HeaderNames.COOKIE -> SessionCookieBaker.bakeSessionCookie(additionalCookies), "Csrf-Token" -> "nocheck")
       .withFollowRedirects(false)
 
   def document(response: WSResponse): Document = Jsoup.parse(response.body)

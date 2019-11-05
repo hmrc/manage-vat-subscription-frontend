@@ -16,27 +16,30 @@
 
 package controllers
 
-import javax.inject.{Inject, Singleton}
 import audit.AuditService
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
+import javax.inject.{Inject, Singleton}
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import views.html.customerInfo.CustomerCircumstanceDetailsView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPredicate,
                                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                       val serviceErrorHandler: ServiceErrorHandler,
                                                       val auditService: AuditService,
+                                                      customerCircumstanceDetailsView: CustomerCircumstanceDetailsView,
+                                                      val mcc: MessagesControllerComponents,
                                                       implicit val appConfig: AppConfig,
-                                                      implicit val messagesApi: MessagesApi) extends FrontendController with I18nSupport {
+                                                      implicit val executionContext: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   val redirect: Action[AnyContent] = authenticate.async {
     implicit user =>
@@ -52,7 +55,7 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
             ViewVatSubscriptionAuditModel(user, circumstances),
             Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
           )
-          Ok(views.html.customerInfo.customer_circumstance_details(circumstances))
+          Ok(customerCircumstanceDetailsView(circumstances))
             .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")

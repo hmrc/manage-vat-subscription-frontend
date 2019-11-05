@@ -16,15 +16,15 @@
 
 package mocks.services
 
+import assets.BaseTestConstants.formBundle
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
-import org.scalatest.mockito.MockitoSugar
+import org.scalatestplus.mockito.MockitoSugar
 import services.ReturnFrequencyService
 import uk.gov.hmrc.play.test.UnitSpec
-import assets.BaseTestConstants.formBundle
 
 import scala.concurrent.Future
 

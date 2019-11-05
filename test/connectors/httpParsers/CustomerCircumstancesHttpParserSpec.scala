@@ -17,7 +17,6 @@
 package connectors.httpParsers
 
 import assets.CircumstanceDetailsTestConstants._
-import connectors.httpParsers.CustomerCircumstancesHttpParser.CustomerCircumstanceReads
 import models.core.ErrorModel
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -28,20 +27,22 @@ class CustomerCircumstancesHttpParserSpec extends TestUtil {
 
   val successBadJson = Some(Json.obj("firstName" -> 1))
   val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
+  val parser: CustomerCircumstancesHttpParser = inject[CustomerCircumstancesHttpParser]
 
   "The CustomerDetailsHttpParser" when {
 
     "the http response status is OK with valid Json" should {
 
       "return a CustomerDetailsModel" in {
-        CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, Some(customerInformationJsonMaxOrganisation))) shouldBe Right(customerInformationModelMaxOrganisation)
+        parser.CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, Some(customerInformationJsonMaxOrganisation))) shouldBe
+          Right(customerInformationModelMaxOrganisation)
       }
     }
 
     "the http response status is OK with invalid Json" should {
 
       "return an ErrorModel" in {
-        CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, successBadJson)) shouldBe
+        parser.CustomerCircumstanceReads.read("", "", HttpResponse(Status.OK, successBadJson)) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
       }
     }
@@ -49,7 +50,7 @@ class CustomerCircumstancesHttpParserSpec extends TestUtil {
     "the http response status is BAD_REQUEST" should {
 
       "return an ErrorModel" in {
-        CustomerCircumstanceReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
+        parser.CustomerCircumstanceReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
           Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerDetails"))
       }
     }
@@ -57,7 +58,7 @@ class CustomerCircumstancesHttpParserSpec extends TestUtil {
     "the http response status unexpected" should {
 
       "return an ErrorModel" in {
-        CustomerCircumstanceReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
+        parser.CustomerCircumstanceReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
           Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerDetails"))
       }
     }

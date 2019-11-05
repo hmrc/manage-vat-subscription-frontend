@@ -17,9 +17,11 @@
 package controllers.predicates
 
 import common.EnrolmentKeys
+import play.api.mvc.MessagesControllerComponents
 import uk.gov.hmrc.auth.core.AffinityGroup
+import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 
-trait AuthBasePredicate {
+abstract class AuthBasePredicate(val mcc: MessagesControllerComponents) extends FrontendController(mcc){
 
   def isAgent(group: AffinityGroup): Boolean = group.toString.contains(EnrolmentKeys.agentAffinityGroup)
 

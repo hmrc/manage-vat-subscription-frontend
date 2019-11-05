@@ -16,11 +16,14 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.DateInputForm
 import play.twirl.api.Html
+import testOnly.forms.test.DateInputForm
+import views.html.templates.inputs.Date
 import views.templates.TemplateBaseSpec
 
 class DateTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: Date = inject[Date]
 
   "Rendering the date input" when {
 
@@ -65,7 +68,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, Some(hintText), true)
+      val markup = injectedView(form, question, fieldName, Some(hintText), renderQuestionAsHeading = true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -105,7 +108,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
+      val markup = injectedView(form, question, fieldName, None, renderQuestionAsHeading = true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -149,7 +152,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, None, false)
+      val markup = injectedView(form, question, fieldName, None, renderQuestionAsHeading = false)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -195,7 +198,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
+      val markup = injectedView(form, question, fieldName, None, renderQuestionAsHeading = true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -245,7 +248,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
+      val markup = injectedView(form, question, fieldName, None, renderQuestionAsHeading = true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -295,7 +298,7 @@ class DateTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = views.html.templates.inputs.date(form, question, fieldName, None, true)
+      val markup = injectedView(form, question, fieldName, None, renderQuestionAsHeading = true)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

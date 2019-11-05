@@ -21,18 +21,20 @@ import models.returnFrequency._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-
+import views.html.returnFrequency.ConfirmDatesView
 class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
+
+  val injectedView: ConfirmDatesView = inject[ConfirmDatesView]
 
   "Rendering the Confirm Dates page" should {
 
-    lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
+    lazy val view = injectedView(Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.ConfirmPage.title}'" in {
       document.title shouldBe viewMessages.ConfirmPage.title
     }
-    s"have a the back link with correct text and url '${back}'" in {
+    s"have a the back link with correct text and url '$back'" in {
       elementText(".link-back") shouldBe back
       element(".link-back").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
     }
@@ -44,25 +46,25 @@ class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
     s"have a the display the correct dates of" when {
 
       s"the current date is '${viewMessages.option1Jan}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Jan)(user, messages, mockConfig)
+        lazy val view = injectedView(Jan)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option1Jan}"
       }
 
       s"the current date is '${viewMessages.option2Feb}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Feb)(user, messages, mockConfig)
+        lazy val view = injectedView(Feb)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option2Feb}"
       }
 
       s"the current date is '${viewMessages.option3Mar}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Mar)(user, messages, mockConfig)
+        lazy val view = injectedView(Mar)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option3Mar}"
       }
 
       s"the current date is '${viewMessages.option4Monthly}'" in {
-        lazy val view = views.html.returnFrequency.confirm_dates(Monthly)(user, messages, mockConfig)
+        lazy val view = injectedView(Monthly)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
         elementText("#p1") shouldBe s"${viewMessages.ConfirmPage.newDates} ${viewMessages.option4Monthly}"
       }
@@ -82,7 +84,7 @@ class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
 
     "have a confirm button" which {
 
-      s"has the text '${confirmAndContinue}'" in {
+      s"has the text '$confirmAndContinue'" in {
         elementText("#continue-button") shouldBe confirmAndContinue
       }
 

@@ -16,27 +16,30 @@
 
 package controllers.predicates
 
-import javax.inject.Inject
 import config.{AppConfig, ServiceErrorHandler}
+import javax.inject.Inject
 import models.User
 import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{ActionRefiner, Result}
 import play.api.mvc.Results.Conflict
+import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.HeaderCarrierConverter
+import views.html.errors.ChangePendingView
 
 import scala.concurrent.{ExecutionContext, Future}
-import views.html.errors.changePending
 
 class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCircumstanceDetailsService,
                                       val serviceErrorHandler: ServiceErrorHandler,
-                                      val messagesApi: MessagesApi,
+                                      changePendingView: ChangePendingView,
+                                      val mcc: MessagesControllerComponents,
                                       implicit val appConfig: AppConfig,
-                                      implicit val ec: ExecutionContext)
+                                      implicit val executionContext: ExecutionContext)
   extends ActionRefiner[User, User] with I18nSupport {
+
+  override def messagesApi: MessagesApi = mcc.messagesApi
 
   override def refine[A](request: User[A]): Future[Either[Result, User[A]]] = {
 
@@ -61,11 +64,11 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
 
       (circumstanceDetails.samePPOB, circumstanceDetails.sameEmail, circumstanceDetails.samePhone,
         circumstanceDetails.sameMobile, circumstanceDetails.sameWebsite) match {
-        case (false, _, _, _, _) => Left(Conflict(changePending("changePending.ppob")))
-        case (_, false, _, _, _) => Left(Conflict(changePending("changePending.email")))
-        case (_, _, false, _, _) => Left(Conflict(changePending("changePending.landline")))
-        case (_, _, _, false, _) => Left(Conflict(changePending("changePending.mobile")))
-        case (_, _, _, _, false) => Left(Conflict(changePending("changePending.website")))
+        case (false, _, _, _, _) => Left(Conflict(changePendingView("changePending.ppob")))
+        case (_, false, _, _, _) => Left(Conflict(changePendingView("changePending.email")))
+        case (_, _, false, _, _) => Left(Conflict(changePendingView("changePending.landline")))
+        case (_, _, _, false, _) => Left(Conflict(changePendingView("changePending.mobile")))
+        case (_, _, _, _, false) => Left(Conflict(changePendingView("changePending.website")))
         case _ => Right(user)
       }
   }

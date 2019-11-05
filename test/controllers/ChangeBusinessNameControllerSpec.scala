@@ -16,6 +16,7 @@
 
 package controllers
 
+import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ChangeBusinessNamePageMessages
 import audit.models.HandOffToCOHOAuditModel
@@ -26,14 +27,21 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
-import assets.BaseTestConstants._
+import views.html.businessName.ChangeBusinessNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
-    mockAuthPredicate, mockCustomerDetailsService, serviceErrorHandler, mockAuditingService, mockConfig, messagesApi
+    mockAuthPredicate,
+    mockCustomerDetailsService,
+    serviceErrorHandler,
+    mockAuditingService,
+    inject[ChangeBusinessNameView],
+    mcc,
+    mockConfig,
+    ec
   )
 
   "Calling the .show action" when {
@@ -53,7 +61,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       }
 
       s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-        Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
+        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
       }
     }
 

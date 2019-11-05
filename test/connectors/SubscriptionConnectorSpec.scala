@@ -19,6 +19,7 @@ package connectors
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.UpdatePPOBAddressTestConstants._
+import connectors.httpParsers.CustomerCircumstancesHttpParser
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
@@ -34,7 +35,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
 
-  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp,mockConfig)
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp, mockConfig, inject[CustomerCircumstancesHttpParser])
 
   "SubscriptionConnector" when {
 

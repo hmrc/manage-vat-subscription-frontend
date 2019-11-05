@@ -18,22 +18,15 @@ package mocks
 
 import config.AppConfig
 import config.features.Features
-import play.api.{Configuration, Mode}
-import play.api.Mode.Mode
+import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
 class MockAppConfig(implicit val runModeConfiguration: Configuration) extends AppConfig {
 
-  override val mode: Mode = Mode.Test
-
   override val reportAProblemPartialUrl: String = ""
   override val reportAProblemNonJSUrl: String = ""
-  override val whitelistEnabled: Boolean = false
-  override val whitelistedIps: Seq[String] = Seq("")
-  override val whitelistExcludedPaths: Seq[Call] = Nil
-  override val shutterPage: String = "https://www.tax.service.gov.uk/shutter/vat-through-software"
   override val signInUrl: String = "sign-in"
   override def signOutExitSurveyUrl(identifier: String): String = s"/some-gg-signout-url/$identifier"
   override val unauthorisedSignOutUrl: String = "/unauth-signout"

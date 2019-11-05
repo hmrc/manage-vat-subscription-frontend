@@ -21,14 +21,17 @@ import assets.CircumstanceDetailsTestConstants._
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
+import views.html.helpers.MtdSectionHelper
 
 class MakingTaxDigitalSectionSpec extends ViewBaseSpec {
+
+  val injectedView: MtdSectionHelper = inject[MtdSectionHelper]
 
   "The Making Tax Digital section" when {
 
     "the user's client has an opt out request pending" should {
 
-      lazy val view = views.html.helpers.mtd_section_helper(customerInformationPendingOptOut, vrn)
+      lazy val view = injectedView(customerInformationPendingOptOut, vrn)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct row title" in {
@@ -46,7 +49,7 @@ class MakingTaxDigitalSectionSpec extends ViewBaseSpec {
 
     "the user's client has an opt in request pending" should {
 
-      lazy val view = views.html.helpers.mtd_section_helper(customerInformationModelMaxOrganisationPending, vrn)
+      lazy val view = injectedView(customerInformationModelMaxOrganisationPending, vrn)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct row title" in {
@@ -64,7 +67,7 @@ class MakingTaxDigitalSectionSpec extends ViewBaseSpec {
 
     "the user's client is opted out of MTD" should {
 
-      lazy val view = views.html.helpers.mtd_section_helper(customerInformationNonMtd, vrn)
+      lazy val view = injectedView(customerInformationNonMtd, vrn)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct row title" in {
@@ -89,7 +92,7 @@ class MakingTaxDigitalSectionSpec extends ViewBaseSpec {
 
     "the user's client is opted in to MTD" should {
 
-      lazy val view = views.html.helpers.mtd_section_helper(customerInformationModelMin, vrn)
+      lazy val view = injectedView(customerInformationModelMin, vrn)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct row title" in {

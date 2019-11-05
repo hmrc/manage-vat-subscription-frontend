@@ -16,35 +16,39 @@
 
 package controllers
 
-import audit.{AuditService, ContactPreferenceAuditKeys}
 import audit.models.ContactPreferenceAuditModel
+import audit.{AuditService, ContactPreferenceAuditKeys}
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
-import common.SessionKeys
 import models.User
 import play.api.Logger
-import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, Result}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import services.{AddressLookupService, ContactPreferenceService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
-                                          val authenticate: AuthPredicate,
+class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                                           val inFlightPPOBCheck: InFlightPPOBPredicate,
                                           addressLookupService: AddressLookupService,
                                           contactPreferenceService: ContactPreferenceService,
                                           ppobService: PPOBService,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
+                                          changeAddressView: ChangeAddressView,
+                                          changeAddressConfirmationView: ChangeAddressConfirmationView,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           val auditService: AuditService,
-                                          implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                          val mcc: MessagesControllerComponents,
+                                          implicit val appConfig: AppConfig,
+                                          implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   val show: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
-    Future.successful(Ok(views.html.businessAddress.change_address()))
+    Future.successful(Ok(changeAddressView()))
   }
 
   val initialiseJourney: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
@@ -76,9 +80,9 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) =>
           val entityName = details.customerDetails.clientName
-          Ok(views.html.businessAddress.change_address_confirmation(clientName = entityName, agentEmail = email))
+          Ok(changeAddressConfirmationView(clientName = entityName, agentEmail = email))
         case Left(_) =>
-          Ok(views.html.businessAddress.change_address_confirmation(agentEmail = email))
+          Ok(changeAddressConfirmationView(agentEmail = email))
       }
     } else {
       nonAgentConfirmation
@@ -94,9 +98,9 @@ class BusinessAddressController @Inject()(val messagesApi: MessagesApi,
           Some(controllers.routes.ChangeBusinessNameController.show().url)
         )
 
-        Ok(views.html.businessAddress.change_address_confirmation(contactPref = Some(cPref.preference)))
+        Ok(changeAddressConfirmationView(contactPref = Some(cPref.preference)))
       case Left(_) =>
-        Ok(views.html.businessAddress.change_address_confirmation())
+        Ok(changeAddressConfirmationView())
     }
   }
 }

@@ -19,17 +19,17 @@ package services
 import config.AppConfig
 import connectors.AddressLookupConnector
 import javax.inject.{Inject, Singleton}
-import play.api.i18n.Messages
-
 import models.User
-import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import models.core.ErrorModel
+import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
+import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupService @Inject()(addressLookupConnector: AddressLookupConnector,
+                                     implicit val messagesApi: MessagesApi,
                                      implicit val appConfig: AppConfig) {
 
   def retrieveAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, AddressModel]] = {

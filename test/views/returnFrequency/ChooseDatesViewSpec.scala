@@ -23,14 +23,17 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import views.ViewBaseSpec
+import views.html.returnFrequency.ChooseDatesView
 
 class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
+
+  val injectedView: ChooseDatesView = inject[ChooseDatesView]
 
   "Rendering the Choose dates page with no errors" should {
 
     val form: Form[ReturnDatesModel] = chooseDatesForm.datesForm
 
-    lazy val view = views.html.returnFrequency.chooseDates(form,Jan)(user, messages, mockConfig)
+    lazy val view = injectedView(form,Jan)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.ChoosePage.title}'" in {
@@ -56,11 +59,11 @@ class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
       elementText("fieldset > div:nth-of-type(3) > label") shouldBe viewMessages.option4Monthly
     }
 
-
-    s"have a continue button has the text '${continue}'" in {
+    s"have a continue button has the text '$continue'" in {
       elementText("#continue") shouldBe continue
     }
-    s"have a the back link with correct text and url '${back}'" in {
+
+    s"have a the back link with correct text and url '$back'" in {
       elementText(".link-back") shouldBe back
       element(".link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
@@ -71,7 +74,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
 
     val form: Form[ReturnDatesModel] = chooseDatesForm.datesForm.bind(Map("period-option" -> ""))
 
-    lazy val view = views.html.returnFrequency.chooseDates(form,Monthly)(user, messages, mockConfig)
+    lazy val view = injectedView(form,Monthly)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title of '${viewMessages.ChoosePage.title}'" in {
@@ -83,7 +86,7 @@ class ChooseDatesViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"display an error" in {
-      elementText("#error-summary-display") shouldBe s"${errorHeading} ${viewMessages.ChoosePage.error}"
+      elementText("#error-summary-display") shouldBe s"$errorHeading ${viewMessages.ChoosePage.error}"
     }
 
     s"have a the correct current return dates of '${viewMessages.ChoosePage.question} ${viewMessages.option4Monthly}'" in {

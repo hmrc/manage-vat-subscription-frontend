@@ -21,7 +21,6 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import audit.models.UpdateReturnFrequencyAuditModel
 import common.SessionKeys
-import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.services.MockReturnFrequencyService
 import models.returnFrequency.{Jan, Monthly}
@@ -31,6 +30,7 @@ import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import views.html.returnFrequency.ConfirmDatesView
 
 import scala.concurrent.ExecutionContext
 
@@ -38,13 +38,15 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockReturnFr
 
   object TestConfirmVatDatesController extends ConfirmVatDatesController(
     mockAuthPredicate,
-    app.injector.instanceOf[ServiceErrorHandler],
+    serviceErrorHandler,
     mockReturnFrequencyService,
     mockCustomerDetailsService,
     mockAuditingService,
     mockInFlightReturnPeriodPredicate,
+    inject[ConfirmDatesView],
+    mcc,
     mockConfig,
-    messagesApi
+    ec
   )
 
   "Calling the .show action" when {
@@ -72,7 +74,7 @@ class ConfirmVatDatesControllerSpec extends ControllerBaseSpec with MockReturnFr
           }
 
           "render the Confirm Dates Page" in {
-            document.title shouldBe Messages.ConfirmPage.title
+            messages(document.select("h1").text) shouldBe Messages.ConfirmPage.heading
           }
         }
 

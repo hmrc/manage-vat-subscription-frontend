@@ -1,0 +1,94 @@
+@*
+ * Copyright 2019 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import helper.CSRF
+@import testOnly.models.StubAddressLookupJourneyConfig
+@import views.html.templates.inputs.Text
+@import views.html.MainTemplate
+@import models.customerAddress.AddressLookupJsonBuilder
+@import play.api.libs.json.Json
+
+@this(mainTemplate: MainTemplate)
+
+@()(implicit user: User[_], messagesApi: MessagesApi, messages: Messages, appConfig: config.AppConfig)
+
+@row(field: String, value: String) = {
+    <div><dt class="cya-question">@field</dt><dd id="@field" class="cya-answer">@value</dd></div>
+}
+
+@mainTemplate(title = "Stub Address Lookup Frontend", bodyClasses = None, appConfig = appConfig) {
+
+    @defining(StubAddressLookupJourneyConfig.stubModel){ stubModel =>
+
+        <label><h1>Address Lookup</h1></label>
+
+        <h2>Sent Json</h2>
+        <dl class="govuk-check-your-answers cya-questions-short form-group">
+            @row("continueUrl", stubModel.options.continueUrl)
+            @row("navTitle", stubModel.labels.en.appLevelLabels.navTitle.get)
+            @row("welsh navTitle", stubModel.labels.cy.appLevelLabels.navTitle.get)
+            @row("showPhaseBanner",stubModel.options.showPhaseBanner.get.toString)
+            @row("ukMode",stubModel.options.ukMode.get.toString)
+        <br>
+
+        <h2>Lookup Page Json</h2>
+            @stubModel.labels.en.lookupPageLabels.map{ lookupPage =>
+                @row("title",lookupPage.title.get)
+                @row("heading",lookupPage.heading.get)
+                @row("filterLabel",lookupPage.filterLabel.get)
+                @row("postcodeLabel",lookupPage.postcodeLabel.get)
+            }
+
+            @stubModel.labels.cy.lookupPageLabels.map{ lookupPage =>
+                @row("welsh title",lookupPage.title.get)
+                @row("welsh heading",lookupPage.heading.get)
+                @row("welsh filterLabel",lookupPage.filterLabel.get)
+                @row("welsh postcodeLabel",lookupPage.postcodeLabel.get)
+            }
+        <br>
+
+        <h2>Select Page Json</h2>
+            @stubModel.labels.en.selectPageLabels.map{ selectPage =>
+                @row("title",selectPage.title.get)
+                @row("heading",selectPage.heading.get)
+                @row("submitLabel",selectPage.submitLabel.get)
+            }
+
+            @stubModel.labels.cy.selectPageLabels.map{ selectPage =>
+                @row("welsh title",selectPage.title.get)
+                @row("welsh heading",selectPage.heading.get)
+                @row("welsh submitLabel",selectPage.submitLabel.get)
+            }
+        <br>
+
+        <h2>Confirm Page Json</h2>
+            @stubModel.labels.en.confirmPageLabels.map{ confirmPage =>
+                @row("title",confirmPage.title.get)
+                @row("heading",confirmPage.heading.get)
+                @row("showConfirmChangeText",confirmPage.showConfirmChangeText.get.toString)
+            }
+
+            @stubModel.labels.cy.confirmPageLabels.map{ confirmPage =>
+                @row("welsh title",confirmPage.title.get)
+                @row("welsh heading",confirmPage.heading.get)
+                @row("welsh showConfirmChangeText",confirmPage.showConfirmChangeText.get.toString)
+            }
+        </dl>
+
+        <a class="form-group button" role="button" type="submit" id="continue-button"
+        href="@stubModel.options.continueUrl">Submit</a>
+    }
+}

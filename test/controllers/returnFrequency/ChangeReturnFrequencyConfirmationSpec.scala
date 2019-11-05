@@ -19,7 +19,6 @@ package controllers.returnFrequency
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.{ReturnFrequencyMessages => Messages}
 import audit.models.ContactPreferenceAuditModel
-import config.ServiceErrorHandler
 import controllers.ControllerBaseSpec
 import mocks.services.MockContactPreferenceService
 import models.contactPreferences.ContactPreference
@@ -29,19 +28,22 @@ import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import views.html.returnFrequency.ChangeReturnFrequencyConfirmationView
 
 import scala.concurrent.ExecutionContext
 
 class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with MockContactPreferenceService {
 
   object TestChangeReturnFrequencyConfirmation extends ChangeReturnFrequencyConfirmation(
-    messagesApi,
     mockAuthPredicate,
     mockCustomerDetailsService,
     mockContactPreferenceService,
-    app.injector.instanceOf[ServiceErrorHandler],
+    serviceErrorHandler,
     mockAuditingService,
-    mockConfig
+    inject[ChangeReturnFrequencyConfirmationView],
+    mcc,
+    mockConfig,
+    ec
   )
 
   "Calling the .show action" when {
@@ -55,7 +57,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           lazy val result = {
             mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
             mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-            TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
+            await(TestChangeReturnFrequencyConfirmation.show("agent")(agentUser))
           }
 
           "return 200" in {
@@ -68,7 +70,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Business Address confirmation view" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.title
+            messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe Messages.ReceivedPage.heading
           }
         }
 
@@ -77,7 +79,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           lazy val result = {
             mockCustomerDetailsError()
             mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-            TestChangeReturnFrequencyConfirmation.show("agent")(agentUser)
+            await(TestChangeReturnFrequencyConfirmation.show("agent")(agentUser))
           }
 
           "return 200" in {
@@ -90,7 +92,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Business Address confirmation view" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe Messages.ReceivedPage.title
+            messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe Messages.ReceivedPage.heading
           }
         }
       }
@@ -100,7 +102,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
         "display the correct content for a user that has a digital contact preference" should {
           lazy val result = {
             mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+            await(TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request))
           }
           lazy val document = Jsoup.parse(bodyOf(result))
 
@@ -124,8 +126,8 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Change Return Frequency Confirmation Page" in {
-            document.title shouldBe Messages.ReceivedPage.title
-            document.select("#content article p:nth-of-type(1)").text() shouldBe Messages.ReceivedPage.digitalPref
+            messages(document.select("h1").text) shouldBe Messages.ReceivedPage.heading
+            messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe Messages.ReceivedPage.digitalPref
           }
         }
 
@@ -133,7 +135,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           lazy val result = {
             mockContactPreferenceSuccess(ContactPreference("PAPER"))
-            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+            await(TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request))
           }
           lazy val document = Jsoup.parse(bodyOf(result))
 
@@ -148,8 +150,8 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Change Return Frequency Confirmation Page" in {
-            document.title shouldBe Messages.ReceivedPage.title
-            document.select("#content article p:nth-of-type(1)").text() shouldBe Messages.ReceivedPage.paperPref
+            messages(document.select("h1").text) shouldBe Messages.ReceivedPage.heading
+            messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe Messages.ReceivedPage.paperPref
           }
         }
 
@@ -157,7 +159,7 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
 
           lazy val result = {
             mockContactPreferenceError()
-            TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request)
+            await(TestChangeReturnFrequencyConfirmation.show(user.redirectSuffix)(request))
           }
           lazy val document = Jsoup.parse(bodyOf(result))
 
@@ -171,8 +173,8 @@ class ChangeReturnFrequencyConfirmationSpec extends ControllerBaseSpec with Mock
           }
 
           "render the Change Return Frequency Confirmation Page" in {
-            document.title shouldBe Messages.ReceivedPage.title
-            document.select("#content article p:nth-of-type(1)").text() shouldBe Messages.ReceivedPage.contactPrefError
+            messages(document.select("h1").text) shouldBe Messages.ReceivedPage.heading
+            messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe Messages.ReceivedPage.contactPrefError
           }
         }
 

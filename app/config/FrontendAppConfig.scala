@@ -16,28 +16,21 @@
 
 package config
 
-import java.util.Base64
-
 import config.features.Features
 import config.{ConfigKeys => Keys}
 import javax.inject.{Inject, Singleton}
-import play.api.Mode.Mode
 import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.play.binders.ContinueUrl
-import uk.gov.hmrc.play.config.ServicesConfig
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import scala.io.Source
 
-trait AppConfig extends ServicesConfig {
+trait AppConfig {
   val reportAProblemPartialUrl: String
   val reportAProblemNonJSUrl: String
-  val whitelistEnabled: Boolean
-  val whitelistedIps: Seq[String]
-  val whitelistExcludedPaths: Seq[Call]
-  val shutterPage: String
   val signInUrl: String
   val features: Features
   val govUkCohoNameChangeUrl: String
@@ -86,69 +79,58 @@ trait AppConfig extends ServicesConfig {
 }
 
 @Singleton
-class FrontendAppConfig @Inject()(environment: Environment, implicit val runModeConfiguration: Configuration) extends ServicesConfig with AppConfig {
+class FrontendAppConfig @Inject()(implicit configuration: Configuration, servicesConfig: ServicesConfig, environment: Environment) extends AppConfig {
 
-  private def getStringSeq(key: String): Seq[String] = runModeConfiguration.getStringSeq(key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
+  private def getStringSeq(key: String): Seq[String] =
+    configuration.getOptional[Seq[String]](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
-  override protected def mode: Mode = environment.mode
+  lazy val appName: String = "manage-vat-subscription-frontend"
 
-  lazy val appName: String = runModeConfiguration.getString("appName").getOrElse(throw new Exception("Missing configuration key: appName"))
-
-  private lazy val contactHost: String = getString(Keys.contactFrontendService)
-  override lazy val contactFrontendService: String = baseUrl("contact-frontend")
+  private lazy val contactHost: String = servicesConfig.getString(Keys.contactFrontendService)
+  override lazy val contactFrontendService: String = servicesConfig.baseUrl("contact-frontend")
   override lazy val contactFormServiceIdentifier: String = "VATC"
 
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
+  private lazy val signInBaseUrl: String = servicesConfig.getString(Keys.signInBaseUrl)
 
-  private def whitelistConfig(key: String): Seq[String] = Some(new String(Base64.getDecoder
-    .decode(getString(key)), "UTF-8"))
-    .map(_.split(",")).getOrElse(Array.empty).toSeq
-
-  override lazy val whitelistEnabled: Boolean = getBoolean(Keys.whitelistEnabled)
-  override lazy val whitelistedIps: Seq[String] = whitelistConfig(Keys.whitelistedIps)
-  override lazy val whitelistExcludedPaths: Seq[Call] = whitelistConfig(Keys.whitelistExcludedPaths).map(path => Call("GET", path))
-  override lazy val shutterPage: String = getString(Keys.whitelistShutterPage)
-
-  private lazy val signInBaseUrl: String = getString(Keys.signInBaseUrl)
-
-  override lazy val signInContinueBaseUrl: String = getString(Keys.signInContinueBaseUrl)
+  override lazy val signInContinueBaseUrl: String = servicesConfig.getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String =
     ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl
 
-  private lazy val signInOrigin = getString(Keys.appName)
+  private lazy val signInOrigin = servicesConfig.getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
 
-  override lazy val vatSubscriptionUrl: String = baseUrl(Keys.vatSubscription)
+  override lazy val vatSubscriptionUrl: String = servicesConfig.baseUrl(Keys.vatSubscription)
 
-  override lazy val govUkCohoNameChangeUrl: String = getString(Keys.govUkCohoNameChangeUrl)
+  override lazy val govUkCohoNameChangeUrl: String = servicesConfig.getString(Keys.govUkCohoNameChangeUrl)
 
   override val features = new Features
 
-  private lazy val surveyBaseUrl = getString(Keys.surveyHost) + getString(Keys.surveyUrl)
+  private lazy val surveyBaseUrl = servicesConfig.getString(Keys.surveyHost) + servicesConfig.getString(Keys.surveyUrl)
   override def surveyUrl(identifier: String): String = s"$surveyBaseUrl/$identifier"
 
-  private lazy val governmentGatewayHost: String = getString(Keys.governmentGatewayHost)
+  private lazy val governmentGatewayHost: String = servicesConfig.getString(Keys.governmentGatewayHost)
 
   override def signOutExitSurveyUrl(identifier: String): String =
     s"$governmentGatewayHost/gg/sign-out?continue=${surveyUrl(identifier)}"
   override lazy val unauthorisedSignOutUrl: String = s"$governmentGatewayHost/gg/sign-out?continue=$signInContinueUrl"
 
-  override lazy val addressLookupUrlHost: String = getString(Keys.addressLookupFrontendHost)
+  override lazy val addressLookupUrlHost: String = servicesConfig.getString(Keys.addressLookupFrontendHost)
 
   override def addressLookupService: String = {
     if (features.stubAddressLookup()) {
       host + "/vat-through-software/account/test-only/address-lookup-stub"
     } else {
-      baseUrl(Keys.addressLookupFrontend)
+      servicesConfig.baseUrl(Keys.addressLookupFrontend)
     }
   }
 
   override lazy val contactPreferencesService: String = {
     if (features.stubContactPreferences()) {
-      baseUrl("vat-subscription-dynamic-stub")
+      servicesConfig.baseUrl("vat-subscription-dynamic-stub")
     } else {
-      baseUrl(Keys.contactPreferencesService)
+      servicesConfig.baseUrl(Keys.contactPreferencesService)
     }
   }
 
@@ -157,49 +139,49 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
 
-  override lazy val agentServicesGovUkGuidance: String = getString(Keys.govUkSetupAgentServices)
+  override lazy val agentServicesGovUkGuidance: String = servicesConfig.getString(Keys.govUkSetupAgentServices)
 
-  override lazy val agentAuthoriseForClient: String = getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
+  override lazy val agentAuthoriseForClient: String = servicesConfig.getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
 
-  override lazy val bankAccountCoc: String = baseUrl(Keys.bankAccountCoc)
+  override lazy val bankAccountCoc: String = servicesConfig.baseUrl(Keys.bankAccountCoc)
 
-  override lazy val btaUrl: String = getString("business-tax-account.host") + "/business-account"
-  override lazy val vatSummaryUrl: String = getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
+  override lazy val btaUrl: String = servicesConfig.getString("business-tax-account.host") + "/business-account"
+  override lazy val vatSummaryUrl: String = servicesConfig.getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
   override lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
     case Some(inputStream) => Json.parse(Source.fromInputStream(inputStream, "UTF-8").mkString)
     case _ => throw new Exception("Country codes file not found")
   }
 
-  override lazy val host: String = getString(Keys.host)
+  override lazy val host: String = servicesConfig.getString(Keys.host)
 
-  override lazy val timeoutPeriod: Int = getInt(Keys.timeoutPeriod)
-  override lazy val timeoutCountdown: Int = getInt(Keys.timeoutCountDown)
+  override lazy val timeoutPeriod: Int = servicesConfig.getInt(Keys.timeoutPeriod)
+  override lazy val timeoutCountdown: Int = servicesConfig.getInt(Keys.timeoutCountDown)
 
-  override lazy val agentInvitationsFastTrack: String = getString(Keys.agentInvitationsFastTrack)
+  override lazy val agentInvitationsFastTrack: String = servicesConfig.getString(Keys.agentInvitationsFastTrack)
 
-  override lazy val deregisterForVat: String = getString(Keys.deregistrationForVat)
+  override lazy val deregisterForVat: String = servicesConfig.getString(Keys.deregistrationForVat)
 
   override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
     s"&backUrl=${ContinueUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
 
-  override lazy val vatCorrespondenceChangeEmailUrl: String = getString(Keys.vatCorrespondenceChangeEmailUrl)
-  override lazy val vatCorrespondenceChangeLandlineNumberUrl: String = getString(Keys.vatCorrespondenceChangeLandlineNumberUrl)
-  override lazy val vatCorrespondenceChangeMobileNumberUrl: String = getString(Keys.vatCorrespondenceChangeMobileNumberUrl)
-  override lazy val vatCorrespondenceChangeWebsiteUrl: String = getString(Keys.vatCorrespondenceChangeWebsiteUrl)
+  override lazy val vatCorrespondenceChangeEmailUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeEmailUrl)
+  override lazy val vatCorrespondenceChangeLandlineNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeLandlineNumberUrl)
+  override lazy val vatCorrespondenceChangeMobileNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeMobileNumberUrl)
+  override lazy val vatCorrespondenceChangeWebsiteUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeWebsiteUrl)
 
   override lazy val partyTypes: Seq[String] = getStringSeq(Keys.partyTypes)
 
-  override lazy val govUkChangeVatRegistrationDetails: String = getString(Keys.changeVatRegistrationDetails)
+  override lazy val govUkChangeVatRegistrationDetails: String = servicesConfig.getString(Keys.changeVatRegistrationDetails)
 
-  override lazy val govUkSoftwareGuidanceUrl: String = getString(Keys.softwareGuidanceUrl)
-  override lazy val govUkVat484Form: String = getString(Keys.vat484Form)
+  override lazy val govUkSoftwareGuidanceUrl: String = servicesConfig.getString(Keys.softwareGuidanceUrl)
+  override lazy val govUkVat484Form: String = servicesConfig.getString(Keys.vat484Form)
 
   override lazy val vatAgentClientLookupFrontendUrl: String =
-    getString(Keys.vatAgentClientLookupFrontendHost) + getString(Keys.vatAgentClientLookupFrontendUrl)
+    servicesConfig.getString(Keys.vatAgentClientLookupFrontendHost) + servicesConfig.getString(Keys.vatAgentClientLookupFrontendUrl)
 
   def vatAgentClientLookupHandoff(redirectUrl: String): String =
-    vatAgentClientLookupFrontendUrl + s"/client-vat-number?redirectUrl=${ContinueUrl(getString(Keys.host) + redirectUrl).encodedUrl}"
+    vatAgentClientLookupFrontendUrl + s"/client-vat-number?redirectUrl=${ContinueUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
 
   override def agentClientLookupUrl: String =
     if (features.stubAgentClientLookup()) {
@@ -209,12 +191,12 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
     }
 
   override val agentClientLookupAgentAction: String =
-    getString(ConfigKeys.vatAgentClientLookupFrontendHost) +
-    getString(ConfigKeys.vatAgentClientLookupFrontendUrl) +
-    getString(ConfigKeys.vatAgentClientLookupFrontendAgentAction)
+    servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendHost) +
+    servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendUrl) +
+    servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendAgentAction)
 
   def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
-    vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(getString(Keys.host) + redirectUrl).encodedUrl}"
+    vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
 
   override def agentClientUnauthorisedUrl: String =
     if (features.stubAgentClientLookup()) {
@@ -223,8 +205,8 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
       vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
 
-  override lazy val vatOptOutUrl: String = getString(Keys.vatOptOutUrl)
-  override lazy val mtdSignUpUrl: String => String = (vrn: String) => s"${getString(Keys.mtdSignUpUrl)}/$vrn"
+  override lazy val vatOptOutUrl: String = servicesConfig.getString(Keys.vatOptOutUrl)
+  override lazy val mtdSignUpUrl: String => String = (vrn: String) => s"${servicesConfig.getString(Keys.mtdSignUpUrl)}/$vrn"
 
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
@@ -233,9 +215,9 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
 
-  private lazy val accessibilityReportHost: String = getString(Keys.accessibilityReportHost)
-  override lazy val accessibilityReportUrl: String = accessibilityReportHost + getString(Keys.accessibilityReportUrl)
+  private lazy val accessibilityReportHost: String = servicesConfig.getString(Keys.accessibilityReportHost)
+  override lazy val accessibilityReportUrl: String = accessibilityReportHost + servicesConfig.getString(Keys.accessibilityReportUrl)
 
-  private lazy val vatReturnPeriodFrontendHost: String = getString(ConfigKeys.vatReturnPeriodFrontendHost)
-  override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + getString(ConfigKeys.vatReturnPeriodFrontendUrl)
+  private lazy val vatReturnPeriodFrontendHost: String = servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendHost)
+  override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendUrl)
 }

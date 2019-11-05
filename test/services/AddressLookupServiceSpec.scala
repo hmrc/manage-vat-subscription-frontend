@@ -16,10 +16,10 @@
 
 package services
 
-import mocks.connectors.MockAddressLookupConnector
-import utils.TestUtil
 import assets.CustomerAddressTestConstants._
+import mocks.connectors.MockAddressLookupConnector
 import models.customerAddress.AddressLookupOnRampModel
+import utils.TestUtil
 
 class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector {
 
@@ -27,7 +27,7 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupGetResponse: AddressLookupGetAddressResponse): AddressLookupService = {
       setupMockGetAddress(addressLookupGetResponse)
-      new AddressLookupService(mockAddressLookupConnector, mockConfig)
+      new AddressLookupService(mockAddressLookupConnector, messagesApi, mockConfig)
     }
 
     "connector call is successful" should {
@@ -44,13 +44,13 @@ class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector 
 
     def setup(addressLookupInitialiseResponse: AddressLookupInitialiseResponse): AddressLookupService = {
       setupMockInitialiseJourney(addressLookupInitialiseResponse)
-      new AddressLookupService(mockAddressLookupConnector, mockConfig)
+      new AddressLookupService(mockAddressLookupConnector, messagesApi, mockConfig)
     }
 
     "connector call is successful" should {
 
       lazy val service = setup(Right(AddressLookupOnRampModel("redirect-url")))
-      lazy val result = service.initialiseJourney(hc,ec,user,messages)
+      lazy val result = service.initialiseJourney(hc, ec, user, messages)
 
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(AddressLookupOnRampModel("redirect-url"))

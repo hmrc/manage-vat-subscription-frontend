@@ -16,22 +16,23 @@
 
 package views.businessAddress
 
+import assets.BaseTestConstants.agentEmail
+import assets.messages.{BaseMessages, ChangeAddressConfirmationPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.ViewBaseSpec
-import views.html.{businessAddress => views}
-import assets.messages.{ChangeAddressConfirmationPageMessages => viewMessages}
-import assets.messages.BaseMessages
-import assets.BaseTestConstants.agentEmail
+import views.html.businessAddress.ChangeAddressConfirmationView
 
 class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
+
+  val injectedView: ChangeAddressConfirmationView = inject[ChangeAddressConfirmationView]
 
   "the ChangeAddressConfirmationView for an individual" when {
 
     "contact preference is set to 'DIGITAL'" should {
 
-      lazy val view: Html = views.change_address_confirmation(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
+      lazy val view: Html = injectedView(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -56,7 +57,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${finish}" in {
+        s"has the correct text of '$finish" in {
           elementText("#finish") shouldBe finish
         }
 
@@ -68,7 +69,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "contact preference is set to 'PAPER'" should {
 
-      lazy val view: Html = views.change_address_confirmation(contactPref = Some("PAPER"))(user, messages, mockConfig)
+      lazy val view: Html = injectedView(contactPref = Some("PAPER"))(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -93,7 +94,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${finish}" in {
+        s"has the correct text of '$finish" in {
           elementText("#finish") shouldBe finish
         }
 
@@ -105,7 +106,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an error is returned from contact preferences" should {
 
-      lazy val view: Html = views.change_address_confirmation()(user, messages, mockConfig)
+      lazy val view: Html = injectedView()(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -130,7 +131,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       s"have a button to finish" which {
 
-        s"has the correct text of '${finish}" in {
+        s"has the correct text of '$finish" in {
           elementText("#finish") shouldBe finish
         }
 
@@ -148,7 +149,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       "there is a client name and the changeClient feature switch is on" should {
         lazy val view: Html = {
           mockConfig.features.changeClientFeature(true)
-          views.change_address_confirmation(
+          injectedView(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -177,7 +178,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
         s"have a button to finish" which {
 
-          s"has the correct text of '${finish}" in {
+          s"has the correct text of '$finish" in {
             elementText("#finish") shouldBe finish
           }
 
@@ -190,7 +191,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       "there is a client name and the changeClient feature switch is off" should {
         lazy val view: Html = {
           mockConfig.features.changeClientFeature(false)
-          views.change_address_confirmation(
+          injectedView(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -219,7 +220,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
         "have a button to finish" which {
 
-          s"has the correct text of '${finish}" in {
+          s"has the correct text of '$finish" in {
             elementText("#finish") shouldBe finish
           }
 
@@ -231,7 +232,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "there is no client name" should {
 
-        lazy val view: Html = views.change_address_confirmation(
+        lazy val view: Html = injectedView(
           agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -245,7 +246,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "there is a client name" should {
 
-        lazy val view: Html = views.change_address_confirmation(
+        lazy val view: Html = injectedView(
           clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -260,7 +261,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       "there is no client name" should {
 
-        lazy val view: Html = views.change_address_confirmation()(agentUser, messages, mockConfig)
+        lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct p1 of '${viewMessages.confirmationLetter}'" in {

@@ -16,12 +16,14 @@
 
 package views.templates.inputs
 
-import testOnly.forms.test.MoneyInputForm
 import play.twirl.api.Html
+import testOnly.forms.test.MoneyInputForm
+import views.html.templates.inputs.Money
 import views.templates.TemplateBaseSpec
-import views.html.templates.inputs.money
 
 class MoneyTemplateSpec extends TemplateBaseSpec {
+
+  val injectedView: Money = inject[Money]
 
   private val validForm = MoneyInputForm.form.bind(Map("moneyInput" -> "100.00"))
   private val invalidForm = MoneyInputForm.form.bind(Map("moneyInput" -> "invalid data"))
@@ -65,7 +67,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(validForm(fieldName), labelText, decimalPlace = true, Some(hintText))
+      val markup = injectedView(validForm(fieldName), labelText, decimalPlace = true, Some(hintText))
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -100,7 +102,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(validForm(fieldName), labelText, decimalPlace = true, None)
+      val markup = injectedView(validForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -135,7 +137,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(validForm(fieldName), labelText, decimalPlace = false, None)
+      val markup = injectedView(validForm(fieldName), labelText, decimalPlace = false, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -168,7 +170,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(blankForm(fieldName), labelText, decimalPlace = true, None)
+      val markup = injectedView(blankForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -204,7 +206,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(validForm(fieldName), labelText, decimalPlace = true, Some(hintText), renderLabelAsHeading = false)
+      val markup = injectedView(validForm(fieldName), labelText, decimalPlace = true, Some(hintText), renderLabelAsHeading = false)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -244,7 +246,7 @@ class MoneyTemplateSpec extends TemplateBaseSpec {
            |</div>
          """.stripMargin)
 
-      val markup = money(invalidForm(fieldName), labelText, decimalPlace = true, None)
+      val markup = injectedView(invalidForm(fieldName), labelText, decimalPlace = true, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

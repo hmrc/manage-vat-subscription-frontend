@@ -16,28 +16,31 @@
 
 package controllers.returnFrequency
 
-import audit.{AuditService, ContactPreferenceAuditKeys}
 import audit.models.ContactPreferenceAuditModel
+import audit.{AuditService, ContactPreferenceAuditKeys}
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
-import common.SessionKeys
 import models.User
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.{ContactPreferenceService, CustomerCircumstanceDetailsService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import views.html.returnFrequency.ChangeReturnFrequencyConfirmationView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
-                                                  val authenticate: AuthPredicate,
+class ChangeReturnFrequencyConfirmation @Inject()(val authenticate: AuthPredicate,
                                                   customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                   val contactPreferenceService: ContactPreferenceService,
                                                   val serviceErrorHandler: ServiceErrorHandler,
                                                   val auditService: AuditService,
-                                                  implicit val appConfig: AppConfig) extends FrontendController with I18nSupport {
+                                                  changeReturnFrequencyConfirmationView: ChangeReturnFrequencyConfirmationView,
+                                                  val mcc: MessagesControllerComponents,
+                                                  implicit val appConfig: AppConfig,
+                                                  implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
   val show: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
     if(user.isAgent) {
@@ -45,9 +48,9 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) =>
           val entityName = details.customerDetails.clientName
-          Ok(views.html.returnFrequency.change_return_frequency_confirmation(clientName = entityName, agentEmail = email))
+          Ok(changeReturnFrequencyConfirmationView(clientName = entityName, agentEmail = email))
         case Left(_) =>
-          Ok(views.html.returnFrequency.change_return_frequency_confirmation(agentEmail = email))
+          Ok(changeReturnFrequencyConfirmationView(agentEmail = email))
       }
     } else {
       nonAgentConfirmation
@@ -63,9 +66,9 @@ class ChangeReturnFrequencyConfirmation @Inject()(val messagesApi: MessagesApi,
           Some(controllers.returnFrequency.routes.ChangeReturnFrequencyConfirmation.show("non-agent").url)
         )
 
-        Ok(views.html.returnFrequency.change_return_frequency_confirmation(contactPref = Some(cPref.preference)))
+        Ok(changeReturnFrequencyConfirmationView(contactPref = Some(cPref.preference)))
       case Left(_) =>
-        Ok(views.html.returnFrequency.change_return_frequency_confirmation())
+        Ok(changeReturnFrequencyConfirmationView())
     }
   }
 }
