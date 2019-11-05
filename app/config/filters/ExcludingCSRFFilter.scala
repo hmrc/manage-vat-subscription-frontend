@@ -42,7 +42,7 @@ class ExcludingCSRFFilter @Inject()(filter: CSRFFilter) extends EssentialFilter 
         chainedFilter(rh)
       } {
         handler =>
-          if (handler.path.contains("NOCSRF")) {
+          if (handler.comments.contains("NOCSRF")) {
             nextFilter(rh)
           } else {
             chainedFilter(rh)

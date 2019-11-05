@@ -21,7 +21,7 @@
 
 @this(mainTemplate: MainTemplate, text: Text)
 
-@(form: Form[StubAgentClientLookupModel], redirectUrl: String)(implicit request: Request[_], mcc: MessagesControllerComponents, messages: Messages, appConfig: config.AppConfig)
+@(form: Form[StubAgentClientLookupModel], redirectUrl: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(title = "Stub Agent Client Lookup Frontend", bodyClasses = None, appConfig = appConfig) {
 

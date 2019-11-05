@@ -23,7 +23,7 @@
 
 @this(mainTemplate: MainTemplate)
 
-@()(implicit user: User[_], mcc: MessagesControllerComponents, messagesApi: MessagesApi, messages: Messages, appConfig: config.AppConfig)
+@()(implicit user: User[_], messagesApi: MessagesApi, messages: Messages, appConfig: config.AppConfig)
 
 @row(field: String, value: String) = {
     <div><dt class="cya-question">@field</dt><dd id="@field" class="cya-answer">@value</dd></div>

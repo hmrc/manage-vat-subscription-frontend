@@ -22,10 +22,10 @@ import play.api.{Configuration, Environment}
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 class TestOnlyAppConfig @Inject()(implicit env: Environment,
-                                  sc:ServicesConfig,
+                                  servicesConfig:ServicesConfig,
                                   config: Configuration)
   extends FrontendAppConfig(){
 
-  lazy val dynamicStubUrl: String = sc.baseUrl("vat-subscription-dynamic-stub")
+  lazy val dynamicStubUrl: String = servicesConfig.baseUrl("vat-subscription-dynamic-stub")
 
 }
