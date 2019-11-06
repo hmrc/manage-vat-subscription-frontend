@@ -215,17 +215,17 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
         <span id="vat-landline-number-status"
               class="bold"
               aria-label="@messages("customer_details.phoneNumbers.landline.pending.hidden")">
-        @messages("customer_details.pending")
+            @messages("customer_details.pending")
         </span>
         } else {
         <a id="vat-landline-number-status"
            href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl"
            aria-label="@messages("customer_details.phoneNumbers.landline.change.hidden",
                                     landlineNumber.getOrElse(messages("customer_details.notProvided")))">
-        @landlineNumber match {
-        case None => { @messages("customer_details.add") }
-        case _ => { @messages("customer_details.change") }
-        }
+            @landlineNumber match {
+                case None => { @messages("customer_details.add") }
+                case _ => { @messages("customer_details.change") }
+            }
         </a>
         }
     </dd>
@@ -245,17 +245,17 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
         <span id="vat-mobile-number-status"
               class="bold"
               aria-label="@messages("customer_details.phoneNumbers.mobile.pending.hidden")">
-        @messages("customer_details.pending")
+            @messages("customer_details.pending")
         </span>
         } else {
         <a id="vat-mobile-number-status"
            href="@appConfig.vatCorrespondenceChangeMobileNumberUrl"
            aria-label="@messages("customer_details.phoneNumbers.mobile.change.hidden",
                                     mobileNumber.getOrElse(messages("customer_details.notProvided")))">
-        @mobileNumber match {
-        case None => { @messages("customer_details.add") }
-        case _ => { @messages("customer_details.change") }
-        }
+            @mobileNumber match {
+                case None => { @messages("customer_details.add") }
+                case _ => { @messages("customer_details.change") }
+            }
         </a>
         }
     </dd>
@@ -395,21 +395,21 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
             <dl class="govuk-check-your-answers cya-questions-short">
                 @customerEmailAddress(
-                    circumstances.pendingEmail.fold(circumstances.email)(Some(_)),
-                    circumstances.pendingEmail.isDefined && !circumstances.sameEmail
+                    if(circumstances.pendingPPOBSection) circumstances.pendingEmail else circumstances.email,
+                    (circumstances.pendingPPOBSection && !circumstances.sameEmail)
                 )
                 @if(appConfig.features.showContactNumbersAndWebsite()) {
                     @customerLandlineNumber(
-                        circumstances.pendingLandline.fold(circumstances.landlineNumber)(Some(_)),
-                        (circumstances.pendingLandline.isDefined) && (!circumstances.samePhone)
+                        if(circumstances.pendingPPOBSection) circumstances.pendingLandline else circumstances.landlineNumber,
+                        (circumstances.pendingPPOBSection && !circumstances.samePhone)
                     )
                     @customerMobileNumber(
-                        circumstances.pendingMobile.fold(circumstances.mobileNumber)(Some(_)),
-                        (circumstances.pendingMobile.isDefined) && (!circumstances.sameMobile)
+                        if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
+                        (circumstances.pendingPPOBSection && !circumstances.sameMobile)
                     )
                     @customerWebsite(
-                        circumstances.pendingWebsite.fold(circumstances.ppob.websiteAddress)(Some(_)),
-                        circumstances.pendingWebsite.isDefined && !circumstances.sameWebsite
+                        if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
+                        (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
                     )
                 }
             </dl>

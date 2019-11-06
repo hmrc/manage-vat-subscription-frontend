@@ -406,18 +406,36 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
           }
 
-          "with pending email" should {
+          "with pending email" when {
 
-            lazy val view = injectedView(customerInformationPendingEmailModel)(user, messages, mockConfig)
-            lazy implicit val document: Document = Jsoup.parse(view.body)
+            "the email has been changed" should {
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              lazy val view = injectedView(customerInformationPendingEmailModel)(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+                element("#vat-email-address-status").attr("aria-label") shouldBe
+                  viewMessages.pendingEmailAddressHidden
+              }
             }
 
-            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-              element("#vat-email-address-status").attr("aria-label") shouldBe
-                viewMessages.pendingEmailAddressHidden
+            "the email has been removed" should {
+
+              lazy val view = injectedView(customerInformationModelPendingRemoved("email"))(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+                element("#vat-email-address-status").attr("aria-label") shouldBe
+                  viewMessages.pendingEmailAddressHidden
+              }
             }
           }
 
@@ -436,46 +454,100 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
           }
 
-          "with pending Landline" should {
+          "with pending Landline" when {
 
-            lazy val view = injectedView(customerInformationPendingPhoneModel)(user, messages, mockConfig)
-            lazy implicit val document: Document = Jsoup.parse(view.body)
+            "the landline has been changed" should {
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              lazy val view = injectedView(customerInformationPendingPhoneModel)(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
+                element("#vat-landline-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingLandlineNumbersHidden
+              }
             }
 
-            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-              element("#vat-landline-number-status").attr("aria-label") shouldBe
-                viewMessages.pendingLandlineNumbersHidden
+            "the landline has been removed" should {
+
+              lazy val view = injectedView(customerInformationModelPendingRemoved("landline"))(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
+                element("#vat-landline-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingLandlineNumbersHidden
+              }
             }
           }
 
-          "with pending Mobile" should {
+          "with pending Mobile" when {
 
-            lazy val view = injectedView(customerInformationPendingMobileModel)(user, messages, mockConfig)
-            lazy implicit val document: Document = Jsoup.parse(view.body)
+            "the mobile has been changed" should {
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              lazy val view = injectedView(customerInformationPendingMobileModel)(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
+                element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingMobileNumbersHidden
+              }
             }
 
-            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-              element("#vat-mobile-number-status").attr("aria-label") shouldBe
-                viewMessages.pendingMobileNumbersHidden
+            "the mobile has been removed" should {
+
+              lazy val view = injectedView(customerInformationModelPendingRemoved("mobile"))(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
+                element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingMobileNumbersHidden
+              }
             }
           }
 
-          "with pending Website" should {
+          "with pending Website" when {
 
-            lazy val view = injectedView(customerInformationPendingWebsiteModel)(user, messages, mockConfig)
+            "the website has been changed" should {
+
+              lazy val view = injectedView(customerInformationPendingWebsiteModel)(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-website-address-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
+                element("#vat-website-address-status").attr("aria-label") shouldBe
+                  viewMessages.pendingWebsiteAddressHidden
+              }
+            }
+          }
+
+          "the website has been removed" should {
+
+            lazy val view = injectedView(customerInformationModelPendingRemoved("website"))(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             s"have link text of '${viewMessages.pending}'" in {
               elementText("#vat-website-address-status") shouldBe viewMessages.pending
             }
 
-            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+            s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
               element("#vat-website-address-status").attr("aria-label") shouldBe
                 viewMessages.pendingWebsiteAddressHidden
             }

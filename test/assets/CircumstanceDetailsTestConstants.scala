@@ -371,6 +371,18 @@ object CircumstanceDetailsTestConstants {
     partyType = None
   )
 
+  def customerInformationModelPendingRemoved(field: String): CircumstanceDetails = {
+    val pendingPPOB = field match {
+      case "email" => Some(ppobModelMax.copy(contactDetails = Some(contactDetailsModelMax.copy(emailAddress = None))))
+      case "landline" => Some(ppobModelMax.copy(contactDetails = Some(contactDetailsModelMax.copy(phoneNumber = None))))
+      case "mobile" => Some(ppobModelMax.copy(contactDetails = Some(contactDetailsModelMax.copy(mobileNumber = None))))
+      case "website" => Some(ppobModelMax.copy(websiteAddress = None))
+    }
+    customerInformationPendingPPOBOrganisation.copy(
+      pendingChanges = Some(PendingChanges(pendingPPOB, None, None, None))
+    )
+  }
+
   val customerInformationPendingEmailModel: CircumstanceDetails = customerInformationPendingPPOBOrganisation.copy(
     pendingChanges = Some(PendingChanges(
       Some(PPOB(
@@ -407,6 +419,14 @@ object CircumstanceDetailsTestConstants {
       None,
       None,
       None
+    ))
+  )
+
+  val customerInformationPendingRemovedPhoneModel: CircumstanceDetails = customerInformationPendingEmailModel.copy(
+    pendingChanges = Some(PendingChanges(
+      Some(ppobModelMax.copy(
+        contactDetails = Some(contactDetailsModelMax.copy(phoneNumber = None))
+      )), None, None, None
     ))
   )
 
