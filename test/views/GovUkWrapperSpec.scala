@@ -24,16 +24,24 @@ class GovUkWrapperSpec extends ViewBaseSpec {
 
   val injectedView: GovukWrapper = inject[GovukWrapper]
 
-  "Gov Uk Wrapper" should {
+  "Gov Uk Wrapper" when {
 
     lazy val view = injectedView(appConfig = mockConfig, title = "test")(request = request, messages = messages)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "contain a link to the Accessibility statement" which {
-      val selector = ".platform-help-links > li:nth-child(2) > a"
+    "visited by a user" should{
+      "not have a logo in the header" in {
+        document.select(".organisation-logo") shouldBe empty
+      }
+    }
 
-      "contains the correct URL" in {
-        element(selector).attr("href") shouldBe mockConfig.accessibilityReportUrl
+    "visited by a user" should {
+      "contain a link to the Accessibility statement" which {
+        val selector = ".platform-help-links > li:nth-child(2) > a"
+
+        "contains the correct URL" in {
+          element(selector).attr("href") shouldBe mockConfig.accessibilityReportUrl
+        }
       }
     }
   }
