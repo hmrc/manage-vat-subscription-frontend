@@ -25,7 +25,6 @@ import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial._
-
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

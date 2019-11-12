@@ -16,13 +16,11 @@
 
 package connectors
 
-import config.{AppConfig, VatHeaderCarrierForPartialsConverter}
-import mocks.MockAppConfig
+import config.{VatHeaderCarrierForPartialsConverter}
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
-import play.i18n.MessagesApi
 import play.twirl.api.Html
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
