@@ -68,6 +68,30 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
               }
 
+              "the page is rendered" should {
+                "display the BTA link Home" in {
+                  element("#service-info-home-link").attr("href") shouldBe "/business-account"
+                }
+              }
+
+              "the page is rendered" should {
+                "display the BTA link Manage Account" in {
+                  element("#service-info-manage-account-link").attr("href") shouldBe "/manage-account"
+                }
+              }
+
+              "the page is rendered" should {
+                "display the BTA link Messages" in {
+                  element("#service-info-messages-link").attr("href") shouldBe "/messages"
+                }
+              }
+
+              "the page is rendered" should {
+                "display the BTA link Help and Contact" in {
+                  element("#service-info-help-and-contact-link").attr("href") shouldBe "/help"
+                }
+              }
+
               "have a section for registration status" which {
 
                 "has a registration header" in {
@@ -843,6 +867,66 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         "hide the making tax digital section" in {
           elementExtinct("#mtd-section")
+        }
+      }
+
+      "the page is rendered" should {
+
+        lazy val view = {
+          mockConfig.features.changeClientFeature(false)
+          injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
+
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+
+        "not display the BTA link Home" in {
+          elementExtinct("#service-info-home-link")
+        }
+      }
+
+
+      "the page is rendered" should {
+
+
+        lazy val view = {
+          injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
+
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "not display the BTA link Manage Account" in {
+          elementExtinct("#service-info-manage-account-link")
+        }
+      }
+
+      "the page is rendered" should {
+
+
+        lazy val view = {
+          injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
+
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+
+        "not display the BTA link Messages" in {
+          elementExtinct("#service-info-messages-link")
+        }
+      }
+
+      "the page is rendered" should {
+
+
+        lazy val view = {
+          injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+        }
+
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+
+        "not display the BTA link Help and Contact" in {
+          elementExtinct("#service-info-help-and-contact-link")
         }
       }
     }
