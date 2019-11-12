@@ -16,32 +16,39 @@
 
 package connectors
 
-import config.VatHeaderCarrierForPartialsConverter
-import controllers.ControllerBaseSpec
+import config.{AppConfig, VatHeaderCarrierForPartialsConverter}
+import mocks.MockAppConfig
+import org.scalamock.scalatest.MockFactory
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.http.Status
-import play.api.i18n.{Lang, Messages, MessagesApi}
+import play.i18n.MessagesApi
 import play.twirl.api.Html
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial.{Failure, Success}
+import uk.gov.hmrc.play.test.UnitSpec
+import utils.TestUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ServiceInfoPartialConnectorSpec extends ControllerBaseSpec {
+class ServiceInfoPartialConnectorSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite with BeforeAndAfterEach with TestUtil {
   val header: VatHeaderCarrierForPartialsConverter = app.injector.instanceOf[VatHeaderCarrierForPartialsConverter]
   override implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
   val validHtml: Html = Html("<nav>BTA lINK</nav>")
+
 
   private trait Test {
     val result :Future[HtmlPartial] = Future.successful(Success(None,validHtml))
     val httpClient: HttpClient = mock[HttpClient]
     lazy val connector: ServiceInfoPartialConnector = {
 
+
       (httpClient.GET[HtmlPartial](_: String)(_: HttpReads[HtmlPartial],_: HeaderCarrier,_: ExecutionContext))
         .stubs(*,*,*,*)
         .returns(result)
-      new ServiceInfoPartialConnector(httpClient, header)(messages, mockAppConfig)
+      new ServiceInfoPartialConnector(httpClient, header)(messagesApi, mockConfig)
     }
 
   }
