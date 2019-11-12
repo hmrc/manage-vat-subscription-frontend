@@ -26,6 +26,7 @@ import play.api.{Configuration, Environment}
 import uk.gov.hmrc.play.binders.ContinueUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+
 import scala.io.Source
 
 trait AppConfig {
@@ -76,6 +77,11 @@ trait AppConfig {
   val routeToSwitchLanguage: String => Call
   val accessibilityReportUrl: String
   val vatReturnPeriodFrontendUrl: String
+  val btaBaseUrl: String
+  val btaHomeUrl: String
+  val btaMessagesUrl: String
+  val btaManageAccountUrl: String
+  val btaHelpAndContactUrl: String
 }
 
 @Singleton
@@ -220,4 +226,13 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   private lazy val vatReturnPeriodFrontendHost: String = servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendHost)
   override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendUrl)
+
+  private lazy val helpAndContactFrontendUrl: String = servicesConfig.getString(Keys.helpAndContactFrontendBase)
+
+  override lazy val btaBaseUrl: String = servicesConfig.baseUrl(Keys.businessTaxAccountBase)
+  override lazy val btaHomeUrl: String = servicesConfig.getString(Keys.businessTaxAccountHost) + servicesConfig.getString(Keys.businessTaxAccountUrl)
+  override lazy val btaMessagesUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountMessagesUrl)
+  override lazy val btaManageAccountUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountManageAccountUrl)
+  override lazy val btaHelpAndContactUrl: String = helpAndContactFrontendUrl + servicesConfig.getString(Keys.helpAndContactHelpUrl)
+
 }

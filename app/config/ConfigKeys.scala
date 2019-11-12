@@ -90,4 +90,13 @@ object ConfigKeys {
 
   val vatReturnPeriodFrontendHost: String = "vat-return-period-frontend.host"
   val vatReturnPeriodFrontendUrl: String = "vat-return-period-frontend.url"
+
+  val businessTaxAccountBase: String = "business-tax-account"
+  val businessTaxAccountHost: String = "business-tax-account.host"
+  val businessTaxAccountUrl: String = "business-tax-account.homeUrl"
+  val businessTaxAccountMessagesUrl: String = "business-tax-account.messagesUrl"
+  val businessTaxAccountManageAccountUrl: String = "business-tax-account.manageAccountUrl"
+
+  val helpAndContactFrontendBase: String = "help-and-contact-frontend.host"
+  val helpAndContactHelpUrl: String = "help-and-contact-frontend.helpUrl"
 }
