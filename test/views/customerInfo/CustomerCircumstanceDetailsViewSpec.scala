@@ -70,25 +70,25 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
               "the page is rendered" should {
                 "display the BTA link Home" in {
-                  element("#service-info-home-link").attr("href") shouldBe "/business-account"
+                  element("#service-info-home-link").attr("href") shouldBe mockConfig.btaHomeUrl
                 }
               }
 
               "the page is rendered" should {
                 "display the BTA link Manage Account" in {
-                  element("#service-info-manage-account-link").attr("href") shouldBe "/manage-account"
+                  element("#service-info-manage-account-link").attr("href") shouldBe mockConfig.btaManageAccountUrl
                 }
               }
 
               "the page is rendered" should {
                 "display the BTA link Messages" in {
-                  element("#service-info-messages-link").attr("href") shouldBe "/messages"
+                  element("#service-info-messages-link").attr("href") shouldBe mockConfig.btaMessagesUrl
                 }
               }
 
               "the page is rendered" should {
                 "display the BTA link Help and Contact" in {
-                  element("#service-info-help-and-contact-link").attr("href") shouldBe "/help"
+                  element("#service-info-help-and-contact-link").attr("href") shouldBe mockConfig.btaHelpAndContactUrl
                 }
               }
 

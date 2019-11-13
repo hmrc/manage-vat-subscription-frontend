@@ -212,3 +212,8 @@ changePending.email = cyfeiriad e-bost y busnes
 changePending.landline = rhif ffôn llinell dir y busnes
 changePending.mobile = rhif ffôn symudol y busnes
 changePending.website = cyfeiriad we y busnes
+
+btaNavLinks.home = Hafan
+btaNavLinks.manageAccount = Rheoli''r cyfrif
+btaNavLinks.messages = Negeseuon
+btaNavLinks.helpAndContact = Cymorth a chysylltu

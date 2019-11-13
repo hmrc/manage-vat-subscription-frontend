@@ -17,7 +17,7 @@
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress,NonMTDfB}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.{RenderReturnFrequency, RenderAddress, DeregistrationHelper, MtdSectionHelper, AddStatusRowHelper}
-@import templates.{Breadcrumb, OpenInNewTab}
+@import templates.{Breadcrumb, OpenInNewTab, btaNavigationLinks}
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
@@ -30,6 +30,7 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
 @bc = {
     @if(!user.isAgent){
         @breadcrumb()
+        @btaNavigationLinks()
     }
 }
 
