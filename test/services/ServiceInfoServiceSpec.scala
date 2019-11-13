@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package services
 
 import connectors.ServiceInfoPartialConnector
@@ -29,7 +30,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite with BeforeAndAfterEach {
+class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite  {
 
   val mockConnector: ServiceInfoPartialConnector = mock[ServiceInfoPartialConnector]
   val service: ServiceInfoService = new ServiceInfoService(mockConnector)
