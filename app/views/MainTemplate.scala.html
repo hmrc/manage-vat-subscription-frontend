@@ -29,7 +29,8 @@
   scriptElem: Option[Html] = None,
   appConfig: config.AppConfig,
   serviceName: Option[String] = None,
-  showSignOut: Boolean = true
+  showSignOut: Boolean = true,
+  btaLinks: Option[Html] = None
 )(mainContent: Html)(implicit request : Request[_], messages: Messages)
 
 
@@ -57,5 +58,6 @@
                serviceInfoContent = serviceInfoContent,
                scriptElem = Some(defaultScriptElem),
                serviceName = serviceName,
-               showSignOut = showSignOut
+               showSignOut = showSignOut,
+               btaLinks = btaLinks
 )

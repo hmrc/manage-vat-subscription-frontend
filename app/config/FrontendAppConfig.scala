@@ -229,8 +229,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   private lazy val helpAndContactFrontendUrl: String = servicesConfig.getString(Keys.helpAndContactFrontendBase)
 
-  override lazy val btaBaseUrl: String = servicesConfig.baseUrl(Keys.businessTaxAccountBase)
-  override lazy val btaHomeUrl: String = servicesConfig.getString(Keys.businessTaxAccountHost) + servicesConfig.getString(Keys.businessTaxAccountUrl)
+  override lazy val btaBaseUrl: String = servicesConfig.getString(Keys.businessTaxAccountHost)
+  override lazy val btaHomeUrl: String = btaBaseUrl + servicesConfig.getString(Keys.businessTaxAccountUrl)
   override lazy val btaMessagesUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountMessagesUrl)
   override lazy val btaManageAccountUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountManageAccountUrl)
   override lazy val btaHelpAndContactUrl: String = helpAndContactFrontendUrl + servicesConfig.getString(Keys.helpAndContactHelpUrl)

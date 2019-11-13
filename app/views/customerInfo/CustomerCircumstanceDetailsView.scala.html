@@ -25,17 +25,20 @@
 addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, breadcrumb: Breadcrumb, openInNewTab: OpenInNewTab)
 
 
-@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+@(circumstances: CircumstanceDetails, serviceInfoServiceContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @bc = {
     @if(!user.isAgent){
         @breadcrumb()
-        @btaNavigationLinks()
     }
 }
 
+
 @registrationStatus() ={
     @deregistrationHelper(circumstances, findDeregStatus(circumstances))
+}
+
+@linkElement = {
 }
 
 @customerName(orgName: String) = {
@@ -60,6 +63,8 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
         </dd>
     </div>
 }
+
+
 
 @customerAddress(address: PPOBAddress, pending: Boolean) = {
     <div>
@@ -320,6 +325,7 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
 @mainTemplate(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
+    btaLinks = Some(serviceInfoServiceContent),
     contentHeader = Some(bc),
     appConfig = appConfig) {
 

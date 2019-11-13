@@ -60,12 +60,14 @@ hmrcGovUkTemplate: GovUkTemplate)
   scriptElem: Option[Html] = None,
   feedbackOnSignOut: Boolean = true,
   serviceName: Option[String] = None,
-  showSignOut: Boolean = true
+  showSignOut: Boolean = true,
+  btaLinks: Option[Html] = None
 )(implicit request: Request[_], messages: Messages)
 
 @linkElem = {
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/palette.css")'>
     <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/stylesheet.css")'>
+    <link rel="stylesheet" type="text/css" href='@routes.Assets.at("css/btaLinks.css")'>
 }
 
 @scriptElement = {
@@ -159,6 +161,9 @@ hmrcGovUkTemplate: GovUkTemplate)
             appConfig.routeToSwitchLanguage,
             customClass = None
         )</div>
+    }
+    @if(btaLinks.isDefined){
+        @btaLinks.get
     }
     @if(contentHeader.isDefined) {
         @mainContentHeader(contentHeader = contentHeader.get)

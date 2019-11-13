@@ -16,7 +16,7 @@
 
 package connectors
 
-import config.{AppConfig, VatHeaderCarrierForPartialsConverter}
+import config.{AppConfig, FrontendAppConfig, VatHeaderCarrierForPartialsConverter}
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -25,13 +25,14 @@ import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial._
+
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ServiceInfoPartialConnector @Inject()(val http: HttpClient,
                                             hcForPartials: VatHeaderCarrierForPartialsConverter)
                                            (implicit val messagesApi: MessagesApi,
-                                            val config: AppConfig) extends HtmlPartialHttpReads with I18nSupport {
+                                            val config: FrontendAppConfig) extends HtmlPartialHttpReads with I18nSupport {
   import hcForPartials._
 
   lazy val btaUrl: String = config.btaBaseUrl + "/business-account/partial/service-info"
