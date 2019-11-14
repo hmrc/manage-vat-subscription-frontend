@@ -39,9 +39,6 @@ import scala.concurrent.ExecutionContext
 
 class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
 
-//  val mockServiceInfoService: ServiceInfoService = mock[ServiceInfoService]
-
-
   val dummyHtml: Html = Html("""<div id="dummyHtml">Dummy html</div>""")
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
@@ -54,13 +51,6 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
     mockConfig,
     ec
   )
-
-//  (mockServiceInfoService.getPartial()(_: Request[_], _: User[AnyContent], _: ExecutionContext))
-//    .expects(*, *, *)
-//    .returning(dummyHtml)
-//  (mockServiceInfoService.getPartial()(_: Request[_], _: User[AnyContent], _: ExecutionContext))
-//    .expects(*, *, *)
-//    .returning(dummyHtml)
 
   "Calling the .show action" when {
 

@@ -22,6 +22,7 @@ import assets.DeregistrationTestConstants._
 import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
+import mocks.services.MockServiceInfoService
 import models.circumstanceInfo.{CircumstanceDetails, MTDfBMandated}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,8 +30,8 @@ import play.twirl.api.Html
 import views.ViewBaseSpec
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
-class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages {
-  val getPartialHtml = Html("""<div id="getPartialTest"></div>""")
+class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService{
+  val getPartialHtml = Html("""<div id="getPartialTest">dummyHtml</div>""")
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
 
   "Rendering the Customer Details page" when {
@@ -69,27 +70,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
               }
 
-              "the page is rendered" should {
-                "display the BTA link Home" in {
-                  element("#service-info-home-link").attr("href") shouldBe mockConfig.btaHomeUrl
-                }
-              }
-
-              "the page is rendered" should {
-                "display the BTA link Manage Account" in {
-                  element("#service-info-manage-account-link").attr("href") shouldBe mockConfig.btaManageAccountUrl
-                }
-              }
-
-              "the page is rendered" should {
-                "display the BTA link Messages" in {
-                  element("#service-info-messages-link").attr("href") shouldBe mockConfig.btaMessagesUrl
-                }
-              }
-
-              "the page is rendered" should {
-                "display the BTA link Help and Contact" in {
-                  element("#service-info-help-and-contact-link").attr("href") shouldBe mockConfig.btaHelpAndContactUrl
+              "the view loads in the partial" should {
+                "display the dummyHtml" in {
+                  elementText("#getPartialTest") shouldBe "dummyHtml"
                 }
               }
 
@@ -871,7 +854,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "the page is rendered" should {
+      "the view loads in the partial" should {
 
         lazy val view = {
           mockConfig.features.changeClientFeature(false)
@@ -881,53 +864,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
 
-        "not display the BTA link Home" in {
-          elementExtinct("#service-info-home-link")
-        }
-      }
-
-
-      "the page is rendered" should {
-
-
-        lazy val view = {
-          injectedView(customerInformationModelMaxIndividual,getPartialHtml)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "not display the BTA link Manage Account" in {
-          elementExtinct("#service-info-manage-account-link")
-        }
-      }
-
-      "the page is rendered" should {
-
-
-        lazy val view = {
-          injectedView(customerInformationModelMaxIndividual,getPartialHtml)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-
-        "not display the BTA link Messages" in {
-          elementExtinct("#service-info-messages-link")
-        }
-      }
-
-      "the page is rendered" should {
-
-
-        lazy val view = {
-          injectedView(customerInformationModelMaxIndividual,getPartialHtml)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-
-        "not display the BTA link Help and Contact" in {
-          elementExtinct("#service-info-help-and-contact-link")
+        "not display dummyHtml" in {
+          elementExtinct("#getPartialTest")
         }
       }
     }
