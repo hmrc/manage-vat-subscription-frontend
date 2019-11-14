@@ -27,18 +27,20 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
+import services.ServiceInfoService
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
 
 class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
-
+  val mockServiceInfoService=mock[ServiceInfoService]
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
     mockCustomerDetailsService,
     serviceErrorHandler,
     mockAuditingService,
+    mockServiceInfoService,
     inject[CustomerCircumstanceDetailsView],
     mcc,
     mockConfig,

@@ -21,7 +21,7 @@ import controllers.ControllerBaseSpec
 import models.User
 import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.{AnyContentAsEmpty, Request}
+import play.api.mvc.{AnyContentAsEmpty, Request, AnyContent}
 import play.api.test.{FakeRequest, Injecting}
 import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.play.test.UnitSpec
@@ -32,10 +32,10 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
 
   val mockConnector: ServiceInfoPartialConnector = mock[ServiceInfoPartialConnector]
   val service: ServiceInfoService = new ServiceInfoService(mockConnector)
-  val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  val fakeRequest: FakeRequest[AnyContent] = FakeRequest()
   val ec: ExecutionContext = inject[ExecutionContext]
-  val user: User[AnyContentAsEmpty.type] = User("1231231231")(fakeRequest)
-  val agentUser: User[AnyContentAsEmpty.type] = User("1231231231", arn = Some("XAIT123123123"))(fakeRequest)
+  val user: User[AnyContent] = User("1231231231")(fakeRequest)
+  val agentUser: User[AnyContent] = User("1231231231", arn = Some("XAIT123123123"))(fakeRequest)
   val validHtml = Html("<nav>btalink<nav>")
   val htmlError = Html("error")
 
