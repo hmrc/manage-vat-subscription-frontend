@@ -26,8 +26,6 @@ import scala.collection.JavaConverters._
 
 trait ViewBaseSpec extends TestUtil with GuiceOneAppPerSuite {
 
-  implicit lazy val serviceInfoServiceContent =
-
   def elementText(selector: String)(implicit document: Document): String = {
     element(selector).text()
   }
