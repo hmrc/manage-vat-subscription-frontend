@@ -45,7 +45,7 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
         .expects(*, *)
         .returning(Future.successful(validHtml))
 
-      val result: Html = await(service.getPartial(fakeRequest, user, ec))
+      val result: Html = await(service.getPartial()(fakeRequest, user, ec))
       val expectedResult: Html = validHtml
 
       result shouldBe expectedResult
@@ -55,7 +55,7 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
         .expects(*, *)
         .never()
 
-      val result: Html = await(service.getPartial(fakeRequest, agentUser, ec))
+      val result: Html = await(service.getPartial()(fakeRequest, agentUser, ec))
       val expectedResult: Html = HtmlFormat.empty
 
       result shouldBe expectedResult

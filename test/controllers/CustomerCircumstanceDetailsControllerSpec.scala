@@ -22,19 +22,27 @@ import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
+import models.User
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
+import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
+import play.api.mvc.{AnyContent, Request}
 import play.api.test.Helpers._
-import services.ServiceInfoService
 import uk.gov.hmrc.http.HeaderCarrier
+import play.twirl.api.Html
+import services.ServiceInfoService
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
 
 class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
-  val mockServiceInfoService=mock[ServiceInfoService]
+
+//  val mockServiceInfoService: ServiceInfoService = mock[ServiceInfoService]
+
+
+  val dummyHtml: Html = Html("""<div id="dummyHtml">Dummy html</div>""")
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
     mockCustomerDetailsService,
@@ -47,6 +55,13 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
     ec
   )
 
+//  (mockServiceInfoService.getPartial()(_: Request[_], _: User[AnyContent], _: ExecutionContext))
+//    .expects(*, *, *)
+//    .returning(dummyHtml)
+//  (mockServiceInfoService.getPartial()(_: Request[_], _: User[AnyContent], _: ExecutionContext))
+//    .expects(*, *, *)
+//    .returning(dummyHtml)
+
   "Calling the .show action" when {
 
     "the user is authorised and a CustomerDetailsModel" should {
@@ -58,6 +73,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
+        getPartial(Html(""))
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
 
@@ -70,6 +86,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
             ArgumentMatchers.any[ExecutionContext]
           )
       }
+
 
       "return HTML" in {
         contentType(result) shouldBe Some("text/html")
