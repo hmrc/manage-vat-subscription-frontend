@@ -9,12 +9,11 @@
 }
 
 .bta-navigation li:first-child {
-      display: inline-block;
       margin-left: 0;
   }
 
 .bta-navigation a{
-    font-size: 20px;
+    font-size: 16px;
 }
 
 @media(max-width: 768px) {

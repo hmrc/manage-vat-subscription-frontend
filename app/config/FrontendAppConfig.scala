@@ -82,6 +82,7 @@ trait AppConfig {
   val btaMessagesUrl: String
   val btaManageAccountUrl: String
   val btaHelpAndContactUrl: String
+  val btaPartialUrl: String
 }
 
 @Singleton
@@ -234,5 +235,5 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val btaMessagesUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountMessagesUrl)
   override lazy val btaManageAccountUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountManageAccountUrl)
   override lazy val btaHelpAndContactUrl: String = helpAndContactFrontendUrl + servicesConfig.getString(Keys.helpAndContactHelpUrl)
-
+  override lazy val btaPartialUrl: String = btaBaseUrl + servicesConfig.getString(Keys.partialURL)
 }
