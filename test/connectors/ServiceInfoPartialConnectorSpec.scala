@@ -16,7 +16,7 @@
 
 package connectors
 
-import config.VatHeaderCarrierForPartialsConverter
+import config.VatcHeaderCarrierForPartialsConverter
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
 import play.twirl.api.Html
@@ -25,10 +25,11 @@ import uk.gov.hmrc.play.bootstrap.http.HttpClient
 import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial.{Failure, Success}
 import utils.TestUtil
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
-  val header: VatHeaderCarrierForPartialsConverter = app.injector.instanceOf[VatHeaderCarrierForPartialsConverter]
+  val header: VatcHeaderCarrierForPartialsConverter = app.injector.instanceOf[VatcHeaderCarrierForPartialsConverter]
   val validHtml: Html = Html("<nav>BTA lINK</nav>")
 
   private trait Test {

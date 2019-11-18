@@ -16,7 +16,7 @@
 
 package connectors
 
-import config.{AppConfig, VatHeaderCarrierForPartialsConverter}
+import config.{AppConfig, VatcHeaderCarrierForPartialsConverter}
 import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,7 +29,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ServiceInfoPartialConnector @Inject()(val http: HttpClient,
-                                            hcForPartials: VatHeaderCarrierForPartialsConverter)
+                                            hcForPartials: VatcHeaderCarrierForPartialsConverter)
                                            (implicit val messagesApi: MessagesApi,
                                             val config: AppConfig) extends HtmlPartialHttpReads with I18nSupport {
   import hcForPartials._
