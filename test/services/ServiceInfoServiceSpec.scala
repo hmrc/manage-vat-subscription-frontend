@@ -17,25 +17,21 @@
 package services
 
 import connectors.ServiceInfoPartialConnector
-import controllers.ControllerBaseSpec
 import models.User
 import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.{AnyContentAsEmpty, Request, AnyContent}
-import play.api.test.{FakeRequest, Injecting}
+import play.api.mvc.{AnyContent, Request}
 import play.twirl.api.{Html, HtmlFormat}
-import uk.gov.hmrc.play.test.UnitSpec
+import utils.TestUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppPerSuite with Injecting {
+class ServiceInfoServiceSpec extends TestUtil with MockFactory with GuiceOneAppPerSuite {
 
   val mockConnector: ServiceInfoPartialConnector = mock[ServiceInfoPartialConnector]
   val service: ServiceInfoService = new ServiceInfoService(mockConnector)
-  val fakeRequest: FakeRequest[AnyContent] = FakeRequest()
-  val ec: ExecutionContext = inject[ExecutionContext]
-  val user: User[AnyContent] = User("1231231231")(fakeRequest)
-  val agentUser: User[AnyContent] = User("1231231231", arn = Some("XAIT123123123"))(fakeRequest)
+  val userAnyContent: User[AnyContent] = User("1231231231")(request)
+  val agentUserAnyContent: User[AnyContent] = User("1231231231")(request)
   val validHtml = Html("<nav>btalink<nav>")
 
   "getServiceInfo Partial" should {
@@ -44,7 +40,7 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
         .expects(*, *)
         .returning(Future.successful(validHtml))
 
-      val result: Html = await(service.getPartial()(fakeRequest, user, ec))
+      val result: Html = await(service.getPartial()(request, userAnyContent, ec))
       val expectedResult: Html = validHtml
 
       result shouldBe expectedResult
@@ -54,7 +50,7 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
         .expects(*, *)
         .never()
 
-      val result: Html = await(service.getPartial()(fakeRequest, agentUser, ec))
+      val result: Html = await(service.getPartial()(request, agentUserAnyContent, ec))
       val expectedResult: Html = HtmlFormat.empty
 
       result shouldBe expectedResult
