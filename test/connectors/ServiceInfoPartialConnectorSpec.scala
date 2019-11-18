@@ -47,7 +47,7 @@ class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
 
   "ServiceInfoPartialConnector" should {
     "generate the correct url" in new Test {
-      connector.btaUrl shouldBe "/business-account/partial/service-info"
+      connector.config.btaPartialUrl shouldBe "/business-account/partial/service-info"
     }
   }
 

@@ -16,11 +16,12 @@
 
 package services
 
+import akka.http.javadsl.model.headers.UserAgent
 import connectors.ServiceInfoPartialConnector
 import models.User
 import org.scalamock.scalatest.MockFactory
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.mvc.{AnyContent, Request}
+import play.api.mvc.{AnyContent, AnyContentAsText, Request}
 import play.twirl.api.{Html, HtmlFormat}
 import utils.TestUtil
 
@@ -30,8 +31,6 @@ class ServiceInfoServiceSpec extends TestUtil with MockFactory with GuiceOneAppP
 
   val mockConnector: ServiceInfoPartialConnector = mock[ServiceInfoPartialConnector]
   val service: ServiceInfoService = new ServiceInfoService(mockConnector)
-  val userAnyContent: User[AnyContent] = User("1231231231")(request)
-  val agentUserAnyContent: User[AnyContent] = User("1231231231")(request)
   val validHtml = Html("<nav>btalink<nav>")
 
   "getServiceInfo Partial" should {
@@ -40,7 +39,7 @@ class ServiceInfoServiceSpec extends TestUtil with MockFactory with GuiceOneAppP
         .expects(*, *)
         .returning(Future.successful(validHtml))
 
-      val result: Html = await(service.getPartial()(request, userAnyContent, ec))
+      val result: Html = await(service.getPartial()(request, user, ec))
       val expectedResult: Html = validHtml
 
       result shouldBe expectedResult
@@ -50,7 +49,7 @@ class ServiceInfoServiceSpec extends TestUtil with MockFactory with GuiceOneAppP
         .expects(*, *)
         .never()
 
-      val result: Html = await(service.getPartial()(request, agentUserAnyContent, ec))
+      val result: Html = await(service.getPartial()(request, agentUser, ec))
       val expectedResult: Html = HtmlFormat.empty
 
       result shouldBe expectedResult

@@ -21,17 +21,17 @@ import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.mvc._
 import play.twirl.api.{Html, HtmlFormat}
-
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ServiceInfoService @Inject()(serviceInfoPartialConnector: ServiceInfoPartialConnector){
 
-  def getPartial()(implicit request: Request[_], user: User[AnyContent], executionContext: ExecutionContext): Future[Html] = {
+  def getPartial()(implicit request: Request[_], user: User[_], executionContext: ExecutionContext): Future[Html] = {
     if(user.isAgent){
       Future.successful(HtmlFormat.empty)
     } else {
       serviceInfoPartialConnector.getServiceInfoPartial()
     }
+
   }
 }
