@@ -22,22 +22,19 @@ import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
-import models.User
+import mocks.services.MockServiceInfoService
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
-import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
-import play.api.mvc.{AnyContent, Request}
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
 import play.twirl.api.Html
-import services.ServiceInfoService
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
 
-class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
+class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockServiceInfoService {
 
   val dummyHtml: Html = Html("""<div id="dummyHtml">Dummy html</div>""")
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(

@@ -37,7 +37,6 @@ class ServiceInfoServiceSpec extends UnitSpec with MockFactory with GuiceOneAppP
   val user: User[AnyContent] = User("1231231231")(fakeRequest)
   val agentUser: User[AnyContent] = User("1231231231", arn = Some("XAIT123123123"))(fakeRequest)
   val validHtml = Html("<nav>btalink<nav>")
-  val htmlError = Html("error")
 
   "getServiceInfo Partial" should {
     "return bta Partial" in {

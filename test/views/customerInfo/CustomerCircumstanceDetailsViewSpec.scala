@@ -31,7 +31,7 @@ import views.ViewBaseSpec
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService{
-  val getPartialHtmlAgent=Html("""""")
+  val getPartialHtmlAgent=Html("")
   val getPartialHtmlNotAgent = Html("""<div id="getPartialTest">dummyHtml</div>""")
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
 
