@@ -124,7 +124,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               And("Registration status is displayed")
               res should have(
                 elementText("#registration-status-text")(expectedValue = "Status"),
-                elementText("#registration-status")(expectedValue = "Deregistration requested")
+                elementText("#registration-status")(expectedValue = "Cancel VAT registration requested")
               )
             }
           }
