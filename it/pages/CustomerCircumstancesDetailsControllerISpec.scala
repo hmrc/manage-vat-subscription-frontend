@@ -87,6 +87,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               given.user.isAuthenticated
 
+              And("A succesful partial is returned")
+              ServiceInfoStub.stubServiceInfoPartial
+
               And("A successful response with all details is returned for an Individual")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual, Some("1")))
 
@@ -141,6 +144,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               given.user.isAuthenticated
 
+              And("A succesful partial is returned")
+              ServiceInfoStub.stubServiceInfoPartial
+
               And("A successful response with minimum details returned for an Organisation")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation, partyType = Some("50")))
 
@@ -162,6 +168,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             "not render the Business name row" in {
 
               given.user.isAuthenticated
+
+              And("A succesful partial is returned")
+              ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with minimum details returned for an Organisation")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
@@ -214,6 +223,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             "render the Customer Circumstances page with correct details shown" in {
 
               given.user.isAuthenticated
+
+              And("A succesful partial is returned")
+              ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with all details is returned for an Individual")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation, partyType = Some("50")))
