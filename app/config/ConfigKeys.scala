@@ -91,6 +91,7 @@ object ConfigKeys {
   val vatReturnPeriodFrontendHost: String = "vat-return-period-frontend.host"
   val vatReturnPeriodFrontendUrl: String = "vat-return-period-frontend.url"
 
+  val businessTaxAccount: String = "business-tax-account"
   val businessTaxAccountHost: String = "business-tax-account.host"
   val businessTaxAccountUrl: String = "business-tax-account.homeUrl"
   val businessTaxAccountMessagesUrl: String = "business-tax-account.messagesUrl"
