@@ -14,15 +14,24 @@
  * limitations under the License.
  */
 
-package config
+package services
 
+import connectors.ServiceInfoPartialConnector
 import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.crypto.PlainText
-import uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCrypto
-import uk.gov.hmrc.play.partials.HeaderCarrierForPartialsConverter
+import models.User
+import play.api.mvc._
+import play.twirl.api.{Html, HtmlFormat}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class VatcHeaderCarrierForPartialsConverter @Inject()(val sessionCookieCrypto: SessionCookieCrypto) extends HeaderCarrierForPartialsConverter {
-  def encryptCookieString(cookie: String): String = cookie
-  override val crypto: String => String = encryptCookieString
+class ServiceInfoService @Inject()(serviceInfoPartialConnector: ServiceInfoPartialConnector){
+
+  def getPartial()(implicit request: Request[_], user: User[_], executionContext: ExecutionContext): Future[Html] = {
+    if(user.isAgent){
+      Future.successful(HtmlFormat.empty)
+    } else {
+      serviceInfoPartialConnector.getServiceInfoPartial()
+    }
+
+  }
 }

@@ -25,7 +25,7 @@ import javax.inject.{Inject, Singleton}
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc._
-import services.CustomerCircumstanceDetailsService
+import services.{CustomerCircumstanceDetailsService, ServiceInfoService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
@@ -36,6 +36,7 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
                                                       val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                                       val serviceErrorHandler: ServiceErrorHandler,
                                                       val auditService: AuditService,
+                                                      val serviceInfoService: ServiceInfoService,
                                                       customerCircumstanceDetailsView: CustomerCircumstanceDetailsView,
                                                       val mcc: MessagesControllerComponents,
                                                       implicit val appConfig: AppConfig,
@@ -49,17 +50,19 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
   val show: String => Action[AnyContent] = _ => authenticate.async {
     implicit user =>
       Logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
-      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
         case Right(circumstances) =>
           auditService.extendedAudit(
             ViewVatSubscriptionAuditModel(user, circumstances),
             Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
           )
-          Ok(customerCircumstanceDetailsView(circumstances))
-            .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
+          serviceInfoService.getPartial.map { result =>
+            Ok(customerCircumstanceDetailsView(circumstances, result))
+              .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
+          }
         case _ =>
           Logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
-          serviceErrorHandler.showInternalServerError
+          Future.successful(serviceErrorHandler.showInternalServerError)
       }
   }
 }

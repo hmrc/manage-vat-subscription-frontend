@@ -23,7 +23,7 @@ import models.customerAddress.CountryCodes
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
-import stubs.VatSubscriptionStub
+import stubs.{VatSubscriptionStub,ServiceInfoStub}
 
 class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
@@ -45,6 +45,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
             "render the Customer Circumstances page with options to add missing information" in {
 
               given.user.isAuthenticated
+
+              And("A succesful partial is returned")
+              ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with minimum details returned for an Individual")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(individual))

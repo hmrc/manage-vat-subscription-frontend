@@ -22,23 +22,27 @@ import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
+import mocks.services.MockServiceInfoService
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
+import play.twirl.api.Html
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
 
-class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
+class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockServiceInfoService {
 
+  val dummyHtml: Html = Html("""<div id="dummyHtml">Dummy html</div>""")
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
     mockCustomerDetailsService,
     serviceErrorHandler,
     mockAuditingService,
+    mockServiceInfoService,
     inject[CustomerCircumstanceDetailsView],
     mcc,
     mockConfig,
@@ -56,6 +60,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
       lazy val document = Jsoup.parse(bodyOf(result))
 
       "return 200" in {
+        getPartial(Html(""))
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
 
@@ -68,6 +73,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec {
             ArgumentMatchers.any[ExecutionContext]
           )
       }
+
 
       "return HTML" in {
         contentType(result) shouldBe Some("text/html")

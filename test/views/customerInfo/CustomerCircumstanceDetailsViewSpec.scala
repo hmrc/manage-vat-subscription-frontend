@@ -22,14 +22,17 @@ import assets.DeregistrationTestConstants._
 import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
+import mocks.services.MockServiceInfoService
 import models.circumstanceInfo.{CircumstanceDetails, MTDfBMandated}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.twirl.api.Html
 import views.ViewBaseSpec
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
-class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages {
-
+class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService{
+  val getPartialHtmlAgent=Html("")
+  val getPartialHtmlNotAgent = Html("""<div id="getPartialTest">dummyHtml</div>""")
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
 
   "Rendering the Customer Details page" when {
@@ -44,7 +47,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "useVatReturnPeriodFrontend feature switch is off" should {
 
-              lazy val view = injectedView(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationNoPendingIndividual,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have the correct document title '${viewMessages.title}'" in {
@@ -66,6 +69,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
                 element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
+              }
+
+              "the view loads in the partial" should {
+                "display the dummyHtml" in {
+                  elementText("#getPartialTest") shouldBe "dummyHtml"
+                }
               }
 
               "have a section for registration status" which {
@@ -336,7 +345,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
               lazy val view = {
                 mockConfig.features.useVatReturnPeriodFrontend(true)
-                injectedView(customerInformationNoPendingIndividual)(user, messages, mockConfig)
+                injectedView(customerInformationNoPendingIndividual,getPartialHtmlNotAgent)(user, messages, mockConfig)
               }
 
               lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -357,7 +366,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "deregistration date is in the future" should {
 
-              lazy val view = injectedView(customerInformationModelFutureDereg)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationModelFutureDereg,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               "have a section for registration status" which {
@@ -375,7 +384,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "deregistration is still pending" should {
 
-              lazy val view = injectedView(customerInformationModelDeregPending)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationModelDeregPending,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               "have a section for registration status" which {
@@ -410,7 +419,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the email has been changed" should {
 
-              lazy val view = injectedView(customerInformationPendingEmailModel)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationPendingEmailModel,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -425,7 +434,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the email has been removed" should {
 
-              lazy val view = injectedView(customerInformationModelPendingRemoved("email"))(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationModelPendingRemoved("email"),getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -441,7 +450,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           "with pending PPOB" should {
 
-            lazy val view = injectedView(customerInformationPendingPPOBModel)(user, messages, mockConfig)
+            lazy val view = injectedView(customerInformationPendingPPOBModel,getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             s"have link text of '${viewMessages.pending}'" in {
@@ -458,7 +467,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the landline has been changed" should {
 
-              lazy val view = injectedView(customerInformationPendingPhoneModel)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationPendingPhoneModel,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -473,7 +482,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the landline has been removed" should {
 
-              lazy val view = injectedView(customerInformationModelPendingRemoved("landline"))(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationModelPendingRemoved("landline"),getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -491,7 +500,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the mobile has been changed" should {
 
-              lazy val view = injectedView(customerInformationPendingMobileModel)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationPendingMobileModel,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -506,7 +515,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the mobile has been removed" should {
 
-              lazy val view = injectedView(customerInformationModelPendingRemoved("mobile"))(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationModelPendingRemoved("mobile"),getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -524,7 +533,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the website has been changed" should {
 
-              lazy val view = injectedView(customerInformationPendingWebsiteModel)(user, messages, mockConfig)
+              lazy val view = injectedView(customerInformationPendingWebsiteModel,getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -540,7 +549,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           "the website has been removed" should {
 
-            lazy val view = injectedView(customerInformationModelPendingRemoved("website"))(user, messages, mockConfig)
+            lazy val view = injectedView(customerInformationModelPendingRemoved("website"),getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             s"have link text of '${viewMessages.pending}'" in {
@@ -557,7 +566,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "deregistered for VAT" should {
 
-        lazy val view = injectedView(customerInformationNoPendingIndividualDeregistered)(user, messages, mockConfig)
+        lazy val view = injectedView(customerInformationNoPendingIndividualDeregistered,getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "have a section for registration status" which {
@@ -583,7 +592,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "with no email address, landline number, mobile number or website" should {
 
-        lazy val view = injectedView(customerInformationModelMin)(user, messages, mockConfig)
+        lazy val view = injectedView(customerInformationModelMin,getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "display the 'Not provided' text in place of the email address" in {
@@ -656,7 +665,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           "have a change details section for the Business Name" which {
 
-            lazy val view = injectedView(customerInformationWithPartyType(Some("2")))(user, messages, mockConfig)
+            lazy val view = injectedView(customerInformationWithPartyType(Some("2")),getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             s"has the heading '${viewMessages.organisationNameHeading}'" in {
@@ -680,7 +689,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             partyType = Some(mockConfig.partyTypes.head)
           )
 
-          lazy val view = injectedView(model)(user, messages, mockConfig)
+          lazy val view = injectedView(model,getPartialHtmlNotAgent)(user, messages, mockConfig)
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
           "not have a change details section for the Business Name" in {
@@ -691,7 +700,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "without a valid party type" should {
 
-        lazy val view = injectedView(customerInformationWithPartyType(Some("other")))(user, messages, mockConfig)
+        lazy val view = injectedView(customerInformationWithPartyType(Some("other")),getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "not have a change details section for the Business Name" in {
@@ -701,7 +710,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "without a party type" should {
 
-        lazy val view = injectedView(customerInformationWithPartyType(None))(user, messages, mockConfig)
+        lazy val view = injectedView(customerInformationWithPartyType(None),getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "have no change details section for the Business Name" in {
@@ -719,7 +728,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           lazy val view = {
             mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(true)
-            injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+            injectedView(customerInformationModelMaxIndividual,getPartialHtmlAgent)(agentUser, messages, mockConfig)
           }
 
           lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -771,7 +780,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           lazy val view = {
             mockConfig.features.changeClientFeature(true)
             mockConfig.features.allowAgentBankAccountChange(false)
-            injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+            injectedView(customerInformationModelMaxIndividual,getPartialHtmlAgent)(agentUser, messages, mockConfig)
           }
 
           lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -786,7 +795,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         lazy val view = {
           mockConfig.features.changeClientFeature(false)
-          injectedView(customerInformationModelMaxIndividual)(agentUser, messages, mockConfig)
+          injectedView(customerInformationModelMaxIndividual,getPartialHtmlAgent)(agentUser, messages, mockConfig)
         }
 
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -799,7 +808,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "client is MTD" should {
 
-        lazy val view = injectedView(customerInformationRegisteredIndividual)(agentUser, messages, mockConfig)
+        lazy val view = injectedView(customerInformationRegisteredIndividual,getPartialHtmlAgent)(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         "have a section for making tax digital" which {
@@ -837,7 +846,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         lazy val view = {
           mockConfig.features.mtdSignUp(false)
-          injectedView(customerInformationNonMtd)(user, messages, mockConfig)
+          injectedView(customerInformationNonMtd,getPartialHtmlAgent)(user, messages, mockConfig)
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -852,7 +861,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       lazy val view = {
         mockConfig.features.showContactNumbersAndWebsite(false)
-        injectedView(customerInformationModelMaxIndividual)(user, messages, mockConfig)
+        injectedView(customerInformationModelMaxIndividual,getPartialHtmlNotAgent)(user, messages, mockConfig)
       }
 
       lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -868,7 +877,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     "the user is an overseas business" should {
 
-      lazy val view = injectedView(overseasCompany)(user, messages, mockConfig)
+      lazy val view = injectedView(overseasCompany,getPartialHtmlNotAgent)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "not display business name" in {

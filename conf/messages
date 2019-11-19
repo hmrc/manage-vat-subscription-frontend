@@ -209,3 +209,8 @@ changePending.email = business email address
 changePending.landline = business landline number
 changePending.mobile = business mobile number
 changePending.website = business website address
+
+btaNavLinks.home = Home
+btaNavLinks.manageAccount = Manage account
+btaNavLinks.messages = Messages
+btaNavLinks.helpAndContact = Help and contact

@@ -82,4 +82,11 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
 
   override val accessibilityReportUrl : String = "/vat-through-software/accessibility-statement"
   override val vatReturnPeriodFrontendUrl: String = "vat-return-period-url"
+
+  override val btaBaseUrl: String = ""
+  override val btaHomeUrl: String = "bta-url"
+  override val btaHelpAndContactUrl: String = "bta-help-and-contact-url"
+  override val btaManageAccountUrl: String = "bta-manage-account-url"
+  override val btaMessagesUrl: String = "bta-messages-url"
+  override val btaPartialUrl: String = "/business-account/partial/service-info"
 }

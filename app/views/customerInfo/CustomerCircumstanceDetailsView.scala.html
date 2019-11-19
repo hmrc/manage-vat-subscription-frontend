@@ -17,7 +17,7 @@
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress,NonMTDfB}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.{RenderReturnFrequency, RenderAddress, DeregistrationHelper, MtdSectionHelper, AddStatusRowHelper}
-@import templates.{Breadcrumb, OpenInNewTab}
+@import templates.{Breadcrumb, OpenInNewTab, btaNavigationLinks}
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
@@ -25,13 +25,14 @@
 addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, breadcrumb: Breadcrumb, openInNewTab: OpenInNewTab)
 
 
-@(circumstances: CircumstanceDetails)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+@(circumstances: CircumstanceDetails, serviceInfoContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @bc = {
     @if(!user.isAgent){
         @breadcrumb()
     }
 }
+
 
 @registrationStatus() ={
     @deregistrationHelper(circumstances, findDeregStatus(circumstances))
@@ -59,6 +60,8 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
         </dd>
     </div>
 }
+
+
 
 @customerAddress(address: PPOBAddress, pending: Boolean) = {
     <div>
@@ -319,6 +322,7 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
 @mainTemplate(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
+    btaLinks = Some(serviceInfoContent),
     contentHeader = Some(bc),
     appConfig = appConfig) {
 

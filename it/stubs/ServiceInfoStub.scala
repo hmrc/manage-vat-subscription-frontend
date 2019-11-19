@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package config
+package stubs
 
-import javax.inject.{Inject, Singleton}
-import uk.gov.hmrc.crypto.PlainText
-import uk.gov.hmrc.play.bootstrap.filters.frontend.crypto.SessionCookieCrypto
-import uk.gov.hmrc.play.partials.HeaderCarrierForPartialsConverter
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import helpers.WireMockMethods
+import play.api.http.Status
 
-@Singleton
-class VatcHeaderCarrierForPartialsConverter @Inject()(val sessionCookieCrypto: SessionCookieCrypto) extends HeaderCarrierForPartialsConverter {
-  def encryptCookieString(cookie: String): String = cookie
-  override val crypto: String => String = encryptCookieString
+object ServiceInfoStub extends WireMockMethods {
+
+  private val serviceInfoUri = "/business-account/partial/service-info"
+
+  def stubServiceInfoPartial: StubMapping =
+    when(method = GET, uri = serviceInfoUri).thenReturn(Status.OK)
 }

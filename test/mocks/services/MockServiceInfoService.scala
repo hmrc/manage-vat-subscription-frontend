@@ -16,35 +16,27 @@
 
 package mocks.services
 
-import models.core.ErrorModel
-import models.payments.PaymentRedirectModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
-import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
-import services.PaymentsService
+import play.twirl.api.Html
+import services.ServiceInfoService
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext
 
-trait MockPaymentsService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockServiceInfoService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
-  val mockPaymentsService: PaymentsService = mock[PaymentsService]
-
-  type PaymentsResponse = Either[ErrorModel, PaymentRedirectModel]
+  val mockServiceInfoService: ServiceInfoService = mock[ServiceInfoService]
 
   override def beforeEach(): Unit = {
-
     super.beforeEach()
-    reset(mockPaymentsService)
+    reset(mockServiceInfoService)
   }
 
-  def setupMockPaymentsService(response: PaymentsResponse): OngoingStubbing[Future[PaymentsResponse]] = {
-    when(mockPaymentsService.postPaymentDetails
-    (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())
-    (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
-      .thenReturn(Future.successful(response))
+  def getPartial(response: Html)(implicit executionContext: ExecutionContext): Unit= {
+    when(mockServiceInfoService.getPartial()(ArgumentMatchers.any(),ArgumentMatchers.any(),ArgumentMatchers.any()))
+      .thenReturn(response)
   }
-
 }
