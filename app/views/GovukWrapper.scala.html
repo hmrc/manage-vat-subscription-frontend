@@ -55,6 +55,7 @@ hmrcGovUkTemplate: GovUkTemplate)
 }
 
 @scriptElement = {
+    <script type="text/javascript" src=@routes.Assets.at("js/errorFocus.js")></script>
     <script>
         @if(showSignOut) {
             window.GOVUK.timeoutDialog({
