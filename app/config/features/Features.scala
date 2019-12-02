@@ -32,6 +32,5 @@ class Features @Inject()(implicit config: Configuration) {
   val useLanguageSelector = new Feature(ConfigKeys.useLanguageSelectorFeature)
   val useOverseasIndicator = new Feature(ConfigKeys.useOverseasIndicator)
   val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
-  val useVatReturnPeriodFrontend = new Feature(ConfigKeys.useVatReturnPeriodFrontend)
   val mtdSignUp = new Feature(ConfigKeys.mtdSignUpFeature)
 }

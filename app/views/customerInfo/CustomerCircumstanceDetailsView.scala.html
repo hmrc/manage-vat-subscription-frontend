@@ -149,8 +149,7 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
                         </span>
                     } else {
                         <a id="vat-return-dates-status"
-                            href="@{if(appConfig.features.useVatReturnPeriodFrontend()) appConfig.vatReturnPeriodFrontendUrl
-                                   else controllers.returnFrequency.routes.ChooseDatesController.show()}"
+                            href="@appConfig.vatReturnPeriodFrontendUrl"
                             aria-label="@messages("customer_details.returnFrequency.change.hidden", renderReturnFrequency(period))">
                             @messages("customer_details.change")
                         </a>

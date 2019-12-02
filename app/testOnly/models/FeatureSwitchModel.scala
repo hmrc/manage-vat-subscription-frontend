@@ -25,5 +25,4 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               languageFeatureEnabled: Boolean,
                               useOverseasIndicatorEnabled: Boolean,
                               changeClientFeature: Boolean,
-                              useVatReturnPeriodFrontend: Boolean,
                               mtdSignUp: Boolean)
