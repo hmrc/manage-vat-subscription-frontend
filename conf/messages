@@ -198,17 +198,18 @@ breadcrumb.bta = Business tax account
 breadcrumb.yourVatDetails = Your VAT details
 breadcrumb.changeBusinessDetails = Change of business details
 
-changePending.title = You already have a change pending
-changePending.heading = You already have a change pending
-changePending.infoOne = You recently requested to change the {0}.
-changePending.infoTwo = This change is pending and until this is confirmed, you cannot change your:
+changePending.title = There is already a change pending
+changePending.infoOne = A recent request was made to change the {0}.
+changePending.infoTwo = Until this is confirmed, you cannot change the:
 changePending.listItem1 = principal place of business
-changePending.listItem2 = email address
+changePending.listItem2 = website address
+changePending.listItem3 = contact details
 changePending.ppob = principal place of business
-changePending.email = business email address
-changePending.landline = business landline number
-changePending.mobile = business mobile number
-changePending.website = business website address
+changePending.email = business’s email address
+changePending.landline = business’s landline number
+changePending.mobile = business’s mobile number
+changePending.website = business’s website address
+
 
 btaNavLinks.home = Home
 btaNavLinks.manageAccount = Manage account

@@ -33,6 +33,7 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
     val backLink = ".link-back"
     val listItemOne = "article ul li:nth-child(1)"
     val listItemTwo = "article ul li:nth-child(2)"
+    val listItemThree = "article ul li:nth-child(3)"
   }
 
   "The change pending view" should {
@@ -62,6 +63,10 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages {
 
     "have the correct second list item" in {
       elementText(Selectors.listItemTwo) shouldBe ChangePendingMessages.listItem2
+    }
+
+    "have the correct third list item" in {
+      elementText(Selectors.listItemThree) shouldBe ChangePendingMessages.listItem3
     }
 
     "have the correct text for the back link" in {
