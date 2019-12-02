@@ -204,12 +204,12 @@ breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatDetails = Eich manylion TAW
 breadcrumb.changeBusinessDetails = Newid o ran manylion busnes
 
-changePending.title = Mae gennych newid ar y gweill yn barod
-changePending.heading = Mae gennych newid ar y gweill yn barod
-changePending.infoOne = Gwnaethoch gais yn ddiweddar i newid {0}.
-changePending.infoTwo = Mae’r newid hwn ar y gwell a hyd nes y caiff ei gadarnhau, ni allwch newid eich:
+changePending.title = Mae newid ar y gweill eisoes
+changePending.infoOne = Cafodd cais ei wneud yn ddiweddar i newid {0}.
+changePending.infoTwo = Hyd nes y caiff hyn ei gadarnhau, ni allwch newid y:
 changePending.listItem1 = prif leoliad busnes
-changePending.listItem2 = cyfeiriad e-bost
+changePending.listItem2 = cyfeiriad we
+changePending.listItem3 = manylion cyswllt
 changePending.ppob = prif leoliad busnes
 changePending.email = cyfeiriad e-bost y busnes
 changePending.landline = rhif ffôn llinell dir y busnes
