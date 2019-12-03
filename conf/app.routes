@@ -17,14 +17,6 @@ GET         /change-business-name/coho-handoff               controllers.ChangeB
 GET         /change-business-address/callback                controllers.BusinessAddressController.callback(id: String)
 GET         /change-business-address/confirmation/:userType  controllers.BusinessAddressController.confirmation(userType: String)
 
-GET         /change-vat-return-dates                         controllers.returnFrequency.ChooseDatesController.show
-POST        /change-vat-return-dates                         controllers.returnFrequency.ChooseDatesController.submit
-
-GET         /confirm-vat-return-dates                        controllers.returnFrequency.ConfirmVatDatesController.show
-POST        /confirm-vat-return-dates                        controllers.returnFrequency.ConfirmVatDatesController.submit
-
-GET         /confirmation-vat-return-dates/:userType         controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(userType: String)
-
 GET         /change-client-vat-number                        controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
 
 GET         /initialise-payment-journey                      controllers.PaymentsController.sendToPayments
