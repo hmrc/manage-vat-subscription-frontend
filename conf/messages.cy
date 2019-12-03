@@ -208,13 +208,13 @@ changePending.title = Mae newid ar y gweill eisoes
 changePending.infoOne = Cafodd cais ei wneud yn ddiweddar i newid {0}.
 changePending.infoTwo = Hyd nes y caiff hyn ei gadarnhau, ni allwch newid y:
 changePending.listItem1 = prif leoliad busnes
-changePending.listItem2 = cyfeiriad we
+changePending.listItem2 = cyfeiriad gwe
 changePending.listItem3 = manylion cyswllt
 changePending.ppob = prif leoliad busnes
 changePending.email = cyfeiriad e-bost y busnes
 changePending.landline = rhif ffôn llinell dir y busnes
 changePending.mobile = rhif ffôn symudol y busnes
-changePending.website = cyfeiriad we y busnes
+changePending.website = cyfeiriad gwefan y busnes
 
 btaNavLinks.home = Hafan
 btaNavLinks.manageAccount = Rheoli''r cyfrif
