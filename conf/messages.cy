@@ -162,29 +162,6 @@ change_address_confirmation.p2 = Byddwn fel arfer yn diweddaru cyfeiriad TAW y b
 change_address_confirmation.agent.p1-1 = Byddwn yn anfon e-bost at
 change_address_confirmation.agent.p1-2 = cyn pen 2 ddiwrnod gwaith i roi diweddariad, wedi’i ddilyn gan lythyr i’r prif fan busnes.
 
-return_frequency.title = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
-return_frequency.heading = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
-return_frequency.current = Ar hyn o bryd, y dyddiadau ar gyfer Ffurflenni TAW yw
-return_frequency.January = Ionawr, Ebrill, Gorffennaf a Hydref
-return_frequency.February = Chwefror, Mai, Awst a Thachwedd
-return_frequency.March = Mawrth, Mehefin, Medi a Rhagfyr
-return_frequency.Monthly = Bob mis
-return_frequency.Annually = Blynyddol
-
-confirm_return_frequency.title = Cadarnhewch y dyddiadau newydd ar gyfer Ffurflenni TAW
-confirm_return_frequency.heading = Cadarnhewch y dyddiadau newydd ar gyfer Ffurflenni TAW
-confirm_return_frequency.newDates = Y dyddiadau newydd ar gyfer Ffurflenni TAW yw
-confirm_return_frequency.changeLink = Newidiwch y dyddiadau ar gyfer Ffurflenni TAW
-confirm_return_frequency.p2 = Drwy gadarnhau’r newid hwn, rydych yn cytuno bod yr wybodaeth a roesoch yn gyflawn ac yn gywir.
-
-received_frequency.title = Mae’r dyddiadau newydd ar gyfer Ffurflenni TAW wedi dod i law
-received_frequency.heading = Mae’r dyddiadau newydd ar gyfer Ffurflenni TAW wedi dod i law
-received_frequency.subheading = Yr hyn sy’n digwydd nesaf
-received_frequency.p2 = Os caiff y newid hwn ei dderbyn:
-received_frequency.bullet2 = rhaid i’r busnes gyflwyno Ffurflen TAW y cyfnod hwn cyn dilyn y dyddiadau newydd ar gyfer Ffurflenni TAW
-received_frequency.agent.p1-1 = Byddwn yn anfon e-bost at
-received_frequency.agent.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a yw’r cais wedi’i dderbyn ai peidio.
-
 contact_preference.digital = Byddwn yn anfon e-bost atoch cyn pen 2 ddiwrnod gwaith i roi diweddariad, wedi’i ddilyn gan lythyr i’ch prif fan busnes. Gallwch hefyd fynd i’ch negeseuon diogel CThEM i weld a yw’ch cais wedi’i dderbyn.
 contact_preference.paper = Byddwn yn anfon llythyr i’ch prif fan busnes i roi diweddariad cyn pen 15 diwrnod gwaith.
 contact_preference.contactPrefError = Byddwn yn anfon diweddariad atoch cyn pen 15 diwrnod gwaith.
