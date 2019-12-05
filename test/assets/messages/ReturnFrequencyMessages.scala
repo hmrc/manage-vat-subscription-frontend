@@ -24,26 +24,6 @@ object ReturnFrequencyMessages extends BaseMessages {
   val option4Monthly = "Every month"
   val option5Annually = "Annually"
 
-  object ChoosePageWithErrors {
-    val title = "Error: Choose the new VAT Return dates" + titleSuffixUser
-    val heading = "Choose the new VAT Return dates"
-  }
-
-  object ChoosePage {
-    val title = "Choose the new VAT Return dates" + titleSuffixUser
-    val heading = "Choose the new VAT Return dates"
-    val question = "The VAT Return dates are currently"
-    val error = "Select the new VAT Return dates"
-  }
-
-  object ConfirmPage {
-    val title = "Confirm the new VAT Return dates" + titleSuffixUser
-    val heading = "Confirm the new VAT Return dates"
-    val newDates = "The new VAT Return dates are"
-    val changeLink = "Change the VAT Return dates"
-    val p2 = "By confirming this change, you agree that the information you have given is complete and correct."
-  }
-
   object ReceivedPage {
     val title = "We have received the new VAT Return dates" + titleSuffixUser
     val titleAgent = "We have received the new VAT Return dates" + titleSuffixAgent
