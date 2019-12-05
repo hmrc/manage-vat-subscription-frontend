@@ -30,6 +30,7 @@ import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.tools.Stubs.stubMessagesControllerComponents
+
 import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
@@ -41,12 +42,12 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     mockConfig.features.showContactNumbersAndWebsite(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
-    mockConfig.features.useVatReturnPeriodFrontend(false)
     mockConfig.features.mtdSignUp(true)
     SharedMetricRegistries.clear()
   }
 
   lazy val mcc: MessagesControllerComponents = stubMessagesControllerComponents()
+
   implicit lazy val messagesApi: MessagesApi = inject[MessagesApi]
   implicit lazy val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
 

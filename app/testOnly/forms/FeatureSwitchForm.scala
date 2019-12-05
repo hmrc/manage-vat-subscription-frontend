@@ -43,7 +43,6 @@ object FeatureSwitchForm {
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
-      ConfigKeys.useVatReturnPeriodFrontend -> boolean,
       ConfigKeys.mtdSignUpFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )

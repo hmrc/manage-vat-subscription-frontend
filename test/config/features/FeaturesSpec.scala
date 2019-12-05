@@ -24,18 +24,18 @@ class FeaturesSpec extends TestUtil {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    features.useVatReturnPeriodFrontend(false)
+    features.allowAgentBankAccountChange(false)
   }
 
   "A Feature" should {
 
     "returns its current state" in {
-      features.useVatReturnPeriodFrontend() shouldBe false
+      features.allowAgentBankAccountChange() shouldBe false
     }
 
     "switches to a new state" in {
-      features.useVatReturnPeriodFrontend(true)
-      features.useVatReturnPeriodFrontend() shouldBe true
+      features.allowAgentBankAccountChange (true)
+      features.allowAgentBankAccountChange() shouldBe true
     }
   }
 }
