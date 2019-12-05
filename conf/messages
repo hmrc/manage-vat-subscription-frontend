@@ -169,17 +169,6 @@ return_frequency.March = March, June, September and December
 return_frequency.Monthly = Every month
 return_frequency.Annually = Annually
 
-confirm_return_frequency.title = Confirm the new VAT Return dates
-confirm_return_frequency.heading = Confirm the new VAT Return dates
-confirm_return_frequency.newDates = The new VAT Return dates are
-confirm_return_frequency.changeLink = Change the VAT Return dates
-
-received_frequency.title = We have received the new VAT Return dates
-received_frequency.heading = We have received the new VAT Return dates
-received_frequency.subheading = What happens next
-received_frequency.agent.p1-1 = We will send an email to
-received_frequency.agent.p1-2 = within 2 working days telling you whether or not the request has been accepted.
-
 contact_preference.digital = We will send you an email within 2 working days with an update, followed by a letter to your principal place of business. You can also go to your HMRC secure messages to find out if your request has been accepted.
 contact_preference.paper = We will send a letter to your principal place of business with an update within 15 working days.
 contact_preference.contactPrefError = We will send you an update within 15 working days.
