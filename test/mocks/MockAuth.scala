@@ -94,15 +94,6 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
       ec
     )
 
-  val mockInFlightReturnPeriodPredicate: InFlightReturnFrequencyPredicate =
-    new InFlightReturnFrequencyPredicate(
-      mockCustomerDetailsService,
-      serviceErrorHandler,
-      mcc,
-      mockConfig,
-      ec
-    )
-
   val mockInFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate =
     new InFlightRepaymentBankAccountPredicate(
       mockCustomerDetailsService,

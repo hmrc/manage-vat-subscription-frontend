@@ -36,7 +36,6 @@ class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
     }
     s"have a the back link with correct text and url '$back'" in {
       elementText(".link-back") shouldBe back
-      element(".link-back").attr("href") shouldBe controllers.returnFrequency.routes.ChooseDatesController.show().url
     }
 
     s"have a the correct page heading of '${viewMessages.ConfirmPage.heading}'" in {
@@ -76,10 +75,6 @@ class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#change-vat-link") shouldBe viewMessages.ConfirmPage.changeLink
       }
 
-      "has a URL back to the change dates page" in {
-        element("#change-vat-link").attr("href") shouldBe "/vat-through-software/account/change-vat-return-dates"
-      }
-
     }
 
     "have a confirm button" which {
@@ -88,13 +83,6 @@ class ConfirmDatesViewSpec extends ViewBaseSpec with BaseMessages {
         elementText("#continue-button") shouldBe confirmAndContinue
       }
 
-      "posts data to the server" in {
-        element("form").attr("method") shouldBe "POST"
-      }
-
-      "posts data to the correct endpoint" in {
-        element("form").attr("action") shouldBe "/vat-through-software/account/confirm-vat-return-dates"
-      }
 
     }
   }
