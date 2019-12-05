@@ -26,7 +26,7 @@
   title = messages("confirm_return_frequency.title"),
   bodyClasses = None,
   appConfig = appConfig) {
-  <a class="link-back" href="@{controllers.returnFrequency.routes.ChooseDatesController.show().url}">@messages("base.back")</a>
+  <a class="link-back">@messages("base.back")</a>
 
   @headings(messages("confirm_return_frequency.heading"))
 
@@ -40,19 +40,16 @@
 
   <p class="form-group">
       <a id="change-vat-link"
-         href="@controllers.returnFrequency.routes.ChooseDatesController.show()"
          type="submit">
           @messages("confirm_return_frequency.changeLink")
       </a>
   </p>
 
-  @form(action = controllers.returnFrequency.routes.ConfirmVatDatesController.submit()) {
     <button
             class="button"
             type ="submit"
             id="continue-button">
         @messages("common.confirmAndContinue")
     </button>
-  }
 
 }
