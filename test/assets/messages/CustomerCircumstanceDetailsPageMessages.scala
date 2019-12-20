@@ -41,7 +41,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val howToRegister = "How to register (opens in a new tab)"
 
   val registrationStatusHeading = "VAT registration"
-  val aboutHeading = "About the business"
+  val aboutHeading = "Business details"
   val contactDetailsHeading = "Contact details"
   val mtdSectionHeading = "Making Tax Digital"
   val statusText = "Status"
