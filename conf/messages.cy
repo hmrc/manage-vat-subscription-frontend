@@ -203,6 +203,6 @@ changePending.mobile = rhif ffôn symudol y busnes
 changePending.website = cyfeiriad gwefan y busnes
 
 btaNavLinks.home = Hafan
-btaNavLinks.manageAccount = Rheoli''r cyfrif
+btaNavLinks.manageAccount = Rheoli’r cyfrif
 btaNavLinks.messages = Negeseuon
 btaNavLinks.helpAndContact = Cymorth a chysylltu

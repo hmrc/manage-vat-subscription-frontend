@@ -44,7 +44,7 @@ class SessionTimeoutViewSpec extends ViewBaseSpec {
     }
 
     "have the correct instructions on the page" in {
-      elementText(Selectors.instructions) shouldBe "To manage your VAT account, you'll have to sign in using your Government Gateway ID."
+      elementText(Selectors.instructions) shouldBe "To manage your VAT account, you’ll have to sign in using your Government Gateway ID."
     }
 
   }
