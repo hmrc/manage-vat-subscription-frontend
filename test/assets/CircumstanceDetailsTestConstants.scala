@@ -457,6 +457,7 @@ object CircumstanceDetailsTestConstants {
   )
 
   val customerInformationNonMtd: CircumstanceDetails = customerInformationModelMin.copy(mandationStatus = NonMTDfB)
+  val customerInformationNonDigital: CircumstanceDetails = customerInformationModelMin.copy(mandationStatus = NonDigital)
   val customerInformationPendingOptOut: CircumstanceDetails = customerInformationModelMin.copy(
     pendingChanges = Some(PendingChanges(None, None, None, Some(NonMTDfB)))
   )
