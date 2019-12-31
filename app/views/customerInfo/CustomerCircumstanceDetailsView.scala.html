@@ -366,6 +366,13 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
                 }
             }
 
+            @if(appConfig.features.showContactNumbersAndWebsite()) {
+                @customerWebsite(
+                    if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
+                    (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
+                )
+            }
+
             @if(appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
 
                 @circumstances.pendingBankDetails.fold {
@@ -409,10 +416,6 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
                     @customerMobileNumber(
                         if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
                         (circumstances.pendingPPOBSection && !circumstances.sameMobile)
-                    )
-                    @customerWebsite(
-                        if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
-                        (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
                     )
                 }
             </dl>
