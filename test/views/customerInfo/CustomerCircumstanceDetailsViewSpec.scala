@@ -122,7 +122,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                     element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
                   }
                 }
-              }
+
 
               "have a section for repayment Bank Account details" which {
 
@@ -167,28 +167,33 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
                 }
               }
+            }
 
-              "have a section for return frequency" which {
+            "have a section for return frequency" which {
 
-                "has the correct heading" in {
-                  elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
-                }
-
-                "has the correct current frequency" in {
-                  elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
-                }
-
-                "has a change link" which {
-
-                  s"has a change link to ${mockConfig.vatReturnPeriodFrontendUrl}" in {
-                    element("#vat-return-dates-status").attr("href") shouldBe mockConfig.vatReturnPeriodFrontendUrl
-                  }
-
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-return-dates-status") shouldBe viewMessages.change
-                  }
-                }
+              "has a return details header" in {
+                elementText("#return-details-section > h2") shouldBe viewMessages.returnDetailsHeading
               }
+
+            "has the correct heading" in {
+              elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+            }
+
+            "has the correct current frequency" in {
+              elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+            }
+
+            "has a change link" which {
+
+              s"has a change link to ${mockConfig.vatReturnPeriodFrontendUrl}" in {
+                element("#vat-return-dates-status").attr("href") shouldBe mockConfig.vatReturnPeriodFrontendUrl
+              }
+
+              s"has the wording '${viewMessages.change}'" in {
+                elementText("#vat-return-dates-status") shouldBe viewMessages.change
+              }
+            }
+          }
 
               "have a section for contact details" which {
 

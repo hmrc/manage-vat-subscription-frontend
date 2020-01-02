@@ -101,6 +101,7 @@ customer_details.bankAccount.number = Rhif y cyfrif
 customer_details.bankAccount.sortcode = Cod didoli
 customer_details.bankAccount.change.hidden = Newid y cyfrif banc ar gyfer ad-daliadau
 customer_details.bankAccount.pending.hidden = Mae’r newid i gyfrif banc ar gyfer ad-daliadau ar y gweill
+customer_details.returnFrequencySection.heading = Manylion y Ffurflen TAW
 customer_details.returnFrequency.heading = Dyddiadau cyflwyno Ffurflenni TAW
 customer_details.returnFrequency.change.hidden = Newid dyddiadau’r Ffurflenni TAW o {0}
 customer_details.returnFrequency.pending.hidden = Mae’r newid i ddyddiadau’r Ffurflenni TAW ar y gweill
