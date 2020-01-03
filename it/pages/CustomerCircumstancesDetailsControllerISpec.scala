@@ -66,9 +66,14 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#vat-email-address-status")(expectedValue = "Add")
               )
 
-              And("There is no business name or VAT return dates row")
+              And("There is no business name row")
               res should have(
-                isElementVisible("#business-name")(isVisible = false),
+                isElementVisible("#business-name")(isVisible = false)
+              )
+
+              And("There is no VAT return dates section")
+              res should have(
+                isElementVisible("#return-details-section > h2")(isVisible = false),
                 isElementVisible("#vat-return-dates")(isVisible = false)
               )
 
@@ -118,7 +123,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Return frequency is displayed")
               res should have(
-                elementText("#vat-return-dates")("January, April, July and October")
+                elementText("#vat-return-dates")("January, April, July and October"),
+                elementText("#vat-return-dates-text")("VAT Return dates"),
+                elementText("#return-details-section > h2")("Return details")
               )
 
               And("Email address is displayed")
@@ -255,7 +262,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Return frequency is displayed")
               res should have(
-                elementText("#vat-return-dates")("January, April, July and October")
+                elementText("#vat-return-dates")("January, April, July and October"),
+                elementText("#vat-return-dates-text")("VAT Return dates"),
+                elementText("#return-details-section > h2")("Return details")
               )
 
               And("Email address is displayed")
