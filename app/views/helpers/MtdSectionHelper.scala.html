@@ -15,7 +15,7 @@
  *@
 
 @import models.circumstanceInfo.CircumstanceDetails
-@import models.circumstanceInfo.NonMTDfB
+@import models.circumstanceInfo.{NonMTDfB, NonDigital}
 
 @this()
 
@@ -27,7 +27,9 @@
   </dt>
   <dd id="opt-in" class="cya-answer">
     @(circumstances.mandationStatus, circumstances.pendingMandationStatus) match {
-      case (_, Some(NonMTDfB)) | (NonMTDfB, None) => { @messages("customer_details.makingTaxDigital.optedOut") }
+      case (_, Some(NonMTDfB)) | (NonMTDfB, None) | (NonDigital, None) => {
+        @messages("customer_details.makingTaxDigital.optedOut")
+      }
       case _ => { @messages("customer_details.makingTaxDigital.optedIn") }
     }
   </dd>
@@ -40,7 +42,7 @@
           @messages("customer_details.pending")
         </span>
       }
-      case None if circumstances.mandationStatus == NonMTDfB => {
+      case None if (circumstances.mandationStatus == NonMTDfB | circumstances.mandationStatus == NonDigital) => {
         <a id="opt-in-status"
            href="@appConfig.mtdSignUpUrl(vrn)"
            aria-label="@messages("customer_details.makingTaxDigital.optOutChange.hidden")">

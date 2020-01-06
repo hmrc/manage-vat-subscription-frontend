@@ -90,6 +90,31 @@ class MakingTaxDigitalSectionSpec extends ViewBaseSpec {
       }
     }
 
+    "the user's client has a NonDigital mandation status" should {
+
+      lazy val view = injectedView(customerInformationNonDigital, vrn)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "have the correct row title" in {
+        elementText("#opt-in-text") shouldBe "Status"
+      }
+
+      "have the correct value" in {
+        elementText("#opt-in") shouldBe "Opted out"
+      }
+
+      "have a link" which {
+
+        "has the correct link text" in {
+          elementText("#opt-in-status") shouldBe "Sign up"
+        }
+
+        "has the correct link location" in {
+          element("#opt-in-status").attr("href") shouldBe mockConfig.mtdSignUpUrl(vrn)
+        }
+      }
+    }
+
     "the user's client is opted in to MTD" should {
 
       lazy val view = injectedView(customerInformationModelMin, vrn)
