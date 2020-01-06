@@ -325,13 +325,11 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
     contentHeader = Some(bc),
     appConfig = appConfig) {
 
-    <header class="page-heading">
         @if(user.isAgent) {
             <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.agentH1")</h1>
         } else {
             <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
         }
-    </header>
 
     @findDeregStatus(circumstances) match {
         case futureDate: FutureDereg => {
