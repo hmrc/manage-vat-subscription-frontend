@@ -71,8 +71,6 @@ trait AppConfig {
   def agentClientUnauthorisedUrl: String
   val contactPreferencesService: String
   def contactPreferencesUrl(vrn: String): String
-  val vatOptOutUrl: String
-  val mtdSignUpUrl: String => String
   def languageMap: Map[String,Lang]
   val routeToSwitchLanguage: String => Call
   val accessibilityReportUrl: String
@@ -211,9 +209,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     } else {
       vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
     }
-
-  override lazy val vatOptOutUrl: String = servicesConfig.getString(Keys.vatOptOutUrl)
-  override lazy val mtdSignUpUrl: String => String = (vrn: String) => s"${servicesConfig.getString(Keys.mtdSignUpUrl)}/$vrn"
 
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),

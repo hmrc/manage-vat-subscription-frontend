@@ -70,8 +70,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val contactPreferencesService: String = ""
   override def contactPreferencesUrl(vrn: String): String = s"contact-preferences/vat/vrn/$vrn"
   override val govUkVat484Form: String = "/link-to-page"
-  override val vatOptOutUrl: String = "/opt-out"
-  override val mtdSignUpUrl: String => String = (vrn: String) => s"/sign-up/$vrn"
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),

@@ -19,7 +19,6 @@ package pages
 import assets.BaseITConstants.internalServerErrorTitle
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
-import models.customerAddress.CountryCodes
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._

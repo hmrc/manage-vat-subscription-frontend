@@ -336,9 +336,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
 
-              "not display the making tax digital section" in {
-                elementExtinct("#mtd-section")
-              }
             }
           }
         }
@@ -789,54 +786,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "client is MTD" should {
-
-        lazy val view = injectedView(customerInformationRegisteredIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "have a section for making tax digital" which {
-
-          "has the correct section header" in {
-            elementText("#mtd-section > h2") shouldBe viewMessages.mtdSectionHeading
-          }
-
-          "has the correct row heading" in {
-            elementText("#opt-in-text") shouldBe viewMessages.statusText
-          }
-
-          "has the correct description" in {
-            elementText("#opt-in") shouldBe viewMessages.optedIn
-          }
-
-          "has a change link" which {
-
-            s"has the wording '${viewMessages.optOut}'" in {
-              elementText("#opt-in-status") shouldBe viewMessages.optOut
-            }
-
-            s"has the correct aria label text '${viewMessages.changeMtdStatusHidden}'" in {
-              element("#opt-in-status").attr("aria-label") shouldBe viewMessages.changeMtdStatusHidden
-            }
-
-            s"has a link to ${mockConfig.vatOptOutUrl}" in {
-              element("#opt-in-status").attr("href") shouldBe mockConfig.vatOptOutUrl
-            }
-          }
-        }
-      }
-
-      "client is non-MTDfB and the feature switch for MTD sign up is off" should {
-
-        lazy val view = {
-          mockConfig.features.mtdSignUp(false)
-          injectedView(customerInformationNonMtd, getPartialHtmlAgent)(user, messages, mockConfig)
-        }
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "hide the making tax digital section" in {
-          elementExtinct("#mtd-section")
-        }
-      }
     }
   }
 

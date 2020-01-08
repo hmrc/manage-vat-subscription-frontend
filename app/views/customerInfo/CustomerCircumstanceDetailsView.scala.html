@@ -16,13 +16,13 @@
 
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress,NonMTDfB}
 @import models.returnFrequency.ReturnPeriod
-@import helpers.{RenderReturnFrequency, RenderAddress, DeregistrationHelper, MtdSectionHelper, AddStatusRowHelper}
+@import helpers.{RenderReturnFrequency, RenderAddress, DeregistrationHelper, AddStatusRowHelper}
 @import templates.{Breadcrumb, OpenInNewTab, btaNavigationLinks}
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
 @this(mainTemplate: MainTemplate, renderReturnFrequency: RenderReturnFrequency, renderAddress: RenderAddress, deregistrationHelper: DeregistrationHelper,
-addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, breadcrumb: Breadcrumb, openInNewTab: OpenInNewTab)
+addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: OpenInNewTab)
 
 
 @(circumstances: CircumstanceDetails, serviceInfoContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
@@ -418,15 +418,6 @@ addStatusRowHelper: AddStatusRowHelper, mtdSectionHelper: MtdSectionHelper, brea
                 }
             </dl>
         </div>
-
-    @if(user.isAgent && !(circumstances.mandationStatus == NonMTDfB && !appConfig.features.mtdSignUp())) {
-        <div id="mtd-section" class="form-group">
-            <h2 class="heading-medium">@messages("customer_details.makingTaxDigital.heading")</h2>
-            <dl class="govuk-check-your-answers cya-questions-short">
-                @mtdSectionHelper(circumstances, user.vrn)
-            </dl>
-        </div>
-    }
 
     <div id="registration-section" class="form-group">
         <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
