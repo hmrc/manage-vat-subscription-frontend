@@ -386,16 +386,6 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
                 }
             }
 
-            @circumstances.pendingReturnPeriod.fold {
-                @if(circumstances.returnPeriod.isDefined){
-                    @circumstances.returnPeriod.map { period =>
-                        @customerReturnPeriod(period, false)
-                    }
-                }
-            }{ pendingPeriod =>
-                @customerReturnPeriod(pendingPeriod, true)
-            }
-
         </dl>
     </div>
 
@@ -419,12 +409,27 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             </dl>
         </div>
 
-    <div id="registration-section" class="form-group">
-        <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
-        <dl class="govuk-check-your-answers cya-questions-short">
-            @registrationStatus()
-        </dl>
-    </div>
+        @if(circumstances.returnPeriod.isDefined){
+            <div id="return-details-section" class="form-group">
+                <h2 class="heading-medium">@messages("customer_details.returnFrequencySection.heading")</h2>
+                <dl class="govuk-check-your-answers cya-questions-short">
+                    @circumstances.pendingReturnPeriod.fold {
+                            @circumstances.returnPeriod.map { period =>
+                                @customerReturnPeriod(period, false)
+                            }
+                    }{ pendingPeriod =>
+                        @customerReturnPeriod(pendingPeriod, true)
+                    }
+                </dl>
+            </div>
+        }
+
+        <div id="registration-section" class="form-group">
+            <h2 class="heading-medium">@messages("customer_details.registration.heading")</h2>
+            <dl class="govuk-check-your-answers cya-questions-short">
+                @registrationStatus()
+            </dl>
+        </div>
 
     @if(user.isAgent) {
         @oldChangeClientLink
