@@ -38,7 +38,6 @@ object ConfigKeys {
   val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
-  val mtdSignUpFeature: String = "features.mtdSignUp.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
@@ -80,9 +79,6 @@ object ConfigKeys {
   val vatAgentClientLookupFrontendAgentAction: String = "vat-agent-client-lookup-frontend.agent-action-extension"
 
   val contactPreferencesService: String = "contact-preferences"
-
-  val vatOptOutUrl: String = "vat-opt-out-frontend.url"
-  val mtdSignUpUrl: String = "vat-sign-up-frontend.url"
 
   val accessibilityReportHost: String = "accessibilityReport.host"
   val accessibilityReportUrl: String = "accessibilityReport.url"

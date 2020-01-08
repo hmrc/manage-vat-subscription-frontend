@@ -42,8 +42,7 @@ object FeatureSwitchForm {
       ConfigKeys.contactNumbersAndWebsiteFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
-      ConfigKeys.changeClientFeature -> boolean,
-      ConfigKeys.mtdSignUpFeature -> boolean
+      ConfigKeys.changeClientFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }

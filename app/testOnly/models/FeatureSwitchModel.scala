@@ -24,5 +24,4 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               showContactNumbersAndWebsite: Boolean,
                               languageFeatureEnabled: Boolean,
                               useOverseasIndicatorEnabled: Boolean,
-                              changeClientFeature: Boolean,
-                              mtdSignUp: Boolean)
+                              changeClientFeature: Boolean)

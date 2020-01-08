@@ -42,7 +42,6 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     mockConfig.features.showContactNumbersAndWebsite(true)
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
-    mockConfig.features.mtdSignUp(true)
     SharedMetricRegistries.clear()
   }
 
