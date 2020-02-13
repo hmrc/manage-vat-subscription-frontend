@@ -67,8 +67,6 @@ object ConfigKeys {
 
   val agentInvitationsFastTrack: String = "agent-invitations-fast-track.url"
 
-  val deregistrationForVat: String = "deregister-vat-frontend.url"
-
   val vatCorrespondenceChangeEmailUrl: String = "vat-correspondence-details-frontend.changeEmailUrl"
   val vatCorrespondenceChangeLandlineNumberUrl: String = "vat-correspondence-details-frontend.changeLandlineNumberUrl"
   val vatCorrespondenceChangeMobileNumberUrl: String = "vat-correspondence-details-frontend.changeMobileNumberUrl"

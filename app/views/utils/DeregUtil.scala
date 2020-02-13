@@ -21,7 +21,6 @@ import java.time.LocalDate
 import play.api.i18n.Messages
 import models._
 import models.circumstanceInfo.CircumstanceDetails
-import play.twirl.api.Html
 import utils.ImplicitDateFormatter._
 
 object DeregUtil {
@@ -44,34 +43,4 @@ object DeregUtil {
     }
   }
 
-  def deregMessage(status: DeregStatus)(implicit messages: Messages): String = {
-    status match {
-      case f:FutureDereg => messages("customer_details.registrationStatus.futureDereg", f.date.toLongDate)
-      case d:PastDereg => messages("customer_details.registrationStatus.deregistered", d.date.toLongDate)
-      case PendingDereg => messages("customer_details.registrationStatus.pending")
-      case Registered => messages("customer_details.registrationStatus.registered")
-    }
-  }
-
-  def deregChange(status: DeregStatus)(implicit messages: Messages, appConfig: config.AppConfig): Html = {
-    status match {
-      case Registered => Html(
-        s"""
-          |<a id="registration-status-link"
-          |  href=${appConfig.deregisterForVat}
-          |  aria-label="${messages("customer_details.registration.deregister.hidden")}">
-          |  ${messages("customer_details.deregister")}
-          |</a>
-        """.stripMargin)
-      case PendingDereg => Html(s"""<strong id="registration-status-link" class="bold">${messages("customer_details.pending")}</strong>""")
-      case _ => Html(
-        s"""
-          |<a id="registration-status-link"
-          |  target="_blank"
-          |  href="https://www.gov.uk/vat-registration/how-to-register">
-          |  ${messages("customer_details.howToRegister")} <span class="one-line">${messages("common.newTab")}</span>
-          |</a>
-        """.stripMargin)
-    }
-  }
 }

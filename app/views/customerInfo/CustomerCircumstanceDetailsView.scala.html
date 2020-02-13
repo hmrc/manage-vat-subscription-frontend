@@ -16,12 +16,12 @@
 
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress,NonMTDfB}
 @import models.returnFrequency.ReturnPeriod
-@import helpers.{RenderReturnFrequency, RenderAddress, DeregistrationHelper, AddStatusRowHelper}
+@import helpers.{RenderReturnFrequency, RenderAddress, AddStatusRowHelper}
 @import templates.{Breadcrumb, OpenInNewTab, btaNavigationLinks}
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
-@this(mainTemplate: MainTemplate, renderReturnFrequency: RenderReturnFrequency, renderAddress: RenderAddress, deregistrationHelper: DeregistrationHelper,
+@this(mainTemplate: MainTemplate, renderReturnFrequency: RenderReturnFrequency, renderAddress: RenderAddress,
 addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: OpenInNewTab)
 
 
@@ -31,11 +31,6 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     @if(!user.isAgent){
         @breadcrumb()
     }
-}
-
-
-@registrationStatus() ={
-    @deregistrationHelper(circumstances, findDeregStatus(circumstances))
 }
 
 @customerName(orgName: String) = {

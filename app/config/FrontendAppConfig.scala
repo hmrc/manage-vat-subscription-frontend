@@ -55,7 +55,6 @@ trait AppConfig {
   val contactFormServiceIdentifier: String
   val contactFrontendService: String
   val agentInvitationsFastTrack: String
-  val deregisterForVat: String
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
   val vatCorrespondenceChangeLandlineNumberUrl: String
@@ -164,8 +163,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val timeoutCountdown: Int = servicesConfig.getInt(Keys.timeoutCountDown)
 
   override lazy val agentInvitationsFastTrack: String = servicesConfig.getString(Keys.agentInvitationsFastTrack)
-
-  override lazy val deregisterForVat: String = servicesConfig.getString(Keys.deregistrationForVat)
 
   override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
     s"&backUrl=${ContinueUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"

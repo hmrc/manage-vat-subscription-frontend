@@ -36,15 +36,11 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val websiteAddressHeading = "Website address"
 
   val change = "Change"
-  val deregister = "Cancel"
   val pending = "Pending"
 
   val aboutHeading = "Business details"
   val contactDetailsHeading = "Contact details"
   val returnDetailsHeading = "Return details"
-  val deregPending = "Cancel VAT registration requested"
-  val futureDereg: String => String = date => s"Cancel VAT registration set for $date"
-  val deregStatus: String => String = date => s"VAT registration cancelled on $date"
   val changeBusinessHidden: String => String = name => s"Change the business name from $name"
   val changeBusinessAddressHidden: String => String = address => s"Change the business address from $address"
   val pendingBusinessAddressHidden = "Change to business address is pending"
