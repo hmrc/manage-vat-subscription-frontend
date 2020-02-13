@@ -77,21 +77,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
 
-              "have a section for registration status" which {
-
-                "has a registration header" in {
-                  elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
-                }
-
-                "has a registration status header" in {
-                  elementText("#registration-status-text") shouldBe viewMessages.statusText
-                }
-
-                "displays the correct registration status" in {
-                  elementText("#registration-status") shouldBe viewMessages.registeredStatus
-                }
-              }
-
               "has an about header" in {
                 elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
               }
@@ -349,39 +334,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           "deregistering" when {
 
-            "deregistration date is in the future" should {
-
-              lazy val view = injectedView(customerInformationModelFutureDereg, getPartialHtmlNotAgent)(user, messages, mockConfig)
-              lazy implicit val document: Document = Jsoup.parse(view.body)
-
-              "have a section for registration status" which {
-
-                "displays the correct registration status" in {
-                  elementText("#registration-status") shouldBe viewMessages.futureDereg(toLongDate(futureDate))
-                }
-
-                "has the 'how to register' link" in {
-                  elementText("#registration-status-link") shouldBe viewMessages.howToRegister
-                  element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
-                }
-              }
-            }
-
             "deregistration is still pending" should {
 
               lazy val view = injectedView(customerInformationModelDeregPending, getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
-
-              "have a section for registration status" which {
-
-                "displays the correct registration status" in {
-                  elementText("#registration-status") shouldBe viewMessages.deregPending
-                }
-
-                "states that the decision is 'pending'" in {
-                  elementText("#registration-status-link") shouldBe viewMessages.pending
-                }
-              }
 
               "have a section for return frequency" which {
 
@@ -545,32 +501,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               element("#vat-website-address-status").attr("aria-label") shouldBe
                 viewMessages.pendingWebsiteAddressHidden
             }
-          }
-        }
-      }
-
-      "deregistered for VAT" should {
-
-        lazy val view = injectedView(customerInformationNoPendingIndividualDeregistered, getPartialHtmlNotAgent)(user, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "have a section for registration status" which {
-
-          "has a registration header" in {
-            elementText("#registration-section > h2") shouldBe viewMessages.registrationStatusHeading
-          }
-
-          "has a registration status header" in {
-            elementText("#registration-status-text") shouldBe viewMessages.statusText
-          }
-
-          "displays the correct registration status" in {
-            elementText("#registration-status") shouldBe viewMessages.deregStatus(toLongDate(pastDate))
-          }
-
-          "has the 'how to register' link" in {
-            elementText("#registration-status-link") shouldBe viewMessages.howToRegister
-            element("#registration-status-link").attr("href") shouldBe "https://www.gov.uk/vat-registration/how-to-register"
           }
         }
       }
