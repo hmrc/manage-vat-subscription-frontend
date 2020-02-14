@@ -55,7 +55,6 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val contactFormServiceIdentifier: String = "VATC"
   override val contactFrontendService: String = "/contact-frontend"
   override val agentInvitationsFastTrack: String = "/agent-invitations-frontend"
-  override val deregisterForVat: String = "ye-olde-deregister-url"
   override val feedbackUrl: String = "/feedback"
   override val vatCorrespondenceChangeEmailUrl: String = "mock-change-email-url"
   override val vatCorrespondenceChangeLandlineNumberUrl: String = "mock-change-landline-url"

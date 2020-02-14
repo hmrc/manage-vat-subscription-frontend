@@ -133,10 +133,10 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#vat-email-address")("test@test.com")
               )
 
-              And("Registration status is displayed")
+              And("Registration status is not displayed")
               res should have(
-                elementText("#registration-status-text")(expectedValue = "Status"),
-                elementText("#registration-status")(expectedValue = "Cancel VAT registration requested")
+                isElementVisible("#registration-status-text")(isVisible = false),
+                isElementVisible("#registration-status")(isVisible = false)
               )
             }
           }

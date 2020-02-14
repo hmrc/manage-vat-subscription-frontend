@@ -42,7 +42,6 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
-  val pendingDeregistration: Boolean = changeIndicators.fold(false)(_.deregister)
   val pendingEmail: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.emailAddress)))
   val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
   val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
