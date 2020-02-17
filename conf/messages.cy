@@ -173,8 +173,8 @@ address_lookupPage.confirmPage.heading = Cadarnhewch y prif fan busnes newydd
 address_lookupPage.confirmPage.confirmChangeText = Drwy gadarnhau’r newid hwn, rydych yn cytuno bod yr wybodaeth a roesoch yn gyflawn ac yn gywir.
 
 breadcrumb.bta = Cyfrif Treth Busnes
-breadcrumb.yourVatDetails = Eich manylion TAW
-breadcrumb.changeBusinessDetails = Newid o ran manylion busnes
+breadcrumb.yourVatAccount = Eich cyfrif TAW
+breadcrumb.yourBusinessDetails = Manylion eich busnes
 
 changePending.title = Mae newid ar y gweill eisoes
 changePending.infoOne = Cafodd cais ei wneud yn ddiweddar i newid {0}.
