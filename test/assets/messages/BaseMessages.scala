@@ -32,8 +32,8 @@ trait BaseMessages {
   val errorHeading = "There is a problem"
 
   val breadcrumbBta = "Business tax account"
-  val breadcrumbVat = "Your VAT details"
-  val breadcrumbBizDeets = "Change of business details"
+  val breadcrumbVat = "Your VAT account"
+  val breadcrumbBizDeets = "Your business details"
   val titleSuffixUser = " - Business tax account - GOV.UK"
   val titleSuffixOther = " - VAT - GOV.UK"
   val titleSuffixAgent  = " - Your client’s VAT details - GOV.UK"
