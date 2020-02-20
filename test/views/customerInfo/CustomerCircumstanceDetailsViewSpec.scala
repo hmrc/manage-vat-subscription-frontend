@@ -18,7 +18,6 @@ package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.individual
-import assets.DeregistrationTestConstants._
 import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
@@ -29,8 +28,9 @@ import org.jsoup.nodes.Document
 import play.twirl.api.Html
 import views.ViewBaseSpec
 import views.html.customerInfo.CustomerCircumstanceDetailsView
+import utils.TestUtil
 
-class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService {
+class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService with TestUtil {
   val getPartialHtmlAgent = Html("")
   val getPartialHtmlNotAgent = Html("""<div id="getPartialTest">dummyHtml</div>""")
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
@@ -654,6 +654,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             elementExtinct(".breadcrumbs li:nth-of-type(3)")
           }
 
+          "display the back link" in {
+            elementText(".link-back") shouldBe viewMessages.backText
+            element(".link-back").attr("href") shouldBe
+              mockConfig.agentClientLookupAgentAction
+          }
+
           s"have the correct document title '${viewMessages.title}'" in {
             document.title shouldBe viewMessages.agentTitle
           }
@@ -664,18 +670,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           s"have a the correct page heading '${viewMessages.agentHeading}'" in {
             elementText("h1") shouldBe viewMessages.agentHeading
-          }
-
-          "display the 'Change client' link" in {
-            elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
-            element("#change-client-link").attr("href") shouldBe
-              controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-          }
-
-          "display the Finish button" in {
-            val finishSelector = "#finish"
-            elementText(finishSelector) shouldBe viewMessages.finish
-            element(finishSelector).attr("href") shouldBe "/agent-action"
           }
 
           "have a blank field where the 'Change' link would be for email address" which {

@@ -64,4 +64,5 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val deregText: String => String = date => s"VAT registration cancelled on on $date"
   val changeNotListed: String = "The change I want to make is not listed"
   val helpText: String = "You can make any other changes (opens in a new tab) using a form. You must print and complete this form before posting it to HMRC."
+  val backText: String = "Back"
 }

@@ -298,20 +298,6 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         </p>
     }
 }
-@newChangeClientLink = {
-    @if(appConfig.features.changeClientFeature()) {
-        <p id="change-client-text">
-            <a id="change-client-link"
-            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient")</a>
-        </p>
-
-        <a id="finish"
-            class="button"
-            href="@appConfig.agentClientLookupAgentAction"
-            role="button">@messages("common.finish")
-        </a>
-    }
-}
 
 @mainTemplate(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
@@ -319,6 +305,10 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     btaLinks = Some(serviceInfoContent),
     contentHeader = Some(bc),
     appConfig = appConfig) {
+
+        @if(user.isAgent){
+            <a class="link-back" href='@appConfig.agentClientLookupAgentAction'>@messages("base.back")</a>
+        }
 
         @if(user.isAgent) {
             <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.agentH1")</h1>
@@ -436,8 +426,4 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             @messages("customer_details.changeNotListed.useAForm")</p>
         </div>
     </details>
-
-    @if(user.isAgent){
-        @newChangeClientLink
-    }
 }

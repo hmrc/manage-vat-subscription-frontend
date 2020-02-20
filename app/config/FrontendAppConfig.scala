@@ -195,7 +195,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override val agentClientLookupAgentAction: String =
     servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendHost) +
     servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendUrl) +
-    servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendAgentAction)
+    servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendClientAccount)
 
   def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
     vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
