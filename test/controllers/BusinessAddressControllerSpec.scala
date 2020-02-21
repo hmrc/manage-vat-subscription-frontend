@@ -302,6 +302,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is successful" should {
 
         lazy val result = {
+          mockAgentAuthorised()
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
           mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)
@@ -324,6 +325,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "the call to the customer details service is unsuccessful" should {
 
         lazy val result = {
+          mockAgentAuthorised()
           mockCustomerDetailsError()
           mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)

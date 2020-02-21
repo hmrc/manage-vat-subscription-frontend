@@ -100,10 +100,10 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           Some(contact.preference)
         case _ => None
       }
-      cDetails <- customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+      verifiedEmail <- customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
         case Right(details) => details.ppob.contactDetails.exists(_.emailVerified contains true)
         case _ => false
       }
-    } yield Ok(changeAddressConfirmationView(contactPref = cPref, emailVerified = cDetails))
+    } yield Ok(changeAddressConfirmationView(contactPref = cPref, emailVerified = verifiedEmail))
   }
 }
