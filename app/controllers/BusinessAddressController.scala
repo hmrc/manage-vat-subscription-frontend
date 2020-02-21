@@ -90,17 +90,20 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    contactPreferenceService.getContactPreference(user.vrn).map {
-      case Right(cPref) =>
-
-        auditService.extendedAudit(
-          ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-          Some(controllers.routes.ChangeBusinessNameController.show().url)
-        )
-
-        Ok(changeAddressConfirmationView(contactPref = Some(cPref.preference)))
-      case Left(_) =>
-        Ok(changeAddressConfirmationView())
-    }
+    for {
+      cPref <- contactPreferenceService.getContactPreference(user.vrn) map {
+        case Right(contact) =>
+          auditService.extendedAudit(
+            ContactPreferenceAuditModel(user.vrn, contact.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
+            Some(controllers.routes.ChangeBusinessNameController.show().url)
+          )
+          Some(contact.preference)
+        case _ => None
+      }
+      cDetails <- customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+        case Right(details) => details.ppob.contactDetails.exists(_.emailVerified contains true)
+        case _ => false
+      }
+    } yield Ok(changeAddressConfirmationView(contactPref = cPref, emailVerified = cDetails))
   }
 }

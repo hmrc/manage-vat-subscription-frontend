@@ -33,6 +33,7 @@ object ChangeAddressConfirmationPageMessages extends BaseMessages {
   val confirmationLetter = "We will send a confirmation letter to the agency address registered with HMRC " +
     "within 15 working days."
 
+  val digiPrefEmailVerified = "We’ll send you an email within 2 working days with an update or you can check your HMRC secure messages."
   val digitalPref = "We will send you an email within 2 working days with an update, followed by a letter to " +
     "your principal place of business. You can also go to your HMRC secure messages to find out if your request has been accepted."
   val paperPref = "We will send a letter to your principal place of business with an update within 15 working days."
