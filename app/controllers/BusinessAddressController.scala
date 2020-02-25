@@ -102,16 +102,16 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
         )
 
         cPref.preference match {
-          case `digital` =>
-              customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-                case Right(details) if appConfig.features.emailVerifiedFeature() =>
-                  Ok(changeAddressConfirmationView(
-                    contactPref = Some(digital),
-                    emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
-                  ))
-                case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
-              }
-          case `paper` => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(paper))))
+          case `digital` if appConfig.features.emailVerifiedFeature() =>
+            customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+              case Right(details) =>
+                Ok(changeAddressConfirmationView(
+                  contactPref = Some(digital),
+                  emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+                ))
+              case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
+            }
+          case preference => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(preference))))
         }
       case Left(_) =>
         Future.successful(Ok(changeAddressConfirmationView()))
