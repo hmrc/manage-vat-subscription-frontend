@@ -23,6 +23,8 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.contactPreferences.ContactPreference
+import models.contactPreferences.ContactPreference._
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -90,20 +92,29 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    for {
-      cPref <- contactPreferenceService.getContactPreference(user.vrn) map {
-        case Right(contact) =>
-          auditService.extendedAudit(
-            ContactPreferenceAuditModel(user.vrn, contact.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-            Some(controllers.routes.ChangeBusinessNameController.show().url)
-          )
-          Some(contact.preference)
-        case _ => None
-      }
-      verifiedEmail <- customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(details) => details.ppob.contactDetails.exists(_.emailVerified contains true)
-        case _ => false
-      }
-    } yield Ok(changeAddressConfirmationView(contactPref = cPref, emailVerified = verifiedEmail))
+
+    contactPreferenceService.getContactPreference(user.vrn).flatMap {
+      case Right(cPref) =>
+
+        auditService.extendedAudit(
+          ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
+          Some(controllers.routes.ChangeBusinessNameController.show().url)
+        )
+
+        cPref.preference match {
+          case `digital` =>
+              customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+                case Right(details) if appConfig.features.emailVerifiedFeature() =>
+                  Ok(changeAddressConfirmationView(
+                    contactPref = Some(digital),
+                    emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+                  ))
+                case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
+              }
+          case `paper` => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(paper))))
+        }
+      case Left(_) =>
+        Future.successful(Ok(changeAddressConfirmationView()))
+    }
   }
 }
