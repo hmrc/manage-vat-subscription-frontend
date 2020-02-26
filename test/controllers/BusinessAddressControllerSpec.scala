@@ -421,8 +421,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
                 messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digitalPref
               }
             }
-
-
           }
 
           "the user does not have a verified email address" should {
@@ -465,7 +463,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           lazy val result = {
             mockConfig.features.emailVerifiedFeature(false)
             mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
             controller.confirmation("non-agent")(request)
           }
           lazy val document = Jsoup.parse(bodyOf(result))
@@ -502,7 +499,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val result = {
           mockContactPreferenceSuccess(ContactPreference("PAPER"))
-          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
@@ -526,7 +522,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val result = {
           mockContactPreferenceError()
-          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
