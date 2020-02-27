@@ -53,7 +53,8 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             showContactNumbersAndWebsite = appConfig.features.showContactNumbersAndWebsite(),
             languageFeatureEnabled = appConfig.features.useLanguageSelector(),
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
-            changeClientFeature = appConfig.features.changeClientFeature()
+            changeClientFeature = appConfig.features.changeClientFeature(),
+            emailVerifiedFeature = appConfig.features.emailVerifiedFeature()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -77,6 +78,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
+    appConfig.features.emailVerifiedFeature(model.emailVerifiedFeature)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

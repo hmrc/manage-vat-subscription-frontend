@@ -23,6 +23,8 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.contactPreferences.ContactPreference
+import models.contactPreferences.ContactPreference._
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -90,7 +92,8 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
   }
 
   private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
-    contactPreferenceService.getContactPreference(user.vrn).map {
+
+    contactPreferenceService.getContactPreference(user.vrn).flatMap {
       case Right(cPref) =>
 
         auditService.extendedAudit(
@@ -98,9 +101,20 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           Some(controllers.routes.ChangeBusinessNameController.show().url)
         )
 
-        Ok(changeAddressConfirmationView(contactPref = Some(cPref.preference)))
+        cPref.preference match {
+          case `digital` if appConfig.features.emailVerifiedFeature() =>
+            customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+              case Right(details) =>
+                Ok(changeAddressConfirmationView(
+                  contactPref = Some(digital),
+                  emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+                ))
+              case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
+            }
+          case preference => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(preference))))
+        }
       case Left(_) =>
-        Ok(changeAddressConfirmationView())
+        Future.successful(Ok(changeAddressConfirmationView()))
     }
   }
 }

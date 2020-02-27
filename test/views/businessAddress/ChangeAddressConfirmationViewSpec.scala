@@ -30,39 +30,77 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
   "the ChangeAddressConfirmationView for an individual" when {
 
-    "contact preference is set to 'DIGITAL'" should {
+    "contact preference is set to 'DIGITAL'" when {
 
-      lazy val view: Html = injectedView(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
+      "the user has a verified email address" should {
+        lazy val view: Html = injectedView(contactPref = Some("DIGITAL"), emailVerified = true)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
 
-      s"have the correct document title of '${viewMessages.title}'" in {
-        document.title shouldBe viewMessages.title
-      }
-
-      s"have the correct page heading of '${viewMessages.heading}'" in {
-        elementText("h1") shouldBe viewMessages.heading
-      }
-
-      s"have the correct p1 of '${viewMessages.digitalPref}'" in {
-        paragraph(1) shouldBe viewMessages.digitalPref
-      }
-
-      s"have the correct p2 of '${viewMessages.contactDetails}'" in {
-        paragraph(2) shouldBe viewMessages.contactDetails
-      }
-
-      "not display the 'change another clients details' link" in {
-        elementExtinct("#change-client-text")
-      }
-
-      s"have a button to finish" which {
-
-        s"has the correct text of '$finish" in {
-          elementText("#finish") shouldBe finish
+        s"have the correct document title of '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.title
         }
 
-        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        s"have the correct page heading of '${viewMessages.heading}'" in {
+          elementText("h1") shouldBe viewMessages.heading
+        }
+
+        s"have the correct p1 of '${viewMessages.digiPrefEmailVerified}'" in {
+          paragraph(1) shouldBe viewMessages.digiPrefEmailVerified
+        }
+
+        s"have the correct p2 of '${viewMessages.contactDetails}'" in {
+          paragraph(2) shouldBe viewMessages.contactDetails
+        }
+
+        "not display the 'change another clients details' link" in {
+          elementExtinct("#change-client-text")
+        }
+
+        s"have a button to finish" which {
+
+          s"has the correct text of '$finish" in {
+            elementText("#finish") shouldBe finish
+          }
+
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          }
+        }
+      }
+
+      "the user has not verified their email address" should {
+        lazy val view: Html = injectedView(contactPref = Some("DIGITAL"))(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        s"have the correct document title of '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.title
+        }
+
+        s"have the correct page heading of '${viewMessages.heading}'" in {
+          elementText("h1") shouldBe viewMessages.heading
+        }
+
+        s"have the correct p1 of '${viewMessages.digitalPref}'" in {
+          paragraph(1) shouldBe viewMessages.digitalPref
+        }
+
+        s"have the correct p2 of '${viewMessages.contactDetails}'" in {
+          paragraph(2) shouldBe viewMessages.contactDetails
+        }
+
+        "not display the 'change another clients details' link" in {
+          elementExtinct("#change-client-text")
+        }
+
+        s"have a button to finish" which {
+
+          s"has the correct text of '$finish" in {
+            elementText("#finish") shouldBe finish
+          }
+
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
+            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          }
         }
       }
     }

@@ -18,7 +18,7 @@
 
 @this(mainTemplate: MainTemplate, updateClient: UpdateClient)
 
-@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None, emailVerified: Boolean = false)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @changeClientLink = {
     @if(appConfig.features.changeClientFeature()) {
@@ -69,7 +69,7 @@
     } else {
 
         @contactPref match {
-            case Some("DIGITAL") => {<p id="preference-message">@messages("contact_preference.digital")</p>}
+            case Some("DIGITAL") => {<p id="preference-message">@messages(if(emailVerified){"contact_preference.email"}else{"contact_preference.digital"})</p>}
             case Some("PAPER") => {<p id="preference-message">@messages("contact_preference.paper")</p>}
             case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
         }
