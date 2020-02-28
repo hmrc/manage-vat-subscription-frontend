@@ -23,7 +23,7 @@ import java.util.Locale._
 
 trait ImplicitDateFormatter {
 
-  val currentDate: LocalDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+  def currentDate: LocalDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
   implicit class localDate(s: String) {
     def toLocalDate: LocalDate = LocalDate.parse(s, DateTimeFormatter.ofPattern("uuuu-M-d"))
