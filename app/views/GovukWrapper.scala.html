@@ -140,13 +140,14 @@ hmrcGovUkTemplate: GovUkTemplate)
 
 @mainContentHeaderContent = {
     @if(appConfig.features.useLanguageSelector()){
-        @views.html.language_selection(
-            appConfig.languageMap,
-            appConfig.routeToSwitchLanguage,
-            customClass = Some("text--right")
+        @btaLinks.map(content => content)
+            @views.html.language_selection(
+                appConfig.languageMap,
+                appConfig.routeToSwitchLanguage,
+                customClass = Some("text--right")
         )
     }
-    @btaLinks.map(content => content)
+
     @if(contentHeader.isDefined) {
         @mainContentHeader(contentHeader = contentHeader.get)
     }
