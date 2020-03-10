@@ -17,9 +17,9 @@
 package assets.messages
 
 object ChangeAddressPageMessages extends BaseMessages {
-  val title: String = "Change the ‘principal place of business’" + titleSuffixUser
-  val heading: String = "Change the ‘principal place of business’"
-  val p1: String = "This is where the business does most of its work."
+  val title: String = "Change where the business does most of its work" + titleSuffixUser
+  val heading: String = "Change where the business does most of its work"
+  val p1: String = "This is also known as the principal place of business."
   val p2: String = "If this is in different locations, use the address where it keeps its business records. This could be a home address."
   val bulletHeader: String = "You cannot use:"
   val bullet1: String = "the address of a third-party accountant or tax agent"
