@@ -133,8 +133,8 @@ change_business_name.p5.bullet2 = ychwanegu enw newydd eich busnes yn adran 1
 change_business_name.p5.bullet3 = dychwelyd y ffurflen atom ynghyd â’ch Tystysgrif Ymgorffori newydd
 change_business_name.link = Yn eich blaen i Dŷ’r Cwmnïau (yn agor tab newydd)
 
-change_address.title = Newid y ‘prif fan busnes’
-change_address.p1 = Dyma ble mae’r busnes yn gwneud y rhan fwyaf o’i waith.
+change_address.title = Newid ble mae’r busnes yn gwneud y rhan fwyaf o’i waith
+change_address.p1 = Gelwir hyn hefyd yn brif leoliad y busnes.
 change_address.p2 = Os yw hyn mewn gwahanol leoliadau, defnyddiwch y cyfeiriad lle y mae’n cadw ei gofnodion busnes. Gallai hyn fod yn gyfeiriad cartref.
 change_address.bulletHeader = Ni allwch ddefnyddio:
 change_address.bullet1 = cyfeiriad cyfrifydd neu asiant treth trydydd parti

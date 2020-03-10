@@ -57,7 +57,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(OK),
-            elementText("h1")("Change the ‘principal place of business’")
+            elementText("h1")("Change where the business does most of its work")
           )
         }
       }

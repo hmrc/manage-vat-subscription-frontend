@@ -131,8 +131,8 @@ change_business_name.p5.bullet2 = add your new business name in section 1
 change_business_name.p5.bullet3 = return the form to us with your new Certificate of Incorporation
 change_business_name.link = Continue to Companies House (opens in a new tab)
 
-change_address.title = Change the ‘principal place of business’
-change_address.p1 = This is where the business does most of its work.
+change_address.title = Change where the business does most of its work
+change_address.p1 = This is also known as the principal place of business.
 change_address.p2 = If this is in different locations, use the address where it keeps its business records. This could be a home address.
 change_address.bulletHeader = You cannot use:
 change_address.bullet1 = the address of a third-party accountant or tax agent
