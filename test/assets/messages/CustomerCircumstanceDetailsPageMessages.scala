@@ -31,8 +31,8 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val emailAddressHeading = "Email address"
   val sortcodeHeading = "Sort code"
   val returnFrequencyHeading = "VAT Return dates"
-  val landlineNumberHeading = "Landline Number"
-  val mobileNumberHeading = "Mobile Number"
+  val landlineNumberHeading = "Landline number"
+  val mobileNumberHeading = "Mobile number"
   val websiteAddressHeading = "Website address"
 
   val change = "Change"
