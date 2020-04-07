@@ -55,6 +55,8 @@ hmrcGovUkTemplate: GovUkTemplate)
 }
 
 @scriptElement = {
+    <script type="text/javascript" src='@routes.Assets.at("javascript/vat-v1.0.js")'></script>
+
     <script>
         @if(showSignOut) {
             window.GOVUK.timeoutDialog({
