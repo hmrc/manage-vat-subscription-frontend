@@ -120,7 +120,6 @@ object IntegrationTestConstants {
 
   def customerCircumstancesDetailsMax(customerType: CustomerDetails,
                                       partyType: Option[String] = None): CircumstanceDetails = CircumstanceDetails(
-    mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
     ppob = ppobMax,
@@ -131,14 +130,12 @@ object IntegrationTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobMax),
       bankDetails = Some(bankDetails),
-      returnPeriod = Some(Jan),
-      mandationStatus = Some(MTDfBMandated)
+      returnPeriod = Some(Jan)
     )),
     partyType = partyType
   )
 
   def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
-    mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
     ppob = ppobMin,
@@ -151,7 +148,6 @@ object IntegrationTestConstants {
   )
 
   def customerCircumstancesDetailsWithPartyType(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
-    mandationStatus = MTDfBMandated,
     customerDetails = customerType,
     flatRateScheme = None,
     ppob = ppobMax,

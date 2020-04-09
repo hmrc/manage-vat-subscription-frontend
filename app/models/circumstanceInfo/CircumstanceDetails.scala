@@ -22,8 +22,7 @@ import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, Writes, __}
 
-case class CircumstanceDetails(mandationStatus: MandationStatus,
-                               customerDetails: CustomerDetails,
+case class CircumstanceDetails(customerDetails: CustomerDetails,
                                flatRateScheme: Option[FlatRateScheme],
                                ppob: PPOB,
                                bankDetails:Option[BankDetails],
@@ -43,7 +42,6 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
   val pendingReturnPeriod: Option[ReturnPeriod] = pendingChanges.flatMap(_.returnPeriod)
   val pendingEmail: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.emailAddress)))
-  val pendingMandationStatus: Option[MandationStatus] = pendingChanges.flatMap(_.mandationStatus)
   val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
   val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
@@ -62,7 +60,6 @@ case class CircumstanceDetails(mandationStatus: MandationStatus,
 
 object CircumstanceDetails extends JsonReadUtil {
 
-  private val mandationStatusPath = __ \ "mandationStatus"
   private val customerDetailsPath = __ \ "customerDetails"
   private val flatRateSchemePath = __ \ "flatRateScheme"
   private val ppobPath = __ \ "ppob"
@@ -74,7 +71,6 @@ object CircumstanceDetails extends JsonReadUtil {
   private val partyTypePath = __ \ "partyType"
 
   implicit val reads: Boolean => Reads[CircumstanceDetails] = isRelease10 => (
-    mandationStatusPath.read[MandationStatus] and
       customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isRelease10)) and
       flatRateSchemePath.readOpt[FlatRateScheme] and
       ppobPath.read[PPOB] and
@@ -87,7 +83,6 @@ object CircumstanceDetails extends JsonReadUtil {
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Boolean => Writes[CircumstanceDetails] = isRelease10 => (
-    mandationStatusPath.write[MandationStatus] and
       customerDetailsPath.write[CustomerDetails](CustomerDetails.writes(isRelease10)) and
       flatRateSchemePath.writeNullable[FlatRateScheme] and
       ppobPath.write[PPOB] and
