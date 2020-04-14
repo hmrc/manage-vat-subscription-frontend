@@ -22,7 +22,7 @@ import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.ppobModelMax
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
-import models.circumstanceInfo.{CircumstanceDetails, MTDfBMandated}
+import models.circumstanceInfo.CircumstanceDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -592,7 +592,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "with no organisation name" should {
 
           val model: CircumstanceDetails = CircumstanceDetails(
-            mandationStatus = MTDfBMandated,
             customerDetails = individual,
             flatRateScheme = None,
             ppob = ppobModelMax,

@@ -19,7 +19,7 @@ package controllers.predicates
 import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.Inject
 import models.User
-import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
+import models.circumstanceInfo.CircumstanceDetails
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Conflict
@@ -50,7 +50,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
       case Right(circumstanceDetails) =>
 
         circumstanceDetails.pendingChanges match {
-          case Some(changes) if changes.ppob.isDefined => comparePendingAndCurrent(changes, circumstanceDetails)
+          case Some(changes) if changes.ppob.isDefined => comparePendingAndCurrent(circumstanceDetails)
           case _ => Right(user)
         }
 
@@ -60,7 +60,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
     }
   }
 
-  def comparePendingAndCurrent[A](pendingChanges: PendingChanges, circumstanceDetails: CircumstanceDetails)(implicit user: User[A]): Either[Result, User[A]] = {
+  def comparePendingAndCurrent[A](circumstanceDetails: CircumstanceDetails)(implicit user: User[A]): Either[Result, User[A]] = {
 
       (circumstanceDetails.samePPOB, circumstanceDetails.sameEmail, circumstanceDetails.samePhone,
         circumstanceDetails.sameMobile, circumstanceDetails.sameWebsite) match {
