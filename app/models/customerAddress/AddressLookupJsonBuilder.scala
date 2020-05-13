@@ -47,7 +47,6 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("address_lookupPage.selectPage.heading"),
       "heading" -> message("address_lookupPage.selectPage.heading"),
-      "submitLabel" -> message("common.continue"),
       "editAddressLinkText" -> message("address_lookupPage.selectPage.editLink")
     )
 
@@ -55,7 +54,8 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
       "title" -> message("address_lookupPage.heading"),
       "heading" -> message("address_lookupPage.heading"),
       "filterLabel" -> message("address_lookupPage.filter"),
-      "postcodeLabel" -> message("address_lookupPage.postcode")
+      "postcodeLabel" -> message("address_lookupPage.postcode"),
+      "submitLabel" -> message("address_lookupPage.lookUpPage.submit")
     )
 
     val confirmPageLabels: Messages => JsObject = message => Json.obj(

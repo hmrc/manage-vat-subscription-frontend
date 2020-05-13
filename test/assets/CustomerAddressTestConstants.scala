@@ -123,7 +123,8 @@ object CustomerAddressTestConstants extends BaseMessages {
       "title" -> AddressLookupMessages.startHeading,
       "heading" -> AddressLookupMessages.startHeading,
       "filterLabel" -> AddressLookupMessages.filter,
-      "postcodeLabel" -> AddressLookupMessages.postcode
+      "postcodeLabel" -> AddressLookupMessages.postcode,
+      "submitLabel" -> AddressLookupMessages.submitLabel
     ),
     "selectPage" -> Json.obj(
       "title" -> AddressLookupMessages.selectHeading,
@@ -150,7 +151,8 @@ object CustomerAddressTestConstants extends BaseMessages {
       "title" -> AddressLookupMessages.startHeading,
       "heading" -> AddressLookupMessages.startHeading,
       "filterLabel" -> AddressLookupMessages.filter,
-      "postcodeLabel" -> AddressLookupMessages.postcode
+      "postcodeLabel" -> AddressLookupMessages.postcode,
+      "submitLabel" -> AddressLookupMessages.submitLabel
     ),
     "selectPage" -> Json.obj(
       "title" -> AddressLookupMessages.selectHeading,
@@ -196,7 +198,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "title" -> AddressLookupMessages.startHeading,
           "heading" -> AddressLookupMessages.startHeading,
           "filterLabel" -> AddressLookupMessages.filter,
-          "postcodeLabel" -> AddressLookupMessages.postcode
+          "postcodeLabel" -> AddressLookupMessages.postcode,
+         "submitLabel" -> AddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeading,
@@ -222,7 +225,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "title" -> AddressLookupMessages.startHeadingCy,
           "heading" -> AddressLookupMessages.startHeadingCy,
           "filterLabel" -> AddressLookupMessages.filterCy,
-          "postcodeLabel" -> AddressLookupMessages.postcodeCy
+          "postcodeLabel" -> AddressLookupMessages.postcodeCy,
+          "submitLabel" -> AddressLookupMessages.submitLabelCy
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeadingCy,
@@ -264,7 +268,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "title" -> AddressLookupMessages.startHeading,
           "heading" -> AddressLookupMessages.startHeading,
           "filterLabel" -> AddressLookupMessages.filter,
-          "postcodeLabel" -> AddressLookupMessages.postcode
+          "postcodeLabel" -> AddressLookupMessages.postcode,
+          "submitLabel" -> AddressLookupMessages.submitLabel
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeading,
@@ -290,7 +295,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "title" -> AddressLookupMessages.startHeadingCy,
           "heading" -> AddressLookupMessages.startHeadingCy,
           "filterLabel" -> AddressLookupMessages.filterCy,
-          "postcodeLabel" -> AddressLookupMessages.postcodeCy
+          "postcodeLabel" -> AddressLookupMessages.postcodeCy,
+          "submitLabel" -> AddressLookupMessages.submitLabelCy
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeadingCy,
