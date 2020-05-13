@@ -172,7 +172,6 @@ address_lookupPage.selectPage.heading = Dewiswch y cyfeiriad newydd
 address_lookupPage.selectPage.editLink = Golygwch y cyfeiriad â llaw
 address_lookupPage.confirmPage.heading = Cadarnhewch y prif fan busnes newydd
 address_lookupPage.confirmPage.confirmChangeText = Drwy gadarnhau’r newid hwn, rydych yn cytuno bod yr wybodaeth a roesoch yn gyflawn ac yn gywir.
-address_lookupPage.lookUpPage.submit = Dod o hyd i gyfeiriad
 
 breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatAccount = Eich cyfrif TAW
