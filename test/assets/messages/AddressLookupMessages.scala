@@ -25,7 +25,6 @@ object AddressLookupMessages {
   val selectHeading = "Select the new address"
   val editAddressLinkText = "Edit the address manually"
   val confirmHeading = "Confirm the new principal place of business"
-  val submitLabel = "Find Address"
 
   val startHeadingCy = "Beth yw’r prif fan busnes newydd?"
   val filterCy = "Enw neu rif yr eiddo"
@@ -35,7 +34,6 @@ object AddressLookupMessages {
   val editAddressLinkTextCy = "Golygwch y cyfeiriad â llaw"
   val confirmHeadingCy = "Cadarnhewch y prif fan busnes newydd"
   val continueCy = "Yn eich blaen"
-  val submitLabelCy = "Dod o hyd i gyfeiriad"
 
   val clientServiceNameCy = "Cyfrif Treth Busnes"
   val agentServiceNameCy = "Manylion TAW eich cleient"
