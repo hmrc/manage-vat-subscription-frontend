@@ -141,7 +141,7 @@ change_address.bullet1 = cyfeiriad cyfrifydd neu asiant treth trydydd parti
 change_address.bullet2 = cyfeiriad blwch Swyddfa’r Post
 change_address.bullet3 = cyfeiriad ‘dan ofal’
 
-change_address_confirmation.title = Mae cyfeiriad newydd y busnes wedi dod i law
+change_address_confirmation.title = Rydych wedi gofyn am newid cyfeiriad y busnes
 change_address_confirmation.h2 = Yr hyn sy’n digwydd nesaf
 change_address_confirmation.p1 = Os derbynnir y newid hwn, byddwn yn anfon llythyr o gadarnhad i gyfeiriad newydd y busnes.
 change_address_confirmation.p2 = Byddwn fel arfer yn diweddaru cyfeiriad TAW y busnes cyn pen 2 ddiwrnod gwaith. Bydd angen i chi newid cyfeiriad y busnes ar gyfer trethi eraill ar wahân.

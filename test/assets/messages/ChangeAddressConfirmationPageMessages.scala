@@ -17,9 +17,9 @@
 package assets.messages
 
 object ChangeAddressConfirmationPageMessages extends BaseMessages {
-  val title: String = "We have received the new business address" + titleSuffixUser
-  val titleAgent: String = "We have received the new business address" + titleSuffixAgent
-  val heading: String = "We have received the new business address"
+  val title: String = "You have asked to change the business address" + titleSuffixUser
+  val titleAgent: String = "You have asked to change the business address" + titleSuffixAgent
+  val heading: String = "You have asked to change the business address"
   val h2: String = "What happens next"
   val p1: String = "If this change is accepted, we will send a confirmation letter to the new business address."
   val p2: String = "We will usually update the VAT business address within 2 working days. " +

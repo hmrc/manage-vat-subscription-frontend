@@ -139,7 +139,7 @@ change_address.bullet1 = the address of a third-party accountant or tax agent
 change_address.bullet2 = a PO box address
 change_address.bullet3 = a ‘care of’ address
 
-change_address_confirmation.title = We have received the new business address
+change_address_confirmation.title = You have asked to change the business address
 change_address_confirmation.h2 = What happens next
 change_address_confirmation.p1 = If this change is accepted, we will send a confirmation letter to the new business address.
 change_address_confirmation.p2 = We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately.
