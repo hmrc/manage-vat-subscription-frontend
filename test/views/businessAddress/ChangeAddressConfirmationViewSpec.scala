@@ -312,8 +312,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p1 of '${viewMessages.p2Agent}'" in {
-          paragraph(1) shouldBe viewMessages.p2Agent
+        s"have the correct p1 of '${viewMessages.confirmationLetter}'" in {
+          paragraph(1) shouldBe viewMessages.confirmationLetter
         }
       }
 
@@ -325,8 +325,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p1 of '${viewMessages.p2AgentNoClientName}'" in {
-          paragraph(1) shouldBe viewMessages.p2AgentNoClientName
+        s"have the correct p1 of '${viewMessages.confirmationLetter}'" in {
+          paragraph(1) shouldBe viewMessages.confirmationLetter
         }
       }
     }
