@@ -147,8 +147,6 @@ change_address_confirmation.agent.p1-1 = We will send an email to
 change_address_confirmation.agent.p1-2 = within 2 working days with an update, followed by a letter to the principal place of business.
 change_address_confirmation.agent.bulkPaper.p1-1 = We’ll send an email to
 change_address_confirmation.agent.bulkPaper.p1-2 = within 2 working days telling you whether we can accept your request.
-change_address_confirmation.agent.bulkPaper.p1-3 = We’ll contact
-change_address_confirmation.agent.bulkPaper.p1-4 = with an update.
 
 return_frequency.title = Choose the new VAT Return dates
 return_frequency.heading = Choose the new VAT Return dates

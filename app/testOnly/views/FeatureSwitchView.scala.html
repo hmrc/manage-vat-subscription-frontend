@@ -35,7 +35,6 @@
               <legend>
                   <p class="bold-medium" style="margin-bottom:10px;">Manage VAT Subscription Frontend Features</p>
               </legend>
-              @if(appConfig.features.disableBulkPaper()) { <p>Does it work</p>}
               @singleCheckbox(form(ConfigKeys.stubAgentClientLookupFeature), "Stub Agent Client Lookup")
               @singleCheckbox(form(ConfigKeys.stubAddressLookupFeature), "Stub Address Lookup")
               @singleCheckbox(form(ConfigKeys.stubContactPreferencesFeature), "Stub Contact Preferences")

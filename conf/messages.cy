@@ -29,8 +29,6 @@ common.agent.changeClient.youCan = Gallwch
 common.agent.changeClient.link = newid manylion cleient arall
 common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.
-common.agent.confirmationLetter1 = Byddwn yn cysylltu â
-common.agent.confirmationLetter2 = gyda diweddariad.
 common.agent.updateClient1 = Byddwn yn cysylltu â
 common.agent.updateClient2 = gyda diweddariad.
 common.agent.changeClient = Newid cleient
@@ -151,8 +149,6 @@ change_address_confirmation.agent.p1-1 = Byddwn yn anfon e-bost at
 change_address_confirmation.agent.p1-2 = cyn pen 2 ddiwrnod gwaith i roi diweddariad, wedi’i ddilyn gan lythyr i’r prif fan busnes.
 change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost i
 change_address_confirmation.agent.bulkPaper.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a allwn dderbyn eich cais ai peidio.
-change_address_confirmation.agent.bulkPaper.p1-3 = Byddwn yn cysylltu â
-change_address_confirmation.agent.bulkPaper.p1-4 = gyda diweddariad.
 
 return_frequency.title = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
 return_frequency.heading = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
