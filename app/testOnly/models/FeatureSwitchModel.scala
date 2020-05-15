@@ -25,4 +25,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               languageFeatureEnabled: Boolean,
                               useOverseasIndicatorEnabled: Boolean,
                               changeClientFeature: Boolean,
-                              emailVerifiedFeature: Boolean)
+                              emailVerifiedFeature: Boolean,
+                              disableBulkPaper: Boolean
+                             )

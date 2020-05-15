@@ -53,18 +53,27 @@
         @agentEmail match {
 
             case Some(email) => {
-                <p>@messages("change_address_confirmation.agent.p1-1")
+
+                @if(appConfig.features.disableBulkPaper()) {
+                <p>@messages("change_address_confirmation.agent.bulkPaper.p1-1")
+                <strong class="bold">@email</strong>
+                @messages("change_address_confirmation.agent.bulkPaper.p1-2")</p>
+                @updateClient(clientName)
+
+                } else {
+
+                    <p>@messages("change_address_confirmation.agent.p1-1")
                     <strong class="bold">@email</strong>
                     @messages("change_address_confirmation.agent.p1-2")</p>
-                @updateClient(clientName)
+                    @updateClient(clientName)
+                }
             }
 
             case None => {
-                <p>@messages("common.agent.confirmationLetter")</p>
+
                 @updateClient(clientName)
             }
         }
-
         @changeClientLink
     } else {
 

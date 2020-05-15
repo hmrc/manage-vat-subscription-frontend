@@ -45,7 +45,8 @@ object FeatureSwitchForm {
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
-      ConfigKeys.emailVerifiedFeature -> boolean
+      ConfigKeys.emailVerifiedFeature -> boolean,
+      ConfigKeys.disableBulkPaper -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }

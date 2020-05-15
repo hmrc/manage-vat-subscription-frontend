@@ -94,4 +94,8 @@ object ConfigKeys {
 
   val helpAndContactFrontendBase: String = "help-and-contact-frontend.host"
   val helpAndContactHelpUrl: String = "help-and-contact-frontend.helpUrl"
+
+  val disableBulkPaper:String =  "features.disableBulkPaper.enabled"
+
+
 }

@@ -18,12 +18,12 @@
 
 @(clientName: Option[String])(implicit messages: Messages)
 
-<p>
-  @messages("common.agent.updateClient1")
-  @clientName.fold(
-    <span>{messages("common.agent.yourClient")}</span>
-  )(
-    entityName => <strong class="bold">{entityName}</strong>
-  )
-  @messages("common.agent.updateClient2")
-</p>
+        <p>
+            @messages("common.agent.updateClient1")
+            @clientName.fold(
+            <span>{messages("common.agent.yourClient")}</span>
+            )(
+                entityName => <strong class="bold">{entityName}</strong>
+                )
+                @messages("common.agent.updateClient2")
+            </p>
