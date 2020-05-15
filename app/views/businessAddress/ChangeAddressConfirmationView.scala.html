@@ -70,14 +70,10 @@
             }
 
             case None => {
-                @if(appConfig.features.disableBulkPaper()) {
-                @updateClient(clientName)
-
-                } else {
-
+                @if(!appConfig.features.disableBulkPaper()) {
                     <p>@messages("common.agent.confirmationLetter")</p>
-                     @updateClient(clientName)
                 }
+                    @updateClient(clientName)
             }
         }
         @changeClientLink
