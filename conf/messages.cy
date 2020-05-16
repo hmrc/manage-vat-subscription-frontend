@@ -29,8 +29,8 @@ common.agent.changeClient.youCan = Gallwch
 common.agent.changeClient.link = newid manylion cleient arall
 common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.
-common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
-common.agent.updateClient2 = i roi diweddariad.
+common.agent.updateClient1 = Byddwn yn cysylltu â
+common.agent.updateClient2 = gyda diweddariad.
 common.agent.changeClient = Newid cleient
 
 global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – TAW – GOV.UK
@@ -141,12 +141,14 @@ change_address.bullet1 = cyfeiriad cyfrifydd neu asiant treth trydydd parti
 change_address.bullet2 = cyfeiriad blwch Swyddfa’r Post
 change_address.bullet3 = cyfeiriad ‘dan ofal’
 
-change_address_confirmation.title = Mae cyfeiriad newydd y busnes wedi dod i law
+change_address_confirmation.title = Rydych wedi gofyn am newid cyfeiriad y busnes
 change_address_confirmation.h2 = Yr hyn sy’n digwydd nesaf
 change_address_confirmation.p1 = Os derbynnir y newid hwn, byddwn yn anfon llythyr o gadarnhad i gyfeiriad newydd y busnes.
 change_address_confirmation.p2 = Byddwn fel arfer yn diweddaru cyfeiriad TAW y busnes cyn pen 2 ddiwrnod gwaith. Bydd angen i chi newid cyfeiriad y busnes ar gyfer trethi eraill ar wahân.
 change_address_confirmation.agent.p1-1 = Byddwn yn anfon e-bost at
 change_address_confirmation.agent.p1-2 = cyn pen 2 ddiwrnod gwaith i roi diweddariad, wedi’i ddilyn gan lythyr i’r prif fan busnes.
+change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost i
+change_address_confirmation.agent.bulkPaper.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a allwn dderbyn eich cais ai peidio.
 
 return_frequency.title = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
 return_frequency.heading = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW

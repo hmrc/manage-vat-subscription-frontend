@@ -30,7 +30,7 @@ common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
 common.agent.yourClient = your client
 common.agent.confirmationLetter = We will send a confirmation letter to the agency address registered with HMRC within 15 working days.
-common.agent.updateClient1 = We will also contact
+common.agent.updateClient1 = We’ll contact
 common.agent.updateClient2 = with an update.
 common.agent.changeClient = Change client
 
@@ -139,12 +139,14 @@ change_address.bullet1 = the address of a third-party accountant or tax agent
 change_address.bullet2 = a PO box address
 change_address.bullet3 = a ‘care of’ address
 
-change_address_confirmation.title = We have received the new business address
+change_address_confirmation.title = You have asked to change the business address
 change_address_confirmation.h2 = What happens next
 change_address_confirmation.p1 = If this change is accepted, we will send a confirmation letter to the new business address.
 change_address_confirmation.p2 = We will usually update the VAT business address within 2 working days. You will need to change the business address for other taxes separately.
 change_address_confirmation.agent.p1-1 = We will send an email to
 change_address_confirmation.agent.p1-2 = within 2 working days with an update, followed by a letter to the principal place of business.
+change_address_confirmation.agent.bulkPaper.p1-1 = We’ll send an email to
+change_address_confirmation.agent.bulkPaper.p1-2 = within 2 working days telling you whether we can accept your request.
 
 return_frequency.title = Choose the new VAT Return dates
 return_frequency.heading = Choose the new VAT Return dates

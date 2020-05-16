@@ -184,9 +184,10 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "they have selected to receive email notifications" when {
 
-      "there is a client name and the changeClient feature switch is on" should {
+      "there is a client name, the changeClient feature switch is on and the disableBulkPaper switch is off" should {
         lazy val view: Html = {
           mockConfig.features.changeClientFeature(true)
+          mockConfig.features.disableBulkPaper(false)
           injectedView(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
@@ -226,9 +227,10 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         }
       }
 
-      "there is a client name and the changeClient feature switch is off" should {
+      "there is a client name, the changeClient feature switch is off and the disableBulkPaper switch is off" should {
         lazy val view: Html = {
           mockConfig.features.changeClientFeature(false)
+          mockConfig.features.disableBulkPaper(false)
           injectedView(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
@@ -268,46 +270,63 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         }
       }
 
-      "there is no client name" should {
+      "there is no client name and the disableBulkPaper switch is off" should {
 
-        lazy val view: Html = injectedView(
-          agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        lazy val view: Html ={
+          mockConfig.features.disableBulkPaper(false)
+          injectedView(
+            agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct p2 of '${viewMessages.p2AgentNoClientName}'" in {
           paragraph(2) shouldBe viewMessages.p2AgentNoClientName
+        }
+      }
+      "there is a client name, the changeClient switched on and the disableBulkPaper switch is on" should {
+        lazy val view: Html = {
+          mockConfig.features.changeClientFeature(true)
+          injectedView(
+            clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
+        }
+        lazy implicit  val document: Document = Jsoup.parse(view.body)
+
+        s"have the correct p1 of '${viewMessages.confirmationAgentBulkPaper}'" in {
+          paragraph(1) shouldBe viewMessages.confirmationAgentBulkPaper
+        }
+
+        s"have the correct p2 of '${viewMessages.p2Agent}" in {
+          paragraph(2) shouldBe viewMessages.p2Agent
         }
       }
     }
 
     "they have selected to not receive email notifications" when {
 
-      "there is a client name" should {
+      "there is a client name and the disableBulkPaper switch is off" should {
 
-        lazy val view: Html = injectedView(
-          clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
+        lazy val view: Html = {
+          mockConfig.features.disableBulkPaper(false)
+          injectedView(
+            clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct p1 of '${viewMessages.confirmationLetter}'" in {
           paragraph(1) shouldBe viewMessages.confirmationLetter
-        }
-
-        s"have the correct p2 of '${viewMessages.p2Agent}'" in {
-          paragraph(2) shouldBe viewMessages.p2Agent
         }
       }
 
-      "there is no client name" should {
+      "there is no client name and the disableBulkPaper switch is off" should {
 
-        lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
+        lazy val view: Html = {
+          mockConfig.features.disableBulkPaper(false)
+          injectedView()(agentUser, messages, mockConfig)
+        }
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
         s"have the correct p1 of '${viewMessages.confirmationLetter}'" in {
           paragraph(1) shouldBe viewMessages.confirmationLetter
-        }
-
-        s"have the correct p2 of '${viewMessages.p2AgentNoClientName}'" in {
-          paragraph(2) shouldBe viewMessages.p2AgentNoClientName
         }
       }
     }

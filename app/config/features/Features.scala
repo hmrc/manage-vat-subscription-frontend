@@ -33,4 +33,5 @@ class Features @Inject()(implicit config: Configuration) {
   val useOverseasIndicator = new Feature(ConfigKeys.useOverseasIndicator)
   val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
   val emailVerifiedFeature = new Feature(ConfigKeys.emailVerifiedFeature)
+  val disableBulkPaper = new Feature(ConfigKeys.disableBulkPaper)
 }
