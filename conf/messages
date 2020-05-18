@@ -171,6 +171,7 @@ address_lookupPage.postcode.link = The address does not have a post code
 address_lookupPage.selectPage.heading = Select the new address
 address_lookupPage.selectPage.editLink = Edit the address manually
 address_lookupPage.confirmPage.heading = Confirm the new principal place of business
+address_lookupPage.lookupPage.submit = Find Address
 
 breadcrumb.bta = Business tax account
 breadcrumb.yourVatAccount = Your VAT account
