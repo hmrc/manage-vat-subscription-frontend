@@ -25,7 +25,6 @@ object FeatureSwitchForm {
 
   val api1365Version: String = "Api1365Version"
   val api1363Version: String = "Api1363Version"
-  val latestApi1363Version: String = "latestApi1363Version"
   val enableAnnualAccounting: String = "enableAnnualAccounting"
   val newStatusIndicators: String = "newStatusIndicators"
 
