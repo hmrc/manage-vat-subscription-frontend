@@ -15,20 +15,18 @@
  *@
 
 @import config.ConfigKeys
-@import helper.CSRF
 @import testOnly.models._
-@import testOnly.forms.FeatureSwitchForm
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 @import views.html.templates.inputs.{SingleCheckbox, RadioGroup}
 @import views.html.MainTemplate
 
-@this(mainTemplate: MainTemplate, singleCheckbox: SingleCheckbox, radioGroup: RadioGroup)
+@this(mainTemplate: MainTemplate, singleCheckbox: SingleCheckbox, radioGroup: RadioGroup, formWithCSRF: FormWithCSRF)
 
 @(form: Form[FeatureSwitchModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(title = messages("featureSwitch.title"), appConfig = appConfig) {
 
-  @helper.form(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
-      @CSRF.formField
+  @formWithCSRF(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
 
       <div class="form-group" style="border-radius: 25px;background: #C9EDD9; padding: 25px;">
           <fieldset>
@@ -64,8 +62,7 @@
                     @radioGroup(
                         field = form("vatSubscriptionFeatures.Api1363Version"),
                         choices = Seq(
-                            (Api1363R8.id, "API1363 R8"),
-                            (Api1363R10.id, "API1363 R10")
+                            (Api1363Latest.id, "Latest")
                         ),
                         question = "Which API1363 Version should be used?"
                     )
@@ -78,8 +75,7 @@
                     @radioGroup(
                         field = form("vatSubscriptionFeatures.Api1365Version"),
                         choices = Seq(
-                            (Api1365R7.id, "API1365 R7"),
-                            (Api1365R11.id, "API1365 R11")
+                            (Api1365Latest.id, "Latest")
                         ),
                         question = "Which API1365 Version should be used?"
                     )
