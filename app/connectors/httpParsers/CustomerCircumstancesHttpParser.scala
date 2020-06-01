@@ -30,6 +30,8 @@ class CustomerCircumstancesHttpParser @Inject()(implicit appConfig: AppConfig) {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
+    val expectedErrorStatuses: Seq[Int] = Seq(Status.NOT_FOUND)
+
     override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CircumstanceDetails] = {
 
       response.status match {
@@ -45,7 +47,9 @@ class CustomerCircumstancesHttpParser @Inject()(implicit appConfig: AppConfig) {
           )
 
         case status =>
-          Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
+          if(!expectedErrorStatuses.contains(status)) {
+            Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
+          }
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
       }
     }
