@@ -26,5 +26,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               useOverseasIndicatorEnabled: Boolean,
                               changeClientFeature: Boolean,
                               emailVerifiedFeature: Boolean,
-                              disableBulkPaper: Boolean
+                              disableBulkPaper: Boolean,
+                              missingTraderAddressIntercept: Boolean
                              )

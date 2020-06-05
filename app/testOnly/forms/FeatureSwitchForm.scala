@@ -45,7 +45,8 @@ object FeatureSwitchForm {
       ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
       ConfigKeys.emailVerifiedFeature -> boolean,
-      ConfigKeys.disableBulkPaper -> boolean
+      ConfigKeys.disableBulkPaper -> boolean,
+      ConfigKeys.missingTraderAddressIntercept -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }
