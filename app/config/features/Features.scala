@@ -34,4 +34,5 @@ class Features @Inject()(implicit config: Configuration) {
   val changeClientFeature = new Feature(ConfigKeys.changeClientFeature)
   val emailVerifiedFeature = new Feature(ConfigKeys.emailVerifiedFeature)
   val disableBulkPaper = new Feature(ConfigKeys.disableBulkPaper)
+  val missingTraderAddressIntercept = new Feature(ConfigKeys.missingTraderAddressIntercept)
 }

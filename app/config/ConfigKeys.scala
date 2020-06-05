@@ -39,6 +39,7 @@ object ConfigKeys {
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
   val emailVerifiedFeature: String = "features.emailVerifiedFeature.enabled"
+  val missingTraderAddressIntercept: String = "features.missingTraderAddressIntercept.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
