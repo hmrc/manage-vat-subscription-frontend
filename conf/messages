@@ -25,6 +25,8 @@ common.vat = VAT
 common.agentService = Your client’s VAT details
 common.newTab = (opens in a new tab)
 common.pageTitle = {0} - {1} - GOV.UK
+common.yes = Yes
+common.no = No
 
 common.agent.changeClient.youCan = You can
 common.agent.changeClient.link = change another client’s details
@@ -188,6 +190,10 @@ changePending.email = business’s email address
 changePending.landline = business’s landline number
 changePending.mobile = business’s mobile number
 changePending.website = business’s website address
+
+missingTrader.title = We’ve had a problem delivering mail to this address
+missingTrader.question = Is this still the company’s principal place of business?
+missingTrader.error = Select yes if the business trades from this address most of the time
 
 
 btaNavLinks.home = Home
