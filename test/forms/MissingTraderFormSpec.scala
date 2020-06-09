@@ -23,7 +23,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 class MissingTraderFormSpec extends UnitSpec {
 
-  "PurchasesExceedSuppliesForm" should {
+  "MissingTraderForm" should {
 
     "successfully parse a Yes" in {
       val res = missingTraderForm.bind(Map(yesNo -> yes))

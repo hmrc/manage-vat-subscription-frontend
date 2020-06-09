@@ -58,11 +58,13 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2")}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |      <div>
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2")}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
+           |      </div>
            |
            |   </fieldset>
            |  </div>
@@ -86,11 +88,13 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2", checked = true)}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |      <div>
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2", checked = true)}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
+           |      </div>
            |    </fieldset>
            |  </div>
         """.stripMargin
@@ -114,13 +118,15 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
-           |      <span class="error-notification">$errorMessage</span>
+           |      <span class="error-message">$errorMessage</span>
            |
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2")}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |      <div>
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2")}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
+           |      </div>
            |    </fieldset>
            |  </div>
         """.stripMargin
@@ -145,12 +151,14 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |      </legend>
            |
            |      $additionalContent
-
-           |      ${generateExpectedRadioMarkup("value1", "display1")}
-           |      ${generateExpectedRadioMarkup("value2", "display2")}
-           |      ${generateExpectedRadioMarkup("value3", "display3")}
-           |      ${generateExpectedRadioMarkup("value4", "display4")}
-           |      ${generateExpectedRadioMarkup("value5", "display5")}
+           |
+           |      <div>
+           |        ${generateExpectedRadioMarkup("value1", "display1")}
+           |        ${generateExpectedRadioMarkup("value2", "display2")}
+           |        ${generateExpectedRadioMarkup("value3", "display3")}
+           |        ${generateExpectedRadioMarkup("value4", "display4")}
+           |        ${generateExpectedRadioMarkup("value5", "display5")}
+           |      </div>
            |
            |    </fieldset>
            |</div>

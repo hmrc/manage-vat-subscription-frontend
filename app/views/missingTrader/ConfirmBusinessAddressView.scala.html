@@ -16,14 +16,14 @@
 
 @import helpers.RenderAddress
 @import forms.MissingTraderForm._
-@import uk.gov.hmrc.play.views.html.helpers
-@import templates.Headings
+@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
 @import templates.inputs.RadioGroup
 @import models.circumstanceInfo.PPOBAddress
+@import views.html.templates.errors.ErrorSummary
 
-@this(mainTemplate: MainTemplate, radioGroup: RadioGroup, headings: Headings, renderAddress: RenderAddress)
+@this(mainTemplate: MainTemplate, radioGroup: RadioGroup, renderAddress: RenderAddress, form: FormWithCSRF, errorSummary: ErrorSummary)
 
-@(ppob: PPOBAddress, form: Form[YesNo])(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+@(ppob: PPOBAddress, missingTraderForm: Form[YesNo])(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @questionContent = {
     <div class="panel panel-border-wide">
@@ -34,20 +34,23 @@
 }
 
 @mainTemplate(
-    title = messages("missingTrader.title"),
-    bodyClasses = None,
+    title = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
+            else messages("missingTrader.title"),
     appConfig = appConfig) {
 
-    @helpers.form(action = controllers.routes.BusinessAddressController.initialiseJourney, 'novalidate -> "novalidate") {
+    @errorSummary(messages("common.errorSummary.heading"), missingTraderForm)
+
+    @form(action = controllers.routes.BusinessAddressController.initialiseJourney, 'novalidate -> "novalidate") {
 
         <div id="@yesNo" class="form-group">
         @radioGroup(
-            field = form(yesNo),
+            field = missingTraderForm(yesNo),
             choices = Seq(
                 yes -> messages("common.yes"),
                 no -> messages("common.no")),
+            question = messages("missingTrader.title"),
             additionalContent = Some(questionContent),
-            question = messages("missingTrader.title")
+            inline = true
         )
         </div>
 

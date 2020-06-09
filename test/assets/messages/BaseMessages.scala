@@ -38,5 +38,5 @@ trait BaseMessages {
   val titleSuffixOther = " - VAT - GOV.UK"
   val titleSuffixAgent  = " - Your client’s VAT details - GOV.UK"
 
-
+  val errorTitlePrefix = "Error:"
 }

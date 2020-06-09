@@ -19,8 +19,9 @@ package assets.messages
 object ConfirmBusinessAddressMessages extends BaseMessages {
 
   val heading = "We’ve had a problem delivering mail to this address"
-  val title = heading + titleSuffixUser
+  val title: String = heading + titleSuffixUser
   val question = "Is this still the company’s principal place of business?"
+  val errorMessage = "Select yes if the business trades from this address most of the time"
   val yes = "Yes"
   val no = "No"
 }
