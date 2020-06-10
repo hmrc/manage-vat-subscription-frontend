@@ -16,7 +16,7 @@
 
 package views.missingTrader
 
-import assets.PPOBAddressTestConstants.ppobAddressModelMin
+import assets.PPOBAddressTestConstants.ppobAddressModelMax
 import assets.messages.{ConfirmBusinessAddressMessages => viewMessages}
 import forms.MissingTraderForm
 import org.jsoup.Jsoup
@@ -34,13 +34,14 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val button = ".button"
     val errorHeading = "#error-summary-display"
     val error = ".error-message"
+    val address: Int => String = num => s".panel-border-wide li:nth-child($num)"
   }
 
   val injectedView: ConfirmBusinessAddressView = inject[ConfirmBusinessAddressView]
 
   "The ConfirmBusinessAddressView" should {
 
-    lazy val view: Html = injectedView(ppobAddressModelMin, MissingTraderForm.missingTraderForm)(user, messages, mockConfig)
+    lazy val view: Html = injectedView(ppobAddressModelMax, MissingTraderForm.missingTraderForm)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct document title" in {
@@ -49,6 +50,12 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
 
     "display the correct heading" in {
       elementText(Selectors.pageHeading) shouldBe viewMessages.heading
+    }
+
+    "has the correct address output" in {
+      elementText(Selectors.address(1)) shouldBe ppobAddressModelMax.line1
+      elementText(Selectors.address(2)) shouldBe ppobAddressModelMax.line2.get
+      elementText(Selectors.address(3)) shouldBe ppobAddressModelMax.postCode.get
     }
 
     s"have the correct question" in {
@@ -71,7 +78,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
 
   "The ConfirmBusinessAddress page with errors" should {
 
-    lazy val view = injectedView(ppobAddressModelMin, MissingTraderForm.missingTraderForm.bind(Map("yes_no" -> "")))(user, messages, mockConfig)
+    lazy val view = injectedView(ppobAddressModelMax, MissingTraderForm.missingTraderForm.bind(Map("yes_no" -> "")))(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct document title" in {
@@ -80,6 +87,12 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
 
     "have the correct page heading" in {
       elementText(Selectors.pageHeading) shouldBe viewMessages.heading
+    }
+
+    "has the correct address output" in {
+      elementText(Selectors.address(1)) shouldBe ppobAddressModelMax.line1
+      elementText(Selectors.address(2)) shouldBe ppobAddressModelMax.line2.get
+      elementText(Selectors.address(3)) shouldBe ppobAddressModelMax.postCode.get
     }
 
     "display the correct error heading" in {
