@@ -31,7 +31,7 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
     lazy val view: Html = injectedView()(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page heading of '${viewMessages.title}''" in {
+    s"have the correct page heading of '${viewMessages.title}'" in {
       document.title shouldBe viewMessages.title
     }
 
@@ -39,17 +39,17 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
       elementText("h1") shouldBe viewMessages.h1
     }
 
-    s"have the correct p1 of '${viewMessages.p1}" in {
+    s"have the correct p1 of '${viewMessages.p1}'" in {
       paragraph(1) shouldBe viewMessages.p1
     }
 
     s"have a button to finish" which {
 
-      s"has the correct text of '$continue" in {
+      s"has the correct text of '$continue'" in {
         elementText("#finish") shouldBe continue
       }
 
-      s"has the correct link" in {
+      "has the correct link" in {
         element("#finish").attr("href") shouldBe mockConfig.vatSummaryUrl
       }
     }
@@ -60,7 +60,7 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
     lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    s"have the correct page heading of '${viewMessages.titleAgent}''" in {
+    s"have the correct page heading of '${viewMessages.titleAgent}'" in {
       document.title shouldBe viewMessages.titleAgent
     }
 
@@ -68,17 +68,17 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
       elementText("h1") shouldBe viewMessages.h1
     }
 
-    s"have the correct p1 of '${viewMessages.p1}" in {
+    s"have the correct p1 of '${viewMessages.p1}'" in {
       paragraph(1) shouldBe viewMessages.p1
     }
 
     s"have a button to finish" which {
 
-      s"has the correct text of '$continue" in {
+      s"has the correct text of '$continue'" in {
         elementText("#finish") shouldBe continue
       }
 
-      s"has the correct link" in {
+      "has the correct link" in {
         element("#finish").attr("href") shouldBe mockConfig.agentClientLookupAgentAction
       }
     }
