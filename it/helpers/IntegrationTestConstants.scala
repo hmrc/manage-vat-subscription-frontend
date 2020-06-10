@@ -37,7 +37,7 @@ object IntegrationTestConstants {
   val email = "test@test.com"
   val emailVerified = true
 
-  val organisation = CustomerDetails(
+  val organisation: CustomerDetails = CustomerDetails(
     firstName = None,
     lastName = None,
     tradingName = Some("Vatmobile Taxi"),
@@ -46,7 +46,7 @@ object IntegrationTestConstants {
     overseasIndicator = false
   )
 
-  val individual = CustomerDetails(
+  val individual: CustomerDetails = CustomerDetails(
     firstName = Some("Nanana"),
     lastName = Some("Vatman"),
     tradingName = Some("Vatmobile Taxi"),
@@ -55,7 +55,7 @@ object IntegrationTestConstants {
     overseasIndicator = false
   )
 
-  val contactDetailsModelMax = ContactDetails(
+  val contactDetailsModelMax: ContactDetails = ContactDetails(
     Some(phoneNumber),
     Some(mobileNumber),
     Some(faxNumber),
@@ -63,7 +63,7 @@ object IntegrationTestConstants {
     Some(emailVerified)
   )
 
-  val contactDetailsModelMin = ContactDetails(
+  val contactDetailsModelMin: ContactDetails = ContactDetails(
     None,
     None,
     None,
@@ -71,7 +71,7 @@ object IntegrationTestConstants {
     None
   )
 
-  val ppobMax = PPOB(
+  val ppobMax: PPOB = PPOB(
     PPOBAddress(
       "Add Line 1",
       Some("Add Line 2"),
@@ -85,7 +85,7 @@ object IntegrationTestConstants {
     Some(website)
   )
 
-  val ppobMin = PPOB(
+  val ppobMin: PPOB = PPOB(
     PPOBAddress(
       "Add Line 1",
       None,
@@ -99,20 +99,20 @@ object IntegrationTestConstants {
     None
   )
 
-  val bankDetails = BankDetails(
+  val bankDetails: BankDetails = BankDetails(
     Some("***************"),
     Some("****3421"),
     Some("12****")
   )
 
-  val changeIndicators = ChangeIndicators(
+  val changeIndicators: ChangeIndicators = ChangeIndicators(
     ppob = true,
     bankDetails = true,
     returnPeriod = true,
     deregister = true
   )
 
-  val deregModel = Deregistration(
+  val deregModel: Deregistration = Deregistration(
     Some("just coz"),
     Some("2018-10-02"),
     Some("2018-10-01")
@@ -126,6 +126,7 @@ object IntegrationTestConstants {
     bankDetails = Some(bankDetails),
     returnPeriod = Some(Jan),
     deregistration = Some(deregModel),
+    missingTrader = true,
     changeIndicators = Some(changeIndicators),
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobMax),
@@ -142,6 +143,7 @@ object IntegrationTestConstants {
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
@@ -154,6 +156,7 @@ object IntegrationTestConstants {
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("7")
