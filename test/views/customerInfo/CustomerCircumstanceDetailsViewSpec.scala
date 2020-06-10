@@ -68,7 +68,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
 
                 element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
-                element("#breadcrumb-vat").attr("href") shouldBe "ye olde vat summary url"
+                element("#breadcrumb-vat").attr("href") shouldBe "/vat-summary"
               }
 
               "the view loads in the partial" should {
