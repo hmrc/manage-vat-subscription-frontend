@@ -21,6 +21,9 @@ GET         /change-client-vat-number                        controllers.agentCl
 
 GET         /initialise-payment-journey                      controllers.PaymentsController.sendToPayments
 
+GET         /missing-trader                                  controllers.missingTrader.ConfirmAddressController.show
+POST        /missing-trader                                  controllers.missingTrader.ConfirmAddressController.submit
+
 #Sign Out Routes
 GET         /sign-out                                        controllers.SignOutController.signOut(authorised: Boolean)
 GET         /time-out                                        controllers.SignOutController.timeout

@@ -38,6 +38,7 @@ object CircumstanceDetailsTestConstants {
     "returnPeriod" -> returnPeriodMCJson,
     "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
+    "missingTrader" -> true,
     "changeIndicators" -> Json.obj(
       "PPOBDetails" -> true,
       "bankDetails" -> true,
@@ -81,6 +82,7 @@ object CircumstanceDetailsTestConstants {
     "returnPeriod" -> returnPeriodMCJson,
     "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
+    "missingTrader" -> true,
     "changeIndicators" -> Json.obj(
       "PPOBDetails" -> true,
       "bankDetails" -> true,
@@ -119,7 +121,8 @@ object CircumstanceDetailsTestConstants {
   val customerInformationJsonMin: JsValue =
     Json.obj(
       "customerDetails" -> customerDetailsJsonMin,
-      "ppob" -> ppobJsonMin
+      "ppob" -> ppobJsonMin,
+      "missingTrader" -> false
     )
 
 
@@ -130,6 +133,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = true,
     changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
@@ -152,6 +156,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = true,
     changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
@@ -174,6 +179,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
@@ -195,6 +201,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = true,
     changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
@@ -216,6 +223,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType)
@@ -228,6 +236,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType)
@@ -240,6 +249,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType)
@@ -252,6 +262,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = partyType
@@ -264,6 +275,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
@@ -276,6 +288,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("other")
@@ -288,6 +301,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = None,
     deregistration = Some(deregModel),
+    missingTrader = false,
     changeIndicators = Some(
       ChangeIndicators(
         ppob = true,
@@ -306,6 +320,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(futureDeregModel),
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
@@ -318,6 +333,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = None,
+    missingTrader = false,
     changeIndicators = Some(
       ChangeIndicators(
         ppob = false,
@@ -342,6 +358,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
@@ -438,6 +455,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = Some(bankDetailsModelMax),
     returnPeriod = Some(Mar),
     deregistration = Some(deregModel),
+    missingTrader = true,
     changeIndicators = Some(ChangeIndicators(
       ppob = true,
       bankDetails = true,
@@ -465,6 +483,7 @@ object CircumstanceDetailsTestConstants {
     bankDetails = None,
     returnPeriod = None,
     deregistration = None,
+    missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
     partyType = None
@@ -478,6 +497,7 @@ object CircumstanceDetailsTestConstants {
     "returnPeriod" -> returnPeriodMCJson,
     "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
+    "missingTrader" -> true,
     "changeIndicators" -> Json.obj(
       "PPOBDetails" -> true,
       "bankDetails" -> true,
@@ -516,7 +536,8 @@ object CircumstanceDetailsTestConstants {
   val customerInformationJsonMinR8: JsValue =
     Json.obj(
       "customerDetails" -> customerDetailsJsonMinR8,
-      "ppob" -> ppobJsonMin
+      "ppob" -> ppobJsonMin,
+      "missingTrader" -> false
     )
 
   val customerInformationJsonMinWithTrueOverseas: JsValue =
@@ -525,6 +546,7 @@ object CircumstanceDetailsTestConstants {
         "hasFlatRateScheme" -> false,
         "overseasIndicator" -> true
       ),
-      "ppob" -> ppobJsonMin
-    )
+      "ppob" -> ppobJsonMin,
+      "missingTrader" -> false
+  )
 }

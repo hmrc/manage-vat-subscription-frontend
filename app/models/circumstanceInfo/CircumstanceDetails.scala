@@ -30,7 +30,8 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
                                deregistration: Option[Deregistration],
                                changeIndicators: Option[ChangeIndicators],
                                pendingChanges: Option[PendingChanges],
-                               partyType: Option[String]) {
+                               partyType: Option[String],
+                               missingTrader: Boolean) {
 
   val ppobAddress: PPOBAddress = ppob.address
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
@@ -69,6 +70,7 @@ object CircumstanceDetails extends JsonReadUtil {
   private val changeIndicatorsPath = __ \ "changeIndicators"
   private val pendingChangesPath = __ \ "pendingChanges"
   private val partyTypePath = __ \ "partyType"
+  private val missingTraderPath = __ \ "missingTrader"
 
   implicit val reads: Boolean => Reads[CircumstanceDetails] = isRelease10 => (
       customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isRelease10)) and
@@ -79,7 +81,8 @@ object CircumstanceDetails extends JsonReadUtil {
       deregistrationPath.readOpt[Deregistration] and
       changeIndicatorsPath.readOpt[ChangeIndicators] and
       pendingChangesPath.readOpt[PendingChanges] and
-      partyTypePath.readOpt[String]
+      partyTypePath.readOpt[String] and
+      missingTraderPath.read[Boolean]
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Boolean => Writes[CircumstanceDetails] = isRelease10 => (
@@ -91,6 +94,7 @@ object CircumstanceDetails extends JsonReadUtil {
       deregistrationPath.writeNullable[Deregistration] and
       changeIndicatorsPath.writeNullable[ChangeIndicators] and
       pendingChangesPath.writeNullable[PendingChanges] and
-      partyTypePath.writeNullable[String]
+      partyTypePath.writeNullable[String] and
+      missingTraderPath.write[Boolean]
     )(unlift(CircumstanceDetails.unapply))
 }

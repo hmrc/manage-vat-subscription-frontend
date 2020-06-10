@@ -31,8 +31,8 @@ import views.html.customerInfo.CustomerCircumstanceDetailsView
 import utils.TestUtil
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService with TestUtil {
-  val getPartialHtmlAgent = Html("")
-  val getPartialHtmlNotAgent = Html("""<div id="getPartialTest">dummyHtml</div>""")
+  val getPartialHtmlAgent: Html = Html("")
+  val getPartialHtmlNotAgent: Html = Html("""<div id="getPartialTest">dummyHtml</div>""")
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
 
   "Rendering the Customer Details page" when {
@@ -598,6 +598,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             bankDetails = None,
             returnPeriod = None,
             deregistration = None,
+            missingTrader = false,
             changeIndicators = None,
             pendingChanges = None,
             partyType = Some(mockConfig.partyTypes.head)

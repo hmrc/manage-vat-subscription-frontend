@@ -40,7 +40,7 @@
 
     @errorSummary(messages("common.errorSummary.heading"), missingTraderForm)
 
-    @form(action = controllers.routes.BusinessAddressController.initialiseJourney, 'novalidate -> "novalidate") {
+    @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit, 'novalidate -> "novalidate") {
 
         <div id="@yesNo" class="form-group">
         @radioGroup(

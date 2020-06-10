@@ -179,6 +179,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       bankDetails = None,
       returnPeriod = None,
       deregistration = None,
+      missingTrader = false,
       changeIndicators = None,
       pendingChanges = None,
       partyType = None
