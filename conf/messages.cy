@@ -24,6 +24,8 @@ common.clientService = Cyfrif Treth Busnes
 common.vat = TAW
 common.agentService = Manylion TAW eich cleient
 common.newTab = (yn agor tab newydd)
+common.yes = Iawn
+common.no = Na
 
 common.agent.changeClient.youCan = Gallwch
 common.agent.changeClient.link = newid manylion cleient arall

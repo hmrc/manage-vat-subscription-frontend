@@ -21,7 +21,8 @@
 @(field: Field,
   choices: Seq[(String, String)],
   question: String,
-  additionalContent: Option[Html] = None)(implicit messages: Messages)
+  additionalContent: Option[Html] = None,
+  inline: Boolean = false)(implicit messages: Messages)
 
 @elements = @{ FieldElements(field.id, field, null, Map(), messages) }
 
@@ -34,21 +35,23 @@
 
         @additionalContent.map { content => @content }
 
-        @elements.errors.map { error => <span class="error-notification">@messages(error)</span> }
+        @elements.errors.map { error => <span class="error-message">@messages(error)</span> }
 
-        @choices.map { case (value, label) =>
+        <div @if(inline){ class="inline"}>
+            @choices.map { case (value, label) =>
 
-            @defining(s"${elements.field.name}-${value.toLowerCase}") { inputId =>
-                <div class="multiple-choice">
-                    <input
-                        type="radio"
-                        id="@inputId"
-                        name="@elements.field.name"
-                        value="@value"
-                        @field.value.filter( _ == value).map{_ => checked="checked"}/>
-                    <label for="@inputId">@label</label>
-                </div>
+                @defining(s"${elements.field.name}-${value.toLowerCase}") { inputId =>
+                    <div class="multiple-choice">
+                        <input
+                            type="radio"
+                            id="@inputId"
+                            name="@elements.field.name"
+                            value="@value"
+                            @field.value.filter( _ == value).map{_ => checked="checked"}/>
+                        <label for="@inputId">@label</label>
+                    </div>
+                }
             }
-        }
+        </div>
     </fieldset>
 </div>
