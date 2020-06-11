@@ -40,21 +40,21 @@ object UpdatePPOBAddressTestConstants {
 
 
   val updatePPOBAddressModelMax = UpdatePPOBAddress(
-    addLine1,
-    addLine2,
+    Some(addLine1),
+    Some(addLine2),
     Some(addLine3),
     Some(addLine4),
     Some(postcode),
-    countryCode
+    Some(countryCode)
   )
 
   val updatePPOBAddressModelMin = UpdatePPOBAddress(
-    addLine1,
-    addLine2,
     None,
     None,
     None,
-    countryCode
+    None,
+    None,
+    None
   )
 
   val contactDetailsModelMax = ContactDetails(
@@ -93,10 +93,6 @@ object UpdatePPOBAddressTestConstants {
   )
 
   val updatePPOBJsonMin: JsValue = Json.obj(
-    "address" -> Json.obj(
-      "line1" -> addLine1,
-      "line2" -> addLine2,
-      "countryCode" -> countryCode
-    )
+    "address" -> Json.obj()
   )
 }
