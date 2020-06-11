@@ -27,7 +27,7 @@ import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.{reset, verify}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
@@ -38,6 +38,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
   MockBusinessAddressService with MockContactPreferenceService {
+
+  override def afterEach(): Unit = reset(mockAuditingService)
 
   "Calling the .show action" when {
 

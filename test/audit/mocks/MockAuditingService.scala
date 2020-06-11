@@ -26,12 +26,7 @@ import utils.TestUtil
 
 import scala.concurrent.ExecutionContext
 
-trait MockAuditingService extends TestUtil with MockitoSugar {
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(mockAuditingService)
-  }
+trait MockAuditingService extends MockitoSugar {
 
   val mockAuditingService: AuditService = mock[AuditService]
 
