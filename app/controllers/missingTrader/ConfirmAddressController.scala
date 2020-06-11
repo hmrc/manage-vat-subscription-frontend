@@ -16,11 +16,13 @@
 
 package controllers.missingTrader
 
+import audit.AuditService
+import audit.models.MissingTraderAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.MissingTraderForm
 import javax.inject.Inject
-import models.{YesNo, Yes, No}
+import models.{No, Yes, YesNo}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +36,8 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
                                          authPredicate: AuthPredicate,
                                          customerDetailsService: CustomerCircumstanceDetailsService,
                                          errorHandler: ServiceErrorHandler,
-                                         confirmBusinessAddressView: ConfirmBusinessAddressView)
+                                         confirmBusinessAddressView: ConfirmBusinessAddressView,
+                                         auditService: AuditService)
                                         (implicit appConfig: AppConfig,
                                          ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
@@ -43,7 +46,9 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
   def show: Action[AnyContent] = authPredicate.async { implicit user =>
     if(appConfig.features.missingTraderAddressIntercept()) {
       customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
-        case Right(details) if details.missingTrader => Ok(confirmBusinessAddressView(details.ppobAddress, form))
+        case Right(details) if details.missingTrader =>
+          auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show().url))
+          Ok(confirmBusinessAddressView(details.ppobAddress, form))
         case Right(_) if user.isAgent => Redirect(appConfig.agentClientLookupAgentAction)
         case Right(_) => Redirect(appConfig.vatSummaryUrl)
         case Left(_) => errorHandler.showInternalServerError

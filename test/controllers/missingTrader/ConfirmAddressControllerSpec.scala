@@ -18,6 +18,7 @@ package controllers.missingTrader
 
 import assets.BaseTestConstants.vrn
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndividual, customerInformationModelMin}
+import audit.models.MissingTraderAuditModel
 import controllers.ControllerBaseSpec
 import forms.MissingTraderForm
 import models.core.ErrorModel
@@ -37,7 +38,8 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec {
     mockAuthPredicate,
     mockCustomerDetailsService,
     serviceErrorHandler,
-    inject[ConfirmBusinessAddressView]
+    inject[ConfirmBusinessAddressView],
+    mockAuditingService
   )
 
   "The .show action" when {
@@ -56,6 +58,10 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec {
       "return HTML" in {
         contentType(result) shouldBe Some("text/html")
         charset(result) shouldBe Some("utf-8")
+      }
+
+      "send an audit event" in {
+        verifyExtendedAudit(MissingTraderAuditModel(vrn), Some(routes.ConfirmAddressController.show().url))
       }
     }
 
