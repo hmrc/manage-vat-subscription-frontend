@@ -150,6 +150,9 @@ change_address_confirmation.agent.p1-2 = within 2 working days with an update, f
 change_address_confirmation.agent.bulkPaper.p1-1 = We’ll send an email to
 change_address_confirmation.agent.bulkPaper.p1-2 = within 2 working days telling you whether we can accept your request.
 
+mta_confirmation.title = You have confirmed the business address
+mta_confirmation.p1 = Thank you. We will try to deliver the letter again.
+
 return_frequency.title = Choose the new VAT Return dates
 return_frequency.heading = Choose the new VAT Return dates
 return_frequency.current = The VAT Return dates are currently
