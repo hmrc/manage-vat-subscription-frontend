@@ -21,12 +21,16 @@ import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndiv
 import audit.models.MissingTraderAuditModel
 import controllers.ControllerBaseSpec
 import forms.MissingTraderForm
+import mocks.services.MockPPOBService
 import models.core.ErrorModel
-import play.api.test.Helpers._
 import play.api.http.Status
-import views.html.missingTrader.ConfirmBusinessAddressView
+import play.api.test.Helpers._
+import uk.gov.hmrc.http.HeaderCarrier
+import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
 
-class ConfirmAddressControllerSpec extends ControllerBaseSpec {
+import scala.concurrent.ExecutionContext
+
+class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBService {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -39,7 +43,9 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec {
     mockCustomerDetailsService,
     serviceErrorHandler,
     inject[ConfirmBusinessAddressView],
-    mockAuditingService
+    mockAuditingService,
+    inject[MissingTraderAddressConfirmationView],
+    mockPPOBService
   )
 
   "The .show action" when {
@@ -140,7 +146,11 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec {
 
     "the form is submitted with a 'Yes' option" should {
 
-      lazy val result = controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
+      lazy val result = {
+        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+        mockCall(vrn)
+        controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
+      }
 
       "return 200" in {
         status(result) shouldBe Status.OK

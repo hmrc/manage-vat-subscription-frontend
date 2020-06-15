@@ -19,40 +19,47 @@ package mocks.connectors
 import connectors.SubscriptionConnector
 import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails}
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers._
-import org.mockito.Mockito._
+import models.returnFrequency.UpdateReturnPeriod
+import models.updatePPOB.UpdatePPOB
+import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-trait MockSubscriptionConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockSubscriptionConnector extends UnitSpec with MockFactory with BeforeAndAfterEach {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
 
-  type CustomerDetailsResponse = Either[ErrorModel, CustomerDetails]
   type SubscriptionUpdateResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockSubscriptionConnector)
   }
 
   def setupMockUserDetails(vrn: String)(response: Either[ErrorModel, CircumstanceDetails]): Unit = {
-    when(mockSubscriptionConnector.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
-      .thenReturn(Future.successful(response))
+    (mockSubscriptionConnector.getCustomerCircumstanceDetails(_: String)(_: HeaderCarrier, _: concurrent.ExecutionContext))
+      .expects(vrn, *, *)
+      .returns(Future.successful(response))
   }
 
-  def setupMockUpdateBusinessAddress(response: Either[ErrorModel, SubscriptionUpdateResponseModel]): Unit = {
-    when(mockSubscriptionConnector.updatePPOB(anyString(), any())(any(), any()))
-      .thenReturn(Future.successful(response))
+  def setupMockUpdateBusinessAddress(response: SubscriptionUpdateResponse): Unit = {
+    (mockSubscriptionConnector.updatePPOB(_: String, _: UpdatePPOB)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *, *)
+      .returns(Future.successful(response))
   }
 
-  def setupMockUpdateReturnFrequency(response: Either[ErrorModel, SubscriptionUpdateResponseModel]): Unit = {
-    when(mockSubscriptionConnector.updateReturnFrequency(anyString(), any())(any(), any()))
-      .thenReturn(Future.successful(response))
+  def setupMockUpdateReturnFrequency(response: SubscriptionUpdateResponse): Unit = {
+    (mockSubscriptionConnector.updateReturnFrequency(_: String, _: UpdateReturnPeriod)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(*, *, *, *)
+      .returns(Future.successful(response))
+  }
+
+  def setupMockValidateBusinessAddress(vrn: String, response: SubscriptionUpdateResponse): Unit = {
+    (mockSubscriptionConnector.validateBusinessAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(vrn, *, *)
+      .returns(Future.successful(response))
   }
 }
 

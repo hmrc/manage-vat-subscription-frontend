@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package views
+package views.missingTrader
 
 import assets.messages.{BaseMessages, MissingTraderAddressConfirmationPageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
-import views.html.MissingTraderAddressConfirmationView
+import views.ViewBaseSpec
+import views.html.missingTrader.MissingTraderAddressConfirmationView
 
 class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 

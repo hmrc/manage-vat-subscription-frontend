@@ -26,9 +26,9 @@ import models.{No, Yes, YesNo}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.CustomerCircumstanceDetailsService
+import services.{CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.controller.FrontendController
-import views.html.missingTrader.ConfirmBusinessAddressView
+import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -37,7 +37,9 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
                                          customerDetailsService: CustomerCircumstanceDetailsService,
                                          errorHandler: ServiceErrorHandler,
                                          confirmBusinessAddressView: ConfirmBusinessAddressView,
-                                         auditService: AuditService)
+                                         auditService: AuditService,
+                                         missingTraderAddressConfirmationView: MissingTraderAddressConfirmationView,
+                                         ppobService: PPOBService)
                                         (implicit appConfig: AppConfig,
                                          ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
@@ -66,7 +68,12 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
           case Left(_) => errorHandler.showInternalServerError
         },
         {
-          case Yes => Future.successful(Ok) //TODO as part of BTAT-7859
+          case Yes =>
+            ppobService.validateBusinessAddress(user.vrn).map {
+              case Right(_) => Ok(missingTraderAddressConfirmationView())
+              case Left(_) => errorHandler.showInternalServerError
+            }
+            Future.successful(Ok(missingTraderAddressConfirmationView()))
           case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
         }
       )

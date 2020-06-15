@@ -53,7 +53,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
     http.PUT[UpdatePPOB, HttpPostResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
   }
 
-  private[connectors] def validateBusinessAddress(vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext) = {
+  def validateBusinessAddress(vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     updatePPOB(vrn, UpdatePPOB(UpdatePPOBAddress(None, None, None, None, None, None), None, None, None))
   }
 

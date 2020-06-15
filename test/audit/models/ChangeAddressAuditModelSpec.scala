@@ -51,11 +51,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
             "line1" -> ppobAddressModelMin.line1,
             "countryCode" -> ppobAddressModelMin.countryCode
           ),
-          "requestedBusinessAddress" -> Json.obj(
-            "line1" -> customerAddressMin.line1,
-            "line2" -> customerAddressMin.line2,
-            "countryCode" -> customerAddressMin.countryCode
-          )
+          "requestedBusinessAddress" -> Json.obj()
         )
       }
     }

@@ -44,7 +44,7 @@ object BusinessAddressStub extends WireMockMethods {
 
   def getAddress(status: Int, response: JsValue): StubMapping = {
     when(method = GET, uri = addressUri)
-      .thenReturn(status = OK, body = response)
+      .thenReturn(status = status, body = response)
   }
 
   def getFullInformation(status: Int, response: JsValue): StubMapping = {
