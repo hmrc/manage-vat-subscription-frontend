@@ -17,7 +17,7 @@
 package services
 
 import mocks.connectors.MockSubscriptionConnector
-import models.core.SubscriptionUpdateResponseModel
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import assets.CustomerAddressTestConstants._
 import assets.BaseTestConstants.{formBundle, vrn}
 import assets.PPOBAddressTestConstants._
@@ -26,6 +26,7 @@ import audit.mocks.MockAuditingService
 import audit.models.ChangeAddressAuditModel
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
+import play.api.http.Status
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUtil
 
@@ -59,5 +60,33 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
           ArgumentMatchers.any[ExecutionContext]
         )
     }
+  }
+
+  "Calling .validateBusinessAddress" should {
+
+    lazy val service = new PPOBService(mockSubscriptionConnector, mockAuditingService)
+
+    "return a right when the subscription connector returns a right" in {
+      val validateCallResult = Right(SubscriptionUpdateResponseModel(formBundle))
+
+      lazy val result = {
+        setupMockValidateBusinessAddress(vrn, validateCallResult)
+        service.validateBusinessAddress(vrn)
+      }
+
+      await(result) shouldBe validateCallResult
+    }
+
+    "return a left when the subscription connector returns a left" in {
+      val validateCallResult = Left(ErrorModel(Status.NOT_FOUND, "STUFF MISSING I SUPPOSE"))
+
+      lazy val result = {
+        setupMockValidateBusinessAddress(vrn, validateCallResult)
+        service.validateBusinessAddress(vrn)
+      }
+
+      await(result) shouldBe validateCallResult
+    }
+
   }
 }

@@ -24,7 +24,7 @@ import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.UpdateReturnPeriod
-import models.updatePPOB.UpdatePPOB
+import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.http.HttpClient
@@ -51,6 +51,10 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   def updatePPOB(vrn: String, ppob: UpdatePPOB)
                 (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
     http.PUT[UpdatePPOB, HttpPostResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
+  }
+
+  def validateBusinessAddress(vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+    updatePPOB(vrn, UpdatePPOB(UpdatePPOBAddress(None, None, None, None, None, None), None, None, None))
   }
 
   def updateReturnFrequency(vrn: String, frequency: UpdateReturnPeriod)

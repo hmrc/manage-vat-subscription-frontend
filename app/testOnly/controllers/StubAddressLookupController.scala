@@ -38,7 +38,7 @@ class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
 
   def initialiseJourney(): Action[JsValue] = Action.async(parse.json) { implicit user =>
     Future.successful(
-      Accepted(Json.toJson(AddressModel("line1", "line2", None, None, None, "EN")))
+      Accepted(Json.toJson(AddressModel(Some("line1"), Some("line2"), None, None, None, Some("EN"))))
         .withHeaders(HeaderNames.LOCATION -> testOnly.controllers.routes.StubAddressLookupController.show().url)
     )
   }

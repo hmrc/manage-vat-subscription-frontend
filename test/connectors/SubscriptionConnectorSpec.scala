@@ -68,7 +68,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
       }
     }
 
-    "calling .updateBusinessAddress" when {
+    "calling .updatePPOB" when {
 
       def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
         TestSubscriptionConnector.updatePPOB(vrn, updatePPOBModelMax)
@@ -111,6 +111,29 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
           await(result) shouldBe errorModel
         }
       }
+    }
+
+    "calling .validateBusinessAddress" when {
+
+      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
+        TestSubscriptionConnector.validateBusinessAddress(vrn)
+
+      "called with a Right SubscriptionUpdateResponseModel" should {
+
+        "return a SubscriptionUpdateResponseModel" in {
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(Right(SubscriptionUpdateResponseModel("12345")))
+          await(result) shouldBe Right(SubscriptionUpdateResponseModel("12345"))
+        }
+      }
+
+      "given an error" should {
+
+        "return a Left with an ErrorModel" in {
+          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(errorModel)
+          await(result) shouldBe errorModel
+        }
+      }
+
     }
   }
 }

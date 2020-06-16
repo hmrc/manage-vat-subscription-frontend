@@ -36,30 +36,25 @@ object CustomerAddressTestConstants extends BaseMessages {
   val phaseBannerHtmlCy = "Gwasanaeth newydd yw hwn – bydd eich <a id='beta-banner-feedback' href='/feedback'>adborth</a> yn ein helpu i’w wella."
 
   val customerAddressMax = AddressModel(
-    addressLine1,
-    addressLine2,
+    Some(addressLine1),
+    Some(addressLine2),
     Some(addressLine3),
     Some(addressLine4),
     Some(postcode),
-    countryCode
+    Some(countryCode)
   )
 
   val customerAddressSome = AddressModel(
-    addressLine1,
-    addressLine2,
+    Some(addressLine1),
+    Some(addressLine2),
     Some(addressLine3),
     None,
     Some(postcode),
-    countryCode
+    Some(countryCode)
   )
 
 
-  val customerAddressMin = AddressModel(
-    addressLine1,
-    addressLine2,
-    None, None, None,
-    countryCode
-  )
+  val customerAddressMin = AddressModel(None, None, None, None, None, None)
 
   val customerAddressToJsonMax = Json.obj(
     "line1" -> addressLine1,
@@ -70,11 +65,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     "countryCode" -> countryCode
   )
 
-  val customerAddressToJsonMin = Json.obj(
-    "line1" -> addressLine1,
-    "line2" -> addressLine2,
-    "countryCode" -> countryCode
-  )
+  val customerAddressToJsonMin = Json.obj()
 
   val customerAddressJsonMax = Json.obj(
     "address" -> Json.obj(
@@ -98,19 +89,11 @@ object CustomerAddressTestConstants extends BaseMessages {
     )
   )
 
-  val customerAddressJsonMin = Json.obj(
-    "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1, addressLine2),
-      "country" -> Json.obj(
-        "name" -> countryName,
-        "code" -> countryCode
-      )
-    )
-  )
+  val customerAddressJsonMin = Json.obj()
 
   val customerAddressJsonError = Json.obj(
     "address" -> Json.obj(
-      "lines" -> Json.arr(addressLine1)
+      "lines" -> 4
     )
   )
 

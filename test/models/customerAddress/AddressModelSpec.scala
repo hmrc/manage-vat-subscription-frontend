@@ -17,8 +17,6 @@
 package models.customerAddress
 
 import assets.CustomerAddressTestConstants._
-import models.core.ErrorModel
-import play.api.http.Status
 import play.api.libs.json.{JsSuccess, Json}
 import uk.gov.hmrc.play.test.UnitSpec
 
@@ -29,18 +27,15 @@ class AddressModelSpec extends UnitSpec {
     "Deserialize from JSON" when {
 
       "all optional fields are populated" in {
-        Json.fromJson(customerAddressJsonMax)(AddressModel.customerAddressReads) shouldBe
-          JsSuccess(customerAddressMax)
+        customerAddressJsonMax.as[AddressModel](AddressModel.customerAddressReads) shouldBe customerAddressMax
       }
 
       "some optional fields are populated" in {
-        Json.fromJson(customerAddressJsonSome)(AddressModel.customerAddressReads) shouldBe
-          JsSuccess(customerAddressSome)
+        customerAddressJsonSome.as[AddressModel](AddressModel.customerAddressReads) shouldBe customerAddressSome
       }
 
       "no optional fields are returned" in {
-        Json.fromJson(customerAddressJsonMin)(AddressModel.customerAddressReads) shouldBe
-          JsSuccess(customerAddressMin)
+        customerAddressJsonMin.as[AddressModel](AddressModel.customerAddressReads) shouldBe customerAddressMin
       }
 
     }

@@ -21,23 +21,34 @@ import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, _}
 
-case class AddressModel(line1: String,
-                        line2: String,
+case class AddressModel(line1: Option[String],
+                        line2: Option[String],
                         line3: Option[String],
                         line4: Option[String],
                         postcode: Option[String],
-                        countryCode: String)
+                        countryCode: Option[String])
 
 object AddressModel extends JsonReadUtil {
 
-  val customerAddressReads: Reads[AddressModel] = (
-    (__ \\ "lines")(0).read[String] and
-    (__ \\ "lines")(1).read[String] and
-    (__ \\ "lines")(2).readNullable[String] and
-    (__ \\ "lines")(3).readNullable[String] and
-    (__ \\ "postcode").readNullable[String] and
-    (__ \\ "code").read[String]
-  )(AddressModel.apply _)
+  val customerAddressReads: Reads[AddressModel] = for {
+    lines <- (__ \\ "lines").readNullable[Seq[String]]
+    postcode <- (__ \\ "postcode").readNullable[String]
+    countryCode <- (__ \\ "code").readNullable[String]
+  } yield {
+    lines match {
+      case Some(someSequence) => AddressModel(
+        extractValue(someSequence, 0),
+        extractValue(someSequence, 1),
+        extractValue(someSequence, 2),
+        extractValue(someSequence, 3),
+        postcode, countryCode)
+      case None => AddressModel(None, None, None, None, postcode, countryCode)
+    }
+  }
+
+  def extractValue(input: Seq[String], index: Int): Option[String] = {
+    if(input.size > index) Some(input(index)) else None
+  }
 
   implicit val format: Format[AddressModel] = Json.format[AddressModel]
 
@@ -49,12 +60,12 @@ object AddressModel extends JsonReadUtil {
   private val countryCodePath = JsPath \ "countryCode"
 
   val auditWrites: Writes[AddressModel] = (
-    line1Path.write[String] and
-      line2Path.write[String] and
+    line1Path.writeNullable[String] and
+      line2Path.writeNullable[String] and
       line3Path.writeNullable[String] and
       line4Path.writeNullable[String] and
       postCodePath.writeNullable[String] and
-      countryCodePath.write[String]
+      countryCodePath.writeNullable[String]
   )(unlift(AddressModel.unapply))
 
 }
