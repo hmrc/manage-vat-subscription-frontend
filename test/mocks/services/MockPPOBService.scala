@@ -17,10 +17,11 @@
 package mocks.services
 
 import connectors.httpParsers.ResponseHttpParser.HttpPutResult
-import models.core.SubscriptionUpdateResponseModel
+import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.scalamock.handlers.CallHandler3
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
+import play.api.http.Status
 import services.PPOBService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.test.UnitSpec
@@ -35,6 +36,12 @@ trait MockPPOBService extends UnitSpec with MockFactory with BeforeAndAfterEach 
     (mockPPOBService.validateBusinessAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(vrn, *, *)
       .returning(Future.successful(Right(SubscriptionUpdateResponseModel(""))))
+  }
+
+  def mockFailedCall(vrn: String): CallHandler3[String, HeaderCarrier, ExecutionContext, Future[HttpPutResult[SubscriptionUpdateResponseModel]]] = {
+    (mockPPOBService.validateBusinessAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
+      .expects(vrn, *, *)
+      .returning(Future.successful(Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Oops"))))
   }
 
 }

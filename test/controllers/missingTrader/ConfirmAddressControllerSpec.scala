@@ -157,6 +157,19 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       }
     }
 
+    "the form is submitted with a 'Yes' option but validate address returns an error" should {
+
+      lazy val result = {
+        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+        mockFailedCall(vrn)
+        controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
+      }
+
+      "return 200" in {
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
+
     "the form is submitted with a 'No' option" should {
 
       lazy val result = controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.no))

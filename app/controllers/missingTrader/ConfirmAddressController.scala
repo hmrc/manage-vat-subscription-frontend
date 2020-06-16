@@ -73,7 +73,6 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
               case Right(_) => Ok(missingTraderAddressConfirmationView())
               case Left(_) => errorHandler.showInternalServerError
             }
-            Future.successful(Ok(missingTraderAddressConfirmationView()))
           case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
         }
       )
