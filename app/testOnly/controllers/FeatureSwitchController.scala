@@ -56,7 +56,8 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             changeClientFeature = appConfig.features.changeClientFeature(),
             emailVerifiedFeature = appConfig.features.emailVerifiedFeature(),
             disableBulkPaper = appConfig.features.disableBulkPaper(),
-            missingTraderAddressIntercept = appConfig.features.missingTraderAddressIntercept()
+            missingTraderAddressIntercept = appConfig.features.missingTraderAddressIntercept(),
+            contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -83,6 +84,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.emailVerifiedFeature(model.emailVerifiedFeature)
     appConfig.features.disableBulkPaper(model.disableBulkPaper)
     appConfig.features.missingTraderAddressIntercept(model.missingTraderAddressIntercept)
+    appConfig.features.contactDetailsMovedToBTA(model.contactDetailsMovedToBTA)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
