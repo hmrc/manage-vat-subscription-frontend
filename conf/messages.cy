@@ -152,6 +152,9 @@ change_address_confirmation.agent.p1-2 = cyn pen 2 ddiwrnod gwaith i roi diwedda
 change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost i
 change_address_confirmation.agent.bulkPaper.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a allwn dderbyn eich cais ai peidio.
 
+mta_confirmation.title = Rydych wedi cadarnhau cyfeiriad y busnes
+mta_confirmation.p1 = Diolch. Byddwn yn ceisio dosbarthu’r llythyr eto.
+
 return_frequency.title = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
 return_frequency.heading = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
 return_frequency.current = Ar hyn o bryd, y dyddiadau ar gyfer Ffurflenni TAW yw
@@ -193,6 +196,10 @@ changePending.email = cyfeiriad e-bost y busnes
 changePending.landline = rhif ffôn llinell dir y busnes
 changePending.mobile = rhif ffôn symudol y busnes
 changePending.website = cyfeiriad gwefan y busnes
+
+missingTrader.title = Rydym wedi cael problem wrth anfon post i’r cyfeiriad hwn
+missingTrader.question = Ai hwn yw prif leoliad busnes y cwmni o hyd?
+missingTrader.error = Dewiswch ’Iawn’ os yw’r busnes yn masnachu o’r cyfeiriad hwn y rhan fwyaf o’r amser
 
 btaNavLinks.home = Hafan
 btaNavLinks.manageAccount = Rheoli’r cyfrif
