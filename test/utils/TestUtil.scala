@@ -43,6 +43,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     mockConfig.features.allowAgentBankAccountChange(false)
     mockConfig.features.useLanguageSelector(true)
     mockConfig.features.disableBulkPaper(true)
+    mockConfig.features.contactDetailsMovedToBTA(true)
     SharedMetricRegistries.clear()
   }
 
