@@ -38,6 +38,8 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val change = "Change"
   val pending = "Pending"
 
+  val contactDetailsMovedToBTA = "You can update contact preferences and details for VAT and other taxes in your account details."
+
   val aboutHeading = "Business details"
   val contactDetailsHeading = "Contact details"
   val returnDetailsHeading = "Return details"

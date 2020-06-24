@@ -57,13 +57,10 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               Then("Status should be OK")
               res should have(httpStatus(OK))
 
-              And("There is an option to add bank details and an email")
+              And("There is an option to add bank details")
               res should have(
                 elementText("#bank-details")(expectedValue = "None"),
-                elementText("#bank-details-status")(expectedValue = "Add"),
-
-                elementText("#vat-email-address")(expectedValue = "Not provided"),
-                elementText("#vat-email-address-status")(expectedValue = "Add")
+                elementText("#bank-details-status")(expectedValue = "Add")
               )
 
               And("There is no business name row")
@@ -126,11 +123,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#vat-return-dates")("January, April, July and October"),
                 elementText("#vat-return-dates-text")("VAT Return dates"),
                 elementText("#return-details-section > h2")("Return details")
-              )
-
-              And("Email address is displayed")
-              res should have(
-                elementText("#vat-email-address")("test@test.com")
               )
 
               And("Registration status is not displayed")
@@ -267,10 +259,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#return-details-section > h2")("Return details")
               )
 
-              And("Email address is displayed")
-              res should have(
-                elementText("#vat-email-address")("test@test.com")
-              )
             }
           }
 

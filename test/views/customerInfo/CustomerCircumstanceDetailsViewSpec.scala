@@ -154,7 +154,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
             }
 
-            "have a section for return frequency" which {
+              "have a section for return frequency" which {
 
               "has a return details header" in {
                 elementText("#return-details-section > h2") shouldBe viewMessages.returnDetailsHeading
@@ -180,95 +180,20 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
           }
 
-//              "have a section for contact details" which {
-//
-//                "has a contact details header" in {
-//                  elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
-//                }
-//              }
-//
-//              "have a section for email address" which {
-//
-//                "has the heading" in {
-//                  elementText("#vat-email-address-text") shouldBe viewMessages.emailAddressHeading
-//                }
-//
-//                "has the correct value for the email address" in {
-//                  elementText("#vat-email-address") shouldBe customerInformationModelMaxIndividual.ppob.contactDetails.get.emailAddress.get
-//                }
-//
-//                "has a change link" which {
-//
-//                  s"has the wording '${viewMessages.change}'" in {
-//                    elementText("#vat-email-address-status") shouldBe viewMessages.change
-//                  }
-//
-//                  s"has the correct aria label text '${viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)}'" in {
-//                    element("#vat-email-address-status").attr("aria-label") shouldBe
-//                      viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
-//                  }
-//
-//                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
-//                    element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
-//                  }
-//                }
-//              }
-//
-//              "have a section for landline number" which {
-//
-//                "has the heading" in {
-//                  elementText("#vat-landline-number-text") shouldBe viewMessages.landlineNumberHeading
-//                }
-//
-//                "has the correct value for the phone numbers" in {
-//                  elementText("#vat-landline-number") shouldBe
-//                    s"${customerInformationModelMaxIndividual.ppob.contactDetails.get.phoneNumber.get}"
-//                }
-//
-//                "has a change link" which {
-//
-//                  s"has the wording '${viewMessages.change}'" in {
-//                    elementText("#vat-landline-number-status") shouldBe viewMessages.change
-//                  }
-//
-//                  s"has the correct aria label text '${viewMessages.changeLandlineNumbersHidden}'" in {
-//                    element("#vat-landline-number-status").attr("aria-label") shouldBe
-//                      viewMessages.changeLandlineNumbersHidden
-//                  }
-//
-//                  s"has a link to ${mockConfig.vatCorrespondenceChangeLandlineNumberUrl}" in {
-//                    element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
-//                  }
-//                }
-//              }
-//
-//              "have a section for mobile numbers" which {
-//
-//                "has the heading" in {
-//                  elementText("#vat-mobile-number-text") shouldBe viewMessages.mobileNumberHeading
-//                }
-//
-//                "has the correct value for the phone numbers" in {
-//                  elementText("#vat-mobile-number") shouldBe
-//                    s"${customerInformationModelMaxIndividual.ppob.contactDetails.get.mobileNumber.get}"
-//                }
-//
-//                "has a change link" which {
-//
-//                  s"has the wording '${viewMessages.change}'" in {
-//                    elementText("#vat-mobile-number-status") shouldBe viewMessages.change
-//                  }
-//
-//                  s"has the correct aria label text '${viewMessages.changeMobileNumbersHidden}'" in {
-//                    element("#vat-mobile-number-status").attr("aria-label") shouldBe
-//                      viewMessages.changeMobileNumbersHidden
-//                  }
-//
-//                  s"has a link to ${mockConfig.vatCorrespondenceChangeMobileNumberUrl}" in {
-//                    element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
-//                  }
-//                }
-//              }
+              "have a section for contact details" which {
+
+                "has a contact details header" in {
+                  elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
+                }
+
+                s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
+                  elementText("#contact-details-section > p") shouldBe viewMessages.contactDetailsMovedToBTA
+                }
+
+                s"has a link to ${mockConfig.btaAccountDetails}" in {
+                  element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
+                }
+              }
 
               "have a section for website address" which {
 
@@ -736,8 +661,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the email has been changed" should {
 
-              mockConfig.features.contactDetailsMovedToBTA(false)
-              lazy val view = injectedView(customerInformationPendingEmailModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationPendingEmailModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have link text of '${viewMessages.pending}'" in {
@@ -751,185 +678,185 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             }
 
+            "the email has been removed" should {
+
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationModelPendingRemoved("email"), getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
+                element("#vat-email-address-status").attr("aria-label") shouldBe
+                  viewMessages.pendingEmailAddressHidden
+              }
+            }
+
+          }
+
+          "with pending Landline" when {
+
+            "the landline has been changed" should {
+
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationPendingPhoneModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
+                element("#vat-landline-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingLandlineNumbersHidden
+              }
+
+            }
+
+            "the landline has been removed" should {
+
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationModelPendingRemoved("landline"), getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
+                element("#vat-landline-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingLandlineNumbersHidden
+              }
+
+            }
+
+          }
+
+          "with pending Mobile" when {
+
+            "the mobile has been changed" should {
+
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationPendingMobileModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
+                element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingMobileNumbersHidden
+              }
+            }
+
+            "the mobile has been removed" should {
+
+              lazy val view = {
+                mockConfig.features.contactDetailsMovedToBTA(false)
+                injectedView(customerInformationModelPendingRemoved("mobile"), getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              s"have link text of '${viewMessages.pending}'" in {
+                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              }
+
+              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
+                element("#vat-mobile-number-status").attr("aria-label") shouldBe
+                  viewMessages.pendingMobileNumbersHidden
+              }
+
+            }
+
           }
 
         }
+
+      }
+
+      "with no email address, landline number, mobile number or website" should {
+
+        lazy val view = {
+          mockConfig.features.contactDetailsMovedToBTA(false)
+          injectedView(customerInformationModelMin, getPartialHtmlNotAgent)(user, messages, mockConfig)
+        }
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "display the 'Not provided' text in place of the email address" in {
+          elementText("#vat-email-address") shouldBe "Not provided"
+        }
+
+        "display an 'Add' link for changing the email address" which {
+
+          "has the correct text" in {
+            elementText("#vat-email-address-status") shouldBe "Add"
+          }
+
+          "links to the correspondence details service" in {
+            element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
+          }
+        }
+
+        "display the 'Not provided' text in place of the landline number" in {
+          elementText("#vat-landline-number") shouldBe "Not provided"
+        }
+
+        "display the 'Not provided' text in place of the mobile number" in {
+          elementText("#vat-mobile-number") shouldBe "Not provided"
+        }
+
+        "display an 'Add' link for changing the landline number" which {
+
+          "has the correct text" in {
+            elementText("#vat-landline-number-status") shouldBe "Add"
+          }
+
+          "links to the correspondence details service" in {
+            element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
+          }
+        }
+
+        "display an 'Add' link for changing the mobile number" which {
+
+          "has the correct text" in {
+            elementText("#vat-mobile-number-status") shouldBe "Add"
+          }
+
+          "links to the correspondence details service" in {
+            element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
+          }
+        }
+
+        "display the 'Not provided' text in place of the website address" in {
+          elementText("#vat-website-address") shouldBe "Not provided"
+        }
+
+        "display an 'Add' link for changing the website address" which {
+
+          "has the correct text" in {
+            elementText("#vat-website-address-status") shouldBe "Add"
+          }
+
+          "links to the correspondence details service" in {
+            element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
+          }
+        }
+
       }
 
     }
 
   }
 
-
-//
-//      "the email has been removed" should {
-//
-//        mockConfig.features.contactDetailsMovedToBTA(false)
-//        lazy val view = injectedView(customerInformationModelPendingRemoved("email"), getPartialHtmlNotAgent)(user, messages, mockConfig)
-//        lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//        s"have link text of '${viewMessages.pending}'" in {
-//          elementText("#vat-email-address-status") shouldBe viewMessages.pending
-//        }
-//
-//        s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-//          element("#vat-email-address-status").attr("aria-label") shouldBe
-//            viewMessages.pendingEmailAddressHidden
-//        }
-//      }
-//    }
-//
-//    "with pending PPOB" should {
-//
-//      mockConfig.features.contactDetailsMovedToBTA(false)
-//      lazy val view = injectedView(customerInformationPendingPPOBModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
-//      lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//      s"have link text of '${viewMessages.pending}'" in {
-//        elementText("#place-of-business-status") shouldBe viewMessages.pending
-//      }
-//
-//      s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-//        element("#place-of-business-status").attr("aria-label") shouldBe
-//          viewMessages.pendingBusinessAddressHidden
-//      }
-//    }
-//
-//    "with pending Landline" when {
-//
-//      "the landline has been changed" should {
-//
-//        mockConfig.features.contactDetailsMovedToBTA(false)
-//        lazy val view = injectedView(customerInformationPendingPhoneModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
-//        lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//        s"have link text of '${viewMessages.pending}'" in {
-//          elementText("#vat-landline-number-status") shouldBe viewMessages.pending
-//        }
-//
-//        s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
-//          element("#vat-landline-number-status").attr("aria-label") shouldBe
-//            viewMessages.pendingLandlineNumbersHidden
-//        }
-//      }
-//
-//      "the landline has been removed" should {
-//
-//        mockConfig.features.contactDetailsMovedToBTA(false)
-//        lazy val view = injectedView(customerInformationModelPendingRemoved("landline"), getPartialHtmlNotAgent)(user, messages, mockConfig)
-//        lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//        s"have link text of '${viewMessages.pending}'" in {
-//          elementText("#vat-landline-number-status") shouldBe viewMessages.pending
-//        }
-//
-//        s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
-//          element("#vat-landline-number-status").attr("aria-label") shouldBe
-//            viewMessages.pendingLandlineNumbersHidden
-//        }
-//      }
-//    }
-//
-//    "with pending Mobile" when {
-//
-//      "the mobile has been changed" should {
-//
-//        mockConfig.features.contactDetailsMovedToBTA(false)
-//        lazy val view = injectedView(customerInformationPendingMobileModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
-//        lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//        s"have link text of '${viewMessages.pending}'" in {
-//          elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
-//        }
-//
-//        s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
-//          element("#vat-mobile-number-status").attr("aria-label") shouldBe
-//            viewMessages.pendingMobileNumbersHidden
-//        }
-//      }
-//
-//      "the mobile has been removed" should {
-//
-//        mockConfig.features.contactDetailsMovedToBTA(false)
-//        lazy val view = injectedView(customerInformationModelPendingRemoved("mobile"), getPartialHtmlNotAgent)(user, messages, mockConfig)
-//        lazy implicit val document: Document = Jsoup.parse(view.body)
-//
-//        s"have link text of '${viewMessages.pending}'" in {
-//          elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
-//        }
-//
-//        s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
-//          element("#vat-mobile-number-status").attr("aria-label") shouldBe
-//            viewMessages.pendingMobileNumbersHidden
-//        }
-//      }
-//    }
-
-    "with no email address, landline number, mobile number or website" should {
-
-      mockConfig.features.contactDetailsMovedToBTA(false)
-      lazy val view = injectedView(customerInformationModelMin, getPartialHtmlNotAgent)(user, messages, mockConfig)
-      lazy implicit val document: Document = Jsoup.parse(view.body)
-
-//      "display the 'Not provided' text in place of the email address" in {
-//        elementText("#vat-email-address") shouldBe "Not provided"
-//      }
-
-//      "display an 'Add' link for changing the email address" which {
-//
-//        "has the correct text" in {
-//          elementText("#vat-email-address-status") shouldBe "Add"
-//        }
-//
-//        "links to the correspondence details service" in {
-//          element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
-//        }
-//      }
-
-//      "display the 'Not provided' text in place of the landline number" in {
-//        elementText("#vat-landline-number") shouldBe "Not provided"
-//      }
-//
-//      "display the 'Not provided' text in place of the mobile number" in {
-//        elementText("#vat-mobile-number") shouldBe "Not provided"
-//      }
-//
-//      "display an 'Add' link for changing the landline number" which {
-//
-//        "has the correct text" in {
-//          elementText("#vat-landline-number-status") shouldBe "Add"
-//        }
-//
-//        "links to the correspondence details service" in {
-//          element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
-//        }
-//      }
-
-//      "display an 'Add' link for changing the mobile number" which {
-//
-//        "has the correct text" in {
-//          elementText("#vat-mobile-number-status") shouldBe "Add"
-//        }
-//
-//        "links to the correspondence details service" in {
-//          element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
-//        }
-//      }
-
-      "display the 'Not provided' text in place of the website address" in {
-        elementText("#vat-website-address") shouldBe "Not provided"
-      }
-
-      "display an 'Add' link for changing the website address" which {
-
-        "has the correct text" in {
-          elementText("#vat-website-address-status") shouldBe "Add"
-        }
-
-        "links to the correspondence details service" in {
-          element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
-        }
-      }
-
-    }
 }
