@@ -374,40 +374,50 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         </dl>
     </div>
 
+    @if(circumstances.returnPeriod.isDefined){
+        <div id="return-details-section" class="form-group">
+        <h2 class="heading-medium">@messages("customer_details.returnFrequencySection.heading")</h2>
+        <dl class="govuk-check-your-answers cya-questions-short">
+            @circumstances.pendingReturnPeriod.fold {
+            @circumstances.returnPeriod.map { period =>
+            @customerReturnPeriod(period, false)
+            }
+            }{ pendingPeriod =>
+            @customerReturnPeriod(pendingPeriod, true)
+            }
+        </dl>
+        </div>
+    }
+
         <div id="contact-details-section" class="form-group">
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
+
+                @if(appConfig.features.contactDetailsMovedToBTA() && !user.isAgent) {
+                <p> @messages("customer_details.movedToBTAMessage.pt1")
+                    <a href=@appConfig.btaAccountDetails> @messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
+                </p>
+                } else {
             <dl class="govuk-check-your-answers cya-questions-short">
-                @customerEmailAddress(
+                    @customerEmailAddress(
                     if(circumstances.pendingPPOBSection) circumstances.pendingEmail else circumstances.email,
                     (circumstances.pendingPPOBSection && !circumstances.sameEmail)
-                )
-                @if(appConfig.features.showContactNumbersAndWebsite()) {
+                    )
+                    @if(appConfig.features.showContactNumbersAndWebsite()) {
                     @customerLandlineNumber(
-                        if(circumstances.pendingPPOBSection) circumstances.pendingLandline else circumstances.landlineNumber,
-                        (circumstances.pendingPPOBSection && !circumstances.samePhone)
+                    if(circumstances.pendingPPOBSection) circumstances.pendingLandline else circumstances.landlineNumber,
+                    (circumstances.pendingPPOBSection && !circumstances.samePhone)
                     )
                     @customerMobileNumber(
-                        if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
-                        (circumstances.pendingPPOBSection && !circumstances.sameMobile)
+                    if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
+                    (circumstances.pendingPPOBSection && !circumstances.sameMobile)
                     )
-                }
+                    }
             </dl>
+                }
+
         </div>
 
-        @if(circumstances.returnPeriod.isDefined){
-            <div id="return-details-section" class="form-group">
-                <h2 class="heading-medium">@messages("customer_details.returnFrequencySection.heading")</h2>
-                <dl class="govuk-check-your-answers cya-questions-short">
-                    @circumstances.pendingReturnPeriod.fold {
-                            @circumstances.returnPeriod.map { period =>
-                                @customerReturnPeriod(period, false)
-                            }
-                    }{ pendingPeriod =>
-                        @customerReturnPeriod(pendingPeriod, true)
-                    }
-                </dl>
-            </div>
-        }
+
 
     @if(user.isAgent) {
         @oldChangeClientLink
