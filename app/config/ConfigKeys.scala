@@ -41,6 +41,7 @@ object ConfigKeys {
   val emailVerifiedFeature: String = "features.emailVerifiedFeature.enabled"
   val missingTraderAddressIntercept: String = "features.missingTraderAddressIntercept.enabled"
   val contactDetailsMovedToBTA: String = "features.contactDetailsMovedToBTA.enabled"
+  val displayEmailNudgeFeature: String = "features.displayEmailNudge.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"

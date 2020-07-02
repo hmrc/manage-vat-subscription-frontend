@@ -36,4 +36,5 @@ class Features @Inject()(implicit config: Configuration) {
   val disableBulkPaper = new Feature(ConfigKeys.disableBulkPaper)
   val missingTraderAddressIntercept = new Feature(ConfigKeys.missingTraderAddressIntercept)
   val contactDetailsMovedToBTA = new Feature(ConfigKeys.contactDetailsMovedToBTA)
+  val displayEmailNudge = new Feature(ConfigKeys.displayEmailNudgeFeature)
 }

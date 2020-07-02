@@ -201,6 +201,10 @@ missingTrader.title = Rydym wedi cael problem wrth anfon post i’r cyfeiriad hw
 missingTrader.question = Ai hwn yw prif leoliad busnes y cwmni o hyd?
 missingTrader.error = Dewiswch ’Iawn’ os yw’r busnes yn masnachu o’r cyfeiriad hwn y rhan fwyaf o’r amser
 
+emailWarning.confirmEmail = Mae angen i chi gadarnhau’ch cyfeiriad e-bost.
+emailWarning.resend = Ail-anfonwch yr e-bost
+emailWarning.confirmIt = er mwyn ei gadarnhau.
+
 btaNavLinks.home = Hafan
 btaNavLinks.manageAccount = Rheoli’r cyfrif
 btaNavLinks.messages = Negeseuon
