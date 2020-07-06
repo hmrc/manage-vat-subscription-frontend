@@ -197,6 +197,7 @@ changePending.mobile = business’s mobile number
 changePending.website = business’s website address
 
 missingTrader.title = We’ve had a problem delivering mail to this address
+missingTrader.addInfo = We cannot issue any payments on this account until you confirm the address.
 missingTrader.question = Is this still the company’s principal place of business?
 missingTrader.error = Select yes if the business trades from this address most of the time
 

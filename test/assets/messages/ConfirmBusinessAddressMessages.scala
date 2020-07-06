@@ -20,6 +20,7 @@ object ConfirmBusinessAddressMessages extends BaseMessages {
 
   val heading = "We’ve had a problem delivering mail to this address"
   val title: String = heading + titleSuffixUser
+  val additionalInformation = "We cannot issue any payments on this account until you confirm the address."
   val question = "Is this still the company’s principal place of business?"
   val errorMessage = "Select yes if the business trades from this address most of the time"
   val yes = "Yes"

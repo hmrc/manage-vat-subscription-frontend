@@ -28,6 +28,10 @@
     margin-block-start: 0px
 }
 
+.h2-margin {
+   margin-top: 1em;
+}
+
 i {
     display: none !important;
 }
