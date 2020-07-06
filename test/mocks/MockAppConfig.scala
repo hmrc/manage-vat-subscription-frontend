@@ -60,6 +60,7 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val vatCorrespondenceChangeLandlineNumberUrl: String = "mock-change-landline-url"
   override val vatCorrespondenceChangeMobileNumberUrl: String = "mock-change-mobile-url"
   override val vatCorrespondenceChangeWebsiteUrl: String = "mock-change-website-url"
+  override val vatCorrespondenceSendVerificationEmail: String = "send-verification"
   override val partyTypes: Seq[String] = Seq("2","4","7","11","50","52","59","62")
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"

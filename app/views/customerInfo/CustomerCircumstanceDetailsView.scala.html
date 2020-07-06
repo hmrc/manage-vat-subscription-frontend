@@ -393,6 +393,18 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
 
                 @if(appConfig.features.contactDetailsMovedToBTA() && !user.isAgent) {
+                    @if(circumstances.email.isDefined && !circumstances.emailVerified) {
+                        <p class="notice">
+                            <i class="icon icon-important">
+                                <span class="visually-hidden">Warning</span>
+                            </i>
+                            <strong class="bold-small">
+                                @messages("emailWarning.confirmEmail")
+                                <a href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
+                                @messages("emailWarning.confirmIt")
+                            </strong>
+                        </p>
+                    }
                 <p> @messages("customer_details.movedToBTAMessage.pt1")
                     <a href=@appConfig.btaAccountDetails> @messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
                 </p>

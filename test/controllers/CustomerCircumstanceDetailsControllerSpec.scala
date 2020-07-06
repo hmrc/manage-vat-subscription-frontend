@@ -19,6 +19,7 @@ package controllers
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
+import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxPending, email}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
@@ -139,5 +140,58 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     }
 
     unauthenticatedCheck(TestCustomerCircumstanceDetailsController.redirect())
+  }
+
+  "calling the sendEmailVerification action" when {
+
+    "the user has no pending ppob/contact details changes" should {
+      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
+      "return 303" in {
+        getPartial(Html(""))
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(pendingChanges = None))
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "add the email to session" in {
+        session(result).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
+      }
+
+      "set the inFlightContactDetailsChangeKey to false" in {
+        session(result).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe Some("false")
+      }
+    }
+
+    "the user has a pending ppob/contact details change" should {
+      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
+      "return 303" in {
+        getPartial(Html(""))
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "add the email to session" in {
+        session(result).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
+      }
+
+      "not set the inFlightContactDetailsChangeKey" in {
+        session(result).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe None
+      }
+    }
+
+    "an Error is returned from customer details" should {
+
+      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
+
+      "return 500" in {
+        mockCustomerDetailsError()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+    }
   }
 }

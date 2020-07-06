@@ -41,7 +41,6 @@ object ConfigKeys {
   val emailVerifiedFeature: String = "features.emailVerifiedFeature.enabled"
   val missingTraderAddressIntercept: String = "features.missingTraderAddressIntercept.enabled"
   val contactDetailsMovedToBTA: String = "features.contactDetailsMovedToBTA.enabled"
-  val displayEmailNudgeFeature: String = "features.displayEmailNudge.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
@@ -75,6 +74,7 @@ object ConfigKeys {
   val vatCorrespondenceChangeLandlineNumberUrl: String = "vat-correspondence-details-frontend.changeLandlineNumberUrl"
   val vatCorrespondenceChangeMobileNumberUrl: String = "vat-correspondence-details-frontend.changeMobileNumberUrl"
   val vatCorrespondenceChangeWebsiteUrl: String = "vat-correspondence-details-frontend.changeWebsiteUrl"
+  val vatCorrespondenceVerificationEmail: String = "vat-correspondence-details-frontend.sendVerificationEmail"
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"

@@ -82,6 +82,8 @@ object PPOBAddressTestConstants {
     Some(emailVerified)
   )
 
+  val contactDetailsEmailUnverified: ContactDetails = contactDetailsModelMax.copy(emailVerified = Some(false))
+
   val contactDetailsModelMaxPending = ContactDetails(
     Some(phoneNumberPending),
     Some(mobileNumberPending),
@@ -93,6 +95,8 @@ object PPOBAddressTestConstants {
   val contactDetailsModelMin = ContactDetails(None, None, None, None, None)
 
   val ppobModelMax = PPOB(ppobAddressModelMax,Some(contactDetailsModelMax), Some(website))
+
+  val ppobModelMaxEmailUnverified = PPOB(ppobAddressModelMax,Some(contactDetailsEmailUnverified), Some(website))
 
   val ppobModelMaxPending = PPOB(ppobAddressModelMaxPending,Some(contactDetailsModelMaxPending), Some(websitePending))
 

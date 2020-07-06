@@ -37,6 +37,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
   val mobileNumber: Option[String] = ppob.contactDetails.flatMap(_.mobileNumber)
   val email: Option[String] = ppob.contactDetails.flatMap(_.emailAddress)
+  val emailVerified: Boolean = ppob.contactDetails.flatMap(_.emailVerified).getOrElse(false)
   val website: Option[String] = ppob.websiteAddress
   val pendingPPOBSection: Boolean = pendingChanges.flatMap(_.ppob).isDefined
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))

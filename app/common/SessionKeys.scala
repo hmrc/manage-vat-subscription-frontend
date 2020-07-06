@@ -22,4 +22,6 @@ object SessionKeys {
   val NEW_RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
   val CLIENT_VRN: String = "CLIENT_VRN"
   val verifiedAgentEmail: String = "verifiedAgentEmail"
+  val vatCorrespondencePrepopulationEmailKey: String = "vatCorrespondencePrepopulationEmail"
+  val inFlightContactDetailsChangeKey: String = "inFlightContactDetailsChange"
 }

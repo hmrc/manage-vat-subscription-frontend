@@ -31,3 +31,7 @@
 i {
     display: none !important;
 }
+
+i.icon{
+    display: inline-block !important;
+}

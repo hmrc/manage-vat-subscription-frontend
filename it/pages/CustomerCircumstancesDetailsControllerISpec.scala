@@ -17,16 +17,19 @@
 package pages
 
 import assets.BaseITConstants.internalServerErrorTitle
+import common.SessionKeys
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
+import helpers.SessionCookieCrumbler
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
-import stubs.{VatSubscriptionStub,ServiceInfoStub}
+import stubs.{ServiceInfoStub, VatSubscriptionStub}
 
 class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
   val path = "/change-business-details"
+  val verifyEmailPath = "/send-verification"
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
   "Calling the .show action" when {
@@ -365,5 +368,38 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
     }
 
     getAuthenticationTests(s"$path/non-agent")
+  }
+
+  "Calling the sendEmailVerification action" when {
+
+    def sendEmailVerification(sessionVrn: Option[String] = None): WSResponse = get(verifyEmailPath, formatSessionVrn(sessionVrn))
+
+    "a success response is received from get customer details" when {
+
+      "the user has no pending ppob/contact details changes" should {
+
+        "redirect to somewhere and store session keys" in {
+          given.user.isAuthenticated
+
+          And("A successful response with minimum details returned for an Individual")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual).copy(pendingChanges = None))
+
+          When("the sendEmailVerification call is made")
+          val res = sendEmailVerification()
+
+          Then("Status should be SEE_OTHER")
+          res should have(httpStatus(SEE_OTHER))
+
+          And("redirect location should be something")
+          redirectLocation(res) shouldBe Some(mockAppConfig.vatCorrespondenceSendVerificationEmail)
+
+          And("the email will be stored in session")
+          SessionCookieCrumbler.getSessionMap(res).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
+
+          And("the inFlightContactDetailsChangeKey will be stored in session")
+          SessionCookieCrumbler.getSessionMap(res).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe Some("false")
+        }
+      }
+    }
   }
 }

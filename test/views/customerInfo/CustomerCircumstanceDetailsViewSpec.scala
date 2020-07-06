@@ -19,7 +19,7 @@ package views.customerInfo
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.individual
 import assets.PPOBAddressTestConstants
-import assets.PPOBAddressTestConstants.ppobModelMax
+import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxEmailUnverified}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
 import models.circumstanceInfo.CircumstanceDetails
@@ -109,76 +109,76 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
 
 
-              "have a section for repayment Bank Account details" which {
+                "have a section for repayment Bank Account details" which {
 
-                "has the heading" in {
-                  elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+                  "has the heading" in {
+                    elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+                  }
+
+                  "has a the correct Account Number" which {
+
+                    "has the correct heading for the Account Number" in {
+                      elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
+                    }
+
+                    "has the correct value for the account number" in {
+                      elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+                    }
+                  }
+
+                  "has a the correct Sort Code" which {
+
+                    "has the correct heading for the Sort Code" in {
+                      elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
+                    }
+
+                    "has the correct value for the account number" in {
+                      elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+                    }
+                  }
+
+                  "has a change link" which {
+
+                    s"has the wording '${viewMessages.change}'" in {
+                      elementText("#bank-details-status") shouldBe viewMessages.change
+                    }
+
+                    s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
+                      element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
+                    }
+
+                    s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+                      element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+                    }
+                  }
+                }
+              }
+
+              "have a section for return frequency" which {
+
+                "has a return details header" in {
+                  elementText("#return-details-section > h2") shouldBe viewMessages.returnDetailsHeading
                 }
 
-                "has a the correct Account Number" which {
-
-                  "has the correct heading for the Account Number" in {
-                    elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
-                  }
-
-                  "has the correct value for the account number" in {
-                    elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
-                  }
+                "has the correct heading" in {
+                  elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
                 }
 
-                "has a the correct Sort Code" which {
-
-                  "has the correct heading for the Sort Code" in {
-                    elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
-                  }
-
-                  "has the correct value for the account number" in {
-                    elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
-                  }
+                "has the correct current frequency" in {
+                  elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
                 }
 
                 "has a change link" which {
 
+                  s"has a change link to ${mockConfig.vatReturnPeriodFrontendUrl}" in {
+                    element("#vat-return-dates-status").attr("href") shouldBe mockConfig.vatReturnPeriodFrontendUrl
+                  }
+
                   s"has the wording '${viewMessages.change}'" in {
-                    elementText("#bank-details-status") shouldBe viewMessages.change
-                  }
-
-                  s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
-                    element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
-                  }
-
-                  s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
-                    element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+                    elementText("#vat-return-dates-status") shouldBe viewMessages.change
                   }
                 }
               }
-            }
-
-              "have a section for return frequency" which {
-
-              "has a return details header" in {
-                elementText("#return-details-section > h2") shouldBe viewMessages.returnDetailsHeading
-              }
-
-            "has the correct heading" in {
-              elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
-            }
-
-            "has the correct current frequency" in {
-              elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
-            }
-
-            "has a change link" which {
-
-              s"has a change link to ${mockConfig.vatReturnPeriodFrontendUrl}" in {
-                element("#vat-return-dates-status").attr("href") shouldBe mockConfig.vatReturnPeriodFrontendUrl
-              }
-
-              s"has the wording '${viewMessages.change}'" in {
-                elementText("#vat-return-dates-status") shouldBe viewMessages.change
-              }
-            }
-          }
 
               "have a section for contact details" which {
 
@@ -251,6 +251,38 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
 
+            }
+
+            "the page is rendered for a user without a verified email" should {
+              lazy val view = injectedView(
+                customerInformationNoPendingIndividual.copy(ppob = ppobModelMaxEmailUnverified),
+                getPartialHtmlNotAgent
+              )(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              "have a section for contact details" which {
+
+                "has a contact details header" in {
+                  elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
+                }
+
+                s"has the wording '${viewMessages.unverifiedEmailNudge}' " in {
+                  elementText("#contact-details-section > p:nth-of-type(1) > strong") shouldBe viewMessages.unverifiedEmailNudge
+                }
+
+                s"the 'resend email' link redirects to ${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}" in {
+                  element("#contact-details-section > p.notice > strong > a").attr("href") shouldBe
+                    s"${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}"
+                }
+
+                s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
+                  elementText("#contact-details-section > p:nth-of-type(2)") shouldBe viewMessages.contactDetailsMovedToBTA
+                }
+
+                s"has a link to ${mockConfig.btaAccountDetails}" in {
+                  element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
+                }
+              }
             }
           }
         }

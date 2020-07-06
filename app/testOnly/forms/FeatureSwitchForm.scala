@@ -47,8 +47,7 @@ object FeatureSwitchForm {
       ConfigKeys.emailVerifiedFeature -> boolean,
       ConfigKeys.disableBulkPaper -> boolean,
       ConfigKeys.missingTraderAddressIntercept -> boolean,
-      ConfigKeys.contactDetailsMovedToBTA -> boolean,
-      ConfigKeys.displayEmailNudgeFeature -> boolean
+      ConfigKeys.contactDetailsMovedToBTA -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }
