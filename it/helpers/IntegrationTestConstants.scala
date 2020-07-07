@@ -141,7 +141,8 @@ object IntegrationTestConstants {
       bankDetails = Some(bankDetails),
       returnPeriod = Some(Jan)
     )),
-    partyType = partyType
+    partyType = partyType,
+    commsPreference = Some("DIGITAL")
   )
 
   def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
@@ -154,7 +155,8 @@ object IntegrationTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = None
+    partyType = None,
+    commsPreference = None
   )
 
   def customerCircumstancesDetailsWithPartyType(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
@@ -167,6 +169,7 @@ object IntegrationTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some("7")
+    partyType = Some("7"),
+    commsPreference = None
   )
 }
