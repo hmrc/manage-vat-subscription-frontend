@@ -87,11 +87,11 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           Ok(changeAddressConfirmationView(agentEmail = email))
       }
     } else {
-      nonAgentConfirmation
+      if(appConfig.features.contactPrefMigrationFeature()) renderView else contactPrefRenderView
     }
   }
 
-  private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
+  private def contactPrefRenderView(implicit user: User[AnyContent]): Future[Result] = {
 
     contactPreferenceService.getContactPreference(user.vrn).flatMap {
       case Right(cPref) =>
@@ -111,10 +111,24 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                 ))
               case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
             }
-          case preference => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(preference))))
+          case preference => Future.successful(
+            Ok(changeAddressConfirmationView(contactPref = Some(preference))))
         }
       case Left(_) =>
         Future.successful(Ok(changeAddressConfirmationView()))
     }
   }
+
+  private def renderView(implicit user: User[AnyContent]): Future[Result] =
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+      case Right(details) =>
+        Ok(changeAddressConfirmationView(
+          contactPref = details.commsPreference,
+          emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+        ))
+
+      case Left (_) =>
+          Ok(changeAddressConfirmationView())
+
+    }
 }
