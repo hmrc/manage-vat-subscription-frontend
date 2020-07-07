@@ -198,6 +198,7 @@ changePending.mobile = rhif ffôn symudol y busnes
 changePending.website = cyfeiriad gwefan y busnes
 
 missingTrader.title = Rydym wedi cael problem wrth anfon post i’r cyfeiriad hwn
+missingTrader.addInfo = Ni allwn gyhoeddi taliadau ar y cyfrif hwn nes i chi gadarnhau’r cyfeiriad.
 missingTrader.question = Ai hwn yw prif leoliad busnes y cwmni o hyd?
 missingTrader.error = Dewiswch ’Iawn’ os yw’r busnes yn masnachu o’r cyfeiriad hwn y rhan fwyaf o’r amser
 

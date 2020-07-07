@@ -35,6 +35,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val errorHeading = "#error-summary-display"
     val error = ".error-message"
     val address: Int => String = num => s".panel-border-wide li:nth-child($num)"
+    val additionalInfo = "#yes_no > div > fieldset > span"
   }
 
   val injectedView: ConfirmBusinessAddressView = inject[ConfirmBusinessAddressView]
@@ -56,6 +57,10 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
       elementText(Selectors.address(1)) shouldBe ppobAddressModelMax.line1
       elementText(Selectors.address(2)) shouldBe ppobAddressModelMax.line2.get
       elementText(Selectors.address(3)) shouldBe ppobAddressModelMax.postCode.get
+    }
+
+    s"have the correct additional information" in {
+      elementText(Selectors.additionalInfo) shouldBe viewMessages.additionalInformation
     }
 
     s"have the correct question" in {
