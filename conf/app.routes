@@ -7,6 +7,7 @@ GET         /assets/*file                                    controllers.Assets.
 
 GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.redirect
 GET         /change-business-details/:userType               controllers.CustomerCircumstanceDetailsController.show(userType: String)
+GET         /send-verification                               controllers.CustomerCircumstanceDetailsController.sendEmailVerification
 
 GET         /change-business-address                         controllers.BusinessAddressController.show
 GET         /change-business-address/ppob-handoff            controllers.BusinessAddressController.initialiseJourney

@@ -65,4 +65,20 @@ class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPred
           Future.successful(serviceErrorHandler.showInternalServerError)
       }
   }
+
+  val sendEmailVerification: Action[AnyContent] = authenticate.async {
+    implicit user =>
+      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
+        case Right(circumstances) if circumstances.pendingPPOBSection =>
+          Future.successful(Redirect(appConfig.vatCorrespondenceSendVerificationEmail)
+            .addingToSession(SessionKeys.vatCorrespondencePrepopulationEmailKey -> circumstances.email.getOrElse("")))
+        case Right(circumstances) =>
+          Future.successful(Redirect(appConfig.vatCorrespondenceSendVerificationEmail)
+            .addingToSession(SessionKeys.vatCorrespondencePrepopulationEmailKey -> circumstances.email.getOrElse(""))
+            .addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "false"))
+        case _ =>
+          Logger.debug(s"[CustomerCircumstanceDetailsController][sendEmailVerification] Error Returned from Customer Details Service. Rendering ISE.")
+          Future.successful(serviceErrorHandler.showInternalServerError)
+      }
+  }
 }

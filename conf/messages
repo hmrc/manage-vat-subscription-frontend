@@ -201,6 +201,10 @@ missingTrader.addInfo = We cannot issue any payments on this account until you c
 missingTrader.question = Is this still the company’s principal place of business?
 missingTrader.error = Select yes if the business trades from this address most of the time
 
+emailWarning.confirmEmail = You need to confirm your email address.
+emailWarning.resend = Resend the email
+emailWarning.confirmIt = to confirm it.
+
 
 btaNavLinks.home = Home
 btaNavLinks.manageAccount = Manage account

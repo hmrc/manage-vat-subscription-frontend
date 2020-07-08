@@ -16,6 +16,8 @@
 
 package helpers
 
+import java.net.URLDecoder
+
 import play.api.http.SecretConfiguration
 import play.api.libs.crypto.DefaultCookieSigner
 import play.api.libs.ws.{WSCookie, WSResponse}
@@ -42,7 +44,7 @@ object SessionCookieCrumbler {
       }
       val Regex = """(.*)=(.*)""".r
       map.split("&").view.map {
-        case Regex(k, v) => Map(k -> v)
+        case Regex(k, v) => Map(URLDecoder.decode(k, "UTF-8") -> URLDecoder.decode(v, "UTF-8"))
       }.view.reduce(_ ++ _)
     }
 

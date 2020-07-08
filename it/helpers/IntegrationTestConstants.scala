@@ -71,6 +71,14 @@ object IntegrationTestConstants {
     None
   )
 
+  val contactDetailsUnverifiedEmail: ContactDetails = ContactDetails(
+    Some(phoneNumber),
+    Some(mobileNumber),
+    Some(faxNumber),
+    Some(email),
+    Some(false)
+  )
+
   val ppobMax: PPOB = PPOB(
     PPOBAddress(
       "Add Line 1",

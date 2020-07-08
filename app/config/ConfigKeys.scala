@@ -74,6 +74,7 @@ object ConfigKeys {
   val vatCorrespondenceChangeLandlineNumberUrl: String = "vat-correspondence-details-frontend.changeLandlineNumberUrl"
   val vatCorrespondenceChangeMobileNumberUrl: String = "vat-correspondence-details-frontend.changeMobileNumberUrl"
   val vatCorrespondenceChangeWebsiteUrl: String = "vat-correspondence-details-frontend.changeWebsiteUrl"
+  val vatCorrespondenceVerificationEmail: String = "vat-correspondence-details-frontend.sendVerificationEmail"
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
