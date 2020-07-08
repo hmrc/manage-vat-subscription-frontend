@@ -362,7 +362,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
                 lazy val result = {
                   mockConfig.features.contactPrefMigrationFeature(true)
                   mockConfig.features.emailVerifiedFeature(true)
-                  mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
+                  mockConfig.features.contactPrefMigrationFeature(true)
                   mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
                   controller.confirmation("non-agent")(request)
                 }
