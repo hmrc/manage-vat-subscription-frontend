@@ -86,7 +86,7 @@ object CircumstanceDetails extends JsonReadUtil {
       pendingChangesPath.readOpt[PendingChanges] and
       partyTypePath.readOpt[String] and
       missingTraderPath.read[Boolean] and
-      commsPreferencePath.readOpt[ContactPreference]
+      commsPreferencePath.readOpt[ContactPreference](ContactPreference.circumstancePrefReads)
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Boolean => Writes[CircumstanceDetails] = isLatestRelease => (
@@ -100,6 +100,6 @@ object CircumstanceDetails extends JsonReadUtil {
       pendingChangesPath.writeNullable[PendingChanges] and
       partyTypePath.writeNullable[String] and
       missingTraderPath.write[Boolean] and
-      commsPreferencePath.writeNullable[ContactPreference]
+      commsPreferencePath.writeNullable[ContactPreference](ContactPreference.circumstancePrefWrites)
     )(unlift(CircumstanceDetails.unapply))
 }
