@@ -182,7 +182,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       missingTrader = false,
       changeIndicators = None,
       pendingChanges = None,
-      partyType = None
+      partyType = None,
+      commsPreference = None
     )
 
     "the user is an individual" should {
