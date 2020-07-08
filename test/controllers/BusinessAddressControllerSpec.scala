@@ -33,7 +33,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
-
+import ContactPreference._
 import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
@@ -397,7 +397,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
                 lazy val result = {
                   mockConfig.features.contactPrefMigrationFeature(true)
                   mockConfig.features.emailVerifiedFeature(true)
-                  mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
+                  mockConfig.features.contactPrefMigrationFeature(true)
                   mockCustomerDetailsError()
                   controller.confirmation("non-agent")(request)
                 }
@@ -405,16 +405,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
                 "return 200" in {
                   status(result) shouldBe Status.OK
-
-                  verify(mockAuditingService)
-                    .extendedAudit(
-                      ArgumentMatchers.any[ContactPreferenceAuditModel],
-                      ArgumentMatchers.any[Option[String]]
-
-                    )(
-                      ArgumentMatchers.any[HeaderCarrier],
-                      ArgumentMatchers.any[ExecutionContext]
-                    )
                 }
 
                 "return HTML" in {
@@ -424,7 +414,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
                 "render the Business Address confirmation view" in {
                   messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-                  messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digitalPref
+                  messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
                 }
               }
             }
@@ -433,8 +423,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
               lazy val result = {
                 mockConfig.features.contactPrefMigrationFeature(true)
                 mockConfig.features.emailVerifiedFeature(true)
-                mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-                mockCustomerDetailsSuccess(customerInformationModelMin)
+                mockConfig.features.contactPrefMigrationFeature(true)
+                mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some(ContactPreference(digital))))
                 controller.confirmation("non-agent")(request)
               }
               lazy val document = Jsoup.parse(bodyOf(result))
@@ -508,7 +498,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val result = {
           mockConfig.features.contactPrefMigrationFeature(true)
-          mockContactPreferenceSuccess(ContactPreference("PAPER"))
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some(ContactPreference(paper))))
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
@@ -533,7 +523,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockConfig.features.contactPrefMigrationFeature(true)
           mockConfig.features.contactPrefMigrationFeature(true)
-          mockContactPreferenceError()
+          mockCustomerDetailsError()
+
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))

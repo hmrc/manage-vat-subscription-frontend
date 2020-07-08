@@ -96,7 +96,6 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
       case Right(details) =>
         details.commsPreference match {
-
           case Some(contactPreference) =>
             auditService.extendedAudit(
               ContactPreferenceAuditModel(user.vrn, contactPreference.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
@@ -113,7 +112,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
             }
           case None => Ok(changeAddressConfirmationView())
         }
-      case Left (_) => serviceErrorHandler.showInternalServerError
+      case Left (_) => Ok(changeAddressConfirmationView())
     }
   }
 

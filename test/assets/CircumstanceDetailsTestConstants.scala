@@ -73,7 +73,8 @@ object CircumstanceDetailsTestConstants {
         "sortCode" -> accSort
       ),
       "returnPeriod" -> returnPeriodMCJson
-    )
+    ),
+    "commsPreference" -> "DIGITAL"
   )
 
   val customerInformationJsonMaxIndividual: JsValue = Json.obj(
