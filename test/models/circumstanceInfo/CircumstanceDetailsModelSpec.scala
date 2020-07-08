@@ -68,20 +68,8 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
       customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads(true)) shouldBe customerInformationModelMaxOrganisation
     }
 
-    "succeeds when all registration fields are populated for release 8" in {
-      customerInformationJsonMaxOrganisation.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMaxOrganisationR8
-    }
-
     "succeeds when optional values are not supplied for release 10" in {
       customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(true)) shouldBe customerInformationModelMin
-    }
-
-    "succeeds when optional values are not supplied for release 8" in {
-      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMinR8
-    }
-
-    "succeeds when optional values are not supplied for release 8, and overseas is set to false, even if true in Json" in {
-      customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads(false)) shouldBe customerInformationModelMinR8
     }
   }
 
@@ -91,16 +79,8 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
       Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes(true)) shouldBe customerInformationJsonMaxOrganisation
     }
 
-    "succeeds when all registration fields are populated for release 8 (no overseas indicator written to json)" in {
-      Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes(false)) shouldBe customerInformationJsonMaxOrganisationR8
-    }
-
     "succeeds when optional values are not supplied for release 10" in {
       Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)) shouldBe customerInformationJsonMin
-    }
-
-    "succeeds when optional values are not supplied for release 8" in {
-      Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(false)) shouldBe customerInformationJsonMinR8
     }
   }
 }

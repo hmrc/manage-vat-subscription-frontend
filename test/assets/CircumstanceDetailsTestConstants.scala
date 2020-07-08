@@ -23,6 +23,7 @@ import assets.PPOBAddressTestConstants._
 import assets.ReturnPeriodTestConstants._
 import assets.DeregistrationTestConstants._
 import models.circumstanceInfo._
+import models.contactPreferences.ContactPreference
 import models.returnFrequency._
 import play.api.libs.json.{JsValue, Json}
 
@@ -147,7 +148,7 @@ object CircumstanceDetailsTestConstants {
       returnPeriod = Some(Mar)
     )),
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
 
@@ -171,7 +172,7 @@ object CircumstanceDetailsTestConstants {
       returnPeriod = Some(Feb)
     )),
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
 
@@ -195,7 +196,7 @@ object CircumstanceDetailsTestConstants {
       returnPeriod = Some(Mar)
     )),
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -218,7 +219,7 @@ object CircumstanceDetailsTestConstants {
       returnPeriod = Some(Mar)
     )),
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -232,7 +233,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingIndividualDeregistered: CircumstanceDetails = CircumstanceDetails(
@@ -246,7 +247,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingChangeOfCert: CircumstanceDetails = CircumstanceDetails(
@@ -260,7 +261,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   def customerInformationWithPartyType(partyType: Option[String]): CircumstanceDetails = CircumstanceDetails(
@@ -274,7 +275,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = partyType,
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationRegisteredIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -288,7 +289,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -302,7 +303,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("other"),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationPendingPPOBOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -322,7 +323,7 @@ object CircumstanceDetailsTestConstants {
     ),
     pendingChanges = None,
     partyType = Some("other"),
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
@@ -336,7 +337,7 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
@@ -356,7 +357,7 @@ object CircumstanceDetailsTestConstants {
     ),
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some(commsPreference)
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(

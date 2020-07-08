@@ -384,7 +384,8 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             missingTrader = false,
             changeIndicators = None,
             pendingChanges = None,
-            partyType = Some(mockConfig.partyTypes.head)
+            partyType = Some(mockConfig.partyTypes.head),
+            commsPreference = None
           )
 
           lazy val view = injectedView(model, getPartialHtmlNotAgent)(user, messages, mockConfig)

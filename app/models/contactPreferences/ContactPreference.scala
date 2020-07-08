@@ -22,6 +22,7 @@ case class ContactPreference(preference: String)
 
 object ContactPreference {
   implicit val reads: Reads[ContactPreference] = Json.reads[ContactPreference]
+  implicit val writes: Writes[ContactPreference] = Json.writes[ContactPreference]
 
   val digital: String = "DIGITAL"
   val paper: String = "PAPER"

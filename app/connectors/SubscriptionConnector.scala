@@ -22,6 +22,7 @@ import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
+import models.contactPreferences.ContactPreference
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
