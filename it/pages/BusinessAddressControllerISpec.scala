@@ -342,6 +342,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the confirmation page" in {
 
+        mockAppConfig.features.contactPrefMigrationFeature(false)
         given.user.isAuthenticated
 
         And("A successful response is returned from contact preferences")
