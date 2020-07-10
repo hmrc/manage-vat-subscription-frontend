@@ -393,7 +393,7 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
 
                 @if(appConfig.features.contactDetailsMovedToBTA() && !user.isAgent) {
-                    @if(circumstances.email.isDefined && !circumstances.emailVerified) {
+                    @if(circumstances.email.isDefined && !circumstances.emailVerified && circumstances.pendingEmail.isEmpty) {
                         <p class="notice">
                             <i class="icon icon-important">
                                 <span class="visually-hidden">Warning</span>

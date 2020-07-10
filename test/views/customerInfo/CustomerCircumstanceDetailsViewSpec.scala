@@ -19,10 +19,10 @@ package views.customerInfo
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.individual
 import assets.PPOBAddressTestConstants
-import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxEmailUnverified}
+import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxEmailUnverified, ppobModelMaxPending}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
-import models.circumstanceInfo.CircumstanceDetails
+import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -193,6 +193,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 s"has a link to ${mockConfig.btaAccountDetails}" in {
                   element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
                 }
+
+                "does not display the email nudge" in {
+                  elementExtinct("#contact-details-section > p.notice")
+                }
               }
 
               "have a section for website address" which {
@@ -281,6 +285,35 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 s"has a link to ${mockConfig.btaAccountDetails}" in {
                   element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
+                }
+              }
+            }
+
+            "the page is rendered for a user without a verified email and has an email change pending" should {
+              lazy val view = injectedView(
+                customerInformationNoPendingIndividual.copy(
+                  ppob = ppobModelMaxEmailUnverified,
+                  pendingChanges = Some(PendingChanges(Some(ppobModelMaxPending), None, None))),
+                getPartialHtmlNotAgent
+              )(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              "have a section for contact details" which {
+
+                "has a contact details header" in {
+                  elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
+                }
+
+                s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
+                  elementText("#contact-details-section > p") shouldBe viewMessages.contactDetailsMovedToBTA
+                }
+
+                s"has a link to ${mockConfig.btaAccountDetails}" in {
+                  element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
+                }
+
+                "does not display the email nudge" in {
+                  elementExtinct("#contact-details-section > p.notice")
                 }
               }
             }
