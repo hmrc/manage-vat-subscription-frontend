@@ -87,12 +87,36 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           Ok(changeAddressConfirmationView(agentEmail = email))
       }
     } else {
-      nonAgentConfirmation
+      if(appConfig.features.contactPrefMigrationFeature()) contactPrefRenderView else renderView
     }
   }
 
-  private def nonAgentConfirmation(implicit user: User[AnyContent]): Future[Result] = {
+  private def contactPrefRenderView(implicit user: User[AnyContent]): Future[Result] = {
 
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+      case Right(details) =>
+        details.commsPreference match {
+          case Some(contactPreference) =>
+            auditService.extendedAudit(
+              ContactPreferenceAuditModel(user.vrn, contactPreference.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
+              Some(controllers.routes.ChangeBusinessNameController.show().url)
+            )
+            contactPreference.preference match {
+              case ContactPreference.digital if appConfig.features.emailVerifiedFeature() =>
+                Ok(changeAddressConfirmationView(
+                  contactPref = Some(digital),
+                  emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+                ))
+              case preference =>
+                Ok(changeAddressConfirmationView(contactPref = Some(preference)))
+            }
+          case None => Ok(changeAddressConfirmationView())
+        }
+      case Left (_) => Ok(changeAddressConfirmationView())
+    }
+  }
+
+  private def renderView(implicit user: User[AnyContent]): Future[Result] =
     contactPreferenceService.getContactPreference(user.vrn).flatMap {
       case Right(cPref) =>
 
@@ -100,7 +124,6 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
           Some(controllers.routes.ChangeBusinessNameController.show().url)
         )
-
         cPref.preference match {
           case `digital` if appConfig.features.emailVerifiedFeature() =>
             customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
@@ -116,5 +139,4 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
       case Left(_) =>
         Future.successful(Ok(changeAddressConfirmationView()))
     }
-  }
 }

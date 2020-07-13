@@ -22,6 +22,16 @@ case class ContactPreference(preference: String)
 
 object ContactPreference {
   implicit val reads: Reads[ContactPreference] = Json.reads[ContactPreference]
+  val circumstancePrefReads: Reads[ContactPreference] = for {
+    value <- __.read[String]
+  } yield {
+    ContactPreference(value)
+  }
+
+  implicit val writes: Writes[ContactPreference] = Json.writes[ContactPreference]
+  val circumstancePrefWrites: Writes[ContactPreference] = Writes[ContactPreference] { model =>
+    JsString(model.preference)
+  }
 
   val digital: String = "DIGITAL"
   val paper: String = "PAPER"

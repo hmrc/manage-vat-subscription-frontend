@@ -23,12 +23,14 @@ import assets.PPOBAddressTestConstants._
 import assets.ReturnPeriodTestConstants._
 import assets.DeregistrationTestConstants._
 import models.circumstanceInfo._
+import models.contactPreferences.ContactPreference
 import models.returnFrequency._
 import play.api.libs.json.{JsValue, Json}
 
 object CircumstanceDetailsTestConstants {
 
   val partyType = "2"
+  val commsPreference = "DIGITAL"
 
   val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
     "customerDetails" -> organisationJson,
@@ -71,7 +73,8 @@ object CircumstanceDetailsTestConstants {
         "sortCode" -> accSort
       ),
       "returnPeriod" -> returnPeriodMCJson
-    )
+    ),
+    "commsPreference" -> "DIGITAL"
   )
 
   val customerInformationJsonMaxIndividual: JsValue = Json.obj(
@@ -145,7 +148,8 @@ object CircumstanceDetailsTestConstants {
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
     )),
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
 
@@ -168,7 +172,8 @@ object CircumstanceDetailsTestConstants {
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Feb)
     )),
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
 
@@ -191,7 +196,8 @@ object CircumstanceDetailsTestConstants {
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
     )),
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -213,7 +219,8 @@ object CircumstanceDetailsTestConstants {
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar)
     )),
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -226,7 +233,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingIndividualDeregistered: CircumstanceDetails = CircumstanceDetails(
@@ -239,7 +247,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingChangeOfCert: CircumstanceDetails = CircumstanceDetails(
@@ -252,7 +261,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some(partyType)
+    partyType = Some(partyType),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   def customerInformationWithPartyType(partyType: Option[String]): CircumstanceDetails = CircumstanceDetails(
@@ -265,7 +275,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = partyType
+    partyType = partyType,
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationRegisteredIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -278,7 +289,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = None
+    partyType = None,
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -291,7 +303,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = Some("other")
+    partyType = Some("other"),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationPendingPPOBOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -310,7 +323,8 @@ object CircumstanceDetailsTestConstants {
         deregister = false)
     ),
     pendingChanges = None,
-    partyType = Some("other")
+    partyType = Some("other"),
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
@@ -323,7 +337,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = None
+    partyType = None,
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
@@ -342,7 +357,8 @@ object CircumstanceDetailsTestConstants {
         deregister = true)
     ),
     pendingChanges = None,
-    partyType = None
+    partyType = None,
+    commsPreference = Some(ContactPreference("DIGITAL"))
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
@@ -361,7 +377,8 @@ object CircumstanceDetailsTestConstants {
     missingTrader = false,
     changeIndicators = None,
     pendingChanges = None,
-    partyType = None
+    partyType = None,
+    commsPreference = None
   )
 
   def customerInformationModelPendingRemoved(field: String): CircumstanceDetails = {
@@ -448,105 +465,105 @@ object CircumstanceDetailsTestConstants {
 
   /////////////// Release 8 data -- separated for ease of removal
 
-  val customerInformationModelMaxOrganisationR8: CircumstanceDetails = CircumstanceDetails(
-    customerDetails = organisationR8,
-    flatRateScheme = Some(frsModelMax),
-    ppob = ppobModelMax,
-    bankDetails = Some(bankDetailsModelMax),
-    returnPeriod = Some(Mar),
-    deregistration = Some(deregModel),
-    missingTrader = true,
-    changeIndicators = Some(ChangeIndicators(
-      ppob = true,
-      bankDetails = true,
-      returnPeriod = true,
-      deregister = true
-    )),
-    pendingChanges = Some(PendingChanges(
-      ppob = Some(ppobModelMax),
-      bankDetails = Some(bankDetailsModelMax),
-      returnPeriod = Some(Mar)
-    )),
-    partyType = Some(partyType)
-  )
-
-  val customerInformationModelMinR8: CircumstanceDetails = CircumstanceDetails(
-    customerDetails = CustomerDetails(
-      firstName = None,
-      lastName = None,
-      organisationName = None,
-      tradingName = None,
-      welshIndicator = None,
-      overseasIndicator = false),
-    flatRateScheme = None,
-    ppob = ppobModelMin,
-    bankDetails = None,
-    returnPeriod = None,
-    deregistration = None,
-    missingTrader = false,
-    changeIndicators = None,
-    pendingChanges = None,
-    partyType = None
-  )
-
-  val customerInformationJsonMaxOrganisationR8: JsValue = Json.obj(
-    "customerDetails" -> organisationJsonR8,
-    "flatRateScheme" -> frsJsonMax,
-    "ppob" -> ppobJsonMax,
-    "bankDetails" -> bankDetailsJsonMax,
-    "returnPeriod" -> returnPeriodMCJson,
-    "partyType" -> Some(partyType),
-    "deregistration" -> deregModel,
-    "missingTrader" -> true,
-    "changeIndicators" -> Json.obj(
-      "PPOBDetails" -> true,
-      "bankDetails" -> true,
-      "returnPeriod" -> true,
-      "deregister" -> true
-    ),
-    "pendingChanges" -> Json.obj(
-      "PPOBDetails" -> Json.obj(
-        "address" -> Json.obj(
-          "line1" -> addLine1,
-          "line2" -> addLine2,
-          "line3" -> addLine3,
-          "line4" -> addLine4,
-          "line5" -> addLine5,
-          "postCode" -> postcode,
-          "countryCode" -> countryCode
-        ),
-        "contactDetails" -> Json.obj(
-          "primaryPhoneNumber" -> phoneNumber,
-          "mobileNumber" -> mobileNumber,
-          "faxNumber" -> faxNumber,
-          "emailAddress" -> email,
-          "emailVerified" -> emailVerified
-        ),
-        "websiteAddress" -> website
-      ),
-      "bankDetails" -> Json.obj(
-        "accountHolderName" -> accName,
-        "bankAccountNumber" -> accNum,
-        "sortCode" -> accSort
-      ),
-      "returnPeriod" -> returnPeriodMCJson
-    )
-  )
-
-  val customerInformationJsonMinR8: JsValue =
-    Json.obj(
-      "customerDetails" -> customerDetailsJsonMinR8,
-      "ppob" -> ppobJsonMin,
-      "missingTrader" -> false
-    )
-
-  val customerInformationJsonMinWithTrueOverseas: JsValue =
-    Json.obj(
-      "customerDetails" -> Json.obj(
-        "hasFlatRateScheme" -> false,
-        "overseasIndicator" -> true
-      ),
-      "ppob" -> ppobJsonMin,
-      "missingTrader" -> false
-  )
+//  val customerInformationModelMaxOrganisationR8: CircumstanceDetails = CircumstanceDetails(
+//    customerDetails = organisationR8,
+//    flatRateScheme = Some(frsModelMax),
+//    ppob = ppobModelMax,
+//    bankDetails = Some(bankDetailsModelMax),
+//    returnPeriod = Some(Mar),
+//    deregistration = Some(deregModel),
+//    missingTrader = true,
+//    changeIndicators = Some(ChangeIndicators(
+//      ppob = true,
+//      bankDetails = true,
+//      returnPeriod = true,
+//      deregister = true
+//    )),
+//    pendingChanges = Some(PendingChanges(
+//      ppob = Some(ppobModelMax),
+//      bankDetails = Some(bankDetailsModelMax),
+//      returnPeriod = Some(Mar)
+//    )),
+//    partyType = Some(partyType)
+//  )
+//
+//  val customerInformationModelMinR8: CircumstanceDetails = CircumstanceDetails(
+//    customerDetails = CustomerDetails(
+//      firstName = None,
+//      lastName = None,
+//      organisationName = None,
+//      tradingName = None,
+//      welshIndicator = None,
+//      overseasIndicator = false),
+//    flatRateScheme = None,
+//    ppob = ppobModelMin,
+//    bankDetails = None,
+//    returnPeriod = None,
+//    deregistration = None,
+//    missingTrader = false,
+//    changeIndicators = None,
+//    pendingChanges = None,
+//    partyType = None
+//  )
+//
+//  val customerInformationJsonMaxOrganisationR8: JsValue = Json.obj(
+//    "customerDetails" -> organisationJsonR8,
+//    "flatRateScheme" -> frsJsonMax,
+//    "ppob" -> ppobJsonMax,
+//    "bankDetails" -> bankDetailsJsonMax,
+//    "returnPeriod" -> returnPeriodMCJson,
+//    "partyType" -> Some(partyType),
+//    "deregistration" -> deregModel,
+//    "missingTrader" -> true,
+//    "changeIndicators" -> Json.obj(
+//      "PPOBDetails" -> true,
+//      "bankDetails" -> true,
+//      "returnPeriod" -> true,
+//      "deregister" -> true
+//    ),
+//    "pendingChanges" -> Json.obj(
+//      "PPOBDetails" -> Json.obj(
+//        "address" -> Json.obj(
+//          "line1" -> addLine1,
+//          "line2" -> addLine2,
+//          "line3" -> addLine3,
+//          "line4" -> addLine4,
+//          "line5" -> addLine5,
+//          "postCode" -> postcode,
+//          "countryCode" -> countryCode
+//        ),
+//        "contactDetails" -> Json.obj(
+//          "primaryPhoneNumber" -> phoneNumber,
+//          "mobileNumber" -> mobileNumber,
+//          "faxNumber" -> faxNumber,
+//          "emailAddress" -> email,
+//          "emailVerified" -> emailVerified
+//        ),
+//        "websiteAddress" -> website
+//      ),
+//      "bankDetails" -> Json.obj(
+//        "accountHolderName" -> accName,
+//        "bankAccountNumber" -> accNum,
+//        "sortCode" -> accSort
+//      ),
+//      "returnPeriod" -> returnPeriodMCJson
+//    )
+//  )
+//
+//  val customerInformationJsonMinR8: JsValue =
+//    Json.obj(
+//      "customerDetails" -> customerDetailsJsonMinR8,
+//      "ppob" -> ppobJsonMin,
+//      "missingTrader" -> false
+//    )
+//
+//  val customerInformationJsonMinWithTrueOverseas: JsValue =
+//    Json.obj(
+//      "customerDetails" -> Json.obj(
+//        "hasFlatRateScheme" -> false,
+//        "overseasIndicator" -> true
+//      ),
+//      "ppob" -> ppobJsonMin,
+//      "missingTrader" -> false
+//  )
 }

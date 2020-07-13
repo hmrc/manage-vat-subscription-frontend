@@ -182,7 +182,8 @@ class BusinessAddressControllerISpec extends BasePageISpec {
       missingTrader = false,
       changeIndicators = None,
       pendingChanges = None,
-      partyType = None
+      partyType = None,
+      commsPreference = None
     )
 
     "the user is an individual" should {
@@ -341,6 +342,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
       "render the confirmation page" in {
 
+        mockAppConfig.features.contactPrefMigrationFeature(false)
         given.user.isAuthenticated
 
         And("A successful response is returned from contact preferences")

@@ -18,6 +18,7 @@ package models.circumstanceInfo
 
 import config.AppConfig
 import models.JsonReadUtil
+import models.contactPreferences.ContactPreference
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, Writes, __}
@@ -31,7 +32,8 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
                                changeIndicators: Option[ChangeIndicators],
                                pendingChanges: Option[PendingChanges],
                                partyType: Option[String],
-                               missingTrader: Boolean) {
+                               missingTrader: Boolean,
+                               commsPreference:Option[ContactPreference]) {
 
   val ppobAddress: PPOBAddress = ppob.address
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
@@ -72,9 +74,10 @@ object CircumstanceDetails extends JsonReadUtil {
   private val pendingChangesPath = __ \ "pendingChanges"
   private val partyTypePath = __ \ "partyType"
   private val missingTraderPath = __ \ "missingTrader"
+  private val commsPreferencePath = __ \ "commsPreference"
 
-  implicit val reads: Boolean => Reads[CircumstanceDetails] = isRelease10 => (
-      customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isRelease10)) and
+  implicit val reads: Boolean => Reads[CircumstanceDetails] = isLatestRelease => (
+      customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isLatestRelease)) and
       flatRateSchemePath.readOpt[FlatRateScheme] and
       ppobPath.read[PPOB] and
       bankDetailsPath.readOpt[BankDetails] and
@@ -83,11 +86,12 @@ object CircumstanceDetails extends JsonReadUtil {
       changeIndicatorsPath.readOpt[ChangeIndicators] and
       pendingChangesPath.readOpt[PendingChanges] and
       partyTypePath.readOpt[String] and
-      missingTraderPath.read[Boolean]
+      missingTraderPath.read[Boolean] and
+      commsPreferencePath.readOpt[ContactPreference](ContactPreference.circumstancePrefReads)
     )(CircumstanceDetails.apply _)
 
-  implicit val writes: Boolean => Writes[CircumstanceDetails] = isRelease10 => (
-      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes(isRelease10)) and
+  implicit val writes: Boolean => Writes[CircumstanceDetails] = isLatestRelease => (
+      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes(isLatestRelease)) and
       flatRateSchemePath.writeNullable[FlatRateScheme] and
       ppobPath.write[PPOB] and
       bankDetailsPath.writeNullable[BankDetails] and
@@ -96,6 +100,7 @@ object CircumstanceDetails extends JsonReadUtil {
       changeIndicatorsPath.writeNullable[ChangeIndicators] and
       pendingChangesPath.writeNullable[PendingChanges] and
       partyTypePath.writeNullable[String] and
-      missingTraderPath.write[Boolean]
+      missingTraderPath.write[Boolean] and
+      commsPreferencePath.writeNullable[ContactPreference](ContactPreference.circumstancePrefWrites)
     )(unlift(CircumstanceDetails.unapply))
 }

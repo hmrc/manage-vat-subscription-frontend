@@ -33,7 +33,7 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
-
+import ContactPreference._
 import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
@@ -356,45 +356,75 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
           "the user has a verified email address" when {
 
-            "the call to customerCircumstanceDetails succeeds" should {
-              lazy val result = {
-                mockConfig.features.emailVerifiedFeature(true)
-                mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-                mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-                controller.confirmation("non-agent")(request)
+            "the contactPrefMigration feature is enabled" when {
+
+              "the call to customerCircumstanceDetails succeeds" should {
+                lazy val result = {
+                  mockConfig.features.contactPrefMigrationFeature(true)
+                  mockConfig.features.emailVerifiedFeature(true)
+                  mockConfig.features.contactPrefMigrationFeature(true)
+                  mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+                  controller.confirmation("non-agent")(request)
+                }
+                lazy val document = Jsoup.parse(bodyOf(result))
+
+                "return 200" in {
+                  status(result) shouldBe Status.OK
+
+                  verify(mockAuditingService)
+                    .extendedAudit(
+                      ArgumentMatchers.any[ContactPreferenceAuditModel],
+                      ArgumentMatchers.any[Option[String]]
+
+                    )(
+                      ArgumentMatchers.any[HeaderCarrier],
+                      ArgumentMatchers.any[ExecutionContext]
+                    )
+                }
+
+                "return HTML" in {
+                  contentType(result) shouldBe Some("text/html")
+                  charset(result) shouldBe Some("utf-8")
+                }
+
+                "render the Business Address confirmation view" in {
+                  messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+                  messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digiPrefEmailVerified
+                }
               }
-              lazy val document = Jsoup.parse(bodyOf(result))
 
-              "return 200" in {
-                status(result) shouldBe Status.OK
+              "the call to customerCircumstanceDetails fails" should {
+                lazy val result = {
+                  mockConfig.features.contactPrefMigrationFeature(true)
+                  mockConfig.features.emailVerifiedFeature(true)
+                  mockConfig.features.contactPrefMigrationFeature(true)
+                  mockCustomerDetailsError()
+                  controller.confirmation("non-agent")(request)
+                }
+                lazy val document = Jsoup.parse(bodyOf(result))
 
-                verify(mockAuditingService)
-                  .extendedAudit(
-                    ArgumentMatchers.any[ContactPreferenceAuditModel],
-                    ArgumentMatchers.any[Option[String]]
+                "return 200" in {
+                  status(result) shouldBe Status.OK
+                }
 
-                  )(
-                    ArgumentMatchers.any[HeaderCarrier],
-                    ArgumentMatchers.any[ExecutionContext]
-                  )
-              }
+                "return HTML" in {
+                  contentType(result) shouldBe Some("text/html")
+                  charset(result) shouldBe Some("utf-8")
+                }
 
-              "return HTML" in {
-                contentType(result) shouldBe Some("text/html")
-                charset(result) shouldBe Some("utf-8")
-              }
-
-              "render the Business Address confirmation view" in {
-                messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-                messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digiPrefEmailVerified
+                "render the Business Address confirmation view" in {
+                  messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+                  messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+                }
               }
             }
 
-            "the call to customerCircumstanceDetails fails" should {
+            "the user does not have a verified email address" should {
               lazy val result = {
+                mockConfig.features.contactPrefMigrationFeature(true)
                 mockConfig.features.emailVerifiedFeature(true)
-                mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-                mockCustomerDetailsError()
+                mockConfig.features.contactPrefMigrationFeature(true)
+                mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some(ContactPreference(digital))))
                 controller.confirmation("non-agent")(request)
               }
               lazy val document = Jsoup.parse(bodyOf(result))
@@ -425,11 +455,12 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
             }
           }
 
-          "the user does not have a verified email address" should {
+          "emailVerified feature is disabled" should {
+
             lazy val result = {
-              mockConfig.features.emailVerifiedFeature(true)
+              mockConfig.features.contactPrefMigrationFeature(false)
+              mockConfig.features.emailVerifiedFeature(false)
               mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-              mockCustomerDetailsSuccess(customerInformationModelMin)
               controller.confirmation("non-agent")(request)
             }
             lazy val document = Jsoup.parse(bodyOf(result))
@@ -460,47 +491,14 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
         }
 
-        "emailVerified feature is disabled" should {
-
-          lazy val result = {
-            mockConfig.features.emailVerifiedFeature(false)
-            mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
-            controller.confirmation("non-agent")(request)
-          }
-          lazy val document = Jsoup.parse(bodyOf(result))
-
-          "return 200" in {
-            status(result) shouldBe Status.OK
-
-            verify(mockAuditingService)
-              .extendedAudit(
-                ArgumentMatchers.any[ContactPreferenceAuditModel],
-                ArgumentMatchers.any[Option[String]]
-
-              )(
-                ArgumentMatchers.any[HeaderCarrier],
-                ArgumentMatchers.any[ExecutionContext]
-              )
-          }
-
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
-          }
-
-          "render the Business Address confirmation view" in {
-            messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-            messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digitalPref
-          }
-        }
-
 
       }
 
       "contactPreference is set to 'PAPER'" should {
 
         lazy val result = {
-          mockContactPreferenceSuccess(ContactPreference("PAPER"))
+          mockConfig.features.contactPrefMigrationFeature(true)
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some(ContactPreference(paper))))
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
@@ -523,7 +521,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference returns an error" should {
 
         lazy val result = {
-          mockContactPreferenceError()
+          mockConfig.features.contactPrefMigrationFeature(true)
+          mockConfig.features.contactPrefMigrationFeature(true)
+          mockCustomerDetailsError()
+
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
