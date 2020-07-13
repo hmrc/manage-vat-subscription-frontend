@@ -120,6 +120,8 @@ customer_details.phoneNumbers.mobile.pending.hidden = Mae’r newid i’r rhif f
 customer_details.websiteAddress.heading = Cyfeiriad gwefan
 customer_details.websiteAddress.change.hidden = Newid cyfeiriad y wefan o {0}
 customer_details.websiteAddress.pending.hidden = Mae’r newid i gyfeiriad y wefan ar y gweill
+customer_details.movedToBTAMessage.pt1 = Gallwch ddiweddaru dulliau cysylltu dewisol a manylion ar gyfer TAW a threthi eraill yn eich
+customer_details.movedToBTAMessage.pt2 = manylion cyfrif
 
 change_business_name.title = Newid enw’r busnes
 change_business_name.h1 = Newid enw’r busnes
