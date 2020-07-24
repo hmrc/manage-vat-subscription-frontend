@@ -184,17 +184,11 @@ breadcrumb.bta = Business tax account
 breadcrumb.yourVatAccount = Your VAT account
 breadcrumb.yourBusinessDetails = Your business details
 
-changePending.title = There is already a change pending
-changePending.infoOne = A recent request was made to change the {0}.
-changePending.infoTwo = Until this is confirmed, you cannot change the:
-changePending.listItem1 = principal place of business
-changePending.listItem2 = website address
-changePending.listItem3 = contact details
-changePending.ppob = principal place of business
-changePending.email = business’s email address
-changePending.landline = business’s landline number
-changePending.mobile = business’s mobile number
-changePending.website = business’s website address
+inFlightChange.title = There is already a change pending
+inFlightChange.recentRequest = We are dealing with a recent request to change something on this VAT account.
+inFlightChange.untilWeAccept = Until we accept that request, you cannot make a further change.
+inFlightChange.acceptOrReject = HMRC accepts or rejects changes to VAT accounts within 2 working days.
+inFlightChange.backToAccountDetails = Back to account details
 
 missingTrader.title = We’ve had a problem delivering mail to this address
 missingTrader.addInfo = We cannot issue any payments on this account until you confirm the address.

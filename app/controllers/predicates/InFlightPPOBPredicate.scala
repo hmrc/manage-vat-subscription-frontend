@@ -64,12 +64,8 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
 
       (circumstanceDetails.samePPOB, circumstanceDetails.sameEmail, circumstanceDetails.samePhone,
         circumstanceDetails.sameMobile, circumstanceDetails.sameWebsite) match {
-        case (false, _, _, _, _) => Left(Conflict(changePendingView("changePending.ppob")))
-        case (_, false, _, _, _) => Left(Conflict(changePendingView("changePending.email")))
-        case (_, _, false, _, _) => Left(Conflict(changePendingView("changePending.landline")))
-        case (_, _, _, false, _) => Left(Conflict(changePendingView("changePending.mobile")))
-        case (_, _, _, _, false) => Left(Conflict(changePendingView("changePending.website")))
-        case _ => Right(user)
+          case(true, true, true, true, true) => Right(user)
+          case _ => Left(Conflict(changePendingView()))
       }
   }
 }
