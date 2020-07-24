@@ -55,18 +55,6 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
     }
 
-    "the user has an inflight email address which is the same as the current email address" should {
-
-      lazy val result = {
-        mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
-        await(mockInFlightPPOBPredicate.refine(user))
-      }
-
-      "allow the request to pass through the predicate" in {
-        result shouldBe Right(user)
-      }
-    }
-
     "the user has an inflight ppob address which is different to the current ppob address" should {
 
       lazy val result = {
