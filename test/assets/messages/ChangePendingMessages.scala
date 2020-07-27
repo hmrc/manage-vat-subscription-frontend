@@ -19,14 +19,7 @@ package assets.messages
 object ChangePendingMessages extends BaseMessages {
   val title: String = "There is already a change pending" + titleSuffixUser
   val heading = "There is already a change pending"
-  val p1 = "A recent request was made to change the "
-  val ppobChange = "principal place of business."
-  val emailChange = "business’s email address."
-  val landlineChange = "business’s landline number."
-  val mobileChange = "business’s mobile number."
-  val websiteChange = "business’s website address."
-  val p2 = "Until this is confirmed, you cannot change the:"
-  val listItem1 = "principal place of business"
-  val listItem2 = "website address"
-  val listItem3 = "contact details"
+  val para1 = "Until we accept that request, you cannot make a further change."
+  val para2 = "HMRC accepts or rejects changes to VAT accounts within 2 working days."
+  val btaLink = "Back to account details"
 }

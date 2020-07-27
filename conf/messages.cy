@@ -187,17 +187,11 @@ breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatAccount = Eich cyfrif TAW
 breadcrumb.yourBusinessDetails = Manylion eich busnes
 
-changePending.title = Mae newid ar y gweill eisoes
-changePending.infoOne = Cafodd cais ei wneud yn ddiweddar i newid {0}.
-changePending.infoTwo = Hyd nes y caiff hyn ei gadarnhau, ni allwch newid y:
-changePending.listItem1 = prif leoliad busnes
-changePending.listItem2 = cyfeiriad gwe
-changePending.listItem3 = manylion cyswllt
-changePending.ppob = prif leoliad busnes
-changePending.email = cyfeiriad e-bost y busnes
-changePending.landline = rhif ffôn llinell dir y busnes
-changePending.mobile = rhif ffôn symudol y busnes
-changePending.website = cyfeiriad gwefan y busnes
+inFlightChange.title = Mae newid ar y gweill eisoes
+inFlightChange.recentRequest = Rydym yn delio â chais diweddar i newid rhywbeth ar y cyfrif TAW hwn.
+inFlightChange.untilWeAccept = Ni allwch wneud newid pellach tan i ni dderbyn y cais hwnnw.
+inFlightChange.acceptOrReject = Mae CThEM yn derbyn neu’n gwrthod newidiadau i gyfrifon TAW cyn pen 2 ddiwrnod gwaith.
+inFlightChange.backToAccountDetails = Yn ôl i fanylion y cyfrif
 
 missingTrader.title = Rydym wedi cael problem wrth anfon post i’r cyfeiriad hwn
 missingTrader.addInfo = Ni allwn gyhoeddi taliadau ar y cyfrif hwn nes i chi gadarnhau’r cyfeiriad.

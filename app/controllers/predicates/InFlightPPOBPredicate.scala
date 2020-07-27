@@ -50,7 +50,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
       case Right(circumstanceDetails) =>
 
         circumstanceDetails.pendingChanges match {
-          case Some(changes) if changes.ppob.isDefined => comparePendingAndCurrent(circumstanceDetails)
+          case Some(changes) if changes.ppob.isDefined => Left(Conflict(changePendingView()))
           case _ => Right(user)
         }
 
@@ -58,18 +58,5 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
         s"The call to the GetCustomerInfo API failed. Error: ${error.message}")
         Left(serviceErrorHandler.showInternalServerError)
     }
-  }
-
-  def comparePendingAndCurrent[A](circumstanceDetails: CircumstanceDetails)(implicit user: User[A]): Either[Result, User[A]] = {
-
-      (circumstanceDetails.samePPOB, circumstanceDetails.sameEmail, circumstanceDetails.samePhone,
-        circumstanceDetails.sameMobile, circumstanceDetails.sameWebsite) match {
-        case (false, _, _, _, _) => Left(Conflict(changePendingView("changePending.ppob")))
-        case (_, false, _, _, _) => Left(Conflict(changePendingView("changePending.email")))
-        case (_, _, false, _, _) => Left(Conflict(changePendingView("changePending.landline")))
-        case (_, _, _, false, _) => Left(Conflict(changePendingView("changePending.mobile")))
-        case (_, _, _, _, false) => Left(Conflict(changePendingView("changePending.website")))
-        case _ => Right(user)
-      }
   }
 }
