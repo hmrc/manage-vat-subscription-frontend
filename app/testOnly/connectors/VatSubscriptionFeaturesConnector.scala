@@ -19,13 +19,16 @@ package testOnly.connectors
 import javax.inject.Inject
 import testOnly.TestOnlyAppConfig
 import testOnly.models.VatSubscriptionFeatureSwitchModel
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpReads.Implicits
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient, HttpReads, HttpResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class VatSubscriptionFeaturesConnector @Inject()(val http: HttpClient,
                                                  val appConfig: TestOnlyAppConfig) {
+
+  implicit val implicitsReadRaw: HttpReads[HttpResponse] = Implicits.readRaw
+  implicit val implicitsReadFromJson: HttpReads[VatSubscriptionFeatureSwitchModel] = Implicits.readFromJson
 
   def getFeatures(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[VatSubscriptionFeatureSwitchModel] = {
     lazy val url = s"${appConfig.vatSubscriptionUrl}/vat-subscription/test-only/feature-switch"

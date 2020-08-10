@@ -25,21 +25,23 @@ import utils.TestUtil
 
 class AddressLookupHttpParserSpec extends TestUtil {
 
-  val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
+  val errorModel: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
 
   "The AddressLookupHttpParser" when {
 
     "the http response status is OK with valid Json" should {
 
       "return a AddressLookupModel" in {
-        AddressLookupReads.read("", "", HttpResponse(Status.OK, Some(customerAddressJsonMin))) shouldBe Right(customerAddressMin)
+        AddressLookupReads.read("", "",
+          HttpResponse(Status.OK, customerAddressJsonMin, Map.empty[String, Seq[String]])) shouldBe Right(customerAddressMin)
       }
     }
 
     "the http response status is OK with invalid Json" should {
 
       "return an ErrorModel" in {
-        AddressLookupReads.read("", "", HttpResponse(Status.OK, Some(customerAddressJsonError))) shouldBe
+        AddressLookupReads.read("", "",
+          HttpResponse(Status.OK, customerAddressJsonError, Map.empty[String, Seq[String]])) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json returned from Address Lookup"))
       }
     }
@@ -47,7 +49,8 @@ class AddressLookupHttpParserSpec extends TestUtil {
     "the http response status is BAD_REQUEST" should {
 
       "return an ErrorModel" in {
-        AddressLookupReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
+        AddressLookupReads.read("", "",
+          HttpResponse(Status.BAD_REQUEST, "")) shouldBe
           Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }
@@ -55,7 +58,8 @@ class AddressLookupHttpParserSpec extends TestUtil {
     "the http response status unexpected" should {
 
       "return an ErrorModel" in {
-        AddressLookupReads.read("", "", HttpResponse(Status.SEE_OTHER, None)) shouldBe
+        AddressLookupReads.read("", "",
+          HttpResponse(Status.SEE_OTHER, "")) shouldBe
           Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }

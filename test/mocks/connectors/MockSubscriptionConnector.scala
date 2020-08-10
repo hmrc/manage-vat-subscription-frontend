@@ -17,7 +17,7 @@
 package mocks.connectors
 
 import connectors.SubscriptionConnector
-import models.circumstanceInfo.{CircumstanceDetails, CustomerDetails}
+import models.circumstanceInfo.CircumstanceDetails
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.UpdatePPOB

@@ -17,7 +17,6 @@
 package audit.models
 
 import assets.BaseTestConstants._
-import assets.CustomerDetailsTestConstants.orgName
 import play.api.libs.json.Json
 import utils.TestUtil
 

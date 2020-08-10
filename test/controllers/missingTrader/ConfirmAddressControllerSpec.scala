@@ -25,10 +25,7 @@ import mocks.services.MockPPOBService
 import models.core.ErrorModel
 import play.api.http.Status
 import play.api.test.Helpers._
-import uk.gov.hmrc.http.HeaderCarrier
 import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
-
-import scala.concurrent.ExecutionContext
 
 class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBService {
 

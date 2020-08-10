@@ -16,10 +16,9 @@
 
 package assets
 
+import assets.messages.{AddressLookupMessages, BaseMessages}
 import models.customerAddress.AddressModel
 import play.api.libs.json.{JsObject, Json}
-import assets.messages.{AddressLookupMessages, BaseMessages}
-import config.AppConfig
 
 
 object CustomerAddressTestConstants extends BaseMessages {
@@ -35,7 +34,7 @@ object CustomerAddressTestConstants extends BaseMessages {
   val phaseBannerHtml = "This is a new service – your <a id='beta-banner-feedback' href='/feedback'>feedback</a> will help us to improve it."
   val phaseBannerHtmlCy = "Gwasanaeth newydd yw hwn – bydd eich <a id='beta-banner-feedback' href='/feedback'>adborth</a> yn ein helpu i’w wella."
 
-  val customerAddressMax = AddressModel(
+  val customerAddressMax: AddressModel = AddressModel(
     Some(addressLine1),
     Some(addressLine2),
     Some(addressLine3),
@@ -44,7 +43,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     Some(countryCode)
   )
 
-  val customerAddressSome = AddressModel(
+  val customerAddressSome: AddressModel = AddressModel(
     Some(addressLine1),
     Some(addressLine2),
     Some(addressLine3),
@@ -54,9 +53,9 @@ object CustomerAddressTestConstants extends BaseMessages {
   )
 
 
-  val customerAddressMin = AddressModel(None, None, None, None, None, None)
+  val customerAddressMin: AddressModel = AddressModel(None, None, None, None, None, None)
 
-  val customerAddressToJsonMax = Json.obj(
+  val customerAddressToJsonMax: JsObject = Json.obj(
     "line1" -> addressLine1,
     "line2" -> addressLine2,
     "line3" -> addressLine3,
@@ -65,9 +64,9 @@ object CustomerAddressTestConstants extends BaseMessages {
     "countryCode" -> countryCode
   )
 
-  val customerAddressToJsonMin = Json.obj()
+  val customerAddressToJsonMin: JsObject = Json.obj()
 
-  val customerAddressJsonMax = Json.obj(
+  val customerAddressJsonMax: JsObject = Json.obj(
     "address" -> Json.obj(
       "lines" -> Json.arr(addressLine1, addressLine2, addressLine3, addressLine4),
       "postcode" -> postcode,
@@ -78,7 +77,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     )
   )
 
-  val customerAddressJsonSome = Json.obj(
+  val customerAddressJsonSome: JsObject = Json.obj(
     "address" -> Json.obj(
       "lines" -> Json.arr(addressLine1, addressLine2, addressLine3),
       "postcode" -> postcode,
@@ -89,9 +88,9 @@ object CustomerAddressTestConstants extends BaseMessages {
     )
   )
 
-  val customerAddressJsonMin = Json.obj()
+  val customerAddressJsonMin: JsObject = Json.obj()
 
-  val customerAddressJsonError = Json.obj(
+  val customerAddressJsonError: JsObject = Json.obj(
     "address" -> Json.obj(
       "lines" -> 4
     )

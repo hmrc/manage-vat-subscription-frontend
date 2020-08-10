@@ -29,7 +29,7 @@ import scala.concurrent.Future
 class AuthPredicateSpec extends MockAuth {
 
   def target: Action[AnyContent] = mockAuthPredicate.async {
-    implicit request => Future.successful(Ok("test"))
+    _ => Future.successful(Ok("test"))
   }
 
   "The AuthPredicateSpec" when {

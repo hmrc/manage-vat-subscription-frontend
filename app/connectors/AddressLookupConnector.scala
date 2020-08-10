@@ -23,8 +23,7 @@ import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import javax.inject.{Inject, Singleton}
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.Logger
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 
 import scala.concurrent.{ExecutionContext, Future}
 

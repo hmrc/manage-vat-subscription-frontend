@@ -19,14 +19,13 @@ package connectors.httpParsers
 import connectors.httpParsers.InitialiseAddressLookupHttpParser.InitialiseAddressLookupReads
 import models.core.ErrorModel
 import models.customerAddress.AddressLookupOnRampModel
-import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
 
 class InitialiseAddressLookupHttpParserSpec extends TestUtil {
 
-  val errorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
+  val errorModel: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
 
   "The InitialiseAddressLookupHttpParser" when {
 
@@ -35,7 +34,8 @@ class InitialiseAddressLookupHttpParserSpec extends TestUtil {
       "there is a redirect url" should {
 
         "return a AddressLookupOnRampModel" in {
-          InitialiseAddressLookupReads.read("", "", HttpResponse(Status.ACCEPTED,None,Map(LOCATION -> Seq("redirect/url")))) shouldBe
+          InitialiseAddressLookupReads.read("", "",
+            HttpResponse(Status.ACCEPTED, "", Map("Location" -> Seq("redirect/url")))) shouldBe
             Right(AddressLookupOnRampModel("redirect/url"))
         }
       }
@@ -46,7 +46,8 @@ class InitialiseAddressLookupHttpParserSpec extends TestUtil {
       "there is no redirect url" should {
 
         "return an ErrorModel" in {
-          InitialiseAddressLookupReads.read("", "", HttpResponse(Status.ACCEPTED,None)) shouldBe
+          InitialiseAddressLookupReads.read("", "",
+            HttpResponse(Status.ACCEPTED, "")) shouldBe
             Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
         }
       }
@@ -55,7 +56,8 @@ class InitialiseAddressLookupHttpParserSpec extends TestUtil {
     "the http response status is not ACCEPTED" should {
 
       "return an ErrorModel" in {
-        InitialiseAddressLookupReads.read("", "", HttpResponse(Status.BAD_REQUEST, None)) shouldBe
+        InitialiseAddressLookupReads.read("", "",
+          HttpResponse.apply(Status.BAD_REQUEST, "")) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }

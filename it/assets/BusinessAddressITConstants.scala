@@ -16,9 +16,6 @@
 
 package assets
 
-import config.AppConfig
-import play.api.libs.json.Json
-
 object BusinessAddressITConstants {
 
   val startHeading = "What is the new principal place of business?"
