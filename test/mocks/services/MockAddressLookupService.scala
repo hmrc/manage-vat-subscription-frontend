@@ -45,7 +45,7 @@ trait MockAddressLookupService extends UnitSpec with MockitoSugar with BeforeAnd
   }
 
   def setupMockInitialiseJourney(response: InitialiseJourneyResponse): OngoingStubbing[Future[InitialiseJourneyResponse]]  = {
-    when(mockAddressLookupService.initialiseJourney(any(), any(), any(), any()))
+    when(mockAddressLookupService.initialiseJourney(any(), any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

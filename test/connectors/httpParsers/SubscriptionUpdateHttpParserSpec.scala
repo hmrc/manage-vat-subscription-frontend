@@ -30,7 +30,8 @@ class SubscriptionUpdateHttpParserSpec extends TestUtil {
     "http response status is OK with valid json" should {
 
       val successJson = Json.obj("formBundle" -> "12345")
-      val result = SubscriptionUpdateReads.read("", "", HttpResponse(Status.OK, Some(successJson)))
+      val result = SubscriptionUpdateReads.read("", "",
+        HttpResponse(Status.OK, successJson, Map.empty[String, Seq[String]]))
 
       "return SubscriptionUpdateResponseModel" in {
         result shouldBe Right(SubscriptionUpdateResponseModel("12345"))
@@ -40,7 +41,8 @@ class SubscriptionUpdateHttpParserSpec extends TestUtil {
     "http response status is OK with invalid json" should {
 
       val invalidJson = Json.obj("invalidKey" -> "12345")
-      val result = SubscriptionUpdateReads.read("", "", HttpResponse(Status.OK, Some(invalidJson)))
+      val result = SubscriptionUpdateReads.read("", "",
+        HttpResponse(Status.OK, invalidJson, Map.empty[String, Seq[String]]))
 
       "return ErrorModel" in {
         result shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
@@ -49,7 +51,8 @@ class SubscriptionUpdateHttpParserSpec extends TestUtil {
 
     "http response status is not OK" should {
 
-      val result = SubscriptionUpdateReads.read("", "", HttpResponse(Status.INTERNAL_SERVER_ERROR, None))
+      val result = SubscriptionUpdateReads.read("", "",
+        HttpResponse(Status.INTERNAL_SERVER_ERROR, ""))
 
       "return ErrorModel" in {
         result shouldBe Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned when updating Subscription Details"))

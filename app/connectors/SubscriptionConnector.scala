@@ -22,13 +22,12 @@ import connectors.httpParsers.ResponseHttpParser._
 import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
-import models.contactPreferences.ContactPreference
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
 import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.http.HttpClient
+import uk.gov.hmrc.http.HttpClient
 
 import scala.concurrent.{ExecutionContext, Future}
 

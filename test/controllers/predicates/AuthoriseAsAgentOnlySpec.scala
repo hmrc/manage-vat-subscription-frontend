@@ -31,7 +31,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
   def target: Action[AnyContent] = {
     mockAgentOnlyAuthPredicate.async {
-      implicit request => Future.successful(Ok("test"))
+      _ => Future.successful(Ok("test"))
     }
   }
 

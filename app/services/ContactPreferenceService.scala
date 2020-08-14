@@ -21,7 +21,6 @@ import connectors.ContactPreferenceConnector
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import javax.inject.{Inject, Singleton}
 import models.contactPreferences.ContactPreference
-import models.core.ErrorModel
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}

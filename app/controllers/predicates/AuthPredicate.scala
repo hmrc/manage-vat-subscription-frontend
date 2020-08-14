@@ -30,7 +30,6 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import views.html.errors.NotSignedUpView
 import views.html.errors.agent.UnauthorisedView
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

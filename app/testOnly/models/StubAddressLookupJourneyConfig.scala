@@ -19,7 +19,7 @@ package testOnly.models
 import config.AppConfig
 import models.User
 import models.customerAddress.AddressLookupJsonBuilder
-import play.api.i18n.{Messages, MessagesApi}
+import play.api.i18n.MessagesApi
 import play.api.libs.json.{Json, OFormat}
 
 case class StubAddressLookupJourneyConfig(version: Int,
@@ -59,7 +59,7 @@ case class ConfirmPage(title: Option[String] = None,
 
 object StubAddressLookupJourneyConfig {
 
-  implicit def stubModel(implicit user: User[_], messagesApi: MessagesApi, messages: Messages, config: AppConfig): StubAddressLookupJourneyConfig = {
+  implicit def stubModel(implicit user: User[_], messagesApi: MessagesApi, config: AppConfig): StubAddressLookupJourneyConfig = {
     Json.toJson(AddressLookupJsonBuilder(
       testOnly.controllers.routes.StubAddressLookupController.callback("1").url)
     ).as[StubAddressLookupJourneyConfig]

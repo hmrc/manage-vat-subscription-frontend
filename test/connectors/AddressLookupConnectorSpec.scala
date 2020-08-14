@@ -37,7 +37,6 @@ import assets.CustomerAddressTestConstants._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
-import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
@@ -46,7 +45,7 @@ import scala.concurrent.Future
 
 class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
-  val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
+  val errorModel: HttpResponse = HttpResponse(Status.BAD_REQUEST, "Error Message")
 
   object TestAddressLookupConnector extends AddressLookupConnector(mockHttp,mockConfig)
 
@@ -92,7 +91,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
           "return a Right with an AddressLookupOnRampModel" in {
 
-            val successfulResponse = HttpResponse(Status.ACCEPTED, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            val successfulResponse = HttpResponse(Status.ACCEPTED, continueUrl)
             setupMockHttpPost(s"${mockConfig.addressLookupService}/api/v2/init")(successfulResponse)
             await(initaliseJourneyResult) shouldBe successfulResponse
           }
@@ -102,7 +101,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
           "return an Left with an ErrorModel" in {
 
-            val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, responseHeaders = Map(LOCATION -> Seq(continueUrl)))
+            val failedResponse = HttpResponse(Status.INTERNAL_SERVER_ERROR, continueUrl)
             setupMockHttpPost(s"${mockConfig.addressLookupService}/api/v2/init")(failedResponse)
             await(initaliseJourneyResult) shouldBe failedResponse
           }

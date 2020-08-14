@@ -23,9 +23,8 @@ import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 import play.api.{Configuration, Environment}
-import uk.gov.hmrc.play.binders.ContinueUrl
+import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
-
 
 import scala.io.Source
 
@@ -102,7 +101,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override lazy val signInContinueBaseUrl: String = servicesConfig.getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String =
-    ContinueUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl
+    SafeRedirectUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl
 
   private lazy val signInOrigin = servicesConfig.getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
@@ -167,7 +166,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val agentInvitationsFastTrack: String = servicesConfig.getString(Keys.agentInvitationsFastTrack)
 
   override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
-    s"&backUrl=${ContinueUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
+    s"&backUrl=${SafeRedirectUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
 
   override lazy val vatCorrespondenceChangeEmailUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeEmailUrl)
   override lazy val vatCorrespondenceChangeLandlineNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeLandlineNumberUrl)
@@ -186,7 +185,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     servicesConfig.getString(Keys.vatAgentClientLookupFrontendHost) + servicesConfig.getString(Keys.vatAgentClientLookupFrontendUrl)
 
   def vatAgentClientLookupHandoff(redirectUrl: String): String =
-    vatAgentClientLookupFrontendUrl + s"/client-vat-number?redirectUrl=${ContinueUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
+    vatAgentClientLookupFrontendUrl + s"/client-vat-number?redirectUrl=${SafeRedirectUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
 
   override def agentClientLookupUrl: String =
     if (features.stubAgentClientLookup()) {
@@ -201,7 +200,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     servicesConfig.getString(ConfigKeys.vatAgentClientLookupFrontendClientAccount)
 
   def vatAgentClientLookupUnauthorised(redirectUrl: String): String =
-    vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${ContinueUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
+    vatAgentClientLookupFrontendUrl + s"/unauthorised-for-client?redirectUrl=${SafeRedirectUrl(servicesConfig.getString(Keys.host) + redirectUrl).encodedUrl}"
 
   override def agentClientUnauthorisedUrl: String =
     if (features.stubAgentClientLookup()) {

@@ -44,7 +44,7 @@ object PaymentsTestConstants extends {
 
   val successPaymentsResponseJson: JsObject = Json.obj("nextUrl" -> "continueUrl")
 
-  val successBadJson = Some(Json.obj("nextUrl" -> 1))
+  val successBadJson: JsObject = Json.obj("nextUrl" -> 1)
 
   val successPaymentsResponse: String = "continueUrl"
 

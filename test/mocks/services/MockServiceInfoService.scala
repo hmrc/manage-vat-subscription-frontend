@@ -24,8 +24,6 @@ import play.twirl.api.Html
 import services.ServiceInfoService
 import uk.gov.hmrc.play.test.UnitSpec
 
-import scala.concurrent.ExecutionContext
-
 trait MockServiceInfoService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
 
   val mockServiceInfoService: ServiceInfoService = mock[ServiceInfoService]
@@ -35,8 +33,8 @@ trait MockServiceInfoService extends UnitSpec with MockitoSugar with BeforeAndAf
     reset(mockServiceInfoService)
   }
 
-  def getPartial(response: Html)(implicit executionContext: ExecutionContext): Unit= {
-    when(mockServiceInfoService.getPartial()(ArgumentMatchers.any(),ArgumentMatchers.any(),ArgumentMatchers.any()))
+  def getPartial(response: Html): Unit= {
+    when(mockServiceInfoService.getPartial()(ArgumentMatchers.any(), ArgumentMatchers.any()))
       .thenReturn(response)
   }
 }

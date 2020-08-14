@@ -25,7 +25,7 @@ import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import play.mvc.Http.HeaderNames
 import testOnly.views.html.StubAddressLookupView
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,7 +36,7 @@ class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
                                             implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  def initialiseJourney(): Action[JsValue] = Action.async(parse.json) { implicit user =>
+  def initialiseJourney(): Action[JsValue] = Action.async(parse.json) { _ =>
     Future.successful(
       Accepted(Json.toJson(AddressModel(Some("line1"), Some("line2"), None, None, None, Some("EN"))))
         .withHeaders(HeaderNames.LOCATION -> testOnly.controllers.routes.StubAddressLookupController.show().url)

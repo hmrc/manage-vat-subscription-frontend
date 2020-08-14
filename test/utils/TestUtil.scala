@@ -29,7 +29,6 @@ import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.bootstrap.tools.Stubs.stubMessagesControllerComponents
 
 import uk.gov.hmrc.play.test.UnitSpec
 
@@ -47,7 +46,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     SharedMetricRegistries.clear()
   }
 
-  lazy val mcc: MessagesControllerComponents = stubMessagesControllerComponents()
+  lazy val mcc: MessagesControllerComponents = inject[MessagesControllerComponents]
 
   implicit lazy val messagesApi: MessagesApi = inject[MessagesApi]
   implicit lazy val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)

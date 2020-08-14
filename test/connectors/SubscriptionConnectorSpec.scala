@@ -33,7 +33,7 @@ import scala.concurrent.Future
 
 class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
-  val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
+  val errorModel: HttpResponse = HttpResponse(Status.BAD_REQUEST, "Error Message")
 
   object TestSubscriptionConnector extends SubscriptionConnector(mockHttp, mockConfig, inject[CustomerCircumstancesHttpParser])
 

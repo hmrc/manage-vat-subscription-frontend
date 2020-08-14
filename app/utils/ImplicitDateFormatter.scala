@@ -16,9 +16,9 @@
 
 package utils
 
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle._
-import java.time.{LocalDate, LocalDateTime, ZonedDateTime}
 import java.util.Locale._
 
 trait ImplicitDateFormatter {

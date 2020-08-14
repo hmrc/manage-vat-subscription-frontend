@@ -17,7 +17,7 @@
 package models.customerAddress
 
 import assets.CustomerAddressTestConstants._
-import play.api.libs.json.{JsSuccess, Json}
+import play.api.libs.json.Json
 import uk.gov.hmrc.play.test.UnitSpec
 
 class AddressModelSpec extends UnitSpec {

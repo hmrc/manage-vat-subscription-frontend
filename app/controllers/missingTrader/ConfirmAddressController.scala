@@ -27,7 +27,7 @@ import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{CustomerCircumstanceDetailsService, PPOBService}
-import uk.gov.hmrc.play.bootstrap.controller.FrontendController
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
 
 import scala.concurrent.{ExecutionContext, Future}

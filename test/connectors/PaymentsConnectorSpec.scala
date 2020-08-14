@@ -16,23 +16,19 @@
 
 package connectors
 
-import assets.BaseTestConstants.vrn
-import assets.PaymentsTestConstants._
 import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import mocks.MockHttp
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
-import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
-import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
 class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
-  val errorModel = HttpResponse(Status.BAD_REQUEST, responseString = Some("Error Message"))
+  val errorModel: HttpResponse = HttpResponse(Status.BAD_REQUEST, "Error Message")
 
   object TestPaymentsConnector extends PaymentsConnector(mockHttp,mockConfig)
 

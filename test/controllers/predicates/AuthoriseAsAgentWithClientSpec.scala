@@ -16,9 +16,7 @@
 
 package controllers.predicates
 
-import assets.messages.AgentJourneyDisabledPageMessages
 import mocks.MockAuth
-import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}

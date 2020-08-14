@@ -18,8 +18,8 @@ package controllers
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
+import assets.PPOBAddressTestConstants.email
 import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
-import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxPending, email}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
@@ -29,8 +29,8 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.test.Helpers._
-import uk.gov.hmrc.http.HeaderCarrier
 import play.twirl.api.Html
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.ExecutionContext
