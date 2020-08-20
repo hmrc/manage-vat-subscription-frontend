@@ -21,13 +21,7 @@
 @(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None, emailVerified: Boolean = false)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @changeClientLink = {
-    @if(appConfig.features.changeClientFeature()) {
-        <p id="change-client-text">
-            <a id="change-client-link"
-            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">
-            @messages("common.agent.changeClient")</a>
-        </p>
-    } else {
+    @if(!appConfig.features.changeClientFeature()) {
         <p id="change-client-text">
             @messages("common.agent.changeClient.youCan")
             <a id="change-client-link"
@@ -35,6 +29,10 @@
             @messages("common.agent.changeClient.link")</a>.
         </p>
     }
+}
+
+@finishButtonText = @{
+    if(user.isAgent) "common.agent.backToClientDetails" else "common.finish"
 }
 
 @mainTemplate(
@@ -95,7 +93,7 @@
        class="button"
        role="button"
        type="submit">
-        @messages("common.finish")
+        @messages(finishButtonText)
     </a>
 
 }
