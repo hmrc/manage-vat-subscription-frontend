@@ -28,6 +28,7 @@ trait BaseMessages {
   val saveAndContinue = "Save and continue"
   val signOut = "Sign out"
   val finish = "Finish"
+  val finishAgent = "Back to client’s details"
   val back = "Back"
   val errorHeading = "There is a problem"
 
