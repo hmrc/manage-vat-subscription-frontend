@@ -27,8 +27,6 @@ common.newTab = (yn agor tab newydd)
 common.yes = Iawn
 common.no = Na
 
-common.agent.changeClient.youCan = Gallwch
-common.agent.changeClient.link = newid manylion cleient arall
 common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.
 common.agent.updateClient1 = Byddwn yn cysylltu â
