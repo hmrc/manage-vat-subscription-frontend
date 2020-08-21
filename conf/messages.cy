@@ -33,7 +33,7 @@ common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.
 common.agent.updateClient1 = Byddwn yn cysylltu â
 common.agent.updateClient2 = gyda diweddariad.
-common.agent.backToClientDetails = Yn ôl i fanylion y cleient
+common.agent.backToClientDetails = Yn ôl i fanylion y cleientI
 
 global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – TAW – GOV.UK
 global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
