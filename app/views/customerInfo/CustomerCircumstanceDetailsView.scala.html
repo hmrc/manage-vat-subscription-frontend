@@ -289,16 +289,6 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     </div>
 }
 
-@oldChangeClientLink = {
-    @if(!appConfig.features.changeClientFeature()) {
-        <p id="change-client-text">
-            @messages("common.agent.changeClient.youCan")
-            <a id="change-client-link"
-            href="@controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient()">@messages("common.agent.changeClient.link")</a>.
-        </p>
-    }
-}
-
 @mainTemplate(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
@@ -428,12 +418,6 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
                 }
 
         </div>
-
-
-
-    @if(user.isAgent) {
-        @oldChangeClientLink
-    }
 
     <details>
         <summary>

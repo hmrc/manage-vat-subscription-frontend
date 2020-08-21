@@ -52,10 +52,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(2) shouldBe viewMessages.contactDetails
         }
 
-        "not display the 'change another clients details' link" in {
-          elementExtinct("#change-client-text")
-        }
-
         s"have a button to finish" which {
 
           s"has the correct text of '$finish" in {
@@ -86,10 +82,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
         s"have the correct p2 of '${viewMessages.contactDetails}'" in {
           paragraph(2) shouldBe viewMessages.contactDetails
-        }
-
-        "not display the 'change another clients details' link" in {
-          elementExtinct("#change-client-text")
         }
 
         s"have a button to finish" which {
@@ -126,10 +118,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         paragraph(2) shouldBe viewMessages.contactDetails
       }
 
-      "not display the 'change another clients details' link" in {
-        elementExtinct("#change-client-text")
-      }
-
       s"have a button to finish" which {
 
         s"has the correct text of '$finish" in {
@@ -161,10 +149,6 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
       s"have the correct p2 of '${viewMessages.contactDetails}'" in {
         paragraph(2) shouldBe viewMessages.contactDetails
-      }
-
-      "not display the 'change another clients details' link" in {
-        elementExtinct("#change-client-text")
       }
 
       s"have a button to finish" which {
@@ -209,16 +193,10 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(2) shouldBe viewMessages.p2Agent
         }
 
-        "display the 'change another clients details' link" in {
-          elementText("#change-client-text") shouldBe viewMessages.newChangeClientDetails
-          element("#change-client-link").attr("href") shouldBe
-            controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-        }
-
         s"have a button to finish" which {
 
-          s"has the correct text of '$finish" in {
-            elementText("#finish") shouldBe finish
+          s"has the correct text of '$finishAgent" in {
+            elementText("#finish") shouldBe finishAgent
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
@@ -252,16 +230,10 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(2) shouldBe viewMessages.p2Agent
         }
 
-        "display the 'change another clients details' link" in {
-          elementText("#change-client-text") shouldBe viewMessages.oldChangeClientDetails
-          element("#change-client-link").attr("href") shouldBe
-            controllers.agentClientRelationship.routes.ConfirmClientVrnController.changeClient().url
-        }
-
         "have a button to finish" which {
 
-          s"has the correct text of '$finish" in {
-            elementText("#finish") shouldBe finish
+          s"has the correct text of '$finishAgent" in {
+            elementText("#finish") shouldBe finishAgent
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
