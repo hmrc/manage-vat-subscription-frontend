@@ -28,13 +28,11 @@ common.pageTitle = {0} - {1} - GOV.UK
 common.yes = Yes
 common.no = No
 
-common.agent.changeClient.youCan = You can
-common.agent.changeClient.link = change another client’s details
 common.agent.yourClient = your client
 common.agent.confirmationLetter = We will send a confirmation letter to the agency address registered with HMRC within 15 working days.
 common.agent.updateClient1 = We’ll contact
 common.agent.updateClient2 = with an update.
-common.agent.backToClientDetails = Back to client details
+common.agent.backToClientDetails = Back to client’s details
 
 global.error.InternalServerError500.title = There is a problem with the service - VAT - GOV.UK
 global.error.InternalServerError500.heading = Sorry, there is a problem with the service
