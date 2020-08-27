@@ -270,6 +270,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   elementText("#contact-details-section > h2") shouldBe viewMessages.contactDetailsHeading
                 }
 
+                "has hidden text supporting the nudge icon" in {
+                  elementText(".icon-important") shouldBe viewMessages.warning
+                }
+
                 s"has the wording '${viewMessages.unverifiedEmailNudge}' " in {
                   elementText("#contact-details-section > p:nth-of-type(1) > strong") shouldBe viewMessages.unverifiedEmailNudge
                 }
