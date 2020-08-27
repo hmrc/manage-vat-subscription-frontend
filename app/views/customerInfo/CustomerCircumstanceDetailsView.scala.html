@@ -386,7 +386,7 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
                     @if(circumstances.email.isDefined && !circumstances.emailVerified && !circumstances.pendingPPOBSection) {
                         <p class="notice">
                             <i class="icon icon-important">
-                                <span class="visually-hidden">Warning</span>
+                                <span class="visually-hidden">@messages("common.warning")</span>
                             </i>
                             <strong class="bold-small">
                                 @messages("emailWarning.confirmEmail")
