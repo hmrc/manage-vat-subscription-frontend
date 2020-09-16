@@ -16,6 +16,7 @@
 
 package views.templates.inputs
 
+import akka.http.scaladsl.model.headers.LinkParams.title
 import play.api.data.{Field, FormError}
 import play.twirl.api.Html
 import testOnly.forms.test.TextInputForm
@@ -39,23 +40,19 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
       val expectedMarkup = Html(
         s"""
-           |
            |<div class="form-field">
-           |  <label for="$fieldName" class="  ">
-           |      <span class="form-label visuallyhidden">
-           |          $labelText
-           |      </span>
-           |      <span class="form-hint">
-           |          $hintText
-           |      </span>
-           |      <input type="text" class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="">
-           |  </label>
+           |<fieldset aria-describedby="form-hint">
+           |<div class="form-field">
+           |<h1 id="page-heading"><label for="$fieldName" class="heading-large">$title</label></h1>
+           |<input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
+           |</div>
+           |</fieldset>
            |</div>
            |
         """.stripMargin
       )
 
-      val markup = injectedView(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -69,23 +66,21 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
       val expectedMarkup = Html(
         s"""
-           |
-           |<div class="form-field">
-           |  <label for="$fieldName" class="  ">
-           |      <span class="form-label visuallyhidden">
-           |          $labelText
-           |      </span>
-           |      <span class="form-hint">
-           |          $hintText
-           |      </span>
-           |      <input type="text" class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="$value">
-           |  </label>
-           |</div>
-           |
+           |<div class="form-group">
+           |<fieldset aria-describedby="form-hint form-error">
+           |<div class="form-field--error panel-border-narrow">
+           |<h1 id="page-heading"><label for="$fieldName" class="heading-large">$title</label></h1>
+           |<span id="form-error" class="error-message">
+           |             |        <span class="visuallyhidden">Error:</span>
+           |             |        ERROR
+           |             |      </span>
+           |             |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
+           |             |    </div>
+           |             |  </fieldset>
         """.stripMargin
       )
 
-      val markup = injectedView(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)
@@ -117,7 +112,7 @@ class TextTemplateSpec extends TemplateBaseSpec {
         """.stripMargin
       )
 
-      val markup = injectedView(field, labelText, Some(hintText))
+      val markup = injectedView(field, labelText, None)
 
       "generate the correct markup" in {
         formatHtml(markup) shouldBe formatHtml(expectedMarkup)

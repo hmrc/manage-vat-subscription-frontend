@@ -26,7 +26,7 @@
 @(ppob: PPOBAddress, missingTraderForm: Form[YesNo])(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @questionContent = {
-    <div class="panel panel-border-wide">
+    <div id="form-hint"  class="panel panel-border-wide">
         @renderAddress(ppob)
     </div>
 
@@ -44,7 +44,6 @@
 
     @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit, 'novalidate -> "novalidate") {
 
-        <div id="@yesNo" class="form-group">
         @radioGroup(
             field = missingTraderForm(yesNo),
             choices = Seq(
@@ -54,7 +53,6 @@
             additionalContent = Some(questionContent),
             inline = true
         )
-        </div>
 
         <button class="button" type ="submit" id="continue">
             @messages("common.continue")

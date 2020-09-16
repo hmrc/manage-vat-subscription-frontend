@@ -52,8 +52,10 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |  <div>
-           |    <fieldset>
+           |<div class="form-group">
+           |<fieldset aria-describedby="form-hint">
+           |<div class="form-field">
+           |
            |      <legend>
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
@@ -65,7 +67,6 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |        ${generateExpectedRadioMarkup("value4", "display4")}
            |        ${generateExpectedRadioMarkup("value5", "display5")}
            |      </div>
-           |
            |   </fieldset>
            |  </div>
         """.stripMargin
@@ -82,8 +83,10 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("value2"))
       val expectedMarkup = Html(
         s"""
-           |  <div>
-           |     <fieldset>
+           |<div class="form-group">
+           |<fieldset aria-describedby="form-hint">
+           |<div class="form-field">
+           |
            |      <legend>
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
@@ -112,13 +115,18 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(FormError("text", errorMessage)), None)
       val expectedMarkup = Html(
         s"""
-           |  <div class="form-field--error">
-           |    <fieldset>
+           |<div class="form-group">
+           |<fieldset aria-describedby="form-hint form-error">
+           |<div class="form-field--error panel-border-narrow">
+           |
            |      <legend>
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
            |
-           |      <span class="error-message">$errorMessage</span>
+           |      <span id="form-error" class="error-message">
+           |      <span class="visuallyhidden">Error:</span>
+           |           $errorMessage
+           |           </span>
            |
            |      <div>
            |        ${generateExpectedRadioMarkup("value1", "display1")}
@@ -144,8 +152,9 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |<div>
-           |    <fieldset>
+           |<div class="form-group">
+           |  <fieldset aria-describedby="form-hint">
+           |    <div class="form-field">
            |      <legend>
            |        <h1 id="page-heading" class="heading-large">$labelText</h1>
            |      </legend>
@@ -159,7 +168,6 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
            |        ${generateExpectedRadioMarkup("value4", "display4")}
            |        ${generateExpectedRadioMarkup("value5", "display5")}
            |      </div>
-           |
            |    </fieldset>
            |</div>
         """.stripMargin
