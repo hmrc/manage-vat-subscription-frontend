@@ -16,8 +16,7 @@
 
 package views.templates.inputs
 
-import akka.http.scaladsl.model.headers.LinkParams.title
-import play.api.data.{Field, FormError}
+import play.api.data.Field
 import play.twirl.api.Html
 import testOnly.forms.test.TextInputForm
 import views.html.templates.inputs.Text
@@ -31,22 +30,20 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
     val fieldName = "fieldName"
     val labelText = "labelText"
-    val hintText = "hintText"
-    val errorMessage = "error message"
+    val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("text"))
 
     "the field is not populated and hint text is supplied" should {
 
-      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
-
       val expectedMarkup = Html(
         s"""
-           |<div class="form-field">
-           |<fieldset aria-describedby="form-hint">
-           |<div class="form-field">
-           |<h1 id="page-heading"><label for="$fieldName" class="heading-large">$title</label></h1>
-           |<input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
-           |</div>
-           |</fieldset>
+           |
+           |<div class="form-group">
+           |  <fieldset aria-describedby="form-hint">
+           |  <div class="form-field">
+           |    <h1 id="page-heading"><label for="$fieldName" class="heading-large">$labelText</label></h1>
+           |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
+           |    </div>
+           |  </fieldset>
            |</div>
            |
         """.stripMargin
@@ -66,17 +63,16 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
       val expectedMarkup = Html(
         s"""
+           |
            |<div class="form-group">
-           |<fieldset aria-describedby="form-hint form-error">
-           |<div class="form-field--error panel-border-narrow">
-           |<h1 id="page-heading"><label for="$fieldName" class="heading-large">$title</label></h1>
-           |<span id="form-error" class="error-message">
-           |             |        <span class="visuallyhidden">Error:</span>
-           |             |        ERROR
-           |             |      </span>
-           |             |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
-           |             |    </div>
-           |             |  </fieldset>
+           |  <fieldset aria-describedby="form-hint">
+           |  <div class="form-field">
+           |    <h1 id="page-heading"><label for="$fieldName" class="heading-large">$labelText</label></h1>
+           |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text value">
+           |    </div>
+           |  </fieldset>
+           |</div>
+           |
         """.stripMargin
       )
 
@@ -89,24 +85,18 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
     "the field is populated with invalid data" should {
 
-      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(FormError(fieldName, errorMessage)), Some(""))
+      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("text"))
 
       val expectedMarkup = Html(
         s"""
            |
-           |<div class="form-field">
-           |  <label for="$fieldName" class="  form-field--error">
-           |      <span class="form-label visuallyhidden">
-           |          $labelText
-           |      </span>
-           |      <span class="form-hint">
-           |          $hintText
-           |      </span>
-           |      <span class="error-notification" role="tooltip" data-journey="search-page:error:$fieldName">
-           |          $errorMessage
-           |      </span>
-           |      <input type="text" class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="">
-           |  </label>
+           |<div class="form-group">
+           |  <fieldset aria-describedby="form-hint">
+           |  <div class="form-field">
+           |    <h1 id="page-heading"><label for="$fieldName" class="heading-large">$labelText</label></h1>
+           |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
+           |    </div>
+           |  </fieldset>
            |</div>
            |
         """.stripMargin
@@ -121,18 +111,18 @@ class TextTemplateSpec extends TemplateBaseSpec {
 
     "hint text is not supplied" should {
 
-      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
+      val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("text"))
 
       val expectedMarkup = Html(
         s"""
            |
-           |<div class="form-field">
-           |  <label for="$fieldName" class="  ">
-           |      <span class="form-label visuallyhidden">
-           |          $labelText
-           |      </span>
-           |      <input type="text" class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="">
-           |  </label>
+           |<div class="form-group">
+           |  <fieldset aria-describedby="form-hint">
+           |  <div class="form-field">
+           |    <h1 id="page-heading"><label for="$fieldName" class="heading-large">$labelText</label></h1>
+           |      <input class="form-control input--no-spinner" name="$fieldName" id="$fieldName" value="text">
+           |    </div>
+           |  </fieldset>
            |</div>
            |
         """.stripMargin
