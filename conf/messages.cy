@@ -27,6 +27,7 @@ common.newTab = (yn agor tab newydd)
 common.yes = Iawn
 common.no = Na
 common.warning = Rhybudd
+common.error = Gwall:
 
 common.agent.yourClient = eich cleient
 common.agent.confirmationLetter = Byddwn yn anfon llythyr o gadarnhad i gyfeiriad yr asiantaeth sydd wedi’i gofrestru gyda CThEM cyn pen 15 diwrnod gwaith.

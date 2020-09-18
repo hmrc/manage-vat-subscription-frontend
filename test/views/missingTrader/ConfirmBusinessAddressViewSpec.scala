@@ -33,9 +33,9 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val noOption = "div.multiple-choice:nth-child(2) > label"
     val button = ".button"
     val errorHeading = "#error-summary-display"
-    val error = ".error-message"
+    val error = "#form-error"
     val address: Int => String = num => s".panel-border-wide li:nth-child($num)"
-    val additionalInfo = "#yes_no > div > fieldset > span"
+    val additionalInfo = "#content > article > form > div > fieldset > div > span.form-hint"
   }
 
   val injectedView: ConfirmBusinessAddressView = inject[ConfirmBusinessAddressView]
@@ -114,7 +114,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     }
 
     "display the correct error messages" in {
-      elementText(Selectors.error) shouldBe viewMessages.errorMessage
+      elementText(Selectors.error) shouldBe "Error: Select yes if the business trades from this address most of the time"
     }
   }
 

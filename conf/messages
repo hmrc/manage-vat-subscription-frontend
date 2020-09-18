@@ -28,6 +28,7 @@ common.pageTitle = {0} - {1} - GOV.UK
 common.yes = Yes
 common.no = No
 common.warning = Warning
+common.error = Error:
 
 common.agent.yourClient = your client
 common.agent.confirmationLetter = We will send a confirmation letter to the agency address registered with HMRC within 15 working days.

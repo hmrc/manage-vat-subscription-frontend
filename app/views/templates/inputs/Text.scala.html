@@ -14,27 +14,32 @@
  * limitations under the License.
  *@
 
-@import uk.gov.hmrc.play.views.html.helpers.Input
+@this()
 
-@this(input: Input)
+@(field: Field,
+pageTitle: String,
+additionalContent: Option[Html] = None)(implicit messages: Messages)
 
-@(field: Field, label: String, hint: Option[String] = None)(implicit messages: Messages)
+<div class="form-group">
 
-<div class="form-field">
-    @if(hint.isDefined) {
-        @input(
-            field,
-            '_label -> messages(label),
-            '_labelTextClass -> "form-label visuallyhidden",
-            '_inputHint -> messages(hint.get),
-            '_inputClass -> "form-control input--no-spinner"
-        )
-    } else {
-        @input(
-            field,
-            '_label -> messages(label),
-            '_labelTextClass -> "form-label visuallyhidden",
-            '_inputClass -> "form-control input--no-spinner"
-        )
-    }
+<fieldset aria-describedby="form-hint@if(field.hasErrors){ form-error}">
+
+    <div class="form-field@if(field.hasErrors){--error panel-border-narrow}">
+
+        <h1 id="page-heading"><label for="@field.id" class="heading-large">@messages(pageTitle)</label></h1>
+
+        @field.errors.headOption.map { error =>
+        <span id="form-error" class="error-message">
+          <span class="visuallyhidden">@messages("common.error")</span>
+          @messages(error.message, error.args: _*)
+        </span>
+        }
+
+        <input class="form-control input--no-spinner"
+               name="@field.name"
+               id="@field.name"
+               value="@field.value.getOrElse("")"/>
+
+    </div>
+</fieldset>
 </div>
