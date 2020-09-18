@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package views.templates.inputs
+package views.templates.errors
 
+import forms.MissingTraderForm
 import views.ViewBaseSpec
 import views.html.templates.errors.ErrorSummary
-import play.twirl.api.Html
-import forms.MissingTraderForm
 
 class ErrorSummarySpec extends ViewBaseSpec {
 
