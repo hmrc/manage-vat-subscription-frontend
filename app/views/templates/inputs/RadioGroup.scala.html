@@ -24,7 +24,8 @@
   additionalContent: Option[Html] = None,
   inline: Boolean = false)(implicit messages: Messages)
 
-<div class="form-group">
+<div id="yesNo" class="form-group">
+
     <fieldset aria-describedby="form-hint@if(field.hasErrors){ form-error}">
 
         <div class="form-field@if(field.hasErrors){--error panel-border-narrow}">
