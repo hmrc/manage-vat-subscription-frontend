@@ -52,7 +52,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |<div id="yesNo" class="form-group">
+           |<div id="yes_no" class="form-group">
            |  <fieldset aria-describedby="form-hint">
            |    <div class="form-field">
            |      <legend>
@@ -82,7 +82,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), Some("value2"))
       val expectedMarkup = Html(
         s"""
-           |<div id="yesNo" class="form-group">
+           |<div id="yes_no" class="form-group">
            |  <fieldset aria-describedby="form-hint">
            |    <div class="form-field">
            |      <legend>
@@ -113,7 +113,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(FormError("text", errorMessage)), None)
       val expectedMarkup = Html(
         s"""
-           |<div id="yesNo" class="form-group">
+           |<div id="yes_no" class="form-group">
            |  <fieldset aria-describedby="form-hint form-error">
            |    <div class="form-field--error panel-border-narrow">
            |      <legend>
@@ -149,7 +149,7 @@ class RadioGroupTemplateSpec extends TemplateBaseSpec {
       val field: Field = Field(TextInputForm.form, fieldName, Seq(), None, Seq(), None)
       val expectedMarkup = Html(
         s"""
-           |<div id="yesNo" class="form-group">
+           |<div id="yes_no" class="form-group">
            |  <fieldset aria-describedby="form-hint">
            |    <div class="form-field">
            |      <legend>
