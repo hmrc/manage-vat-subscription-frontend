@@ -30,7 +30,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
   val ukMode: Boolean = true
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
-  val accessibilityFooterUrl: String =conf.accessibilityReportUrl
+  val accessibilityFooterUrl: String = conf.accessibilityReportUrl
 
   object Version2 {
 
