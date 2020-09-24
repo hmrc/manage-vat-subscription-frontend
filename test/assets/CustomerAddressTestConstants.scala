@@ -157,6 +157,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "accessibilityFooterUrl" -> "/vat-through-software/accessibility-statement",
       "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
       "ukMode" -> true,
@@ -227,6 +228,7 @@ object CustomerAddressTestConstants extends BaseMessages {
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
+      "accessibilityFooterUrl" -> "/vat-through-software/accessibility-statement",
       "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
       "ukMode" -> true,

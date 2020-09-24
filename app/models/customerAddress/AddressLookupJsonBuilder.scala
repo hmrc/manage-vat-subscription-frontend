@@ -30,6 +30,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
   val ukMode: Boolean = true
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
+  val accessibilityFooterUrl: String =conf.accessibilityReportUrl
 
   object Version2 {
 
@@ -86,6 +87,7 @@ object AddressLookupJsonBuilder {
             "version" -> 2,
             "options" -> Json.obj(
               "continueUrl" -> data.continueUrl,
+              "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
               "deskProServiceName" -> data.deskproServiceName,
               "showPhaseBanner" -> data.showPhaseBanner,
               "ukMode" -> data.ukMode,
