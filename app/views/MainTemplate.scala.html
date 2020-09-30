@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.play.views.html.layouts.Article
 @import play.twirl.api.HtmlFormat
 
-@this(GovukWrapper: GovukWrapper, article: Article, sidebar: Sidebar)
+@this(govukWrapper: GovukWrapper, article: Article, sidebar: Sidebar)
 
 @(title: String,
   sidebarLinks: Option[Html] = None,
@@ -34,8 +34,6 @@
 )(mainContent: Html)(implicit request : Request[_], messages: Messages)
 
 
-
-
 @serviceInfoContent = {}
 
 @sidebarContent = {
@@ -48,7 +46,7 @@
     @scriptElem.fold(HtmlFormat.empty)(x => x)
 }
 
-@GovukWrapper(appConfig = appConfig,
+@govukWrapper(appConfig = appConfig,
                title = messages("common.pageTitle" , title , generateHeader),
                mainClass = mainClass,
                bodyClasses = bodyClasses,
