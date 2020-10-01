@@ -21,16 +21,16 @@
 @import uk.gov.hmrc.play.views.html.helpers.ReportAProblemLink
 
 @this(head: Head,
-headerNav: HeaderNav,
-footer: Footer,
-serviceInfo: ServiceInfo,
-mainContentHeader: MainContentHeader,
-mainContent: MainContent,
-sidebar: Sidebar,
-article: Article,
-reportAProblemLink: ReportAProblemLink,
-footerLinks: FooterLinks,
-hmrcGovUkTemplate: GovUkTemplate)
+      headerNav: HeaderNav,
+      footer: Footer,
+      serviceInfo: ServiceInfo,
+      mainContentHeader: MainContentHeader,
+      mainContent: MainContent,
+      sidebar: Sidebar,
+      article: Article,
+      reportAProblemLink: ReportAProblemLink,
+      footerLinks: FooterLinks,
+      hmrcGovUkTemplate: GovUkTemplate)
 
 @(appConfig: config.AppConfig,
   title: String,
@@ -55,6 +55,10 @@ hmrcGovUkTemplate: GovUkTemplate)
 }
 
 @scriptElement = {
+    <!--[if !IE]>-->
+        <script type="text/javascript" src="@appConfig.trackingConsentUrl"></script>
+    <!--<![endif]-->
+
     <script type="text/javascript" src='@routes.Assets.at("javascript/vat-v1.0.js")'></script>
 
     <script>
