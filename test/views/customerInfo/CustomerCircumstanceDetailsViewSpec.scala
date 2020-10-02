@@ -326,31 +326,28 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         "with pending changes" when {
 
-          "deregistering" when {
+          "deregistration is pending" should {
 
-            "deregistration is still pending" should {
+            lazy val view = injectedView(customerInformationModelDeregPending, getPartialHtmlNotAgent)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              lazy val view = injectedView(customerInformationModelDeregPending, getPartialHtmlNotAgent)(user, messages, mockConfig)
-              lazy implicit val document: Document = Jsoup.parse(view.body)
+            "have a section for return frequency" which {
 
-              "have a section for return frequency" which {
+              "has the heading" in {
+                elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
+              }
 
-                "has the heading" in {
-                  elementText("#vat-return-dates-text") shouldBe viewMessages.returnFrequencyHeading
-                }
+              "has the correct value output for the current frequency" in {
+                elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+              }
 
-                "has the correct value output for the current frequency" in {
-                  elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
-                }
-
-                "has no change link or pending status" in {
-                  document.select("#vat-return-dates-status").isEmpty shouldBe true
-                }
+              "has no change link or pending status" in {
+                document.select("#vat-return-dates-status").isEmpty shouldBe true
               }
             }
           }
 
-          "with pending PPOB" should {
+          "PPOB is pending" should {
 
             lazy val view = injectedView(customerInformationPendingPPOBModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -365,21 +362,40 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
           }
 
-          "with pending Website" when {
+          "website is pending" should {
 
-            "the website has been changed" should {
+            lazy val view = injectedView(customerInformationPendingWebsiteModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              lazy val view = injectedView(customerInformationPendingWebsiteModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
-              lazy implicit val document: Document = Jsoup.parse(view.body)
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-website-address-status") shouldBe viewMessages.pending
+            }
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-website-address-status") shouldBe viewMessages.pending
-              }
+            s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
+              element("#vat-website-address-status").attr("aria-label") shouldBe
+                viewMessages.pendingWebsiteAddressHidden
+            }
+          }
 
-              s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
-                element("#vat-website-address-status").attr("aria-label") shouldBe
-                  viewMessages.pendingWebsiteAddressHidden
-              }
+          "return frequency is pending" should {
+
+            lazy val view = injectedView(customerInformationPendingReturnPeriodModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"have link text of '${viewMessages.pending}'" in {
+              elementText("#vat-return-dates-status") shouldBe viewMessages.pending
+            }
+
+            s"have the correct aria label text '${viewMessages.pendingReturnFrequencyHidden}'" in {
+              element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.pendingReturnFrequencyHidden
+            }
+
+            "display the existing approved return dates" in {
+              elementText("#vat-return-dates") shouldBe ReturnFrequencyMessages.option3Mar
+            }
+
+            "display a panel with information regarding when the new dates will be applied" in {
+              elementText(".panel-border-wide") shouldBe viewMessages.newReturnDatesApplied
             }
           }
 
@@ -397,9 +413,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 viewMessages.pendingWebsiteAddressHidden
             }
           }
-
         }
-
       }
 
       "with no website" should {

@@ -67,6 +67,10 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val newChangeClientDetails = "Change client"
   val deregText: String => String = date => s"VAT registration cancelled on on $date"
   val changeNotListed: String = "The change I want to make is not listed"
-  val helpText: String = "You can make any other changes (opens in a new tab) using a form. You must print and complete this form before posting it to HMRC."
+  val helpText: String = "You can make any other changes (opens in a new tab) using a form. " +
+    "You must print and complete this form before posting it to HMRC."
   val backText: String = "Back"
+
+  val newReturnDatesApplied: String = "You have asked to change the VAT Return dates. " +
+    "The new dates will be shown when the change has been applied to this account."
 }
