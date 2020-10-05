@@ -99,6 +99,7 @@ customer_details.returnFrequencySection.heading = Manylion y Ffurflen TAW
 customer_details.returnFrequency.heading = Dyddiadau cyflwyno Ffurflenni TAW
 customer_details.returnFrequency.change.hidden = Newid dyddiadau’r Ffurflenni TAW o {0}
 customer_details.returnFrequency.pending.hidden = Mae’r newid i ddyddiadau’r Ffurflenni TAW ar y gweill
+customer_details.returnFrequency.newDates = Rydych wedi gofyn am gael newid y dyddiadau ar gyfer Ffurflenni TAW. Bydd y dyddiad newydd yn cael ei ddangos pan fydd y newid wedi’i wneud i’r cyfrif hwn.
 customer_details.contactDetails.heading = Manylion cyswllt
 customer_details.contactDetails.emailAddress = Cyfeiriad e-bost
 customer_details.contactDetails.emailAddress.change.hidden = Newid cyfeiriad e-bost y busnes o {0}

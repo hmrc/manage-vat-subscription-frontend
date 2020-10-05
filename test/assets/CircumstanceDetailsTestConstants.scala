@@ -461,109 +461,12 @@ object CircumstanceDetailsTestConstants {
     ))
   )
 
-  val overseasCompany: CircumstanceDetails = customerInformationModelMin.copy(customerDetails = organisation.copy(overseasIndicator = true))
+  val customerInformationPendingReturnPeriodModel: CircumstanceDetails = customerInformationRegisteredIndividual.copy(
+    pendingChanges = Some(PendingChanges(
+      None, None, Some(Monthly)
+    ))
+  )
 
-  /////////////// Release 8 data -- separated for ease of removal
-
-//  val customerInformationModelMaxOrganisationR8: CircumstanceDetails = CircumstanceDetails(
-//    customerDetails = organisationR8,
-//    flatRateScheme = Some(frsModelMax),
-//    ppob = ppobModelMax,
-//    bankDetails = Some(bankDetailsModelMax),
-//    returnPeriod = Some(Mar),
-//    deregistration = Some(deregModel),
-//    missingTrader = true,
-//    changeIndicators = Some(ChangeIndicators(
-//      ppob = true,
-//      bankDetails = true,
-//      returnPeriod = true,
-//      deregister = true
-//    )),
-//    pendingChanges = Some(PendingChanges(
-//      ppob = Some(ppobModelMax),
-//      bankDetails = Some(bankDetailsModelMax),
-//      returnPeriod = Some(Mar)
-//    )),
-//    partyType = Some(partyType)
-//  )
-//
-//  val customerInformationModelMinR8: CircumstanceDetails = CircumstanceDetails(
-//    customerDetails = CustomerDetails(
-//      firstName = None,
-//      lastName = None,
-//      organisationName = None,
-//      tradingName = None,
-//      welshIndicator = None,
-//      overseasIndicator = false),
-//    flatRateScheme = None,
-//    ppob = ppobModelMin,
-//    bankDetails = None,
-//    returnPeriod = None,
-//    deregistration = None,
-//    missingTrader = false,
-//    changeIndicators = None,
-//    pendingChanges = None,
-//    partyType = None
-//  )
-//
-//  val customerInformationJsonMaxOrganisationR8: JsValue = Json.obj(
-//    "customerDetails" -> organisationJsonR8,
-//    "flatRateScheme" -> frsJsonMax,
-//    "ppob" -> ppobJsonMax,
-//    "bankDetails" -> bankDetailsJsonMax,
-//    "returnPeriod" -> returnPeriodMCJson,
-//    "partyType" -> Some(partyType),
-//    "deregistration" -> deregModel,
-//    "missingTrader" -> true,
-//    "changeIndicators" -> Json.obj(
-//      "PPOBDetails" -> true,
-//      "bankDetails" -> true,
-//      "returnPeriod" -> true,
-//      "deregister" -> true
-//    ),
-//    "pendingChanges" -> Json.obj(
-//      "PPOBDetails" -> Json.obj(
-//        "address" -> Json.obj(
-//          "line1" -> addLine1,
-//          "line2" -> addLine2,
-//          "line3" -> addLine3,
-//          "line4" -> addLine4,
-//          "line5" -> addLine5,
-//          "postCode" -> postcode,
-//          "countryCode" -> countryCode
-//        ),
-//        "contactDetails" -> Json.obj(
-//          "primaryPhoneNumber" -> phoneNumber,
-//          "mobileNumber" -> mobileNumber,
-//          "faxNumber" -> faxNumber,
-//          "emailAddress" -> email,
-//          "emailVerified" -> emailVerified
-//        ),
-//        "websiteAddress" -> website
-//      ),
-//      "bankDetails" -> Json.obj(
-//        "accountHolderName" -> accName,
-//        "bankAccountNumber" -> accNum,
-//        "sortCode" -> accSort
-//      ),
-//      "returnPeriod" -> returnPeriodMCJson
-//    )
-//  )
-//
-//  val customerInformationJsonMinR8: JsValue =
-//    Json.obj(
-//      "customerDetails" -> customerDetailsJsonMinR8,
-//      "ppob" -> ppobJsonMin,
-//      "missingTrader" -> false
-//    )
-//
-//  val customerInformationJsonMinWithTrueOverseas: JsValue =
-//    Json.obj(
-//      "customerDetails" -> Json.obj(
-//        "hasFlatRateScheme" -> false,
-//        "overseasIndicator" -> true
-//      ),
-//      "ppob" -> ppobJsonMin,
-//      "missingTrader" -> false
-//  )
+  val overseasCompany: CircumstanceDetails =
+    customerInformationModelMin.copy(customerDetails = organisation.copy(overseasIndicator = true))
 }
