@@ -48,7 +48,8 @@ object FeatureSwitchForm {
       ConfigKeys.disableBulkPaper -> boolean,
       ConfigKeys.missingTraderAddressIntercept -> boolean,
       ConfigKeys.contactDetailsMovedToBTA -> boolean,
-      ConfigKeys.contactPrefMigrationFeature -> boolean
+      ConfigKeys.contactPrefMigrationFeature -> boolean,
+      ConfigKeys.tradingNameRowFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }

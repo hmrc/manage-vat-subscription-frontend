@@ -37,4 +37,5 @@ class Features @Inject()(implicit config: Configuration) {
   val missingTraderAddressIntercept = new Feature(ConfigKeys.missingTraderAddressIntercept)
   val contactDetailsMovedToBTA = new Feature(ConfigKeys.contactDetailsMovedToBTA)
   val contactPrefMigrationFeature = new Feature(ConfigKeys.contactPrefMigrationFeature)
+  val tradingNameRowEnabled = new Feature(ConfigKeys.tradingNameRowFeature)
 }
