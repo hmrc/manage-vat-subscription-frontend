@@ -43,6 +43,7 @@ object ConfigKeys {
   val missingTraderAddressIntercept: String = "features.missingTraderAddressIntercept.enabled"
   val contactDetailsMovedToBTA: String = "features.contactDetailsMovedToBTA.enabled"
   val contactPrefMigrationFeature: String = "features.contactPrefMigration.enabled"
+  val tradingNameRowFeature: String = "features.tradingNameRowR19.enabled"
 
   // GOV UK
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
