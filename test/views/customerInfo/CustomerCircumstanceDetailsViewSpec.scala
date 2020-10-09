@@ -47,7 +47,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the page is rendered" should {
 
-              lazy val view = injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              lazy val view = {
+                mockConfig.features.tradingNameRowEnabled(true)
+                injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have the correct document title '${viewMessages.title}'" in {
@@ -79,6 +82,38 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
               "has an about header" in {
                 elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
+              }
+
+              "display the trading name row" which {
+
+                lazy val view = {
+                  mockConfig.features.tradingNameRowEnabled(true)
+                  injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
+                }
+                lazy implicit val document: Document = Jsoup.parse(view.body)
+
+                "has the heading" in {
+                  elementText("#trading-name-text") shouldBe viewMessages.tradingNameHeading
+                }
+
+                "has the correct address output" in {
+                  elementText("#trading-name") shouldBe "Not provided"
+                }
+
+                "has a change link" which {
+
+                  s"has the wording '${viewMessages.add}'" in {
+                    elementText("#trading-name-status") shouldBe viewMessages.add
+                  }
+
+                  s"has the correct aria label text '${viewMessages.changeTradingNameHidden}'" in {
+                    element("#trading-name-status").attr("aria-label") shouldBe viewMessages.changeTradingNameHidden
+                  }
+
+                  s"has a link to ${mockConfig.vatDesignatoryDetailsTradingNameUrl}" in {
+                    element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
+                  }
+                }
               }
 
               "have a section for business address" which {
@@ -322,37 +357,18 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
             }
 
-            "the tradingNameRowEnabled feature is enabled" should {
+            "the tradingNameRowEnabled feature is disabled" should {
 
-              "display the trading name row" which {
+              "not display the trading name row" which {
 
                 lazy val view = {
-                  mockConfig.features.tradingNameRowEnabled(true)
+                  mockConfig.features.tradingNameRowEnabled(false)
                   injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
                 }
                 lazy implicit val document: Document = Jsoup.parse(view.body)
 
-                "has the heading" in {
-                  elementText("#trading-name-text") shouldBe viewMessages.tradingNameHeading
-                }
-
-                "has the correct address output" in {
-                  elementText("#trading-name") shouldBe "Not provided"
-                }
-
-                "has a change link" which {
-
-                  s"has the wording '${viewMessages.add}'" in {
-                    elementText("#trading-name-status") shouldBe viewMessages.add
-                  }
-
-                  s"has the correct aria label text '${viewMessages.changeTradingNameHidden}'" in {
-                    element("#trading-name-status").attr("aria-label") shouldBe viewMessages.changeTradingNameHidden
-                  }
-
-                  s"has a link to ${mockConfig.vatDesignatoryDetailsTradingNameUrl}" in {
-                    element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
-                  }
+                "the phone numbers section is hidden" in {
+                  elementExtinct("#trading-name")
                 }
               }
             }
