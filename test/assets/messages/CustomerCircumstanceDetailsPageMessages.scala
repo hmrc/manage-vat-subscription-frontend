@@ -26,6 +26,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
   val businessAddressHeading = "Principal place of business"
+  val tradingNameHeading = "Trading name"
   val bankDetailsHeading = "Bank account for repayments only"
   val accountNumberHeading = "Account number"
   val emailAddressHeading = "Email address"
@@ -35,6 +36,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val mobileNumberHeading = "Mobile number"
   val websiteAddressHeading = "Website address"
 
+  val add = "Add"
   val change = "Change"
   val pending = "Pending"
 
@@ -48,6 +50,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val changeBusinessHidden: String => String = name => s"Change the business name from $name"
   val changeBusinessAddressHidden: String => String = address => s"Change the business address from $address"
   val pendingBusinessAddressHidden = "Change to business address is pending"
+  val changeTradingNameHidden = "Change the trading name"
   val changeBankDetailsHidden = "Change the bank account for repayments"
   val changeReturnFrequencyHidden: String => String = dates => s"Change the VAT Return dates from $dates"
   val changeEmailAddressHidden: String => String = email => s"Change the business email address from $email"

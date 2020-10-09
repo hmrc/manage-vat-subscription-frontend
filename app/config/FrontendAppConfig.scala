@@ -60,6 +60,7 @@ trait AppConfig {
   val vatCorrespondenceChangeMobileNumberUrl: String
   val vatCorrespondenceChangeWebsiteUrl: String
   val vatCorrespondenceSendVerificationEmail: String
+  val vatDesignatoryDetailsTradingNameUrl: String
   val partyTypes: Seq[String]
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
@@ -174,6 +175,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val vatCorrespondenceChangeMobileNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeMobileNumberUrl)
   override lazy val vatCorrespondenceChangeWebsiteUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeWebsiteUrl)
   override lazy val vatCorrespondenceSendVerificationEmail: String = servicesConfig.getString(Keys.vatCorrespondenceVerificationEmail)
+
+  override lazy val vatDesignatoryDetailsTradingNameUrl: String = servicesConfig.getString(Keys.vatDesignatoryDetailsNewTradingNameUrl)
 
   override lazy val partyTypes: Seq[String] = getStringSeq(Keys.partyTypes)
 

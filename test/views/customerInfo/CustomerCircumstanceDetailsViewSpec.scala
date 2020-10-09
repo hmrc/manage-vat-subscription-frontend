@@ -107,49 +107,49 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                     element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
                   }
                 }
+              }
 
 
-                "have a section for repayment Bank Account details" which {
+              "have a section for repayment Bank Account details" which {
 
-                  "has the heading" in {
-                    elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+                "has the heading" in {
+                  elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
+                }
+
+                "has a the correct Account Number" which {
+
+                  "has the correct heading for the Account Number" in {
+                    elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
                   }
 
-                  "has a the correct Account Number" which {
+                  "has the correct value for the account number" in {
+                    elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
+                  }
+                }
 
-                    "has the correct heading for the Account Number" in {
-                      elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
-                    }
+                "has a the correct Sort Code" which {
 
-                    "has the correct value for the account number" in {
-                      elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
-                    }
+                  "has the correct heading for the Sort Code" in {
+                    elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
                   }
 
-                  "has a the correct Sort Code" which {
+                  "has the correct value for the account number" in {
+                    elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
+                  }
+                }
 
-                    "has the correct heading for the Sort Code" in {
-                      elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
-                    }
+                "has a change link" which {
 
-                    "has the correct value for the account number" in {
-                      elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
-                    }
+                  s"has the wording '${viewMessages.change}'" in {
+                    elementText("#bank-details-status") shouldBe viewMessages.change
                   }
 
-                  "has a change link" which {
+                  s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
+                    element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
+                  }
 
-                    s"has the wording '${viewMessages.change}'" in {
-                      elementText("#bank-details-status") shouldBe viewMessages.change
-                    }
-
-                    s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
-                      element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
-                    }
-
-                    s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
-                      element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
-                    }
+                  s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+                    element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
                   }
                 }
               }
@@ -297,7 +297,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               lazy val view = injectedView(
                 customerInformationNoPendingIndividual.copy(
                   ppob = ppobModelMaxEmailUnverified,
-                  pendingChanges = Some(PendingChanges(Some(ppobModelMaxPending), None, None))),
+                  pendingChanges = Some(PendingChanges(Some(ppobModelMaxPending), None, None, None))),
                 getPartialHtmlNotAgent
               )(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -318,6 +318,41 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "does not display the email nudge" in {
                   elementExtinct("#contact-details-section > p.notice")
+                }
+              }
+            }
+
+            "the tradingNameRowEnabled feature is enabled" should {
+
+              "display the trading name row" which {
+
+                lazy val view = {
+                  mockConfig.features.tradingNameRowEnabled(true)
+                  injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
+                }
+                lazy implicit val document: Document = Jsoup.parse(view.body)
+
+                "has the heading" in {
+                  elementText("#trading-name-text") shouldBe viewMessages.tradingNameHeading
+                }
+
+                "has the correct address output" in {
+                  elementText("#trading-name") shouldBe "Not provided"
+                }
+
+                "has a change link" which {
+
+                  s"has the wording '${viewMessages.add}'" in {
+                    elementText("#trading-name-status") shouldBe viewMessages.add
+                  }
+
+                  s"has the correct aria label text '${viewMessages.changeTradingNameHidden}'" in {
+                    element("#trading-name-status").attr("aria-label") shouldBe viewMessages.changeTradingNameHidden
+                  }
+
+                  s"has a link to ${mockConfig.vatDesignatoryDetailsTradingNameUrl}" in {
+                    element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
+                  }
                 }
               }
             }

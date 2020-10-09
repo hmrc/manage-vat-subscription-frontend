@@ -289,6 +289,36 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     </div>
 }
 
+@customerTradingName(tradingName: Option[String], isPending: Boolean) = {
+    <div>
+        <dt id="trading-name-text" class="cya-question">
+        @messages("customer_details.tradingName.heading")
+        </dt>
+        <dd id="trading-name" class="cya-answer">
+        @tradingName.getOrElse(messages("customer_details.notProvided"))
+        </dd>
+        <dd class="cya-change">
+        @if(isPending) {
+            <span id="trading-name-status"
+            class="bold"
+            aria-label="@messages("customer_details.tradingName.pending.hidden")">
+            @messages("customer_details.pending")
+            </span>
+        } else {
+            <a id="trading-name-status"
+            href="@appConfig.vatDesignatoryDetailsTradingNameUrl"
+            aria-label="@messages("customer_details.tradingName.change.hidden",
+                tradingName.getOrElse(messages("customer_details.notProvided")))">
+            @tradingName match {
+                case None => { @messages("customer_details.add") }
+                case _ => { @messages("customer_details.change") }
+            }
+            </a>
+        }
+        </dd>
+    </div>
+}
+
 @mainTemplate(
     title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
     bodyClasses = None,
@@ -331,6 +361,10 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
                     }
                     case _ => {}
                 }
+            }
+
+            @if(appConfig.features.tradingNameRowEnabled()) {
+                @customerTradingName(circumstances.customerDetails.tradingName, circumstances.pendingTradingName)
             }
 
             @{circumstances.pendingPPOBAddress match {
