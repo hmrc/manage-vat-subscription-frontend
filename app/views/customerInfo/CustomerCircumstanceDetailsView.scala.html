@@ -292,29 +292,29 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
 @customerTradingName(tradingName: Option[String], isPending: Boolean) = {
     <div>
         <dt id="trading-name-text" class="cya-question">
-        @messages("customer_details.tradingName.heading")
+            @messages("customer_details.tradingName.heading")
         </dt>
         <dd id="trading-name" class="cya-answer">
-        @tradingName.getOrElse(messages("customer_details.notProvided"))
+            @tradingName.getOrElse(messages("customer_details.notProvided"))
         </dd>
         <dd class="cya-change">
-        @if(isPending) {
-            <span id="trading-name-status"
-            class="bold"
-            aria-label="@messages("customer_details.tradingName.pending.hidden")">
-            @messages("customer_details.pending")
-            </span>
-        } else {
-            <a id="trading-name-status"
-            href="@appConfig.vatDesignatoryDetailsTradingNameUrl"
-            aria-label="@messages("customer_details.tradingName.change.hidden",
-                tradingName.getOrElse(messages("customer_details.notProvided")))">
-            @tradingName match {
-                case None => { @messages("customer_details.add") }
-                case _ => { @messages("customer_details.change") }
+            @if(isPending) {
+                <span id="trading-name-status"
+                      class="bold"
+                      aria-label="@messages("customer_details.tradingName.pending.hidden")">
+                    @messages("customer_details.pending")
+                </span>
+            } else {
+                <a id="trading-name-status"
+                   href="@appConfig.vatDesignatoryDetailsTradingNameUrl"
+                   aria-label="@messages("customer_details.tradingName.change.hidden",
+                               tradingName.getOrElse(messages("customer_details.notProvided")))">
+                    @tradingName match {
+                        case None => { @messages("customer_details.add") }
+                        case _ => { @messages("customer_details.change") }
+                    }
+                </a>
             }
-            </a>
-        }
         </dd>
     </div>
 }
@@ -364,7 +364,10 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             }
 
             @if(appConfig.features.tradingNameRowEnabled()) {
-                @customerTradingName(circumstances.customerDetails.tradingName, circumstances.pendingTradingName)
+                @customerTradingName(
+                    if(circumstances.pendingTradingName.isDefined) circumstances.pendingTradingName else circumstances.customerDetails.tradingName,
+                    circumstances.pendingTradingName.isDefined && !circumstances.sameTradingName
+                )
             }
 
             @{circumstances.pendingPPOBAddress match {

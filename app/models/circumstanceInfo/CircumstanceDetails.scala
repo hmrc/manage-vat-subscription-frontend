@@ -56,6 +56,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val samePhone: Boolean = pendingLandline == landlineNumber
   val sameMobile: Boolean = pendingMobile == mobileNumber
   val sameWebsite: Boolean = pendingWebsite == website
+  val sameTradingName: Boolean = pendingTradingName == customerDetails.tradingName
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)

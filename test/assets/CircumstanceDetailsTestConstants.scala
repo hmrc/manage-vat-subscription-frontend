@@ -477,6 +477,10 @@ object CircumstanceDetailsTestConstants {
     ))
   )
 
+  val customerInfoPendingTradingNameModel: CircumstanceDetails = customerInformationModelMin.copy(
+    pendingChanges = Some(PendingChanges(None, None, None, Some("Party Kitchen")))
+  )
+
   val overseasCompany: CircumstanceDetails =
     customerInformationModelMin.copy(customerDetails = organisation.copy(overseasIndicator = true))
 }

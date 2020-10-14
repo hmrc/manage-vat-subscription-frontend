@@ -17,7 +17,7 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.CustomerDetailsTestConstants.individual
+import assets.CustomerDetailsTestConstants.{individual, tradingName}
 import assets.PPOBAddressTestConstants
 import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxEmailUnverified, ppobModelMaxPending}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
@@ -47,10 +47,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "the page is rendered" should {
 
-              lazy val view = {
-                mockConfig.features.tradingNameRowEnabled(true)
-                injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
-              }
+              lazy val view = injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
               s"have the correct document title '${viewMessages.title}'" in {
@@ -86,31 +83,26 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
               "display the trading name row" which {
 
-                lazy val view = {
-                  mockConfig.features.tradingNameRowEnabled(true)
-                  injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
-                }
-                lazy implicit val document: Document = Jsoup.parse(view.body)
-
-                "has the heading" in {
+                "has the correct heading" in {
                   elementText("#trading-name-text") shouldBe viewMessages.tradingNameHeading
                 }
 
-                "has the correct address output" in {
+                "has the 'Not provided' text in place of the trading name" in {
                   elementText("#trading-name") shouldBe "Not provided"
                 }
 
-                "has a change link" which {
+                "has an 'Add' link" which {
 
-                  s"has the wording '${viewMessages.add}'" in {
+                  "has the correct text" in {
                     elementText("#trading-name-status") shouldBe viewMessages.add
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeTradingNameHidden}'" in {
-                    element("#trading-name-status").attr("aria-label") shouldBe viewMessages.changeTradingNameHidden
+                  "has the correct aria label text" in {
+                    element("#trading-name-status").attr("aria-label") shouldBe
+                      viewMessages.changeTradingNameHidden("Not provided")
                   }
 
-                  s"has a link to ${mockConfig.vatDesignatoryDetailsTradingNameUrl}" in {
+                  "link to the trading name journey" in {
                     element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
                   }
                 }
@@ -367,7 +359,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
                 lazy implicit val document: Document = Jsoup.parse(view.body)
 
-                "the phone numbers section is hidden" in {
+                "the trading name section is hidden" in {
                   elementExtinct("#trading-name")
                 }
               }
@@ -450,6 +442,24 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
           }
 
+          "trading name is pending" should {
+
+            lazy val view = injectedView(customerInfoPendingTradingNameModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            s"has the wording '${viewMessages.pending}'" in {
+              elementText("#trading-name-status") shouldBe viewMessages.pending
+            }
+
+            s"has the correct aria label text '${viewMessages.pendingTradingNameHidden}'" in {
+              element("#trading-name-status").attr("aria-label") shouldBe viewMessages.pendingTradingNameHidden
+            }
+
+            "display the inflight trading name" in {
+              elementText("#trading-name") shouldBe "Party Kitchen"
+            }
+          }
+
           "the website has been removed" should {
 
             lazy val view = injectedView(customerInformationModelPendingRemoved("website"), getPartialHtmlNotAgent)(user, messages, mockConfig)
@@ -479,7 +489,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the website address" which {
 
           "has the correct text" in {
-            elementText("#vat-website-address-status") shouldBe "Add"
+            elementText("#vat-website-address-status") shouldBe viewMessages.add
           }
 
           "links to the correspondence details service" in {
@@ -491,22 +501,49 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     "an Organisation" when {
 
-      "with a valid party type" when {
+      "the user has a valid party type" when {
 
-        "with an organisation name" should {
+        "the user has an organisation name and a trading name" should {
+
+          lazy val view = injectedView(customerInformationWithPartyType(Some("2")), getPartialHtmlNotAgent)(user, messages, mockConfig)
+          lazy implicit val document: Document = Jsoup.parse(view.body)
 
           "have a change details section for the Business Name" which {
-
-            lazy val view = injectedView(customerInformationWithPartyType(Some("2")), getPartialHtmlNotAgent)(user, messages, mockConfig)
-            lazy implicit val document: Document = Jsoup.parse(view.body)
 
             s"has the heading '${viewMessages.organisationNameHeading}'" in {
               elementText("#business-name-text") shouldBe viewMessages.organisationNameHeading
             }
           }
+
+          "display the trading name row" which {
+
+            "has the heading" in {
+              elementText("#trading-name-text") shouldBe viewMessages.tradingNameHeading
+            }
+
+            "has the correct address output" in {
+              elementText("#trading-name") shouldBe tradingName
+            }
+
+            "has a change link" which {
+
+              "has the correct wording" in {
+                elementText("#trading-name-status") shouldBe viewMessages.change
+              }
+
+              "has the correct aria label text" in {
+                element("#trading-name-status").attr("aria-label") shouldBe
+                  viewMessages.changeTradingNameHidden(tradingName)
+              }
+
+              "has a link to the trading name journey" in {
+                element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
+              }
+            }
+          }
         }
 
-        "with no organisation name" should {
+        "the user has no organisation name" should {
 
           val model: CircumstanceDetails = CircumstanceDetails(
             customerDetails = individual,
@@ -531,7 +568,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "without a valid party type" should {
+      "the user has an invalid party type" should {
 
         lazy val view = injectedView(customerInformationWithPartyType(Some("other")), getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -541,7 +578,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
-      "without a party type" should {
+      "the user does not have a party type" should {
 
         lazy val view = injectedView(customerInformationWithPartyType(None), getPartialHtmlNotAgent)(user, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
