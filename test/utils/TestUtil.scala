@@ -34,7 +34,7 @@ import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.ExecutionContext
 
-trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach with MaterializerSupport  with Injecting{
+trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach with MaterializerSupport with Injecting {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
@@ -43,6 +43,7 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     mockConfig.features.useLanguageSelector(true)
     mockConfig.features.disableBulkPaper(true)
     mockConfig.features.contactDetailsMovedToBTA(true)
+    mockConfig.features.tradingNameRowEnabled(true)
     SharedMetricRegistries.clear()
   }
 

@@ -140,7 +140,8 @@ object IntegrationTestConstants {
     pendingChanges = Some(PendingChanges(
       ppob = Some(ppobMax),
       bankDetails = Some(bankDetails),
-      returnPeriod = Some(Jan)
+      returnPeriod = Some(Jan),
+      tradingName = Some("Pens'n'Dinghy's")
     )),
     partyType = partyType,
     commsPreference = Some(ContactPreference("DIGITAL"))

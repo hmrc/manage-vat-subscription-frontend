@@ -49,12 +49,14 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val pendingLandline: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.phoneNumber)))
   val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
+  val pendingTradingName: Option[String] = pendingChanges.flatMap(_.tradingName)
 
   val samePPOB: Boolean = pendingPPOBAddress.contains(ppobAddress)
   val sameEmail: Boolean = pendingEmail == email
   val samePhone: Boolean = pendingLandline == landlineNumber
   val sameMobile: Boolean = pendingMobile == mobileNumber
   val sameWebsite: Boolean = pendingWebsite == website
+  val sameTradingName: Boolean = pendingTradingName == customerDetails.tradingName
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)
