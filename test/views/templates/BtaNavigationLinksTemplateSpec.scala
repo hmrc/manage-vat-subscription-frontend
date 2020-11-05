@@ -19,9 +19,11 @@ package views.templates
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
+import views.html.templates.BTANavigationLinks
 
 class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
 
+  val injectedView: BTANavigationLinks = inject[BTANavigationLinks]
   val btaHome = "Home"
   val btaMessages = "Messages"
   val btaManageAccount = "Manage account"
@@ -29,7 +31,7 @@ class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
 
   "btaNavigationLinks" should {
 
-    val view: Html = views.html.templates.btaNavigationLinks()(messages,mockConfig)
+    val view: Html = injectedView()(messages,mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
 
@@ -44,7 +46,6 @@ class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
       "should have a link to home" in {
         homeLink.attr("href") shouldBe mockConfig.btaHomeUrl
       }
-
     }
 
     "have a link to BTA Manage Account" which {
@@ -58,7 +59,6 @@ class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
       "should have a link to Manage account" in {
         manageAccountLink.attr("href") shouldBe mockConfig.btaManageAccountUrl
       }
-
     }
 
     "have a link to BTA Messages" which {
@@ -72,7 +72,6 @@ class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
       "should have a link to Messages" in {
         messagesLink.attr("href") shouldBe mockConfig.btaMessagesUrl
       }
-
     }
 
     "have a link to BTA Help and contact" which {
@@ -86,10 +85,6 @@ class BtaNavigationLinksTemplateSpec extends TemplateBaseSpec {
       "should have a link to Help and contact" in {
         helpAndContactLink.attr("href") shouldBe mockConfig.btaHelpAndContactUrl
       }
-
     }
-
   }
 }
-
-

@@ -58,10 +58,10 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "2.25.0",
-  "uk.gov.hmrc"       %% "play-partials"              % "6.11.0-play-26",
-  "uk.gov.hmrc"       %% "govuk-template"             % "5.57.0-play-26",
-  "uk.gov.hmrc"       %% "play-ui"                    % "8.12.0-play-26",
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "3.0.0",
+  "uk.gov.hmrc"       %% "play-partials"              % "7.0.0-play-26",
+  "uk.gov.hmrc"       %% "govuk-template"             % "5.58.0-play-26",
+  "uk.gov.hmrc"       %% "play-ui"                    % "8.13.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
   "uk.gov.hmrc"       %% "play-language"              % "4.4.0-play-26",
   "com.typesafe.play" %% "play-json-joda"             % "2.6.14"
@@ -90,7 +90,7 @@ def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
 
 lazy val microservice: Project = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
-  .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin, SbtArtifactory) ++ plugins: _*)
+  .enablePlugins(Seq(play.sbt.PlayScala, SbtAutoBuildPlugin, SbtGitVersioning, SbtDistributablesPlugin) ++ plugins: _*)
   .settings(PlayKeys.playDefaultPort := 9150)
   .settings(coverageSettings: _*)
   .settings(playSettings: _*)
