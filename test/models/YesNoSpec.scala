@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package models.missingTrader
+package models
 
-import models.{No, Yes, YesNo}
 import play.api.libs.json.Json
 import utils.TestUtil
 
