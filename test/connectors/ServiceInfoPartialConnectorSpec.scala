@@ -25,25 +25,27 @@ import uk.gov.hmrc.http.HttpClient
 import uk.gov.hmrc.play.partials.HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial.{Failure, Success}
 import utils.TestUtil
+import views.html.templates.BTANavigationLinks
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
-  val header: VatcHeaderCarrierForPartialsConverter = app.injector.instanceOf[VatcHeaderCarrierForPartialsConverter]
+  val header: VatcHeaderCarrierForPartialsConverter = inject[VatcHeaderCarrierForPartialsConverter]
+  val httpClient: HttpClient = mock[HttpClient]
+
   val validHtml: Html = Html("<nav>BTA lINK</nav>")
+  val btaNavigationLinks: BTANavigationLinks = inject[BTANavigationLinks]
 
   private trait Test {
     val result :Future[HtmlPartial] = Future.successful(Success(None,validHtml))
-    val httpClient: HttpClient = mock[HttpClient]
     lazy val connector: ServiceInfoPartialConnector = {
-
 
       (httpClient.GET[HtmlPartial](_: String)(_: HttpReads[HtmlPartial],_: HeaderCarrier,_: ExecutionContext))
         .stubs(*,*,*,*)
         .returns(result)
-      new ServiceInfoPartialConnector(httpClient, header)(messagesApi, mockConfig)
-    }
 
+      new ServiceInfoPartialConnector(httpClient, header, btaNavigationLinks)(messagesApi, mockConfig)
+    }
   }
 
   "ServiceInfoPartialConnector" should {
@@ -56,14 +58,14 @@ class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
     "a connectionExceptionsAsHtmlPartialFailure error is returned" should {
       "return the fall back partial" in new Test{
         override val result: Future[Failure] = Future.successful(Failure(Some(Status.GATEWAY_TIMEOUT)))
-        await(connector.getServiceInfoPartial()(request,ec)) shouldBe views.html.templates.btaNavigationLinks()
+        await(connector.getServiceInfoPartial()(request,ec)) shouldBe btaNavigationLinks()
       }
     }
 
     "an unexpected Exception is returned" should {
       "return the fall back partial" in new Test{
         override val result: Future[Failure] = Future.successful(Failure(Some(Status.INTERNAL_SERVER_ERROR)))
-        await(connector.getServiceInfoPartial()(request,ec)) shouldBe views.html.templates.btaNavigationLinks()
+        await(connector.getServiceInfoPartial()(request,ec)) shouldBe btaNavigationLinks()
       }
     }
 
