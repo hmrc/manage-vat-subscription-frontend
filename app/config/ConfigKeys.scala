@@ -106,6 +106,6 @@ object ConfigKeys {
 
   val disableBulkPaper:String =  "features.disableBulkPaper.enabled"
 
-  val trackingConsentUrl: String = "tracking-consent-frontend.url"
+  val gtmContainer: String = "tracking-consent-frontend.gtm.container"
 
 }

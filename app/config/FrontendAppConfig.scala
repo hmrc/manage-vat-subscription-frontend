@@ -82,7 +82,7 @@ trait AppConfig {
   val btaHelpAndContactUrl: String
   val btaPartialUrl: String
   val btaAccountDetails: String
-  val trackingConsentUrl: String
+  val gtmContainer: String
 }
 
 @Singleton
@@ -236,5 +236,5 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val btaHelpAndContactUrl: String = helpAndContactFrontendUrl + servicesConfig.getString(Keys.helpAndContactHelpUrl)
   override lazy val btaPartialUrl: String = btaMicroserviceUrl + servicesConfig.getString(Keys.businessTaxAccountPartialUrl)
   override lazy val btaAccountDetails: String = btaBaseUrl + servicesConfig.getString(Keys.businessTaxAccountDetails)
-  override lazy val trackingConsentUrl: String = servicesConfig.getString(Keys.trackingConsentUrl)
+  override val gtmContainer: String = servicesConfig.getString(Keys.gtmContainer)
 }

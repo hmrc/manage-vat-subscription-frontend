@@ -36,7 +36,7 @@ class ReturnPeriodSpec extends UnitSpec {
       ReturnPeriod(returnPeriodMar) shouldBe Some(Mar)
     }
 
-    "for 'Monthly' should return Monhtly case object" in {
+    "for 'Monthly' should return Monthly case object" in {
       ReturnPeriod(returnPeriodMonthly) shouldBe Some(Monthly)
     }
 

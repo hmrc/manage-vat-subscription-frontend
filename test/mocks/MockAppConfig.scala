@@ -89,5 +89,5 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val btaMessagesUrl: String = "bta-messages-url"
   override val btaPartialUrl: String = "/business-account/partial/service-info"
   override val btaAccountDetails: String = "/bta/account-details"
-  override val trackingConsentUrl: String = "/tracking"
+  override val gtmContainer: String = "x"
 }
