@@ -49,7 +49,8 @@ object FeatureSwitchForm {
       ConfigKeys.missingTraderAddressIntercept -> boolean,
       ConfigKeys.contactDetailsMovedToBTA -> boolean,
       ConfigKeys.contactPrefMigrationFeature -> boolean,
-      ConfigKeys.tradingNameRowFeature -> boolean
+      ConfigKeys.tradingNameRowFeature -> boolean,
+      ConfigKeys.organisationNameRowFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }
