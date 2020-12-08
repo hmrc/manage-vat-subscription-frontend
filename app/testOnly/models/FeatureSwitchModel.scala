@@ -30,4 +30,5 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               missingTraderAddressIntercept: Boolean,
                               contactDetailsMovedToBTA: Boolean,
                               contactPrefMigrationFeature: Boolean,
-                              tradingNameRowEnabled: Boolean)
+                              tradingNameRowEnabled: Boolean,
+                              organisationNameRowEnabled: Boolean)

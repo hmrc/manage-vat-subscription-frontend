@@ -38,4 +38,5 @@ class Features @Inject()(implicit config: Configuration) {
   val contactDetailsMovedToBTA = new Feature(ConfigKeys.contactDetailsMovedToBTA)
   val contactPrefMigrationFeature = new Feature(ConfigKeys.contactPrefMigrationFeature)
   val tradingNameRowEnabled = new Feature(ConfigKeys.tradingNameRowFeature)
+  val organisationNameRowEnabled = new Feature(ConfigKeys.organisationNameRowFeatue)
 }

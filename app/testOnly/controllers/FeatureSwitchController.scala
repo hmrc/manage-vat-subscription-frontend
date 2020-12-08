@@ -59,7 +59,8 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             missingTraderAddressIntercept = appConfig.features.missingTraderAddressIntercept(),
             contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
-            tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled()
+            tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
+            organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -89,6 +90,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.contactDetailsMovedToBTA(model.contactDetailsMovedToBTA)
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
     appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)
+    appConfig.features.organisationNameRowEnabled(model.organisationNameRowEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
