@@ -54,6 +54,7 @@ object ConfigKeys {
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
 
   val partyTypes: String = "party-types"
+  val partyTypesR19: String = "party-types-r19"
 
   val governmentGatewayHost: String = "government-gateway.host"
 
@@ -81,6 +82,7 @@ object ConfigKeys {
   val vatCorrespondenceVerificationEmail: String = "vat-correspondence-details-frontend.sendVerificationEmail"
 
   val vatDesignatoryDetailsNewTradingNameUrl: String = "vat-designatory-details-frontend.newTradingNameUrl"
+  val vatDesignatoryDetailsNewBusinessNameUrl: String = "vat-designatory-details-frontend.newBusinessNameUrl"
 
   val vatAgentClientLookupFrontendHost: String = "vat-agent-client-lookup-frontend.host"
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"

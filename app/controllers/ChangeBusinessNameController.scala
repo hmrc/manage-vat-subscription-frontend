@@ -43,8 +43,19 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
-          Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
+        case Right(circumstances) =>
+          val baseAccess: Boolean = circumstances.customerDetails.organisationName.isDefined &&
+                                    !circumstances.customerDetails.overseasIndicator &&
+                                    circumstances.validPartyType
+
+          (baseAccess, appConfig.features.organisationNameRowEnabled()) match {
+            case (true, true) if circumstances.customerDetails.nameIsReadOnly.contains(false) =>
+              Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
+            case (true, _) =>
+              Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
+            case _ =>
+              Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))
+          }
         case _ => serviceErrorHandler.showInternalServerError
       }
   }

@@ -44,7 +44,8 @@ object IntegrationTestConstants {
     tradingName = Some("Vatmobile Taxi"),
     organisationName = Some("Vatmobile Taxi LTD"),
     welshIndicator = None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
   val individual: CustomerDetails = CustomerDetails(
@@ -53,7 +54,8 @@ object IntegrationTestConstants {
     tradingName = Some("Vatmobile Taxi"),
     organisationName = None,
     welshIndicator = None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(true)
   )
 
   val contactDetailsModelMax: ContactDetails = ContactDetails(

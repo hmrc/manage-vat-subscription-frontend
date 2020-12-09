@@ -26,7 +26,8 @@ case class CustomerDetails(firstName: Option[String],
                            tradingName: Option[String],
                            welshIndicator: Option[Boolean],
                            hasFlatRateScheme: Boolean = false,
-                           overseasIndicator: Boolean) {
+                           overseasIndicator: Boolean,
+                           nameIsReadOnly: Option[Boolean]) {
 
   val isOrg: Boolean = organisationName.isDefined
   val isInd: Boolean = firstName.isDefined || lastName.isDefined
@@ -47,6 +48,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
   private val hasFrsPath = __ \ "hasFlatRateScheme"
   private val welshIndicatorPath = __ \ "welshIndicator"
   private val overseasIndicatorPath = __ \ "overseasIndicator"
+  private val nameIsReadOnlyPath = __ \ "nameIsReadOnly"
 
   implicit val reads: Boolean => Reads[CustomerDetails] = isRelease10 =>
     if(isRelease10) {
@@ -58,6 +60,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         welshIndicator <- welshIndicatorPath.readOpt[Boolean]
         hasFlatRateScheme <- hasFrsPath.read[Boolean]
         overseasIndicator <- overseasIndicatorPath.read[Boolean]
+        nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
       } yield CustomerDetails(
         firstName,
         lastname,
@@ -65,7 +68,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         tradingName,
         welshIndicator,
         hasFlatRateScheme,
-        overseasIndicator
+        overseasIndicator,
+        nameIsReadOnly
       )
     } else {
       for {
@@ -75,6 +79,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         tradingName <- tradingNamePath.readOpt[String]
         welshIndicator <- welshIndicatorPath.readOpt[Boolean]
         hasFlatRateScheme <- hasFrsPath.read[Boolean]
+        nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
       } yield CustomerDetails(
         firstName,
         lastname,
@@ -82,7 +87,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         tradingName,
         welshIndicator,
         hasFlatRateScheme,
-        overseasIndicator = false
+        overseasIndicator = false,
+        nameIsReadOnly
       )
     }
 
@@ -94,7 +100,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         "organisationName" -> model.organisationName,
         "tradingName" -> model.tradingName,
         "welshIndicator" -> model.welshIndicator,
-        "hasFlatRateScheme" -> model.hasFlatRateScheme
+        "hasFlatRateScheme" -> model.hasFlatRateScheme,
+        "nameIsReadOnly" -> model.nameIsReadOnly
       ) ++ (if(isRelease10) Json.obj("overseasIndicator" -> model.overseasIndicator) else Json.obj())
   }
 }

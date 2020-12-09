@@ -30,14 +30,16 @@ object CustomerDetailsTestConstants {
     "firstName" -> firstName,
     "lastName" -> lastName,
     "hasFlatRateScheme" -> false,
-    "overseasIndicator" -> false
+    "overseasIndicator" -> false,
+    "nameIsReadOnly" -> false
   )
 
   val organisationJson: JsObject = Json.obj(
     "organisationName" -> orgName,
     "tradingName" -> tradingName,
     "hasFlatRateScheme" -> false,
-    "overseasIndicator" -> false
+    "overseasIndicator" -> false,
+    "nameIsReadOnly" -> false
   )
 
   val customerDetailsJsonMax: JsObject = Json.obj(
@@ -47,7 +49,8 @@ object CustomerDetailsTestConstants {
     "tradingName" -> tradingName,
     "hasFlatRateScheme" -> false,
     "welshIndicator" -> false,
-    "overseasIndicator" -> false
+    "overseasIndicator" -> false,
+    "nameIsReadOnly" -> false
   )
 
   val customerDetailsJsonMin: JsObject = Json.obj(
@@ -55,52 +58,59 @@ object CustomerDetailsTestConstants {
     "overseasIndicator" -> false
   )
 
-  val individual = CustomerDetails(
-      firstName = Some(firstName),
-      lastName = Some(lastName),
-      organisationName = None,
-      tradingName = None,
-      welshIndicator = None,
-      overseasIndicator = false
+  val individual: CustomerDetails = CustomerDetails(
+    firstName = Some(firstName),
+    lastName = Some(lastName),
+    organisationName = None,
+    tradingName = None,
+    welshIndicator = None,
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
-  val organisation = CustomerDetails(
+  val organisation: CustomerDetails = CustomerDetails(
     firstName = None,
     lastName = None,
     organisationName = Some(orgName),
     tradingName = Some(tradingName),
     welshIndicator = None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
-  val customerDetailsMax = CustomerDetails(
+  val overseasOrganisation: CustomerDetails = organisation.copy(overseasIndicator = true)
+
+  val customerDetailsMax: CustomerDetails = CustomerDetails(
     Some(firstName),
     Some(lastName),
     Some(orgName),
     Some(tradingName),
     Some(false),
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
-  val customerDetailsMin = CustomerDetails(
+  val customerDetailsMin: CustomerDetails = CustomerDetails(
     None,
     None,
     None,
     None,
     None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = None
   )
 
 
   ///////////////// Release 8 data -- separated for ease of removal
 
-  val organisationR8 = CustomerDetails(
+  val organisationR8: CustomerDetails = CustomerDetails(
     firstName = None,
     lastName = None,
     organisationName = Some(orgName),
     tradingName = Some(tradingName),
     welshIndicator = None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
   val organisationJsonR8: JsObject = Json.obj(
@@ -113,24 +123,24 @@ object CustomerDetailsTestConstants {
     "hasFlatRateScheme" -> false
   )
 
-
-
-  val customerDetailsMaxR8 = CustomerDetails(
+  val customerDetailsMaxR8: CustomerDetails = CustomerDetails(
     Some(firstName),
     Some(lastName),
     Some(orgName),
     Some(tradingName),
     Some(false),
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = Some(false)
   )
 
-  val customerDetailsMinR8 = CustomerDetails(
+  val customerDetailsMinR8: CustomerDetails = CustomerDetails(
     None,
     None,
     None,
     None,
     None,
-    overseasIndicator = false
+    overseasIndicator = false,
+    nameIsReadOnly = None
   )
 
   val customerDetailsJsonMaxR8: JsObject = Json.obj(
@@ -139,7 +149,8 @@ object CustomerDetailsTestConstants {
     "lastName" -> lastName,
     "tradingName" -> tradingName,
     "hasFlatRateScheme" -> false,
-    "welshIndicator" -> false
+    "welshIndicator" -> false,
+    "nameIsReadOnly" -> false
   )
 
   val customerDetailsJsonMinWithTrueOverseas: JsObject = Json.obj(
