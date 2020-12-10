@@ -18,6 +18,7 @@ package controllers
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
+import assets.CustomerDetailsTestConstants.organisation
 import assets.messages.ChangeBusinessNamePageMessages
 import audit.models.HandOffToCOHOAuditModel
 import org.jsoup.Jsoup
@@ -33,6 +34,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    mockConfig.features.organisationNameRowEnabled(true)
+  }
+
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
     mockAuthPredicate,
     mockCustomerDetailsService,
@@ -46,33 +52,118 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
   "Calling the .show action" when {
 
-    "the user is authorised and an Organisation Name exists" should {
+    "the user has the customer information necessary to access the page" when {
 
-      lazy val result: Future[Result] = TestChangeBusinessNameController.show(request)
+      "the organisation name R19 feature switch is enabled" when {
 
-      "return OK (200)" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.OK
+        "the user's data is mastered in ETMP" should {
+
+          lazy val result: Future[Result] = {
+            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            TestChangeBusinessNameController.show(request)
+          }
+
+          "return SEE_OTHER (303)" in {
+            status(result) shouldBe Status.SEE_OTHER
+          }
+
+          "redirect to the change business name page on vat-designatory-details-frontend" in {
+            redirectLocation(result) shouldBe Some(mockConfig.vatDesignatoryDetailsBusinessNameUrl)
+          }
+        }
+
+        "the user's data is not mastered in ETMP" should {
+
+          lazy val result: Future[Result] = {
+            mockCustomerDetailsSuccess(
+              customerInformationModelMaxOrganisation.copy(customerDetails = organisation.copy(nameIsReadOnly = Some(true)))
+            )
+            TestChangeBusinessNameController.show(request)
+          }
+
+          "return OK (200)" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
+            messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
+          }
+        }
       }
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+      "the organisation name R19 feature switch is disabled" should {
 
-      s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
+        lazy val result: Future[Result] = {
+          mockConfig.features.organisationNameRowEnabled(false)
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+          TestChangeBusinessNameController.show(request)
+        }
+
+        "return OK (200)" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
+        }
       }
     }
 
-    "the user is authorised and an Individual Name exists" should {
+    "the user does not have an organisation name" should {
 
-      lazy val result = TestChangeBusinessNameController.show(request)
-
-      "return ISE (500)" in {
+      lazy val result = {
         mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        TestChangeBusinessNameController.show(request)
+      }
+
+      "return SEE_OTHER (303)" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "redirect to the business details page" in {
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+      }
+    }
+
+    "the user has an overseas indicator of 'true'" should {
+
+      lazy val result = {
+        mockCustomerDetailsSuccess(overseasCompany)
+        TestChangeBusinessNameController.show(request)
+      }
+
+      "return SEE_OTHER (303)" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "redirect to the business details page" in {
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+      }
+    }
+
+    "the user has an invalid party type" should {
+
+      lazy val result = {
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(partyType = Some("99")))
+        TestChangeBusinessNameController.show(request)
+      }
+
+      "return SEE_OTHER (303)" in {
+        status(result) shouldBe Status.SEE_OTHER
+      }
+
+      "redirect to the business details page" in {
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
       }
     }
 

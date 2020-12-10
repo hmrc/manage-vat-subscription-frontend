@@ -21,9 +21,9 @@ import assets.PPOBAddressTestConstants.ppobAddressModelMax
 import assets.BankDetailsTestConstants.bankDetailsModelMax
 import models.returnFrequency.Mar
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
+import utils.TestUtil
 
-class CircumstanceDetailsModelSpec extends UnitSpec {
+class CircumstanceDetailsModelSpec extends TestUtil {
 
   "CircumstanceDetailsModel.pendingPPOBAddress" should{
 
@@ -58,6 +58,23 @@ class CircumstanceDetailsModelSpec extends UnitSpec {
 
       "there are pending return period changes" in {
         customerInformationNoPendingIndividual.pendingReturnPeriod shouldBe None
+      }
+    }
+  }
+
+  "calling .validPartyTypes" when {
+
+    "the party type is valid" should {
+
+      "return true" in {
+        customerInformationModelMaxOrganisation.validPartyType shouldBe true
+      }
+    }
+
+    "the party type is invalid" should {
+
+      "return false" in {
+        customerInformationModelMaxOrganisation.copy(partyType = Some("99")).validPartyType shouldBe false
       }
     }
   }

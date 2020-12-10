@@ -162,7 +162,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
   "Calling BusinessAddressController.callback" when {
 
     val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-      customerDetails = CustomerDetails(None, None, None, None, None, overseasIndicator = false),
+      customerDetails = CustomerDetails(None, None, None, None, None, overseasIndicator = false, nameIsReadOnly = None),
       flatRateScheme = None,
       ppob = PPOB(
         address = PPOBAddress(

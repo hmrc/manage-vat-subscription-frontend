@@ -50,12 +50,12 @@ class CustomerDetailsSpec extends UnitSpec {
       }
       "FirstName is present" should {
         "return 'Firstname'" in {
-          CustomerDetails(Some(firstName), None, None, None, None, overseasIndicator = false).userName shouldBe Some(s"$firstName")
+          customerDetailsMin.copy(firstName = Some(firstName)).userName shouldBe Some(s"$firstName")
         }
       }
       "LastName is present" should {
         "return 'Lastname'" in {
-          CustomerDetails(None, Some(lastName), None, None, None, overseasIndicator = false).userName shouldBe Some(s"$lastName")
+          customerDetailsMin.copy(lastName = Some(lastName)).userName shouldBe Some(s"$lastName")
         }
       }
       "No names are present" should {

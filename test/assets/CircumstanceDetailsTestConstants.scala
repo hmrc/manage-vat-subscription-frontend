@@ -367,13 +367,7 @@ object CircumstanceDetailsTestConstants {
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-    customerDetails = CustomerDetails(
-      firstName = None,
-      lastName = None,
-      organisationName = None,
-      tradingName = None,
-      welshIndicator = None,
-      overseasIndicator = false),
+    customerDetails = customerDetailsMin,
     flatRateScheme = None,
     ppob = ppobModelMin,
     bankDetails = None,
@@ -481,6 +475,5 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(None, None, None, Some("Party Kitchen")))
   )
 
-  val overseasCompany: CircumstanceDetails =
-    customerInformationModelMin.copy(customerDetails = organisation.copy(overseasIndicator = true))
+  val overseasCompany: CircumstanceDetails = customerInformationModelMin.copy(customerDetails = overseasOrganisation)
 }
