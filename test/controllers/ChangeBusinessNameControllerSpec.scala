@@ -28,7 +28,7 @@ import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
 import uk.gov.hmrc.http.HeaderCarrier
-import views.html.businessName.ChangeBusinessNameView
+import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,6 +45,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
     serviceErrorHandler,
     mockAuditingService,
     inject[ChangeBusinessNameView],
+    inject[AltChangeBusinessNameView],
     mcc,
     mockConfig,
     ec
@@ -72,7 +73,36 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
           }
         }
 
-        "the user's data is not mastered in ETMP" should {
+        "the user's data is not mastered in ETMP" when {
+
+          "the user has party type of Z1 or 1" should {
+
+            lazy val result: Future[Result] = {
+              mockCustomerDetailsSuccess(
+                customerInformationModelMaxOrganisation.copy(
+                  customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
+                  partyType = Some("Z1"))
+              )
+              TestChangeBusinessNameController.show(request)
+            }
+
+            "return OK (200)" in {
+              status(result) shouldBe Status.OK
+            }
+
+            "return HTML" in {
+              contentType(result) shouldBe Some("text/html")
+              charset(result) shouldBe Some("utf-8")
+            }
+
+            s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
+              Jsoup.parse(bodyOf(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
+            }
+
+            "have a link to the Gov Uk change business details page" in {
+              Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.altContinueLinkText
+            }
+          }
 
           lazy val result: Future[Result] = {
             mockCustomerDetailsSuccess(
@@ -92,6 +122,10 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
           s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
             messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
+          }
+
+          "have a link to the Gov Uk change business details page" in {
+            Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.continueLink
           }
         }
       }

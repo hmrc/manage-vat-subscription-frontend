@@ -47,6 +47,7 @@ object ConfigKeys {
   val organisationNameRowFeature: String = "features.organisationNameRow19.enabled"
 
   // GOV UK
+  val changeToBusinessDetailsUrl: String = "change-to-business-details.url"
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
   val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
   val vat484Form: String = "gov-uk.guidance.vat484Form.url"
@@ -55,6 +56,7 @@ object ConfigKeys {
 
   val partyTypes: String = "party-types"
   val partyTypesR19: String = "party-types-r19"
+  val partyTypesNspItmp: String = "party-types-nspItmp"
 
   val governmentGatewayHost: String = "government-gateway.host"
 

@@ -63,7 +63,9 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val vatCorrespondenceSendVerificationEmail: String = "send-verification"
   override val vatDesignatoryDetailsTradingNameUrl: String = "change-trading-name"
   override val vatDesignatoryDetailsBusinessNameUrl: String = "change-business-name"
-  override def partyTypes: Seq[String] = Seq("2","4","7","11","50","52","59","62")
+  override def partyTypes: Seq[String] = Seq("Z1","2","4","7","11","50","52","59","62")
+  override val partyTypesNspItmp: Seq[String] = Seq("Z1", "1")
+  override val govUkChangeToBusinessDetails: String = "mock-govUk-changeBusinessDetails"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
   override val vatAgentClientLookupFrontendUrl: String = "/vaclf"

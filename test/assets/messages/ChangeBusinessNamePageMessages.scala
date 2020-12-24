@@ -18,7 +18,8 @@ package assets.messages
 
 object ChangeBusinessNamePageMessages extends BaseMessages {
 
-  val title = "Change the business name" + titleSuffixUser
+  val title: String = "Change the business name" + titleSuffixUser
+  val titleAgent: String = "Change the business name" + titleSuffixAgent
   val heading = "Change the business name"
 
 
@@ -33,4 +34,10 @@ object ChangeBusinessNamePageMessages extends BaseMessages {
   val p4 = "When you have changed your business name at Companies House and received your new Certificate of Incorporation, you will need to:"
   val continueLink = "Continue to Companies House (opens in a new tab)"
 
+  val altP1: String => String = name => s"The business name is currently $name."
+  val altP2: String =
+    "You cannot change the business name on your VAT account. You must change your business name using an alternative service."
+  val altP2Agent: String =
+    "You cannot change your client’s business name from their VAT account. You must change the business name using an alternative service."
+  val altContinueLinkText = "Read the guidance on how to change a business name and any other business details (opens in a new tab)."
 }

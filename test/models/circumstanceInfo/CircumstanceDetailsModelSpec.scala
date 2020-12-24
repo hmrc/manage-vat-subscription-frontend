@@ -79,6 +79,23 @@ class CircumstanceDetailsModelSpec extends TestUtil {
     }
   }
 
+  "calling .nspItmpPartyType" when {
+
+    "the partyType is Z1 or 1" should {
+
+      "return 'true'" in {
+        customerInformationModelMaxOrganisation.copy(partyType = Some("Z1")).nspItmpPartyType shouldBe true
+      }
+    }
+
+    "the partyType is anything other than Z1 or 1" should {
+
+      "return 'false'" in {
+        customerInformationModelMaxOrganisation.nspItmpPartyType shouldBe false
+      }
+    }
+  }
+
   "Deserialize from JSON" when {
 
     "succeeds when all registration fields are populated for release 10" in {

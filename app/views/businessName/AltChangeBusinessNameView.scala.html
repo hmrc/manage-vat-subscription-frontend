@@ -1,0 +1,52 @@
+@*
+ * Copyright 2020 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import templates.Headings
+@import helpers.BackToBusinessDetails
+
+@this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails)
+
+@(organisationName: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+
+@mainTemplate(
+    title = messages("change_business_name.title"),
+    bodyClasses = None,
+    appConfig = appConfig) {
+
+    @backToBusinessDetails()
+
+    @headings(messages("change_business_name.h1"))
+
+    <p>
+        @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
+    </p>
+
+    <p>
+        @if(user.isAgent){
+            @messages("change_business_name.alternative.agent1")
+            @messages("change_business_name.alternative.agent2")
+        } else {
+            @messages("change_business_name.alternative.user1")
+            @messages("change_business_name.alternative.user2")
+        }
+    </p>
+
+    <a id="continue"
+    target="_blank"
+    href="@appConfig.govUkChangeToBusinessDetails"
+    type="submit">@messages("change_business_name.alternative.link")</a>
+    
+}
