@@ -47,7 +47,7 @@ object ConfigKeys {
   val organisationNameRowFeature: String = "features.organisationNameRow19.enabled"
 
   // GOV UK
-  val changeToBusinessDetailsUrl: String = "change-to-business-details.url"
+  val changeToBusinessDetailsUrl: String = "gov-uk.guidance.change-to-business-details.url"
   val changeVatRegistrationDetails: String = "gov-uk.guidance.changeVatRegistrationDetails.url"
   val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
   val vat484Form: String = "gov-uk.guidance.vat484Form.url"
