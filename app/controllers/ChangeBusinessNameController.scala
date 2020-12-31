@@ -26,6 +26,7 @@ import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.businessName.ChangeBusinessNameView
+import views.html.businessName.AltChangeBusinessNameView
 
 import scala.concurrent.ExecutionContext
 
@@ -35,6 +36,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              val serviceErrorHandler: ServiceErrorHandler,
                                              val auditService: AuditService,
                                              changeBusinessNameView: ChangeBusinessNameView,
+                                             altChangeBusinessNameView: AltChangeBusinessNameView,
                                              val mcc: MessagesControllerComponents,
                                              implicit val appConfig: AppConfig,
                                              implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
@@ -48,10 +50,12 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                     !circumstances.customerDetails.overseasIndicator &&
                                     circumstances.validPartyType
 
-          (baseAccess, appConfig.features.organisationNameRowEnabled()) match {
-            case (true, true) if circumstances.customerDetails.nameIsReadOnly.contains(false) =>
+          (baseAccess, appConfig.features.organisationNameRowEnabled(), circumstances.customerDetails.nameIsReadOnly) match {
+            case (true, true, Some(false)) =>
               Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
-            case (true, _) =>
+            case (true, true, Some(true)) if circumstances.nspItmpPartyType =>
+              Ok(altChangeBusinessNameView(circumstances.customerDetails.organisationName.get))
+            case (true, _, _) =>
               Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
             case _ =>
               Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))

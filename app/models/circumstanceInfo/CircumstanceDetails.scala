@@ -62,6 +62,10 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
     party => appConfig.partyTypes.contains(party)
   }
 
+  def nspItmpPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
+    party => appConfig.partyTypesNspItmp.contains(party)
+  }
+
 }
 
 object CircumstanceDetails extends JsonReadUtil {
