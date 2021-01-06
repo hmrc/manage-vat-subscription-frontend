@@ -117,5 +117,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
         redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
       }
     }
+
+    insolvencyCheck(TestPaymentController.sendToPayments)
   }
 }

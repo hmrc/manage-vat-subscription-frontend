@@ -19,7 +19,7 @@ package pages
 import assets.BusinessAddressITConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
-import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, organisation}
+import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, customerDetailsMin, organisation}
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
@@ -161,31 +161,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
   "Calling BusinessAddressController.callback" when {
 
-    val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
-      customerDetails = CustomerDetails(None, None, None, None, None, overseasIndicator = false, nameIsReadOnly = None),
-      flatRateScheme = None,
-      ppob = PPOB(
-        address = PPOBAddress(
-          line1 = "add line 1",
-          line2 = None,
-          line3 = None,
-          line4 = None,
-          line5 = None,
-          postCode = None,
-          countryCode = "GB"),
-        contactDetails = None,
-        websiteAddress = None
-      ),
-      bankDetails = None,
-      returnPeriod = None,
-      deregistration = None,
-      missingTrader = false,
-      changeIndicators = None,
-      pendingChanges = None,
-      partyType = None,
-      commsPreference = None
-    )
-
     "the user is an individual" should {
 
       "redirect to the ChangeAddressConfirmationPage page" in {
@@ -204,7 +179,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+        BusinessAddressStub.getFullInformation(
+          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+        )
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -237,7 +214,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+        BusinessAddressStub.getFullInformation(
+          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+        )
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -270,7 +249,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+          BusinessAddressStub.getFullInformation(
+            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+          )
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
@@ -318,7 +299,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(OK, Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes(true)))
+          BusinessAddressStub.getFullInformation(
+            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+          )
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -356,8 +339,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           elementText("#preference-message")(Messages("contact_preference.digital"))
         )
       }
-
     }
-
   }
 }

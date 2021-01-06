@@ -213,6 +213,8 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
     }
 
     unauthenticatedCheck(TestChangeBusinessNameController.show)
+
+    insolvencyCheck(TestChangeBusinessNameController.show)
   }
 
 
@@ -264,6 +266,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
     }
 
     unauthenticatedCheck(TestChangeBusinessNameController.handOffToCOHO)
-  }
 
+    insolvencyCheck(TestChangeBusinessNameController.handOffToCOHO)
+  }
 }

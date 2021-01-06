@@ -16,14 +16,15 @@
 
 package controllers.predicates
 
-import common.EnrolmentKeys
+import common.{EnrolmentKeys, SessionKeys}
 import config.{AppConfig, ServiceErrorHandler}
+
 import javax.inject.{Inject, Singleton}
 import models.User
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc._
-import services.EnrolmentsAuthService
+import services.{CustomerCircumstanceDetailsService, EnrolmentsAuthService}
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
@@ -35,12 +36,13 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
                               enrolmentsAuthService: EnrolmentsAuthService,
+                              customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                               val authenticateAsAgentWithClient: AuthoriseAsAgentWithClient,
                               val serviceErrorHandler: ServiceErrorHandler,
-                              unauthorisedView: UnauthorisedView,
+                              agentUnauthorisedView: UnauthorisedView,
                               notSignedUpView: NotSignedUpView,
-                              override val mcc: MessagesControllerComponents,
-                              implicit val appConfig: AppConfig,
+                              override val mcc: MessagesControllerComponents)
+                             (implicit val appConfig: AppConfig,
                               implicit val executionContext: ExecutionContext)
   extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] {
 
@@ -53,7 +55,8 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
         (isAgent(affinityGroup), allEnrolments) match {
           case (true, enrolments) =>
             checkAgentEnrolment(enrolments, block)
-          case (_, enrolments) => checkVatEnrolment(enrolments, block)
+          case (_, enrolments) =>
+            checkVatEnrolment(enrolments, block)
         }
       case _ =>
         Logger.warn("[AuthPredicate][invokeBlock] - Missing affinity group")
@@ -69,20 +72,36 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
   }
 
 
-  private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
+  private[AuthPredicate] def checkAgentEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])
+                                                   (implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
       Logger.debug("[AuthPredicate][checkAgentEnrolment] - Authenticating as agent")
       authenticateAsAgentWithClient.invokeBlock(request, block)
     }
     else {
       Logger.debug(s"[AuthPredicate][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-      Future.successful(Forbidden(unauthorisedView()))
+      Future.successful(Forbidden(agentUnauthorisedView()))
     }
 
-  private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])(implicit request: Request[A]) =
+  private[AuthPredicate] def checkVatEnrolment[A](enrolments: Enrolments, block: User[A] => Future[Result])
+                                                 (implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.vatEnrolmentId)) {
-      Logger.debug("[AuthPredicate][checkVatEnrolment] - Authenticated as principle")
-      block(User(enrolments))
+      val user = User(enrolments)
+      request.session.get(SessionKeys.insolventWithoutAccessKey) match {
+        case Some("true") => Future.successful(Forbidden(notSignedUpView()))
+        case Some("false") => block(user)
+        case _ => customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).flatMap {
+          case Right(details) if details.customerDetails.isInsolventWithoutAccess =>
+            Logger.debug("[AuthPredicate][checkVatEnrolment] - User is insolvent and not continuing to trade")
+            Future.successful(Forbidden(notSignedUpView()).addingToSession(SessionKeys.insolventWithoutAccessKey -> "true"))
+          case Right(_) =>
+            Logger.debug("[AuthPredicate][checkVatEnrolment] - Authenticated as principle")
+            block(user).map(result => result.addingToSession(SessionKeys.insolventWithoutAccessKey -> "false"))
+          case _ =>
+            Logger.warn("[AuthPredicate][checkVatEnrolment] - Failure obtaining insolvency status from Customer Info API")
+            Future.successful(serviceErrorHandler.showInternalServerError)
+        }
+      }
     }
     else {
       Logger.debug(s"[AuthPredicate][checkVatEnrolment] - Individual without HMRC-MTD-VAT enrolment. $enrolments")

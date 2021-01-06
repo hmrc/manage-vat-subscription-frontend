@@ -56,11 +56,17 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
   implicit lazy val mockConfig: MockAppConfig = new MockAppConfig
   implicit lazy val serviceErrorHandler: ServiceErrorHandler = inject[ServiceErrorHandler]
 
-  implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] = FakeRequest()
+  implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "false")
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.CLIENT_VRN -> vrn, SessionKeys.verifiedAgentEmail -> agentEmail)
-  implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> vrn, SessionKeys.NEW_RETURN_FREQUENCY -> "Jan", SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly")
+  implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession(
+    SessionKeys.CLIENT_VRN -> vrn,
+    SessionKeys.NEW_RETURN_FREQUENCY -> "Jan",
+    SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
+  )
+  lazy val insolventRequest: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "true")
 
   implicit lazy val user: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](vrn,active = true)(request)
   implicit lazy val agentUser: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](vrn,active = true, Some(arn))(fakeRequestWithClientsVRN)
