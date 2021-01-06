@@ -137,6 +137,8 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         charset(result) shouldBe Some("utf-8")
       }
     }
+
+    insolvencyCheck(controller.show)
   }
 
   "The .submit action" when {
@@ -213,5 +215,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         charset(result) shouldBe Some("utf-8")
       }
     }
+
+    insolvencyCheck(controller.submit)
   }
 }

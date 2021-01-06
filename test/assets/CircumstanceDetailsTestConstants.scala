@@ -476,4 +476,7 @@ object CircumstanceDetailsTestConstants {
   )
 
   val overseasCompany: CircumstanceDetails = customerInformationModelMin.copy(customerDetails = overseasOrganisation)
+
+  val customerInformationInsolvent: CircumstanceDetails =
+    customerInformationModelMin.copy(customerDetails = customerDetailsInsolvent)
 }

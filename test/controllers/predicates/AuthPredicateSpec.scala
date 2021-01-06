@@ -17,16 +17,21 @@
 package controllers.predicates
 
 import assets.BaseTestConstants._
+import assets.CircumstanceDetailsTestConstants.{customerInformationInsolvent, customerInformationModelMaxOrganisation}
 import assets.messages._
+import common.SessionKeys
 import mocks.MockAuth
+import mocks.services.MockCustomerCircumstanceDetailsService
 import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.mvc.Results.Ok
 import play.api.mvc.{Action, AnyContent}
+import play.api.test.FakeRequest
+import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
-class AuthPredicateSpec extends MockAuth {
+class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsService {
 
   def target: Action[AnyContent] = mockAuthPredicate.async {
     _ => Future.successful(Ok("test"))
@@ -89,11 +94,70 @@ class AuthPredicateSpec extends MockAuth {
 
     "the user is an Individual (Principle Entity)" when {
 
-      "they have an active HMRC-MTD-VAT enrolment" should {
+      "they have an active HMRC-MTD-VAT enrolment" when {
 
-        "return OK (200)" in {
-          mockIndividualAuthorised()
-          status(target(request)) shouldBe Status.OK
+        "they have a value in session for their insolvency status" when {
+
+          "the value is 'true' (insolvent user not continuing to trade)" should {
+
+            "return Forbidden (403)" in {
+              status(target(insolventRequest)) shouldBe Status.FORBIDDEN
+            }
+          }
+
+          "the value is 'false' (user permitted to trade)" should {
+
+            "return OK (200)" in {
+              status(target(request)) shouldBe Status.OK
+            }
+          }
+        }
+
+        "they do not have a value in session for their insolvency status" when {
+
+          "they are insolvent and not continuing to trade" should {
+
+            lazy val result = {
+              mockCustomerDetailsSuccess(customerInformationInsolvent)
+              target(FakeRequest())
+            }
+
+            "return Forbidden (403)" in {
+              status(result) shouldBe Status.FORBIDDEN
+            }
+
+            "add the insolvent flag to the session" in {
+              session(result).get(SessionKeys.insolventWithoutAccessKey) shouldBe Some("true")
+            }
+          }
+
+          "they are permitted to trade" should {
+
+            lazy val result = {
+              mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+              target(FakeRequest())
+            }
+
+            "return OK (200)" in {
+              status(result) shouldBe Status.OK
+            }
+
+            "add the insolvent flag to the session" in {
+              session(result).get(SessionKeys.insolventWithoutAccessKey) shouldBe Some("false")
+            }
+          }
+
+          "there is an error returned from the customer information API" should {
+
+            lazy val result = {
+              mockCustomerDetailsError()
+              target(FakeRequest())
+            }
+
+            "return Internal Server Error (500)" in {
+              status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+            }
+          }
         }
       }
 

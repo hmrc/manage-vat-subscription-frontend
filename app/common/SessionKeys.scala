@@ -24,4 +24,5 @@ object SessionKeys {
   val verifiedAgentEmail: String = "verifiedAgentEmail"
   val vatCorrespondencePrepopulationEmailKey: String = "vatCorrespondencePrepopulationEmail"
   val inFlightContactDetailsChangeKey: String = "inFlightContactDetailsChange"
+  val insolventWithoutAccessKey: String = "insolventWithoutAccess"
 }

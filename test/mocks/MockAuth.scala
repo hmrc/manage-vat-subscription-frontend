@@ -65,13 +65,12 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
     new AuthPredicate(
       messagesApi,
       mockEnrolmentsAuthService,
+      mockCustomerDetailsService,
       mockAuthAsAgentWithClient,
       serviceErrorHandler,
       inject[UnauthorisedView],
       inject[NotSignedUpView],
-      mcc,
-      mockConfig,
-      ec
+      mcc
     )
 
   val mockAgentOnlyAuthPredicate: AuthoriseAsAgentOnly =
