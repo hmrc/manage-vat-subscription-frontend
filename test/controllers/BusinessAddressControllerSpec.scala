@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,6 +100,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
+
+    insolvencyCheck(TestBusinessAddressController.show)
   }
 
   "Calling .callback" when {
@@ -193,14 +195,13 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
     }
 
-    "the user is not authenticated" should {
+    lazy val controller = setup(
+      addressLookupResponse = Left(errorModel),
+      businessAddressResponse = Left(errorModel))
 
-      lazy val controller = setup(
-        addressLookupResponse = Left(errorModel),
-        businessAddressResponse = Left(errorModel))
+    unauthenticatedCheck(controller.callback("12345"))
 
-      unauthenticatedCheck(controller.callback("12345"))
-    }
+    insolvencyCheck(controller.callback("12345"))
   }
 
   "Calling .initialiseJourney" when {
@@ -280,6 +281,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
       }
     }
+
+    insolvencyCheck(setup(addressLookupResponse = Left(errorModel)).initialiseJourney)
   }
 
   "calling .confirmation" when {
@@ -543,6 +546,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           messages(document.select("#content article p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
         }
       }
+
+      insolvencyCheck(controller.confirmation("non-agent"))
     }
   }
 }

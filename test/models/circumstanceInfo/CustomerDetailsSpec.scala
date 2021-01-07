@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +101,23 @@ class CustomerDetailsSpec extends UnitSpec {
       }
     }
 
+    "calling .isInsolventWithoutAccess" should {
+
+      "return true when the user is insolvent and not continuing to trade" in {
+        customerDetailsInsolvent.isInsolventWithoutAccess shouldBe true
+      }
+
+      "return false when the user is insolvent but is continuing to trade" in {
+        customerDetailsInsolvent.copy(continueToTrade = Some(true)).isInsolventWithoutAccess shouldBe false
+      }
+
+      "return false when the user is not insolvent, regardless of the continueToTrade flag" in {
+        customerDetailsMax.isInsolventWithoutAccess shouldBe false
+        customerDetailsMax.copy(continueToTrade = Some(false)).isInsolventWithoutAccess shouldBe false
+        customerDetailsMax.copy(continueToTrade = None).isInsolventWithoutAccess shouldBe false
+      }
+    }
+
     "Deserialize from JSON" when {
 
       "all optional fields are populated for release 10" in {
@@ -143,5 +160,4 @@ class CustomerDetailsSpec extends UnitSpec {
       }
     }
   }
-
 }

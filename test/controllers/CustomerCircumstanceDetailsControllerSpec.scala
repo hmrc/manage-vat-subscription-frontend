@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2021 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,6 +118,8 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     }
 
     unauthenticatedCheck(TestCustomerCircumstanceDetailsController.show("non-agent"))
+
+    insolvencyCheck(TestCustomerCircumstanceDetailsController.show("non-agent"))
   }
 
   "calling the .redirect action" when {
@@ -140,6 +142,8 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     }
 
     unauthenticatedCheck(TestCustomerCircumstanceDetailsController.redirect())
+
+    insolvencyCheck(TestCustomerCircumstanceDetailsController.redirect())
   }
 
   "calling the sendEmailVerification action" when {
@@ -193,5 +197,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
         charset(result) shouldBe Some("utf-8")
       }
     }
+
+    insolvencyCheck(TestCustomerCircumstanceDetailsController.sendEmailVerification)
   }
 }
