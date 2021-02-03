@@ -58,12 +58,12 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "3.0.0",
-  "uk.gov.hmrc"       %% "play-partials"              % "7.0.0-play-26",
-  "uk.gov.hmrc"       %% "govuk-template"             % "5.58.0-play-26",
-  "uk.gov.hmrc"       %% "play-ui"                    % "8.14.0-play-26",
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "3.4.0",
+  "uk.gov.hmrc"       %% "play-partials"              % "7.1.0-play-26",
+  "uk.gov.hmrc"       %% "govuk-template"             % "5.61.0-play-26",
+  "uk.gov.hmrc"       %% "play-ui"                    % "8.21.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
-  "uk.gov.hmrc"       %% "play-language"              % "4.4.0-play-26",
+  "uk.gov.hmrc"       %% "play-language"              % "4.10.0-play-26",
   "com.typesafe.play" %% "play-json-joda"             % "2.6.14"
 )
 

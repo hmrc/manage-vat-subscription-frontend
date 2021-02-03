@@ -23,7 +23,7 @@ import play.api.i18n.Lang
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.Call
 
-class MockAppConfig(implicit val runModeConfiguration: Configuration) extends AppConfig {
+class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppConfig {
 
   override val reportAProblemPartialUrl: String = ""
   override val reportAProblemNonJSUrl: String = ""
@@ -63,7 +63,8 @@ class MockAppConfig(implicit val runModeConfiguration: Configuration) extends Ap
   override val vatCorrespondenceSendVerificationEmail: String = "send-verification"
   override val vatDesignatoryDetailsTradingNameUrl: String = "change-trading-name"
   override val vatDesignatoryDetailsBusinessNameUrl: String = "change-business-name"
-  override def partyTypes: Seq[String] = Seq("Z1","2","4","7","11","50","52","59","62")
+  override def partyTypes: Seq[String] =
+    Seq("Z1","1","2","3","4","5","6","7","8","9","10","50","51","52","53","54","55","58","59","60","61","62","63")
   override val partyTypesNspItmp: Seq[String] = Seq("Z1", "1")
   override val govUkChangeToBusinessDetails: String = "mock-govUk-changeBusinessDetails"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"

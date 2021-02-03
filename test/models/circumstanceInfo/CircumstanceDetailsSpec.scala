@@ -23,9 +23,9 @@ import models.returnFrequency.Mar
 import play.api.libs.json.Json
 import utils.TestUtil
 
-class CircumstanceDetailsModelSpec extends TestUtil {
+class CircumstanceDetailsSpec extends TestUtil {
 
-  "CircumstanceDetailsModel.pendingPPOBAddress" should{
+  "calling .pendingPPOBAddress" should {
 
     "return ppobAddress" in {
       customerInformationModelMaxOrganisation.ppobAddress shouldBe ppobAddressModelMax
@@ -62,16 +62,18 @@ class CircumstanceDetailsModelSpec extends TestUtil {
     }
   }
 
-  "calling .validPartyTypes" when {
+  "calling .validPartyType" when {
 
-    "the party type is valid" should {
+    "the party type is listed in the appConfig sequence 'partyTypes'" should {
 
       "return true" in {
-        customerInformationModelMaxOrganisation.validPartyType shouldBe true
+        mockConfig.partyTypes.foreach { party =>
+          customerInformationModelMaxOrganisation.copy(partyType = Some(party)).validPartyType shouldBe true
+        }
       }
     }
 
-    "the party type is invalid" should {
+    "the party type is not listed in the appConfig sequence 'partyTypes'" should {
 
       "return false" in {
         customerInformationModelMaxOrganisation.copy(partyType = Some("99")).validPartyType shouldBe false
@@ -81,14 +83,16 @@ class CircumstanceDetailsModelSpec extends TestUtil {
 
   "calling .nspItmpPartyType" when {
 
-    "the partyType is Z1 or 1" should {
+    "the partyType is listed in the appConfig sequence 'partyTypesNspItmp'" should {
 
       "return 'true'" in {
-        customerInformationModelMaxOrganisation.copy(partyType = Some("Z1")).nspItmpPartyType shouldBe true
+        mockConfig.partyTypesNspItmp.foreach { party =>
+          customerInformationModelMaxOrganisation.copy(partyType = Some(party)).nspItmpPartyType shouldBe true
+        }
       }
     }
 
-    "the partyType is anything other than Z1 or 1" should {
+    "the partyType is not listed in the appConfig sequence 'partyTypesNspItmp'" should {
 
       "return 'false'" in {
         customerInformationModelMaxOrganisation.nspItmpPartyType shouldBe false
