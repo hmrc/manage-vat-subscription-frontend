@@ -104,28 +104,33 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
             }
           }
 
-          lazy val result: Future[Result] = {
-            mockCustomerDetailsSuccess(
-              customerInformationModelMaxOrganisation.copy(customerDetails = organisation.copy(nameIsReadOnly = Some(true)))
-            )
-            TestChangeBusinessNameController.show(request)
-          }
+          "the user has party type of 4,7,10,50,51 or 54" should {
 
-          "return OK (200)" in {
-            status(result) shouldBe Status.OK
-          }
+            lazy val result: Future[Result] = {
+              mockCustomerDetailsSuccess(
+                customerInformationModelMaxOrganisation.copy(
+                  customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
+                  partyType = Some("4"))
+              )
+              TestChangeBusinessNameController.show(request)
+            }
 
-          "return HTML" in {
-            contentType(result) shouldBe Some("text/html")
-            charset(result) shouldBe Some("utf-8")
-          }
+            "return OK (200)" in {
+              status(result) shouldBe Status.OK
+            }
 
-          s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-            messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
-          }
+            "return HTML" in {
+              contentType(result) shouldBe Some("text/html")
+              charset(result) shouldBe Some("utf-8")
+            }
 
-          "have a link to the Gov Uk change business details page" in {
-            Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.continueLink
+            s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
+              messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
+            }
+
+            "have a link to the Companies House change business details page" in {
+              Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.continueLink
+            }
           }
         }
       }
