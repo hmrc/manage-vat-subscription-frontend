@@ -63,7 +63,7 @@ trait AppConfig {
   val vatDesignatoryDetailsTradingNameUrl: String
   val vatDesignatoryDetailsBusinessNameUrl: String
   def partyTypes: Seq[String]
-  val partyTypesNspItmp: Seq[String]
+  val partyTypesNspItmpOrSAMastered: Seq[String]
   val govUkChangeToBusinessDetails: String
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
@@ -187,7 +187,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override def partyTypes: Seq[String] =
     if(features.organisationNameRowEnabled()) getStringSeq(Keys.partyTypesR19) else getStringSeq(Keys.partyTypes)
 
-  override val partyTypesNspItmp: Seq[String] = getStringSeq(Keys.partyTypesNspItmp)
+  override val partyTypesNspItmpOrSAMastered: Seq[String] = getStringSeq(Keys.partyTypesNspItmpOrSAMastered)
 
   override lazy val govUkChangeToBusinessDetails: String = servicesConfig.getString(Keys.changeToBusinessDetailsUrl)
 

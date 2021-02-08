@@ -86,7 +86,7 @@ class CircumstanceDetailsSpec extends TestUtil {
     "the partyType is listed in the appConfig sequence 'partyTypesNspItmp'" should {
 
       "return 'true'" in {
-        mockConfig.partyTypesNspItmp.foreach { party =>
+        mockConfig.partyTypesNspItmpOrSAMastered.foreach { party =>
           customerInformationModelMaxOrganisation.copy(partyType = Some(party)).nspItmpPartyType shouldBe true
         }
       }

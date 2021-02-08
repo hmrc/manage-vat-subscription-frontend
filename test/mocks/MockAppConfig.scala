@@ -64,8 +64,8 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val vatDesignatoryDetailsTradingNameUrl: String = "change-trading-name"
   override val vatDesignatoryDetailsBusinessNameUrl: String = "change-business-name"
   override def partyTypes: Seq[String] =
-    Seq("Z1","1","2","3","4","5","6","7","8","9","10","50","51","52","53","54","55","58","59","60","61","62","63")
-  override val partyTypesNspItmp: Seq[String] = Seq("Z1", "1")
+    Seq("Z1","1","2","3","4","5","6","7","8","9","10","25","50","51","52","53","54","55","58","59","60","61","62","63")
+  override val partyTypesNspItmpOrSAMastered: Seq[String] = Seq("Z1", "1", "2", "3", "6", "25", "55", "58", "59", "61", "63")
   override val govUkChangeToBusinessDetails: String = "mock-govUk-changeBusinessDetails"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
