@@ -63,7 +63,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   }
 
   def nspItmpPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
-    party => appConfig.partyTypesNspItmp.contains(party)
+    party => appConfig.partyTypesNspItmpOrSAMastered.contains(party)
   }
 
 }

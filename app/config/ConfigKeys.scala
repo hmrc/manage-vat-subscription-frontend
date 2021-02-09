@@ -56,7 +56,7 @@ object ConfigKeys {
 
   val partyTypes: String = "party-types"
   val partyTypesR19: String = "party-types-r19"
-  val partyTypesNspItmp: String = "party-types-nspItmp"
+  val partyTypesNspItmpOrSAMastered: String = "party-types-nspItmpOrSAMastered"
 
   val governmentGatewayHost: String = "government-gateway.host"
 

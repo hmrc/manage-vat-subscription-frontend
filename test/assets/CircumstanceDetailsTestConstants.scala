@@ -29,7 +29,7 @@ import play.api.libs.json.{JsValue, Json}
 
 object CircumstanceDetailsTestConstants {
 
-  val partyType = "2"
+  val partyType = "4"
   val commsPreference = "DIGITAL"
 
   val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
