@@ -101,14 +101,36 @@ class CustomerDetailsSpec extends UnitSpec {
       }
     }
 
-    "calling .isInsolventWithoutAccess" should {
+    "calling .isInsolventWithoutAccess" when {
 
-      "return true when the user is insolvent and not continuing to trade" in {
-        customerDetailsInsolvent.isInsolventWithoutAccess shouldBe true
+      "the user is insolvent and not continuing to trade" should {
+
+        "return true for a user with no insolvency type" in {
+          customerDetailsInsolvent.isInsolventWithoutAccess shouldBe true
+        }
+
+        "return true for a user with a blocked insolvency type" in {
+          customerDetailsInsolvent.copy(insolvencyType = Some("09")).isInsolventWithoutAccess shouldBe true
+        }
+
+        "return false for a user with an allowed insolvency type" in {
+          customerDetailsInsolvent.copy(insolvencyType = Some("12")).isInsolventWithoutAccess shouldBe false
+        }
       }
 
-      "return false when the user is insolvent but is continuing to trade" in {
-        customerDetailsInsolvent.copy(continueToTrade = Some(true)).isInsolventWithoutAccess shouldBe false
+      "the user is insolvent but is continuing to trade" should {
+
+        "return false for a user with no insolvency type" in {
+          customerDetailsInsolvent.copy(continueToTrade = Some(true)).isInsolventWithoutAccess shouldBe false
+        }
+
+        "return true for a user with a blocked insolvency type" in {
+          customerDetailsInsolvent.copy(continueToTrade = Some(true), insolvencyType = Some("10")).isInsolventWithoutAccess shouldBe true
+        }
+
+        "return false for a user with an allowed insolvency type" in {
+          customerDetailsInsolvent.copy(continueToTrade = Some(true), insolvencyType = Some("14")).isInsolventWithoutAccess shouldBe false
+        }
       }
 
       "return false when the user is not insolvent, regardless of the continueToTrade flag" in {

@@ -29,7 +29,8 @@ case class CustomerDetails(firstName: Option[String],
                            overseasIndicator: Boolean,
                            nameIsReadOnly: Option[Boolean],
                            isInsolvent: Boolean,
-                           continueToTrade: Option[Boolean]) {
+                           continueToTrade: Option[Boolean],
+                           insolvencyType: Option[String]) {
 
   val isOrg: Boolean = organisationName.isDefined
   val isInd: Boolean = firstName.isDefined || lastName.isDefined
@@ -40,9 +41,19 @@ case class CustomerDetails(firstName: Option[String],
   val businessName: Option[String] = if (isOrg) organisationName else userName
   val clientName: Option[String] = if (tradingName.isDefined) tradingName else businessName
 
-  val isInsolventWithoutAccess: Boolean = continueToTrade match {
-    case Some(false) => isInsolvent
-    case _ => false
+  val allowedInsolvencyTypes: Seq[String] = Seq("07", "12", "13", "14")
+  val blockedInsolvencyTypes: Seq[String] = Seq("08", "09", "10", "15")
+
+  val isInsolventWithoutAccess: Boolean = {
+    if(isInsolvent) {
+      insolvencyType match {
+        case Some(iType) if allowedInsolvencyTypes.contains(iType) => false
+        case Some(iType) if blockedInsolvencyTypes.contains(iType) => true
+        case _ => !continueToTrade.getOrElse(true)
+      }
+    } else {
+      false
+    }
   }
 }
 
@@ -58,6 +69,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
   private val nameIsReadOnlyPath = __ \ "nameIsReadOnly"
   private val isInsolventPath = __ \ "isInsolvent"
   private val continueToTradePath = __ \ "continueToTrade"
+  private val insolvencyTypePath = __ \ "insolvencyType"
 
   implicit val reads: Boolean => Reads[CustomerDetails] = isRelease10 =>
     if(isRelease10) {
@@ -72,6 +84,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
         isInsolvent <- isInsolventPath.read[Boolean]
         continueToTrade <- continueToTradePath.readNullable[Boolean]
+        insolvencyType <- insolvencyTypePath.readNullable[String]
       } yield CustomerDetails(
         firstName,
         lastname,
@@ -82,7 +95,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         overseasIndicator,
         nameIsReadOnly,
         isInsolvent,
-        continueToTrade
+        continueToTrade,
+        insolvencyType
       )
     } else {
       for {
@@ -95,6 +109,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
         isInsolvent <- isInsolventPath.read[Boolean]
         continueToTrade <- continueToTradePath.readNullable[Boolean]
+        insolvencyType <- insolvencyTypePath.readNullable[String]
       } yield CustomerDetails(
         firstName,
         lastname,
@@ -105,7 +120,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         overseasIndicator = false,
         nameIsReadOnly,
         isInsolvent,
-        continueToTrade
+        continueToTrade,
+        insolvencyType
       )
     }
 
@@ -120,7 +136,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         "hasFlatRateScheme" -> model.hasFlatRateScheme,
         "nameIsReadOnly" -> model.nameIsReadOnly,
         "isInsolvent" -> model.isInsolvent,
-        "continueToTrade" -> model.continueToTrade
+        "continueToTrade" -> model.continueToTrade,
+        "insolvencyType" -> model.insolvencyType
       ) ++ (if(isRelease10) Json.obj("overseasIndicator" -> model.overseasIndicator) else Json.obj())
   }
 }
