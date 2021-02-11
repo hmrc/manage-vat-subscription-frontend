@@ -54,7 +54,7 @@ class NotSignedUpViewSpec extends ViewBaseSpec with BaseMessages {
       }
 
       "has a URL to the sign out controller" in {
-        element(".button").attr("href") shouldBe controllers.routes.SignOutController.signOut(true).url
+        element(".button").attr("href") shouldBe controllers.routes.SignOutController.signOut(false).url
       }
     }
   }
