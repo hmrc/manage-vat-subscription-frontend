@@ -47,7 +47,8 @@ object IntegrationTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val individual: CustomerDetails = CustomerDetails(
@@ -59,7 +60,8 @@ object IntegrationTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(true),
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val customerDetailsMin: CustomerDetails = CustomerDetails(
@@ -71,7 +73,8 @@ object IntegrationTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = None,
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val contactDetailsModelMax: ContactDetails = ContactDetails(

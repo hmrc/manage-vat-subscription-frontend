@@ -72,7 +72,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val organisation: CustomerDetails = CustomerDetails(
@@ -84,7 +85,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val overseasOrganisation: CustomerDetails = organisation.copy(overseasIndicator = true)
@@ -98,7 +100,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = Some(true)
+    continueToTrade = Some(true),
+    insolvencyType = None
   )
 
   val customerDetailsInsolvent: CustomerDetails = customerDetailsMax.copy(isInsolvent = true, continueToTrade = Some(false))
@@ -112,7 +115,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = None,
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   ///////////////// Release 8 data -- separated for ease of removal
@@ -126,7 +130,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val organisationJsonR8: JsObject = Json.obj(
@@ -150,7 +155,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = Some(false),
     isInsolvent = false,
-    continueToTrade = Some(true)
+    continueToTrade = Some(true),
+    insolvencyType = None
   )
 
   val customerDetailsMinR8: CustomerDetails = CustomerDetails(
@@ -162,7 +168,8 @@ object CustomerDetailsTestConstants {
     overseasIndicator = false,
     nameIsReadOnly = None,
     isInsolvent = false,
-    continueToTrade = None
+    continueToTrade = None,
+    insolvencyType = None
   )
 
   val customerDetailsJsonMaxR8: JsObject = Json.obj(
