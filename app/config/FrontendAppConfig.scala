@@ -34,6 +34,7 @@ trait AppConfig {
   val signInUrl: String
   val features: Features
   val govUkCohoNameChangeUrl: String
+  val govUkTrustNameChangeUrl: String
   def surveyUrl(identifier: String): String
   def signOutExitSurveyUrl(identifier: String): String
   val unauthorisedSignOutUrl: String
@@ -64,6 +65,7 @@ trait AppConfig {
   val vatDesignatoryDetailsBusinessNameUrl: String
   def partyTypes: Seq[String]
   val partyTypesNspItmpOrSAMastered: Seq[String]
+  val partyTypesTrusts: Seq[String]
   val govUkChangeToBusinessDetails: String
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
@@ -114,6 +116,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val vatSubscriptionUrl: String = servicesConfig.baseUrl(Keys.vatSubscription)
 
   override lazy val govUkCohoNameChangeUrl: String = servicesConfig.getString(Keys.govUkCohoNameChangeUrl)
+
+  override lazy val govUkTrustNameChangeUrl: String = servicesConfig.getString(Keys.govUkTrustNameChangeUrl)
 
   override val features = new Features
 
@@ -188,6 +192,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     if(features.organisationNameRowEnabled()) getStringSeq(Keys.partyTypesR19) else getStringSeq(Keys.partyTypes)
 
   override val partyTypesNspItmpOrSAMastered: Seq[String] = getStringSeq(Keys.partyTypesNspItmpOrSAMastered)
+
+  override val partyTypesTrusts: Seq[String] = getStringSeq(Keys.partyTypesTrusts)
 
   override lazy val govUkChangeToBusinessDetails: String = servicesConfig.getString(Keys.changeToBusinessDetailsUrl)
 

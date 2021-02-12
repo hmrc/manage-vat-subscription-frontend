@@ -48,7 +48,7 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     "a regular user accesses the page" should {
 
-      lazy val view = injectedView(orgName)(user, messages, mockConfig)
+      lazy val view = injectedView(orgName, orgIsTrust = false)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -84,9 +84,26 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
+    "a trust user accesses the page" should {
+
+      lazy val view = injectedView(orgName, orgIsTrust = true)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct p2 of '${viewMessages.altP2Trust}'" in {
+        elementText(Selectors.p2) shouldBe viewMessages.altP2Trust
+      }
+
+      "have a continue link" which {
+
+        "has the correct URL for the charity change of details form" in {
+          element(Selectors.link).attr("href") shouldBe mockConfig.govUkTrustNameChangeUrl
+        }
+      }
+    }
+
     "an agent accesses the page" should {
 
-      lazy val view = injectedView(orgName)(agentUser, messages, mockConfig)
+      lazy val view = injectedView(orgName, orgIsTrust = false)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.titleAgent}'" in {
@@ -118,6 +135,23 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
         "has a URL to the Gov.UK guidance page for changing business details" in {
           element(Selectors.link).attr("href") shouldBe mockConfig.govUkChangeToBusinessDetails
+        }
+      }
+    }
+
+    "an agent of a trust accesses the page" should {
+
+      lazy val view = injectedView(orgName, orgIsTrust = true)(agentUser, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct p2 of '${viewMessages.altP2AgentTrust}'" in {
+        elementText(Selectors.p2) shouldBe viewMessages.altP2AgentTrust
+      }
+
+      "have a continue link" which {
+
+        "has the correct URL for the charity change of details form" in {
+          element(Selectors.link).attr("href") shouldBe mockConfig.govUkTrustNameChangeUrl
         }
       }
     }

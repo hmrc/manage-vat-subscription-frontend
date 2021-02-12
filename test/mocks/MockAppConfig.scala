@@ -33,6 +33,7 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override def surveyUrl(identifier: String): String = s"/some-survey-url/$identifier"
   override val features: Features = new Features
   override val govUkCohoNameChangeUrl: String = "/gov-uk/coho-name-change"
+  override val govUkTrustNameChangeUrl: String = "/gov-uk/trust-name-change"
   override val addressLookupCallbackUrl: String = ""
   override val addressLookupService: String = ""
   override val addressLookupUrlHost: String = ""
@@ -66,6 +67,7 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override def partyTypes: Seq[String] =
     Seq("Z1","1","2","3","4","5","6","7","8","9","10","25","50","51","52","53","54","55","58","59","60","61","62","63")
   override val partyTypesNspItmpOrSAMastered: Seq[String] = Seq("Z1", "1", "2", "3", "6", "25", "55", "58", "59", "61", "63")
+  override val partyTypesTrusts: Seq[String] = Seq("6", "60")
   override val govUkChangeToBusinessDetails: String = "mock-govUk-changeBusinessDetails"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"

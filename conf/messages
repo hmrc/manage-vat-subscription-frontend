@@ -141,8 +141,10 @@ change_business_name.link = Continue to Companies House (opens in a new tab)
 
 change_business_name.alternative.user1 = You cannot change the business name on your VAT account.
 change_business_name.alternative.user2 = You must change your business name using an alternative service.
+change_business_name.alternative.user.charity = You must change your business name through the Charities Commission.
 change_business_name.alternative.agent1 = You cannot change your client’s business name from their VAT account.
 change_business_name.alternative.agent2 = You must change the business name using an alternative service.
+change_business_name.alternative.agent.charity = You must change the business name through the Charities Commission.
 change_business_name.alternative.link = Read the guidance on how to change a business name and any other business details (opens in a new tab).
 
 change_address.title = Change where the business does most of its work

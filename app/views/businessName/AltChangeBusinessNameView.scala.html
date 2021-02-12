@@ -19,33 +19,41 @@
 
 @this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails)
 
-@(organisationName: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(organisationName: String, orgIsTrust: Boolean)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(
-    title = messages("change_business_name.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+  title = messages("change_business_name.title"),
+  bodyClasses = None,
+  appConfig = appConfig) {
 
     @backToBusinessDetails()
 
     @headings(messages("change_business_name.h1"))
 
     <p>
-        @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
+      @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
     </p>
 
     <p>
-        @if(user.isAgent){
-            @messages("change_business_name.alternative.agent1")
-            @messages("change_business_name.alternative.agent2")
+      @if(user.isAgent) {
+        @messages("change_business_name.alternative.agent1")
+        @if(orgIsTrust) {
+          @messages("change_business_name.alternative.agent.charity")
         } else {
-            @messages("change_business_name.alternative.user1")
-            @messages("change_business_name.alternative.user2")
+          @messages("change_business_name.alternative.agent2")
         }
+      } else {
+        @messages("change_business_name.alternative.user1")
+        @if(orgIsTrust) {
+          @messages("change_business_name.alternative.user.charity")
+        } else {
+          @messages("change_business_name.alternative.user2")
+        }
+      }
     </p>
 
     <a id="continue"
-    target="_blank"
-    href="@appConfig.govUkChangeToBusinessDetails">@messages("change_business_name.alternative.link")</a>
-    
+       target="_blank"
+       href="@if(orgIsTrust) {@appConfig.govUkTrustNameChangeUrl} else {@appConfig.govUkChangeToBusinessDetails}">
+        @messages("change_business_name.alternative.link")</a>
 }
