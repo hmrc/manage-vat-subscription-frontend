@@ -17,6 +17,7 @@
 package views.businessName
 
 import assets.CustomerDetailsTestConstants.orgName
+import assets.ViewModelsTestConstants._
 import assets.messages.{BaseMessages, ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -34,21 +35,13 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
       val pageHeading = s"$wrapper h1"
       val p1 = s"$wrapper article p:nth-of-type(1)"
       val p2 = s"$wrapper article p:nth-of-type(2)"
-      val p3 = s"$wrapper article p:nth-of-type(3)"
-      val bullet1 = s"$wrapper li:nth-of-type(1)"
-      val bullet2 = s"$wrapper li:nth-of-type(2)"
-      val p4 = s"$wrapper article p:nth-of-type(4)"
-      val bullet3 = s"$wrapper ul:nth-child(8) > li:nth-child(1)"
-      val formLink = s"$wrapper ul:nth-child(8) > li:nth-child(1) > a"
-      val bullet4 = s"$wrapper ul:nth-child(8) > li:nth-child(2)"
-      val bullet5 = s"$wrapper ul:nth-child(8) > li:nth-child(3)"
       val link = s"$wrapper #continue"
       val backLink = ".link-back"
     }
 
     "a regular user accesses the page" should {
 
-      lazy val view = injectedView(orgName)(user, messages, mockConfig)
+      lazy val view = injectedView(businessNameViewModel)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -84,9 +77,26 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
       }
     }
 
+    "a trust user accesses the page" should {
+
+      lazy val view = injectedView(trustBusinessNameViewModel)(user, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct p2 of '${viewMessages.altP2Trust}'" in {
+        elementText(Selectors.p2) shouldBe viewMessages.altP2Trust
+      }
+
+      "have a continue link" which {
+
+        "has the correct URL for the charity change of details form" in {
+          element(Selectors.link).attr("href") shouldBe mockConfig.govUkTrustNameChangeUrl
+        }
+      }
+    }
+
     "an agent accesses the page" should {
 
-      lazy val view = injectedView(orgName)(agentUser, messages, mockConfig)
+      lazy val view = injectedView(businessNameViewModelAgent)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.titleAgent}'" in {
@@ -118,6 +128,23 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
         "has a URL to the Gov.UK guidance page for changing business details" in {
           element(Selectors.link).attr("href") shouldBe mockConfig.govUkChangeToBusinessDetails
+        }
+      }
+    }
+
+    "an agent of a trust accesses the page" should {
+
+      lazy val view = injectedView(trustBusinessNameViewModelAgent)(agentUser, messages, mockConfig)
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      s"have the correct p2 of '${viewMessages.altP2AgentTrust}'" in {
+        elementText(Selectors.p2) shouldBe viewMessages.altP2AgentTrust
+      }
+
+      "have a continue link" which {
+
+        "has the correct URL for the charity change of details form" in {
+          element(Selectors.link).attr("href") shouldBe mockConfig.govUkTrustNameChangeUrl
         }
       }
     }
