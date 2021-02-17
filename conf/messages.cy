@@ -86,7 +86,7 @@ customer_details.status = Statws
 customer_details.about.heading = Manylion busnes
 customer_details.businessName.heading = Enw’r busnes
 customer_details.businessName.change.hidden = Newid enw’r busnes o {0}
-customer_details.tradingName.heading = yr enw masnachu
+customer_details.tradingName.heading = Enw masnachu
 customer_details.tradingName.change.hidden = Newidiwch yr enw masnachu o {0}
 customer_details.tradingName.pending.hidden = Newid i’r enw masnachu ar y gweill
 customer_details.businessAddress.heading = Prif fan busnes
@@ -184,7 +184,6 @@ address_lookupPage.postcode.link = Nid oes gan y cyfeiriad god post
 address_lookupPage.selectPage.heading = Dewiswch y cyfeiriad newydd
 address_lookupPage.selectPage.editLink = Golygwch y cyfeiriad â llaw
 address_lookupPage.confirmPage.heading = Cadarnhewch y prif fan busnes newydd
-address_lookupPage.confirmPage.confirmChangeText = Drwy gadarnhau’r newid hwn, rydych yn cytuno bod yr wybodaeth a roesoch yn gyflawn ac yn gywir.
 address_lookupPage.lookupPage.submit = Dod o hyd i gyfeiriad
 
 breadcrumb.bta = Cyfrif Treth Busnes
