@@ -21,12 +21,14 @@ import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
+import models.User
+import models.circumstanceInfo.CircumstanceDetails
+import models.viewModels.AltChangeBusinessNameViewModel._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.businessName.ChangeBusinessNameView
-import views.html.businessName.AltChangeBusinessNameView
+import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
 import scala.concurrent.ExecutionContext
 
@@ -52,8 +54,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
           case (true, true, Some(false)) =>
             Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
           case (true, true, Some(true)) if circumstances.nspItmpPartyType =>
-            Ok(altChangeBusinessNameView(
-              circumstances.customerDetails.organisationName.get, orgIsTrust = circumstances.trustPartyType))
+            renderAltChangeBusinessView(circumstances)
           case (true, _, _) =>
             Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
           case _ =>
@@ -62,6 +63,16 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
       case _ => serviceErrorHandler.showInternalServerError
     }
   }
+
+  def renderAltChangeBusinessView(circumstances: CircumstanceDetails)(implicit user: User[_],
+                                                                      appConfig: AppConfig): Result = {
+    if(circumstances.trustPartyType) {
+      Ok(altChangeBusinessNameView(trustBusinessNameViewModel(circumstances)))
+    } else {
+      Ok(altChangeBusinessNameView(businessNameViewModel(circumstances)))
+    }
+  }
+
 
   val handOffToCOHO: Action[AnyContent] = authenticate.async { implicit user =>
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
