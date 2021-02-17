@@ -209,7 +209,6 @@ emailWarning.confirmEmail = You need to confirm your email address.
 emailWarning.resend = Resend the email
 emailWarning.confirmIt = to confirm it.
 
-
 btaNavLinks.home = Home
 btaNavLinks.manageAccount = Manage account
 btaNavLinks.messages = Messages
