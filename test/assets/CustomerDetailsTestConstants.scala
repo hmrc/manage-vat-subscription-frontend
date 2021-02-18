@@ -17,6 +17,7 @@
 package assets
 
 import models.circumstanceInfo.CustomerDetails
+import models.viewModels.AltChangeBusinessNameViewModel
 import play.api.libs.json.{JsObject, Json}
 
 object CustomerDetailsTestConstants {

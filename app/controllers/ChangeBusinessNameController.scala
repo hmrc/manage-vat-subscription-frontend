@@ -21,12 +21,14 @@ import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import javax.inject.{Inject, Singleton}
+import models.User
+import models.circumstanceInfo.CircumstanceDetails
+import models.viewModels.AltChangeBusinessNameViewModel._
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.businessName.ChangeBusinessNameView
-import views.html.businessName.AltChangeBusinessNameView
+import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
 import scala.concurrent.ExecutionContext
 
@@ -41,40 +43,45 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              implicit val appConfig: AppConfig,
                                              implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
 
+  val show: Action[AnyContent] = authenticate.async { implicit user =>
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+      case Right(circumstances) =>
+        val baseAccess: Boolean = circumstances.customerDetails.organisationName.isDefined &&
+                                  !circumstances.customerDetails.overseasIndicator &&
+                                  circumstances.validPartyType
 
-  val show: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) =>
-          val baseAccess: Boolean = circumstances.customerDetails.organisationName.isDefined &&
-                                    !circumstances.customerDetails.overseasIndicator &&
-                                    circumstances.validPartyType
-
-          (baseAccess, appConfig.features.organisationNameRowEnabled(), circumstances.customerDetails.nameIsReadOnly) match {
-            case (true, true, Some(false)) =>
-              Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
-            case (true, true, Some(true)) if circumstances.nspItmpPartyType =>
-              Ok(altChangeBusinessNameView(circumstances.customerDetails.organisationName.get))
-            case (true, _, _) =>
-              Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
-            case _ =>
-              Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))
-          }
-        case _ => serviceErrorHandler.showInternalServerError
-      }
+        (baseAccess, appConfig.features.organisationNameRowEnabled(), circumstances.customerDetails.nameIsReadOnly) match {
+          case (true, true, Some(false)) =>
+            Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
+          case (true, true, Some(true)) if circumstances.nspItmpPartyType||circumstances.trustPartyType =>
+            renderAltChangeBusinessView(circumstances)
+          case (true, _, _) =>
+            Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
+          case _ =>
+            Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))
+        }
+      case _ => serviceErrorHandler.showInternalServerError
+    }
   }
 
+  def renderAltChangeBusinessView(circumstances: CircumstanceDetails)(implicit user: User[_],
+                                                                      appConfig: AppConfig): Result = {
+    if(circumstances.trustPartyType) {
+      Ok(altChangeBusinessNameView(trustBusinessNameViewModel(circumstances)))
+    } else {
+      Ok(altChangeBusinessNameView(businessNameViewModel(circumstances)))
+    }
+  }
 
-  val handOffToCOHO: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-        case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
-          auditService.extendedAudit(
-            HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
-            Some(controllers.routes.ChangeBusinessNameController.show().url)
-          )
-          Redirect(appConfig.govUkCohoNameChangeUrl)
-        case _ => serviceErrorHandler.showInternalServerError
-      }
+  val handOffToCOHO: Action[AnyContent] = authenticate.async { implicit user =>
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+      case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
+        auditService.extendedAudit(
+          HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
+          Some(controllers.routes.ChangeBusinessNameController.show().url)
+        )
+        Redirect(appConfig.govUkCohoNameChangeUrl)
+      case _ => serviceErrorHandler.showInternalServerError
+    }
   }
 }

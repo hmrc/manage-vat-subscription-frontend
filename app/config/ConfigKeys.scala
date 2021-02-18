@@ -52,11 +52,13 @@ object ConfigKeys {
   val softwareGuidanceUrl: String = "gov-uk.guidance.software-guidance.url"
   val vat484Form: String = "gov-uk.guidance.vat484Form.url"
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
+  val govUkTrustNameChangeUrl: String = "gov-uk.guidance.trust-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
 
   val partyTypes: String = "party-types"
   val partyTypesR19: String = "party-types-r19"
   val partyTypesNspItmpOrSAMastered: String = "party-types-nspItmpOrSAMastered"
+  val partyTypesTrusts: String = "party-types-trusts"
 
   val governmentGatewayHost: String = "government-gateway.host"
 

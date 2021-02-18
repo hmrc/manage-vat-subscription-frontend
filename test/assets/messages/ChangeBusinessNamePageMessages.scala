@@ -37,7 +37,11 @@ object ChangeBusinessNamePageMessages extends BaseMessages {
   val altP1: String => String = name => s"The business name is currently $name."
   val altP2: String =
     "You cannot change the business name on your VAT account. You must change your business name using an alternative service."
+  val altP2Trust: String =
+    "You cannot change the business name on your VAT account. You must change your business name through the Charities Commission."
   val altP2Agent: String =
     "You cannot change your client’s business name from their VAT account. You must change the business name using an alternative service."
+  val altP2AgentTrust: String =
+    "You cannot change your client’s business name from their VAT account. You must change the business name through the Charities Commission."
   val altContinueLinkText = "Read the guidance on how to change a business name and any other business details (opens in a new tab)."
 }
