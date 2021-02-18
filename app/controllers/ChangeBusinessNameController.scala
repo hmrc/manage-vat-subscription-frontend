@@ -53,7 +53,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
         (baseAccess, appConfig.features.organisationNameRowEnabled(), circumstances.customerDetails.nameIsReadOnly) match {
           case (true, true, Some(false)) =>
             Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
-          case (true, true, Some(true)) if circumstances.nspItmpPartyType =>
+          case (true, true, Some(true)) if circumstances.nspItmpPartyType||circumstances.trustPartyType =>
             renderAltChangeBusinessView(circumstances)
           case (true, _, _) =>
             Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
@@ -72,7 +72,6 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
       Ok(altChangeBusinessNameView(businessNameViewModel(circumstances)))
     }
   }
-
 
   val handOffToCOHO: Action[AnyContent] = authenticate.async { implicit user =>
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
