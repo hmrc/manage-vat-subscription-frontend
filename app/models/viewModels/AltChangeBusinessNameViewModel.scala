@@ -30,14 +30,17 @@ object AltChangeBusinessNameViewModel {
   def trustBusinessNameViewModel(circumstances: CircumstanceDetails)
                                 (implicit appConfig: AppConfig,
                                  user: User[_]): AltChangeBusinessNameViewModel = {
+    val p1message: String = {
+      if(user.isAgent) "change_business_name.alternative.agent1" else "change_business_name.alternative.user1"
+    }
     val p2message: String = {
       if(user.isAgent) "change_business_name.alternative.agent.charity" else "change_business_name.alternative.user.charity"
     }
 
     AltChangeBusinessNameViewModel(
-      appConfig.govUkTrustNameChangeUrl,
       circumstances.customerDetails.organisationName.get,
-      "change_business_name.alternative.agent1",
+      appConfig.govUkTrustNameChangeUrl,
+      p1message,
       p2message
     )
   }
@@ -45,14 +48,17 @@ object AltChangeBusinessNameViewModel {
   def businessNameViewModel(circumstances: CircumstanceDetails)
                            (implicit appConfig: AppConfig,
                             user: User[_]): AltChangeBusinessNameViewModel = {
+    val p1message: String = {
+      if(user.isAgent) "change_business_name.alternative.agent1" else "change_business_name.alternative.user1"
+    }
     val p2message: String = {
       if(user.isAgent) "change_business_name.alternative.agent2" else "change_business_name.alternative.user2"
     }
 
     AltChangeBusinessNameViewModel(
-      appConfig.govUkChangeToBusinessDetails,
       circumstances.customerDetails.organisationName.get,
-      "change_business_name.alternative.user1",
+      appConfig.govUkChangeToBusinessDetails,
+      p1message,
       p2message
     )
   }

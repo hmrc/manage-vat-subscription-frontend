@@ -69,7 +69,9 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
     FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "true")
 
   implicit lazy val user: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](vrn,active = true)(request)
+  implicit lazy val trustUser: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](trustVrn,active = true)(request)
   implicit lazy val agentUser: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](vrn,active = true, Some(arn))(fakeRequestWithClientsVRN)
+  implicit lazy val agentTrustUser: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](trustVrn,active = true, Some(arn))(fakeRequestWithClientsVRN)
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = inject[ExecutionContext]
 }

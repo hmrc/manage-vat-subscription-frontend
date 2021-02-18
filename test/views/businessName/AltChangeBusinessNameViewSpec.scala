@@ -17,6 +17,7 @@
 package views.businessName
 
 import assets.CustomerDetailsTestConstants.orgName
+import assets.ViewModelsTestConstants._
 import assets.messages.{BaseMessages, ChangeBusinessNamePageMessages => viewMessages}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -48,7 +49,7 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     "a regular user accesses the page" should {
 
-      lazy val view = injectedView(orgName, orgIsTrust = false)(user, messages, mockConfig)
+      lazy val view = injectedView(businessNameViewModel)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.title}'" in {
@@ -86,7 +87,7 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     "a trust user accesses the page" should {
 
-      lazy val view = injectedView(orgName, orgIsTrust = true)(user, messages, mockConfig)
+      lazy val view = injectedView(trustBusinessNameViewModel)(user, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct p2 of '${viewMessages.altP2Trust}'" in {
@@ -103,7 +104,7 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an agent accesses the page" should {
 
-      lazy val view = injectedView(orgName, orgIsTrust = false)(agentUser, messages, mockConfig)
+      lazy val view = injectedView(businessNameViewModelAgent)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct document title of '${viewMessages.titleAgent}'" in {
@@ -141,7 +142,7 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     "an agent of a trust accesses the page" should {
 
-      lazy val view = injectedView(orgName, orgIsTrust = true)(agentUser, messages, mockConfig)
+      lazy val view = injectedView(trustBusinessNameViewModelAgent)(agentUser, messages, mockConfig)
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       s"have the correct p2 of '${viewMessages.altP2AgentTrust}'" in {
