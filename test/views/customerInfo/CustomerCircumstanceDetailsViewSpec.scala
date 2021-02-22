@@ -94,11 +94,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 "has an 'Add' link" which {
 
                   "has the correct text" in {
-                    elementText("#trading-name-status") shouldBe viewMessages.add
+                    elementText("#trading-name-status > span:nth-of-type(1)") shouldBe viewMessages.add
                   }
 
-                  "has the correct aria label text" in {
-                    element("#trading-name-status").attr("aria-label") shouldBe
+                  "has the correct hidden text" in {
+                    elementText("#trading-name-status > .visuallyhidden") shouldBe
                       viewMessages.changeTradingNameHidden("Not provided")
                   }
 
@@ -122,15 +122,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#place-of-business-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#place-of-business-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)}'" in {
-                    element("#place-of-business-status").attr("aria-label") shouldBe viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
+                  "has the correct hidden text" in {
+                    elementText("#place-of-business-status > .visuallyhidden") shouldBe
+                      viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
                   }
 
-                  s"has a link to ${controllers.routes.BusinessAddressController.show().url}" in {
+                  "has a link to the business address journey" in {
                     element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
                   }
                 }
@@ -167,15 +168,15 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#bank-details-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#bank-details-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeBankDetailsHidden}'" in {
-                    element("#bank-details-status").attr("aria-label") shouldBe viewMessages.changeBankDetailsHidden
+                  "has the correct hidden text" in {
+                    elementText("#bank-details-status > .visuallyhidden") shouldBe viewMessages.changeBankDetailsHidden
                   }
 
-                  s"has a link to ${controllers.routes.PaymentsController.sendToPayments().url}" in {
+                  "has a link to the payments service" in {
                     element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
                   }
                 }
@@ -202,7 +203,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-return-dates-status") shouldBe viewMessages.change
+                    elementText("#vat-return-dates-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
                 }
               }
@@ -238,16 +239,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-website-address-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)}'" in {
-                    element("#vat-website-address-status").attr("aria-label") shouldBe
+                  "has the correct hidden text" in {
+                    elementText("#vat-website-address-status > .visuallyhidden") shouldBe
                       viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                  "has a link to the website address journey" in {
                     element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
                   }
                 }
@@ -395,13 +396,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy val view = injectedView(customerInformationPendingPPOBModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#place-of-business-status") shouldBe viewMessages.pending
+            "have the correct text" in {
+              elementText("#place-of-business-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
-            s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-              element("#place-of-business-status").attr("aria-label") shouldBe
-                viewMessages.pendingBusinessAddressHidden
+            "have the correct hidden text" in {
+              elementText("#place-of-business-status > .visuallyhidden") shouldBe viewMessages.pendingBusinessAddressHidden
             }
           }
 
@@ -410,13 +410,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy val view = injectedView(customerInformationPendingWebsiteModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-website-address-status") shouldBe viewMessages.pending
+            "have the correct text" in {
+              elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
-            s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
-              element("#vat-website-address-status").attr("aria-label") shouldBe
-                viewMessages.pendingWebsiteAddressHidden
+            "have the correct hidden text" in {
+              elementText("#vat-website-address-status > .visuallyhidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
 
@@ -425,12 +424,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy val view = injectedView(customerInformationPendingReturnPeriodModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-return-dates-status") shouldBe viewMessages.pending
+            "have the correct text" in {
+              elementText("#vat-return-dates-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
-            s"have the correct aria label text '${viewMessages.pendingReturnFrequencyHidden}'" in {
-              element("#vat-return-dates-status").attr("aria-label") shouldBe viewMessages.pendingReturnFrequencyHidden
+            "have the correct hidden text" in {
+              elementText("#vat-return-dates-status > .visuallyhidden") shouldBe viewMessages.pendingReturnFrequencyHidden
             }
 
             "display the existing approved return dates" in {
@@ -447,12 +446,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy val view = injectedView(customerInfoPendingTradingNameModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
-            s"has the wording '${viewMessages.pending}'" in {
-              elementText("#trading-name-status") shouldBe viewMessages.pending
+            "have the correct text" in {
+              elementText("#trading-name-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
-            s"has the correct aria label text '${viewMessages.pendingTradingNameHidden}'" in {
-              element("#trading-name-status").attr("aria-label") shouldBe viewMessages.pendingTradingNameHidden
+            "has the correct hidden text" in {
+              elementText("#trading-name-status > .visuallyhidden") shouldBe viewMessages.pendingTradingNameHidden
             }
 
             "display the inflight trading name" in {
@@ -465,13 +464,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy val view = injectedView(customerInformationModelPendingRemoved("website"), getPartialHtmlNotAgent)(user, messages, mockConfig)
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
-            s"have link text of '${viewMessages.pending}'" in {
-              elementText("#vat-website-address-status") shouldBe viewMessages.pending
+            "have the correct text" in {
+              elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
-            s"have the correct aria label text '${viewMessages.pendingWebsiteAddressHidden}'" in {
-              element("#vat-website-address-status").attr("aria-label") shouldBe
-                viewMessages.pendingWebsiteAddressHidden
+            "have the correct hidden text" in {
+              elementText("#vat-website-address-status > .visuallyhidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
         }
@@ -489,7 +487,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the website address" which {
 
           "has the correct text" in {
-            elementText("#vat-website-address-status") shouldBe viewMessages.add
+            elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.add
           }
 
           "links to the correspondence details service" in {
@@ -528,12 +526,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             "has a change link" which {
 
               "has the correct wording" in {
-                elementText("#trading-name-status") shouldBe viewMessages.change
+                elementText("#trading-name-status > span:nth-of-type(1)") shouldBe viewMessages.change
               }
 
-              "has the correct aria label text" in {
-                element("#trading-name-status").attr("aria-label") shouldBe
-                  viewMessages.changeTradingNameHidden(tradingName)
+              "has the correct hidden text" in {
+                elementText("#trading-name-status > .visuallyhidden") shouldBe viewMessages.changeTradingNameHidden(tradingName)
               }
 
               "has a link to the trading name journey" in {
@@ -629,12 +626,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
           "have a blank field where the 'Change' link would be for email address" which {
 
-            "displays no text" in {
-              elementText("#vat-email-address-status") shouldBe ""
+            "has the visually hidden class" in {
+              element("#vat-email-address-status").hasClass("visuallyhidden") shouldBe true
             }
 
-            s"has the correct aria-label text '${viewMessages.changeEmailAddressAgentHidden}'" in {
-              element("#vat-email-address-status").attr("aria-label") shouldBe viewMessages.changeEmailAddressAgentHidden
+            "has the correct hidden text" in {
+              elementText("#vat-email-address-status") shouldBe viewMessages.changeEmailAddressAgentHidden
             }
           }
         }
@@ -750,16 +747,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-email-address-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#vat-email-address-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)}'" in {
-                    element("#vat-email-address-status").attr("aria-label") shouldBe
+                  "has the correct hidden text" in {
+                    elementText("#vat-email-address-status > .visuallyhidden") shouldBe
                       viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeEmailUrl}" in {
+                  "has a link to the email address journey" in {
                     element("#vat-email-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeEmailUrl
                   }
                 }
@@ -778,16 +775,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-landline-number-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#vat-landline-number-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeLandlineNumbersHidden}'" in {
-                    element("#vat-landline-number-status").attr("aria-label") shouldBe
+                  "has the correct hidden text" in {
+                    elementText("#vat-landline-number-status > .visuallyhidden") shouldBe
                       viewMessages.changeLandlineNumbersHidden
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeLandlineNumberUrl}" in {
+                  "has a link to the landline number journey" in {
                     element("#vat-landline-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeLandlineNumberUrl
                   }
                 }
@@ -806,25 +803,21 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "has a change link" which {
 
-                  s"has the wording '${viewMessages.change}'" in {
-                    elementText("#vat-mobile-number-status") shouldBe viewMessages.change
+                  "has the correct text" in {
+                    elementText("#vat-mobile-number-status > span:nth-of-type(1)") shouldBe viewMessages.change
                   }
 
-                  s"has the correct aria label text '${viewMessages.changeMobileNumbersHidden}'" in {
-                    element("#vat-mobile-number-status").attr("aria-label") shouldBe
-                      viewMessages.changeMobileNumbersHidden
+                  "has the correct hidden text" in {
+                    elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.changeMobileNumbersHidden
                   }
 
-                  s"has a link to ${mockConfig.vatCorrespondenceChangeMobileNumberUrl}" in {
+                  "has a link to the mobile number journey" in {
                     element("#vat-mobile-number-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeMobileNumberUrl
                   }
                 }
               }
-
             }
-
           }
-
         }
 
         "with pending changes" when {
@@ -839,15 +832,13 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-email-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-                element("#vat-email-address-status").attr("aria-label") shouldBe
-                  viewMessages.pendingEmailAddressHidden
+              "have the correct hidden text" in {
+                elementText("#vat-email-address-status > .visuallyhidden") shouldBe viewMessages.pendingEmailAddressHidden
               }
-
             }
 
             "the email has been removed" should {
@@ -858,16 +849,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-email-address-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-email-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingEmailAddressHidden}'" in {
-                element("#vat-email-address-status").attr("aria-label") shouldBe
-                  viewMessages.pendingEmailAddressHidden
+              "have the correct hidden text" in {
+                elementText("#vat-email-address-status > .visuallyhidden") shouldBe viewMessages.pendingEmailAddressHidden
               }
             }
-
           }
 
           "with pending Landline" when {
@@ -880,15 +869,13 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-landline-number-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
-                element("#vat-landline-number-status").attr("aria-label") shouldBe
-                  viewMessages.pendingLandlineNumbersHidden
+              "have the correct hidden text" in {
+                elementText("#vat-landline-number-status > .visuallyhidden") shouldBe viewMessages.pendingLandlineNumbersHidden
               }
-
             }
 
             "the landline has been removed" should {
@@ -899,17 +886,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-landline-number-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-landline-number-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingLandlineNumbersHidden}'" in {
-                element("#vat-landline-number-status").attr("aria-label") shouldBe
-                  viewMessages.pendingLandlineNumbersHidden
+              "have the correct hidden text" in {
+                elementText("#vat-landline-number-status > .visuallyhidden") shouldBe viewMessages.pendingLandlineNumbersHidden
               }
-
             }
-
           }
 
           "with pending Mobile" when {
@@ -922,13 +906,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-mobile-number-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
-                element("#vat-mobile-number-status").attr("aria-label") shouldBe
-                  viewMessages.pendingMobileNumbersHidden
+              "have the correct hidden text" in {
+                elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.pendingMobileNumbersHidden
               }
             }
 
@@ -940,21 +923,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
               lazy implicit val document: Document = Jsoup.parse(view.body)
 
-              s"have link text of '${viewMessages.pending}'" in {
-                elementText("#vat-mobile-number-status") shouldBe viewMessages.pending
+              "have the correct text" in {
+                elementText("#vat-mobile-number-status > span:nth-of-type(1)") shouldBe viewMessages.pending
               }
 
-              s"have the correct aria label text '${viewMessages.pendingMobileNumbersHidden}'" in {
-                element("#vat-mobile-number-status").attr("aria-label") shouldBe
-                  viewMessages.pendingMobileNumbersHidden
+              "have the correct hidden text" in {
+                elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.pendingMobileNumbersHidden
               }
-
             }
-
           }
-
         }
-
       }
 
       "with no email address, landline number, mobile number or website" should {
@@ -972,7 +950,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the email address" which {
 
           "has the correct text" in {
-            elementText("#vat-email-address-status") shouldBe "Add"
+            elementText("#vat-email-address-status > span:nth-of-type(1)") shouldBe "Add"
           }
 
           "links to the correspondence details service" in {
@@ -991,7 +969,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the landline number" which {
 
           "has the correct text" in {
-            elementText("#vat-landline-number-status") shouldBe "Add"
+            elementText("#vat-landline-number-status > span:nth-of-type(1)") shouldBe "Add"
           }
 
           "links to the correspondence details service" in {
@@ -1002,7 +980,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the mobile number" which {
 
           "has the correct text" in {
-            elementText("#vat-mobile-number-status") shouldBe "Add"
+            elementText("#vat-mobile-number-status > span:nth-of-type(1)") shouldBe "Add"
           }
 
           "links to the correspondence details service" in {
@@ -1017,18 +995,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "display an 'Add' link for changing the website address" which {
 
           "has the correct text" in {
-            elementText("#vat-website-address-status") shouldBe "Add"
+            elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe "Add"
           }
 
           "links to the correspondence details service" in {
             element("#vat-website-address-status").attr("href") shouldBe mockConfig.vatCorrespondenceChangeWebsiteUrl
           }
         }
-
       }
-
     }
-
   }
-
 }
