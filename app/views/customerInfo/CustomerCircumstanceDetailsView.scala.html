@@ -42,15 +42,12 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             @orgName
         </dd>
         <dd class="cya-change">
-            @findDeregStatus(circumstances) match {
-                case Registered => {
-                    <a id="business-name-status"
-                       href="@{controllers.routes.ChangeBusinessNameController.show().url}"
-                       aria-label="@messages("customer_details.businessName.change.hidden",orgName)">
-                       @messages("customer_details.change")
-                    </a>
-                }
-                case _ => {}
+            @if(findDeregStatus(circumstances) == Registered) {
+              <a id="business-name-status"
+                 href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+                <span aria-hidden="true">@messages("customer_details.change")</span>
+                <span class="visuallyhidden">@messages("customer_details.businessName.change.hidden",orgName)</span>
+              </a>
             }
         </dd>
     </div>
@@ -69,17 +66,17 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         @if(!circumstances.customerDetails.overseasIndicator) {
             <dd class="cya-change">
             @if(pending){
-                <span id="place-of-business-status"
-                class="bold"
-                aria-label="@messages("customer_details.businessAddress.pending.hidden")">
-                @messages("customer_details.pending")
-                </span>
+              <span id="place-of-business-status"
+                    class="bold">
+                <span aria-hidden="true">@messages("customer_details.pending")</span>
+                <span class="visuallyhidden">@messages("customer_details.businessAddress.pending.hidden")</span>
+              </span>
             } else {
-                <a id="place-of-business-status"
-                href="@controllers.routes.BusinessAddressController.show().url"
-                aria-label="@messages("customer_details.businessAddress.change.hidden",address.line1)">
-                @messages("customer_details.change")
-                </a>
+              <a id="place-of-business-status"
+                 href="@controllers.routes.BusinessAddressController.show().url">
+                <span aria-hidden="true">@messages("customer_details.change")</span>
+                <span class="visuallyhidden">@messages("customer_details.businessAddress.change.hidden",address.line1)</span>
+              </a>
             }
             </dd>
         } else {<dd class="cya-change"></dd>}
@@ -109,17 +106,17 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         </dd>
         <dd class="cya-change">
             @if(pending){
-                <span id="bank-details-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.bankAccount.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
+              <span id="bank-details-status"
+                    class="bold">
+                <span aria-hidden="true">@messages("customer_details.pending")</span>
+                <span class="visuallyhidden">@messages("customer_details.bankAccount.pending.hidden")</span>
+              </span>
             } else {
-                <a id="bank-details-status"
-                   href="@controllers.routes.PaymentsController.sendToPayments()"
-                   aria-label="@messages("customer_details.bankAccount.change.hidden")">
-                @messages("customer_details.change")
-                </a>
+              <a id="bank-details-status"
+                 href="@controllers.routes.PaymentsController.sendToPayments()">
+                <span aria-hidden="true">@messages("customer_details.change")</span>
+                <span class="visuallyhidden">@messages("customer_details.bankAccount.change.hidden")</span>
+              </a>
             }
         </dd>
     </div>
@@ -134,23 +131,20 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             @renderReturnFrequency(period)
         </dd>
         <dd class="cya-change">
-            @findDeregStatus(circumstances) match {
-                case Registered => {
-                    @if(pending){
-                        <span id="vat-return-dates-status"
-                              class="bold"
-                              aria-label="@messages("customer_details.returnFrequency.pending.hidden")">
-                        @messages("customer_details.pending")
-                        </span>
-                    } else {
-                        <a id="vat-return-dates-status"
-                            href="@appConfig.vatReturnPeriodFrontendUrl"
-                            aria-label="@messages("customer_details.returnFrequency.change.hidden", renderReturnFrequency(period))">
-                            @messages("customer_details.change")
-                        </a>
-                    }
-                }
-                case _ => {}
+            @if(findDeregStatus(circumstances) == Registered) {
+              @if(pending){
+                <span id="vat-return-dates-status"
+                      class="bold">
+                  <span aria-hidden="true">@messages("customer_details.pending")</span>
+                  <span class="visuallyhidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
+                </span>
+              } else {
+                <a id="vat-return-dates-status"
+                    href="@appConfig.vatReturnPeriodFrontendUrl">
+                  <span aria-hidden="true">@messages("customer_details.change")</span>
+                  <span class="visuallyhidden">@messages("customer_details.returnFrequency.change.hidden", renderReturnFrequency(period))</span>
+                </a>
+              }
             }
         </dd>
     </div>
@@ -172,27 +166,29 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
             @(emailPending, user.isAgent) match {
 
                 case (true, _) => {
-                    <span id="vat-email-address-status"
-                          class="bold"
-                          aria-label="@messages("customer_details.contactDetails.emailAddress.pending.hidden")">
-                        @messages("customer_details.pending")
-                    </span>
+                  <span id="vat-email-address-status"
+                        class="bold">
+                    <span aria-hidden="true">@messages("customer_details.pending")</span>
+                    <span class="visuallyhidden">@messages("customer_details.contactDetails.emailAddress.pending.hidden")</span>
+                  </span>
                 }
                 case (false, true) => {
-                    <span id="vat-email-address-status"
-                          aria-label="@messages("customer_details.contactDetails.emailAddress.agent.change.hidden")">
-                    </span>
+                  <span id="vat-email-address-status" class="visuallyhidden">
+                    @messages("customer_details.contactDetails.emailAddress.agent.change.hidden")
+                  </span>
                 }
                 case (false, false) => {
-                    <a id="vat-email-address-status"
-                       href="@appConfig.vatCorrespondenceChangeEmailUrl"
-                       aria-label="@messages("customer_details.contactDetails.emailAddress.change.hidden",
-                                            emailAddress.getOrElse(messages("customer_details.notProvided")))">
-                        @emailAddress match {
-                            case Some(_) => { @messages("customer_details.change") }
-                            case None => { @messages("customer_details.add") }
-                        }
-                    </a>
+                  <a id="vat-email-address-status"
+                     href="@appConfig.vatCorrespondenceChangeEmailUrl">
+                    <span aria-hidden="true">
+                      @emailAddress match {
+                          case Some(_) => { @messages("customer_details.change") }
+                          case None => { @messages("customer_details.add") }
+                      }
+                    </span>
+                    <span class="visuallyhidden">@messages("customer_details.contactDetails.emailAddress.change.hidden",
+                      emailAddress.getOrElse(messages("customer_details.notProvided")))</span>
+                  </a>
                 }
             }
         </dd>
@@ -209,21 +205,23 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     </dd>
     <dd class="cya-change">
         @if(pendingLandlineNumber) {
-        <span id="vat-landline-number-status"
-              class="bold"
-              aria-label="@messages("customer_details.phoneNumbers.landline.pending.hidden")">
-            @messages("customer_details.pending")
-        </span>
+          <span id="vat-landline-number-status"
+                class="bold">
+            <span aria-hidden="true">@messages("customer_details.pending")</span>
+            <span class="visuallyhidden">@messages("customer_details.phoneNumbers.landline.pending.hidden")</span>
+          </span>
         } else {
-        <a id="vat-landline-number-status"
-           href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.landline.change.hidden",
-                                    landlineNumber.getOrElse(messages("customer_details.notProvided")))">
-            @landlineNumber match {
-                case None => { @messages("customer_details.add") }
-                case _ => { @messages("customer_details.change") }
-            }
-        </a>
+          <a id="vat-landline-number-status"
+             href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl">
+            <span aria-hidden="true">
+              @landlineNumber match {
+                  case None => { @messages("customer_details.add") }
+                  case _ => { @messages("customer_details.change") }
+              }
+            </span>
+            <span class="visuallyhidden">@messages("customer_details.phoneNumbers.landline.change.hidden",
+              landlineNumber.getOrElse(messages("customer_details.notProvided")))</span>
+          </a>
         }
     </dd>
 </div>
@@ -239,21 +237,23 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
     </dd>
     <dd class="cya-change">
         @if(pendingMobileNumber) {
-        <span id="vat-mobile-number-status"
-              class="bold"
-              aria-label="@messages("customer_details.phoneNumbers.mobile.pending.hidden")">
-            @messages("customer_details.pending")
-        </span>
+          <span id="vat-mobile-number-status"
+                class="bold">
+            <span aria-hidden="true">@messages("customer_details.pending")</span>
+            <span class="visuallyhidden">@messages("customer_details.phoneNumbers.mobile.pending.hidden")</span>
+          </span>
         } else {
-        <a id="vat-mobile-number-status"
-           href="@appConfig.vatCorrespondenceChangeMobileNumberUrl"
-           aria-label="@messages("customer_details.phoneNumbers.mobile.change.hidden",
-                                    mobileNumber.getOrElse(messages("customer_details.notProvided")))">
-            @mobileNumber match {
-                case None => { @messages("customer_details.add") }
-                case _ => { @messages("customer_details.change") }
-            }
-        </a>
+          <a id="vat-mobile-number-status"
+             href="@appConfig.vatCorrespondenceChangeMobileNumberUrl">
+            <span aria-hidden="true">
+              @mobileNumber match {
+                  case None => { @messages("customer_details.add") }
+                  case _ => { @messages("customer_details.change") }
+              }
+            </span>
+            <span class="visuallyhidden">@messages("customer_details.phoneNumbers.mobile.change.hidden",
+              mobileNumber.getOrElse(messages("customer_details.notProvided")))</span>
+          </a>
         }
     </dd>
 </div>
@@ -269,21 +269,23 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         </dd>
         <dd class="cya-change">
             @if(pendingWebsite) {
-                <span id="vat-website-address-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.websiteAddress.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
+              <span id="vat-website-address-status"
+                    class="bold">
+                <span aria-hidden="true">@messages("customer_details.pending")</span>
+                <span class="visuallyhidden">@messages("customer_details.websiteAddress.pending.hidden")</span>
+              </span>
             } else {
-                <a id="vat-website-address-status"
-                   href="@appConfig.vatCorrespondenceChangeWebsiteUrl"
-                   aria-label="@messages("customer_details.websiteAddress.change.hidden",
-                                         websiteAddress.getOrElse(messages("customer_details.notProvided")))">
-                    @websiteAddress match {
-                        case Some(_) => { @messages("customer_details.change") }
-                        case None => { @messages("customer_details.add") }
-                    }
-                </a>
+              <a id="vat-website-address-status"
+                 href="@appConfig.vatCorrespondenceChangeWebsiteUrl">
+                <span aria-hidden="true">
+                  @websiteAddress match {
+                      case Some(_) => { @messages("customer_details.change") }
+                      case None => { @messages("customer_details.add") }
+                  }
+                </span>
+                <span class="visuallyhidden">@messages("customer_details.websiteAddress.change.hidden",
+                  websiteAddress.getOrElse(messages("customer_details.notProvided")))</span>
+              </a>
             }
         </dd>
     </div>
@@ -299,21 +301,23 @@ addStatusRowHelper: AddStatusRowHelper, breadcrumb: Breadcrumb, openInNewTab: Op
         </dd>
         <dd class="cya-change">
             @if(isPending) {
-                <span id="trading-name-status"
-                      class="bold"
-                      aria-label="@messages("customer_details.tradingName.pending.hidden")">
-                    @messages("customer_details.pending")
-                </span>
+              <span id="trading-name-status"
+                    class="bold">
+                <span aria-hidden="true">@messages("customer_details.pending")</span>
+                <span class="visuallyhidden">@messages("customer_details.tradingName.pending.hidden")</span>
+              </span>
             } else {
-                <a id="trading-name-status"
-                   href="@appConfig.vatDesignatoryDetailsTradingNameUrl"
-                   aria-label="@messages("customer_details.tradingName.change.hidden",
-                               tradingName.getOrElse(messages("customer_details.notProvided")))">
-                    @tradingName match {
-                        case None => { @messages("customer_details.add") }
-                        case _ => { @messages("customer_details.change") }
-                    }
-                </a>
+              <a id="trading-name-status"
+                 href="@appConfig.vatDesignatoryDetailsTradingNameUrl">
+                <span aria-hidden="true">
+                  @tradingName match {
+                      case None => { @messages("customer_details.add") }
+                      case _ => { @messages("customer_details.change") }
+                  }
+                </span>
+                <span class="visuallyhidden">@messages("customer_details.tradingName.change.hidden",
+                  tradingName.getOrElse(messages("customer_details.notProvided")))</span>
+              </a>
             }
         </dd>
     </div>
