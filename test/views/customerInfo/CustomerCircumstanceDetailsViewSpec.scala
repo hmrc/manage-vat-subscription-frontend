@@ -19,7 +19,7 @@ package views.customerInfo
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.{individual, tradingName}
 import assets.PPOBAddressTestConstants
-import assets.PPOBAddressTestConstants.{ppobModelMax, ppobModelMaxEmailUnverified, ppobModelMaxPending}
+import assets.PPOBAddressTestConstants.{addLine1, addLine2, postcode, ppobModelMax, ppobModelMaxEmailUnverified, ppobModelMaxPending}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
 import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
@@ -115,9 +115,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
 
                 "has the correct address output" in {
-                  elementText("#businessAddress li:nth-child(1)") shouldBe customerInformationModelMaxIndividual.ppob.address.line1
-                  elementText("#businessAddress li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.ppob.address.line2.get
-                  elementText("#businessAddress li:nth-child(3)") shouldBe customerInformationModelMaxIndividual.ppob.address.postCode.get
+                  elementText("#businessAddress") shouldBe s"$addLine1 $addLine2 $postcode"
                 }
 
                 "has a change link" which {
@@ -701,7 +699,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     "display PPOB" in {
       elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
-      elementText("#businessAddress > ol > li:nth-child(1)") shouldBe "Add Line 1"
+      elementText("#businessAddress") shouldBe addLine1
     }
 
     "not give the option to change PPOB" in {

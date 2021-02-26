@@ -20,12 +20,11 @@
 
 @(address: PPOBAddress)()
 
-
 @defining(Seq(address.line2, address.postCode).flatten) { addressLines =>
-    <ol>
-        <li>@address.line1</li>
-        @addressLines.map { line =>
-            <li>@line</li>
-        }
-    </ol>
+  <p>
+    @address.line1 @if(addressLines.nonEmpty){<br />}
+    @addressLines.map { line =>
+      @line @if(addressLines.last != line){<br />}
+    }
+  </p>
 }

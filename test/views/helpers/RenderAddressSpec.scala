@@ -24,94 +24,51 @@ import views.html.helpers.RenderAddress
 class RenderAddressSpec extends ViewBaseSpec {
 
   val injectedView: RenderAddress = inject[RenderAddress]
+  val exampleAddress: PPOBAddress = PPOBAddress(
+    "Line 1",
+    Some("Line 2"),
+    Some("Line 3"),
+    Some("Line 4"),
+    Some("Line 5"),
+    Some("P05T C0D3"),
+    "GB"
+  )
 
   "The RenderAddress helper" when {
 
-    "all lines of an address if all are populated" should {
-      lazy val address = PPOBAddress(
-        "1",
-        Some("2"),
-        Some("3"),
-        Some("4"),
-        Some("5"),
-        Some("6"),
-        "GB"
-      )
-
-      lazy val view = injectedView(address)
+    "all fields are populated" should {
+      lazy val view = injectedView(exampleAddress)
       lazy val document = Jsoup.parse(view.body)
 
-      "Render address lines 1 and 2" in {
-        for (i <- 1 to 2) {
-          document.select(s"li:nth-child($i)").text shouldBe s"$i"
-        }
+      "render address lines 1, 2 and the postcode with line breaks in between" in {
+        document.select("p").html() shouldBe "Line 1 <br> Line 2 <br> P05T C0D3"
       }
     }
 
-    "Render only lines of an address that are populated" should {
-      val address = PPOBAddress("1", None, None, None, None, None, "GB")
+    "address line 2 and postcode are not present" should {
+      lazy val view = injectedView(exampleAddress.copy(line2 = None, postCode = None))
+      lazy val document = Jsoup.parse(view.body)
 
-      val view = injectedView(address)
-      val document = Jsoup.parse(view.body)
-
-      "Render the first address line" in {
-        document.select(s"li:nth-child(1)").text shouldBe "1"
-      }
-      "Not render the 2nd address line" in {
-        document.select(s"li:nth-child(2)").text shouldBe ""
-      }
-      "Not render the postcode" in {
-        document.select(s"li:nth-child(3)").text shouldBe ""
+      "render the first address line, with no line break" in {
+        document.select("p").html() shouldBe "Line 1"
       }
     }
 
-    "Render only lines of an address that are populated and are required to display" should {
-      val address = PPOBAddress("1", Some("2"), None, None, None, None, "GB")
+    "address line 2 is not present" should {
+      lazy val view = injectedView(exampleAddress.copy(line2 = None))
+      lazy val document = Jsoup.parse(view.body)
 
-      val view = injectedView(address)
-      val document = Jsoup.parse(view.body)
-
-      "Render the first address line" in {
-        document.select(s"li:nth-child(1)").text shouldBe "1"
-      }
-      "Render the 2nd address line" in {
-        document.select(s"li:nth-child(2)").text shouldBe "2"
-      }
-      "Not render the country code" in {
-        document.select(s"li:nth-child(3)").text shouldBe ""
-
+      "render the first address line and postcode, with a line break in between" in {
+        document.select("p").html() shouldBe "Line 1 <br> P05T C0D3"
       }
     }
 
-    "Render only lines of an address that are populated and are required to display with a full address" should {
-      val address = PPOBAddress("1",
-        Some("2"),
-        Some("3"),
-        Some("4"),
-        Some("5"),
-        Some("6"),
-        "GB")
+    "postcode is not present" should {
+      lazy val view = injectedView(exampleAddress.copy(postCode = None))
+      lazy val document = Jsoup.parse(view.body)
 
-      val view = injectedView(address)
-      val document = Jsoup.parse(view.body)
-
-      "Render the first address line" in {
-        document.select(s"li:nth-child(1)").text shouldBe "1"
-      }
-      "Render the 2nd address line" in {
-        document.select(s"li:nth-child(2)").text shouldBe "2"
-      }
-      "Render the postcode as line 3" in {
-        document.select(s"li:nth-child(3)").text shouldBe "6"
-      }
-      "Not render the 4th address line" in {
-        document.select(s"li:nth-child(4)").text shouldBe ""
-      }
-      "Not render the 5th address line" in {
-        document.select(s"li:nth-child(5)").text shouldBe ""
-      }
-      "Not render the 6th address line" in {
-        document.select(s"li:nth-child(6)").text shouldBe ""
+      "render the first and second address lines, with a line break in between" in {
+        document.select("p").html() shouldBe "Line 1 <br> Line 2"
       }
     }
   }
