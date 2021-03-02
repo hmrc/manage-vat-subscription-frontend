@@ -25,38 +25,36 @@
 
 @(ppob: PPOBAddress, missingTraderForm: Form[YesNo])(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
-@questionContent = {
-    <div id="form-hint"  class="panel panel-border-wide">
-        @renderAddress(ppob)
-    </div>
-
-    <span class="form-hint">@messages("missingTrader.addInfo")</span>
-
-    <h2 class="heading-medium h2-margin">@messages("missingTrader.question")</h2>
-}
-
 @mainTemplate(
-    title = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
-            else messages("missingTrader.title"),
-    appConfig = appConfig) {
+  title = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
+          else messages("missingTrader.title"),
+  appConfig = appConfig
+) {
 
-    @errorSummary(messages("common.errorSummary.heading"), missingTraderForm)
+  @errorSummary(messages("common.errorSummary.heading"), missingTraderForm)
 
-    @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit, 'novalidate -> "novalidate") {
+  <h1 class="heading-large">@messages("missingTrader.title")</h1>
 
-        @radioGroup(
-            field = missingTraderForm(yesNo),
-            choices = Seq(
-                yes -> messages("common.yes"),
-                no -> messages("common.no")),
-            question = messages("missingTrader.title"),
-            additionalContent = Some(questionContent),
-            inline = true
-        )
+  <div class="panel panel-border-wide">
+    @renderAddress(ppob)
+  </div>
 
-        <button class="button" type ="submit" id="continue">
-            @messages("common.continue")
-        </button>
-    }
+  <span class="form-hint">@messages("missingTrader.addInfo")</span>
 
+  @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit, 'novalidate -> "novalidate") {
+
+    @radioGroup(
+      field = missingTraderForm(yesNo),
+      choices = Seq(
+        yes -> messages("common.yes"),
+        no -> messages("common.no")
+      ),
+      question = messages("missingTrader.question"),
+      inline = true
+    )
+
+    <button class="button" type="submit" id="continue">
+      @messages("common.continue")
+    </button>
+  }
 }

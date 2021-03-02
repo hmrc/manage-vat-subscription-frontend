@@ -61,31 +61,20 @@
                 @singleCheckbox(form("vatSubscriptionFeatures.enableAnnualAccounting"), "Enable Annual Accounting")
                 @singleCheckbox(form("vatSubscriptionFeatures.newStatusIndicators"), "Enable new status indicators")
 
-                <fieldset>
-                    <legend>
-                        <h3>Which API1363 Version should be used?</h3>
-                    </legend>
-                    @radioGroup(
-                        field = form("vatSubscriptionFeatures.Api1363Version"),
-                        choices = Seq(
-                            (Api1363Latest.id, "Latest")
-                        ),
-                        question = "Which API1363 Version should be used?"
-                    )
-                </fieldset>
-                <fieldset>
-                    <legend>
-                        <h3>Which API1365 Version should be used?</h3>
-                        <h4>This field is mandatory - no error handling around this</h4>
-                    </legend>
-                    @radioGroup(
-                        field = form("vatSubscriptionFeatures.Api1365Version"),
-                        choices = Seq(
-                            (Api1365Latest.id, "Latest")
-                        ),
-                        question = "Which API1365 Version should be used?"
-                    )
-                </fieldset>
+                @radioGroup(
+                  field = form("vatSubscriptionFeatures.Api1363Version"),
+                  choices = Seq(
+                    (Api1363Latest.id, "Latest")
+                  ),
+                  question = "Which API1363 Version should be used?"
+                )
+                @radioGroup(
+                  field = form("vatSubscriptionFeatures.Api1365Version"),
+                  choices = Seq(
+                    (Api1365Latest.id, "Latest")
+                  ),
+                  question = "Which API1365 Version should be used?"
+                )
         </div>
 
       <button class="button" type="submit" id="continue-button">@messages("featureSwitch.submit")</button>

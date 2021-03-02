@@ -110,9 +110,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Business address is displayed")
               res should have(
-                elementText("#businessAddress li:nth-of-type(1)")(ppobMax.address.line1),
-                elementText("#businessAddress li:nth-of-type(2)")(ppobMax.address.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.postCode.get)
+                elementText("#businessAddress")(
+                  s"${ppobMax.address.line1} ${ppobMax.address.line2.get} ${ppobMax.address.postCode.get}"
+                )
               )
 
               And("Bank details is displayed")
@@ -244,9 +244,9 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Business address is displayed")
               res should have(
-                elementText("#businessAddress li:nth-of-type(1)")(ppobMax.address.line1),
-                elementText("#businessAddress li:nth-of-type(2)")(ppobMax.address.line2.get),
-                elementText("#businessAddress li:nth-of-type(3)")(ppobMax.address.postCode.get)
+                elementText("#businessAddress")(
+                  s"${ppobMax.address.line1} ${ppobMax.address.line2.get} ${ppobMax.address.postCode.get}"
+                )
               )
 
               And("Bank details is displayed")

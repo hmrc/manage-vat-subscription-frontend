@@ -28,14 +28,17 @@ import views.html.missingTrader.ConfirmBusinessAddressView
 class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
 
   object Selectors {
-    val pageHeading = "#page-heading"
+    val pageHeading = "h1"
     val yesOption = "div.multiple-choice:nth-child(1) > label"
     val noOption = "div.multiple-choice:nth-child(2) > label"
     val button = ".button"
     val errorHeading = "#error-summary-display"
     val error = "#form-error"
-    val address: Int => String = num => s".panel-border-wide li:nth-child($num)"
-    val additionalInfo = "#content > article > form > div > fieldset > div > span.form-hint"
+    val address = ".panel-border-wide"
+    val additionalInfo = ".form-hint"
+    val formQuestion = "legend"
+    val errorSummaryHeading = "#error-summary-heading"
+    val errorSummaryList = ".error-summary-list"
   }
 
   val injectedView: ConfirmBusinessAddressView = inject[ConfirmBusinessAddressView]
@@ -54,9 +57,8 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     }
 
     "has the correct address output" in {
-      elementText(Selectors.address(1)) shouldBe ppobAddressModelMax.line1
-      elementText(Selectors.address(2)) shouldBe ppobAddressModelMax.line2.get
-      elementText(Selectors.address(3)) shouldBe ppobAddressModelMax.postCode.get
+      elementText(Selectors.address) shouldBe
+        s"${ppobAddressModelMax.line1} ${ppobAddressModelMax.line2.get} ${ppobAddressModelMax.postCode.get}"
     }
 
     s"have the correct additional information" in {
@@ -64,7 +66,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     }
 
     s"have the correct question" in {
-      elementText("h2") shouldBe viewMessages.question
+      elementText(Selectors.formQuestion) shouldBe viewMessages.question
     }
 
     "have the correct radio buttons with yes/no answers" in {
@@ -77,45 +79,35 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     }
 
     "not display an error" in {
-      document.select(Selectors.error).isEmpty shouldBe true
+      elementExtinct(Selectors.errorSummaryHeading)
+      elementExtinct(Selectors.errorSummaryList)
+      elementExtinct(Selectors.error)
     }
   }
 
   "The ConfirmBusinessAddress page with errors" should {
 
-    lazy val view = injectedView(ppobAddressModelMax, MissingTraderForm.missingTraderForm.bind(Map("yes_no" -> "")))(user, messages, mockConfig)
+    lazy val view = injectedView(
+      ppobAddressModelMax, MissingTraderForm.missingTraderForm.bind(Map("yes_no" -> "")))(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct document title" in {
       document.title shouldBe s"${viewMessages.errorTitlePrefix} ${viewMessages.title}"
     }
 
-    "have the correct page heading" in {
-      elementText(Selectors.pageHeading) shouldBe viewMessages.heading
+    "display an error summary" which {
+
+      "has the correct heading" in {
+        elementText(Selectors.errorSummaryHeading) shouldBe viewMessages.errorHeading
+      }
+
+      "has the correct error message in the list" in {
+        elementText(Selectors.errorSummaryList) shouldBe viewMessages.errorMessage
+      }
     }
 
-    "has the correct address output" in {
-      elementText(Selectors.address(1)) shouldBe ppobAddressModelMax.line1
-      elementText(Selectors.address(2)) shouldBe ppobAddressModelMax.line2.get
-      elementText(Selectors.address(3)) shouldBe ppobAddressModelMax.postCode.get
-    }
-
-    "display the correct error heading" in {
-      elementText(Selectors.errorHeading) shouldBe s"${viewMessages.errorHeading} ${viewMessages.errorMessage}"
-    }
-
-    "have the correct radio buttons with yes/no answers" in {
-      elementText(Selectors.yesOption) shouldBe viewMessages.yes
-      elementText(Selectors.noOption) shouldBe viewMessages.no
-    }
-
-    "have the correct continue button text" in {
-      elementText(Selectors.button) shouldBe viewMessages.continue
-    }
-
-    "display the correct error messages" in {
-      elementText(Selectors.error) shouldBe "Error: Select yes if the business trades from this address most of the time"
+    "display the correct error message" in {
+      elementText(Selectors.error) shouldBe s"${viewMessages.errorTitlePrefix} ${viewMessages.errorMessage}"
     }
   }
-
 }
