@@ -162,7 +162,8 @@ object IntegrationTestConstants {
       ppob = Some(ppobMax),
       bankDetails = Some(bankDetails),
       returnPeriod = Some(Jan),
-      tradingName = Some("Pens'n'Dinghy's")
+      tradingName = Some("Pens'n'Dinghy's"),
+      businessName = Some("Stationery'n'Boats")
     )),
     partyType = partyType,
     commsPreference = Some(ContactPreference("DIGITAL"))

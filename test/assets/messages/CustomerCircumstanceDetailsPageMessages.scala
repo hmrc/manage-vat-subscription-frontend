@@ -59,6 +59,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val pendingReturnFrequencyHidden = "Change to VAT Return dates is pending"
   val pendingEmailAddressHidden = "Change to business email address is pending"
   val pendingTradingNameHidden = "Change to trading name is pending"
+  val pendingBusinessNameHidden = "Change to business name is pending"
   val changeLandlineNumbersHidden: String = "Change the landline number from 01234 567890"
   val pendingLandlineNumbersHidden: String = "Change to the landline number is pending"
   val changeMobileNumbersHidden: String = "Change the mobile number from 07700 123456"

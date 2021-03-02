@@ -50,6 +50,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val pendingMobile: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.contactDetails.flatMap(_.mobileNumber)))
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
   val pendingTradingName: Option[String] = pendingChanges.flatMap(_.tradingName)
+  val pendingOrgName: Option[String] = pendingChanges.flatMap(_.businessName)
 
   val samePPOB: Boolean = pendingPPOBAddress.contains(ppobAddress)
   val sameEmail: Boolean = pendingEmail == email
@@ -57,6 +58,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val sameMobile: Boolean = pendingMobile == mobileNumber
   val sameWebsite: Boolean = pendingWebsite == website
   val sameTradingName: Boolean = pendingTradingName == customerDetails.tradingName
+  val sameBusinessName: Boolean = pendingOrgName == customerDetails.businessName
 
   def validPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypes.contains(party)

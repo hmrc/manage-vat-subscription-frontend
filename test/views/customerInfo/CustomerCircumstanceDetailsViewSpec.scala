@@ -323,7 +323,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               lazy val view = injectedView(
                 customerInformationNoPendingIndividual.copy(
                   ppob = ppobModelMaxEmailUnverified,
-                  pendingChanges = Some(PendingChanges(Some(ppobModelMaxPending), None, None, None))),
+                  pendingChanges = Some(PendingChanges(Some(ppobModelMaxPending), None, None, None, None))),
                 getPartialHtmlNotAgent
               )(user, messages, mockConfig)
               lazy implicit val document: Document = Jsoup.parse(view.body)
@@ -454,6 +454,24 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             "display the inflight trading name" in {
               elementText("#trading-name") shouldBe "Party Kitchen"
+            }
+          }
+
+          "business name is pending" should {
+
+            lazy val view = injectedView(customerInfoPendingBusinessNameModel, getPartialHtmlNotAgent)(user, messages, mockConfig)
+            lazy implicit val document: Document = Jsoup.parse(view.body)
+
+            "have the correct text" in {
+              elementText("#business-name-status > span:nth-child(1)") shouldBe viewMessages.pending
+            }
+
+            "have the correct hidden text" in {
+              elementText("#business-name-status > .visuallyhidden") shouldBe viewMessages.pendingBusinessNameHidden
+            }
+
+            "display the inflight business name" in {
+              elementText("#business-name") shouldBe "Party Kitchen"
             }
           }
 
