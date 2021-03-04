@@ -73,7 +73,8 @@ object CircumstanceDetailsTestConstants {
         "sortCode" -> accSort
       ),
       "returnPeriod" -> returnPeriodMCJson,
-      "tradingName" -> "Pens'n'Dinghy's"
+      "tradingName" -> "Pens'n'Dinghy's",
+      "organisationName" -> "Stationery'n'Boats"
     ),
     "commsPreference" -> "DIGITAL"
   )
@@ -148,7 +149,8 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar),
-      tradingName = Some("Pens'n'Dinghy's")
+      tradingName = Some("Pens'n'Dinghy's"),
+      businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
     commsPreference = Some(ContactPreference("DIGITAL"))
@@ -173,7 +175,8 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Feb),
-      tradingName = Some("Pens'n'Dinghy's")
+      tradingName = Some("Pens'n'Dinghy's"),
+      businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
     commsPreference = Some(ContactPreference("DIGITAL"))
@@ -198,7 +201,8 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMaxPending),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar),
-      tradingName = Some("Pens'n'Dinghy's")
+      tradingName = Some("Pens'n'Dinghy's"),
+      businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
     commsPreference = Some(ContactPreference("DIGITAL"))
@@ -222,7 +226,8 @@ object CircumstanceDetailsTestConstants {
       ppob = Some(ppobModelMax),
       bankDetails = Some(bankDetailsModelMax),
       returnPeriod = Some(Mar),
-      tradingName = Some("Pens'n'Dinghy's")
+      tradingName = Some("Pens'n'Dinghy's"),
+      businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
     commsPreference = Some(ContactPreference("DIGITAL"))
@@ -388,7 +393,7 @@ object CircumstanceDetailsTestConstants {
       case "website" => Some(ppobModelMax.copy(websiteAddress = None))
     }
     customerInformationPendingPPOBOrganisation.copy(
-      pendingChanges = Some(PendingChanges(pendingPPOB, None, None, None))
+      pendingChanges = Some(PendingChanges(pendingPPOB, None, None, None, None))
     )
   }
 
@@ -399,6 +404,7 @@ object CircumstanceDetailsTestConstants {
         Some(contactDetailsModelMax.copy(emailAddress = Some(emailPending))),
         Some(website)
       )),
+      None,
       None,
       None,
       None
@@ -414,6 +420,7 @@ object CircumstanceDetailsTestConstants {
       )),
       None,
       None,
+      None,
       None
     ))
   )
@@ -427,6 +434,7 @@ object CircumstanceDetailsTestConstants {
       )),
       None,
       None,
+      None,
       None
     ))
   )
@@ -435,7 +443,7 @@ object CircumstanceDetailsTestConstants {
     pendingChanges = Some(PendingChanges(
       Some(ppobModelMax.copy(
         contactDetails = Some(contactDetailsModelMax.copy(phoneNumber = None))
-      )), None, None, None
+      )), None, None, None, None
     ))
   )
 
@@ -446,6 +454,7 @@ object CircumstanceDetailsTestConstants {
         Some(contactDetailsModelMax.copy(mobileNumber = Some(mobileNumberPending))),
         Some(website)
       )),
+      None,
       None,
       None,
       None
@@ -461,18 +470,25 @@ object CircumstanceDetailsTestConstants {
       )),
       None,
       None,
+      None,
       None
     ))
   )
 
   val customerInformationPendingReturnPeriodModel: CircumstanceDetails = customerInformationRegisteredIndividual.copy(
     pendingChanges = Some(PendingChanges(
-      None, None, Some(Monthly), None
+      None, None, Some(Monthly), None, None
     ))
   )
 
   val customerInfoPendingTradingNameModel: CircumstanceDetails = customerInformationModelMin.copy(
-    pendingChanges = Some(PendingChanges(None, None, None, Some("Party Kitchen")))
+    pendingChanges = Some(PendingChanges(None, None, None, Some("Party Kitchen"), None))
+  )
+
+  val customerInfoPendingBusinessNameModel: CircumstanceDetails = customerInformationModelMin.copy(
+    customerDetails = individual.copy(organisationName = Some(orgName)),
+    partyType = Some(partyType),
+    pendingChanges = Some(PendingChanges(None, None, None, None, Some("Party Kitchen")))
   )
 
   val overseasCompany: CircumstanceDetails = customerInformationModelMin.copy(customerDetails = overseasOrganisation)

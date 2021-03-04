@@ -83,6 +83,7 @@ customer_details.status = Status
 customer_details.about.heading = Business details
 customer_details.businessName.heading = Business name
 customer_details.businessName.change.hidden = Change the business name from {0}
+customer_details.businessName.pending.hidden = Change to business name is pending
 customer_details.tradingName.heading = Trading name
 customer_details.tradingName.change.hidden = Change the trading name from {0}
 customer_details.tradingName.pending.hidden = Change to trading name is pending

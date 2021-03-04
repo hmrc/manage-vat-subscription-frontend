@@ -23,7 +23,8 @@ import play.api.libs.json.{Json, Reads, Writes, __}
 case class PendingChanges(ppob: Option[PPOB],
                           bankDetails: Option[BankDetails],
                           returnPeriod: Option[ReturnPeriod],
-                          tradingName: Option[String])
+                          tradingName: Option[String],
+                          businessName: Option[String])
 
 object PendingChanges {
 
@@ -31,19 +32,22 @@ object PendingChanges {
   private val bankDetailsPath =  __ \ "bankDetails"
   private val returnPeriodPath = __ \ "returnPeriod"
   private val tradingNamePath = __ \ "tradingName"
+  private val businessNamePath = __ \ "organisationName"
 
   implicit val reads: Reads[PendingChanges] = (
     ppobPath.readNullable[PPOB] and
     bankDetailsPath.readNullable[BankDetails] and
     returnPeriodPath.readNullable[ReturnPeriod] and
-    tradingNamePath.readNullable[String]
+    tradingNamePath.readNullable[String] and
+    businessNamePath.readNullable[String]
   )(PendingChanges.apply _)
 
   implicit val writes: Writes[PendingChanges] = (
     ppobPath.writeNullable[PPOB] and
     bankDetailsPath.writeNullable[BankDetails] and
     returnPeriodPath.writeNullable[ReturnPeriod] and
-    tradingNamePath.writeNullable[String]
+    tradingNamePath.writeNullable[String] and
+    businessNamePath.writeNullable[String]
   )(unlift(PendingChanges.unapply))
 
   val auditWrites: Writes[Option[PendingChanges]] = Writes {
