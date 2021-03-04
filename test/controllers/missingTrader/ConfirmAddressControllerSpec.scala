@@ -18,11 +18,14 @@ package controllers.missingTrader
 
 import assets.BaseTestConstants.vrn
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndividual, customerInformationModelMin}
+import assets.messages.MissingTraderAddressConfirmationPageMessages
 import audit.models.MissingTraderAuditModel
+import common.SessionKeys
 import controllers.ControllerBaseSpec
 import forms.MissingTraderForm
 import mocks.services.MockPPOBService
 import models.core.ErrorModel
+import org.jsoup.Jsoup
 import play.api.http.Status
 import play.api.test.Helpers._
 import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
@@ -47,24 +50,48 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
 
   "The .show action" when {
 
-    "the user is a missing trader" should {
+    "the user is a missing trader" when {
 
-      lazy val result = {
-        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
-        controller.show(request)
+      "the missingTraderConfirmedAddressKey is in session" should {
+        lazy val result = {
+          setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+          controller.show(request.withSession(SessionKeys.missingTraderConfirmedAddressKey -> "true"))
+        }
+
+        lazy val document = Jsoup.parse(bodyOf(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        s"have the h1 as ${MissingTraderAddressConfirmationPageMessages.h1}" in {
+          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe MissingTraderAddressConfirmationPageMessages.h1
+        }
       }
 
-      "return 200" in {
-        status(result) shouldBe Status.OK
-      }
+      "the missingTraderConfirmedAddressKey is not in session" should {
+        lazy val result = {
+          setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+          controller.show(request)
+        }
 
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
 
-      "send an audit event" in {
-        verifyExtendedAudit(MissingTraderAuditModel(vrn), Some(routes.ConfirmAddressController.show().url))
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "send an audit event" in {
+          verifyExtendedAudit(MissingTraderAuditModel(vrn), Some(routes.ConfirmAddressController.show().url))
+        }
       }
     }
 
@@ -153,6 +180,10 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
 
       "return 200" in {
         status(result) shouldBe Status.OK
+      }
+
+      "add the missingTraderConfirmedAddressKey to session" in {
+        session(result).get(SessionKeys.missingTraderConfirmedAddressKey) shouldBe Some("true")
       }
     }
 

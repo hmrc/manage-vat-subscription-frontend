@@ -18,6 +18,7 @@ package controllers.missingTrader
 
 import audit.AuditService
 import audit.models.MissingTraderAuditModel
+import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.MissingTraderForm
@@ -46,8 +47,11 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
   val form: Form[YesNo] = MissingTraderForm.missingTraderForm
 
   def show: Action[AnyContent] = authPredicate.async { implicit user =>
-    if(appConfig.features.missingTraderAddressIntercept()) {
-      customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+
+    (appConfig.features.missingTraderAddressIntercept(), user.session.get(SessionKeys.missingTraderConfirmedAddressKey)) match {
+      case (false, _) => Future.successful(NotFound(errorHandler.notFoundTemplate))
+      case (_, Some("true")) => Future.successful(Ok(missingTraderAddressConfirmationView()))
+      case _ => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) if details.missingTrader =>
           auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show().url))
           Ok(confirmBusinessAddressView(details.ppobAddress, form))
@@ -55,8 +59,6 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
         case Right(_) => Redirect(appConfig.vatSummaryUrl)
         case Left(_) => errorHandler.showInternalServerError
       }
-    } else {
-      Future.successful(NotFound(errorHandler.notFoundTemplate))
     }
   }
 
@@ -70,7 +72,7 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
         {
           case Yes =>
             ppobService.validateBusinessAddress(user.vrn).map {
-              case Right(_) => Ok(missingTraderAddressConfirmationView())
+              case Right(_) => Ok(missingTraderAddressConfirmationView()).addingToSession(SessionKeys.missingTraderConfirmedAddressKey -> "true")
               case Left(_) => errorHandler.showInternalServerError
             }
           case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
