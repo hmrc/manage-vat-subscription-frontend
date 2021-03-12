@@ -1,8 +1,5 @@
 # microservice specific routes
 
-# Assets
-GET         /assets/*file                                    controllers.Assets.at(path="/public", file)
-
 # Pages
 
 GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.redirect
@@ -31,3 +28,8 @@ GET         /time-out                                        controllers.SignOut
 
 #Language Controller
 GET         /language/:lang                                  controllers.LanguageController.switchToLanguage(lang: String)
+
+# Assets
+GET         /assets/*file                                    controllers.Assets.at(path="/public", file)
+->          /govuk-frontend                                  govuk.Routes
+->          /hmrc-frontend                                   hmrcfrontend.Routes

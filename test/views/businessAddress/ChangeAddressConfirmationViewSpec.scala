@@ -55,11 +55,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         s"have a button to finish" which {
 
           s"has the correct text of '$finish" in {
-            elementText("#finish") shouldBe finish
+            elementText(".govuk-button") shouldBe finish
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
           }
         }
       }
@@ -87,11 +87,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         s"have a button to finish" which {
 
           s"has the correct text of '$finish" in {
-            elementText("#finish") shouldBe finish
+            elementText(".govuk-button") shouldBe finish
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
           }
         }
       }
@@ -121,11 +121,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       s"have a button to finish" which {
 
         s"has the correct text of '$finish" in {
-          elementText("#finish") shouldBe finish
+          elementText(".govuk-button") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
     }
@@ -154,11 +154,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
       s"have a button to finish" which {
 
         s"has the correct text of '$finish" in {
-          elementText("#finish") shouldBe finish
+          elementText(".govuk-button") shouldBe finish
         }
 
         s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
         }
       }
     }
@@ -196,11 +196,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         s"have a button to finish" which {
 
           s"has the correct text of '$finishAgent" in {
-            elementText("#finish") shouldBe finishAgent
+            elementText(".govuk-button") shouldBe finishAgent
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
-            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
           }
         }
       }
@@ -233,11 +233,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         "have a button to finish" which {
 
           s"has the correct text of '$finishAgent" in {
-            elementText("#finish") shouldBe finishAgent
+            elementText(".govuk-button") shouldBe finishAgent
           }
 
           s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
-            element("#finish").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
           }
         }
       }

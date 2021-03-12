@@ -46,6 +46,8 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
 
   val titleSuffixUser = " - Business tax account - GOV.UK"
   val titleSuffixOther = " - VAT - GOV.UK"
+  val titleSuffixAgent = " - Your client’s VAT details - GOV.UK"
+  val titleThereIsAProblem = "There is a problem with the service"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this

@@ -16,7 +16,7 @@
 
 @import templates.UpdateClient
 
-@this(mainTemplate: MainTemplate, updateClient: UpdateClient)
+@this(mainTemplate: MainTemplate, updateClient: UpdateClient, govukPanel : GovukPanel, govukButton: GovukButton)
 
 @(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None, emailVerified: Boolean = false)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -24,16 +24,11 @@
     if(user.isAgent) "common.agent.backToClientDetails" else "common.finish"
 }
 
-@mainTemplate(
-    title = messages("change_address_confirmation.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+@mainTemplate(pageTitle = messages("change_address_confirmation.title")) {
 
-    <div class="govuk-box-highlight">
-        <h1 class="heading-xlarge">@messages("change_address_confirmation.title")</h1>
-    </div>
+    @govukPanel(Panel(title = Text(messages("change_address_confirmation.title"))))
 
-    <h2>@messages("change_address_confirmation.h2")</h2>
+    <h2 class="govuk-heading-m">@messages("change_address_confirmation.h2")</h2>
 
     @if(user.isAgent){
 
@@ -43,15 +38,15 @@
             case Some(email) => {
 
                 @if(appConfig.features.disableBulkPaper()) {
-                <p>@messages("change_address_confirmation.agent.bulkPaper.p1-1")
-                <strong class="bold">@email</strong>
+                <p class="govuk-body">@messages("change_address_confirmation.agent.bulkPaper.p1-1")
+                <strong class="govuk-!-font-weight-bold">@email</strong>
                 @messages("change_address_confirmation.agent.bulkPaper.p1-2")</p>
                 @updateClient(clientName)
 
                 } else {
 
-                    <p>@messages("change_address_confirmation.agent.p1-1")
-                    <strong class="bold">@email</strong>
+                    <p class="govuk-body">@messages("change_address_confirmation.agent.p1-1")
+                    <strong class="govuk-!-font-weight-bold">@email</strong>
                     @messages("change_address_confirmation.agent.p1-2")</p>
                     @updateClient(clientName)
                 }
@@ -59,7 +54,7 @@
 
             case None => {
                 @if(!appConfig.features.disableBulkPaper()) {
-                    <p>@messages("common.agent.confirmationLetter")</p>
+                    <p class="govuk-body">@messages("common.agent.confirmationLetter")</p>
                 }
                     @updateClient(clientName)
             }
@@ -67,21 +62,17 @@
     } else {
 
         @contactPref match {
-            case Some("DIGITAL") => {<p id="preference-message">@messages(if(emailVerified){"contact_preference.email"}else{"contact_preference.digital"})</p>}
-            case Some("PAPER") => {<p id="preference-message">@messages("contact_preference.paper")</p>}
-            case _ => {<p>@messages("contact_preference.contactPrefError")</p>}
+            case Some("DIGITAL") => {<p class="govuk-body" id="preference-message">@messages(if(emailVerified){"contact_preference.email"}else{"contact_preference.digital"})</p>}
+            case Some("PAPER") => {<p class="govuk-body" id="preference-message">@messages("contact_preference.paper")</p>}
+            case _ => {<p class="govuk-body">@messages("contact_preference.contactPrefError")</p>}
         }
-        <p>@messages("contact_preference.contact")</p>
+        <p class="govuk-body">@messages("contact_preference.contact")</p>
 
     }
 
-    <a
-       id="finish"
-       href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'
-       class="button"
-       role="button"
-       type="submit">
-        @messages(finishButtonText)
-    </a>
+    @govukButton(Button(href = Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url),
+        attributes = Map("id" -> "Finish"),
+        content = Text(messages(finishButtonText))
+    ))
 
 }

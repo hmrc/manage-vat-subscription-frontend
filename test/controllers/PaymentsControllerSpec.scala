@@ -88,7 +88,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
 
@@ -99,7 +99,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
     }

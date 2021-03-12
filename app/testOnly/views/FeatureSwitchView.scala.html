@@ -16,67 +16,202 @@
 
 @import config.ConfigKeys
 @import testOnly.models._
-@import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
-@import views.html.templates.inputs.{SingleCheckbox, RadioGroup}
 @import views.html.MainTemplate
 
-@this(mainTemplate: MainTemplate, singleCheckbox: SingleCheckbox, radioGroup: RadioGroup, formWithCSRF: FormWithCSRF)
+@this(mainTemplate: MainTemplate, govukCheckboxes : GovukCheckboxes, govukRadios : GovukRadios, govukButton : GovukButton, formWithCSRF: FormWithCSRF)
 
 @(form: Form[FeatureSwitchModel])(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(title = messages("featureSwitch.title"), appConfig = appConfig) {
+@mainTemplate(pageTitle = messages("Feature switches")) {
 
   @formWithCSRF(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
 
-      <div class="form-group" style="border-radius: 25px;background: #C9EDD9; padding: 25px;">
-          <fieldset>
-              <legend>
-                  <p class="bold-medium" style="margin-bottom:10px;">Manage VAT Subscription Frontend Features</p>
-              </legend>
-              @singleCheckbox(form(ConfigKeys.stubAgentClientLookupFeature), "Stub Agent Client Lookup")
-              @singleCheckbox(form(ConfigKeys.stubAddressLookupFeature), "Stub Address Lookup")
-              @singleCheckbox(form(ConfigKeys.stubContactPreferencesFeature), "Stub Contact Preferences")
-              @singleCheckbox(form(ConfigKeys.allowAgentBankAccountChange), "Allow Agents to change Bank Account")
-              @singleCheckbox(form(ConfigKeys.contactNumbersAndWebsiteFeature), "Show entry point to change contact numbers and website")
-              @singleCheckbox(form(ConfigKeys.useLanguageSelectorFeature), messages(ConfigKeys.useLanguageSelectorFeature))
-              @singleCheckbox(form(ConfigKeys.useOverseasIndicator), messages(ConfigKeys.useOverseasIndicator))
-              @singleCheckbox(form(ConfigKeys.changeClientFeature), messages(ConfigKeys.changeClientFeature))
-              @singleCheckbox(form(ConfigKeys.emailVerifiedFeature), "Enable special content for digital preference and verified email")
-              @singleCheckbox(form(ConfigKeys.disableBulkPaper), "Disable Bulk Paper Content")
-              @singleCheckbox(form(ConfigKeys.missingTraderAddressIntercept), "Intercept missing traders on entry to confirm address.")
-              @singleCheckbox(form(ConfigKeys.contactDetailsMovedToBTA), "Replace contact details with link to BTA")
-              @singleCheckbox(form(ConfigKeys.contactPrefMigrationFeature), "Retrieve contact pref from vat-subscription")
-              @singleCheckbox(form(ConfigKeys.tradingNameRowFeature), "Enable trading name row")
-              @singleCheckbox(form(ConfigKeys.organisationNameRowFeature), "Enable business name row")
+    @govukCheckboxes(Checkboxes(
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+            content = Text("Manage VAT Subscription Frontend Features"),
+            classes = "govuk-fieldset__legend--l",
+            isPageHeading = true
+        ))
+    )),
+    name = "featureSwitch",
+    items = Seq(
+        CheckboxItem(
+            id = Some(ConfigKeys.stubAgentClientLookupFeature),
+            name = Some(ConfigKeys.stubAgentClientLookupFeature),
+            content = Text("Stub Agent Client Lookup"),
+            value = "true",
+            checked = appConfig.features.stubAgentClientLookup()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.stubAddressLookupFeature),
+            name = Some(ConfigKeys.stubAddressLookupFeature),
+            content = Text("Stub Address Lookup"),
+            value = "true",
+            checked = appConfig.features.stubAddressLookup()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.stubContactPreferencesFeature),
+            name = Some(ConfigKeys.stubContactPreferencesFeature),
+            content = Text("Stub Contact Preferences"),
+            value = "true",
+            checked = appConfig.features.stubContactPreferences()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.allowAgentBankAccountChange),
+            name = Some(ConfigKeys.allowAgentBankAccountChange),
+            content = Text("Allow Agents to change Bank Account"),
+            value = "true",
+            checked = appConfig.features.allowAgentBankAccountChange()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.contactNumbersAndWebsiteFeature),
+            name = Some(ConfigKeys.contactNumbersAndWebsiteFeature),
+            content = Text("Show entry point to change contact numbers and website"),
+            value = "true",
+            checked = appConfig.features.showContactNumbersAndWebsite()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.useLanguageSelectorFeature),
+            name = Some(ConfigKeys.useLanguageSelectorFeature),
+            content = Text("Language switch"),
+            value = "true",
+            checked = appConfig.features.useLanguageSelector()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.useOverseasIndicator),
+            name = Some(ConfigKeys.useOverseasIndicator),
+            content = Text("Overseas Indicator Switch"),
+            value = "true",
+            checked = appConfig.features.useOverseasIndicator()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.changeClientFeature),
+            name = Some(ConfigKeys.changeClientFeature),
+            content = Text("Enable change client links and Finish links where appropriate"),
+            value = "true",
+            checked = appConfig.features.changeClientFeature()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.emailVerifiedFeature),
+            name = Some(ConfigKeys.emailVerifiedFeature),
+            content = Text("Enable special content for digital preference and verified email"),
+            value = "true",
+            checked = appConfig.features.emailVerifiedFeature()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.disableBulkPaper),
+            name = Some(ConfigKeys.disableBulkPaper),
+            content = Text("Disable Bulk Paper Content"),
+            value = "true",
+            checked = appConfig.features.disableBulkPaper()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.missingTraderAddressIntercept),
+            name = Some(ConfigKeys.missingTraderAddressIntercept),
+            content = Text("Intercept missing traders on entry to confirm address."),
+            value = "true",
+            checked = appConfig.features.missingTraderAddressIntercept()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.contactDetailsMovedToBTA),
+            name = Some(ConfigKeys.contactDetailsMovedToBTA),
+            content = Text("Replace contact details with link to BTA"),
+            value = "true",
+            checked = appConfig.features.contactDetailsMovedToBTA()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.contactPrefMigrationFeature),
+            name = Some(ConfigKeys.contactPrefMigrationFeature),
+            content = Text("Retrieve contact pref from vat-subscription"),
+            value = "true",
+            checked = appConfig.features.contactPrefMigrationFeature()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.tradingNameRowFeature),
+            name = Some(ConfigKeys.tradingNameRowFeature),
+            content = Text("Enable trading name row"),
+            value = "true",
+            checked = appConfig.features.tradingNameRowEnabled()
+        ),
+        CheckboxItem(
+            id = Some(ConfigKeys.organisationNameRowFeature),
+            name = Some(ConfigKeys.organisationNameRowFeature),
+            content = Text("Enable business name row"),
+            value = "true",
+            checked = appConfig.features.organisationNameRowEnabled()
+        )
+        )
+    ))
 
+    @govukCheckboxes(Checkboxes(
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+            content = Text("Vat Subscription Backend Features"),
+            classes = "govuk-fieldset__legend--l",
+            isPageHeading = true
+        ))
+    )),
+    name = "featureSwitch",
+    items = Seq(
+        CheckboxItem(
+            id = Some("vatSubscriptionFeatures.enableAnnualAccounting"),
+            name = Some("vatSubscriptionFeatures.enableAnnualAccounting"),
+            content = Text("Enable Annual Accounting"),
+            value = "true",
+            checked = form("vatSubscriptionFeatures.enableAnnualAccounting").value.contains("true")
+        ),
+        CheckboxItem(
+            id = Some("vatSubscriptionFeatures.newStatusIndicators"),
+            name = Some("vatSubscriptionFeatures.newStatusIndicators"),
+            content = Text("Enable new status indicators"),
+            value = "true",
+            checked = form("vatSubscriptionFeatures.newStatusIndicators").value.contains("true")
+        )
+    )
+    ))
 
-          </fieldset>
-      </div>
+@govukRadios(Radios(
+    fieldset = Some(Fieldset(
+        legend = Some(Legend(
+        content = Text("Which API1363 Version should be used?"),
+        classes = "govuk-fieldset__legend--s",
+        isPageHeading = false
+    ))
+        )),
+        name = "vatSubscriptionFeatures.Api1363Version",
+        items = Seq(
+            RadioItem(
+                id = Some("vatSubscriptionFeatures.Api1363Version"),
+                content = Text("Latest"),
+                value = Some("Latest"),
+                checked = form("vatSubscriptionFeatures.Api1363Version").value.contains("Latest")
+            )),
+        classes = "govuk-radios--inline"
+        ))
 
-        <div class="form-group" style="border-radius: 25px;background: #D6EDB0; padding: 25px;">
-                <legend>
-                    <p class="bold-medium" style="margin-bottom:10px;">Vat Subscription Backend Features</p>
-                </legend>
+    @govukRadios(Radios(
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+            content = Text("Which API1365 Version should be used?"),
+            classes = "govuk-fieldset__legend--s",
+            isPageHeading = false
+        ))
+    )),
+    name = "vatSubscriptionFeatures.Api1365Version",
+    items = Seq(
+        RadioItem(
+            id = Some("vatSubscriptionFeatures.Api1365Version"),
+            content = Text("Latest"),
+            value = Some("Latest"),
+            checked = form("vatSubscriptionFeatures.Api1365Version").value.contains("Latest")
+        )),
+    classes = "govuk-radios--inline"
+    ))
 
-                @singleCheckbox(form("vatSubscriptionFeatures.enableAnnualAccounting"), "Enable Annual Accounting")
-                @singleCheckbox(form("vatSubscriptionFeatures.newStatusIndicators"), "Enable new status indicators")
+    @govukButton(Button(
+        content = Text("Submit")
+    ))
 
-                @radioGroup(
-                  field = form("vatSubscriptionFeatures.Api1363Version"),
-                  choices = Seq(
-                    (Api1363Latest.id, "Latest")
-                  ),
-                  question = "Which API1363 Version should be used?"
-                )
-                @radioGroup(
-                  field = form("vatSubscriptionFeatures.Api1365Version"),
-                  choices = Seq(
-                    (Api1365Latest.id, "Latest")
-                  ),
-                  question = "Which API1365 Version should be used?"
-                )
-        </div>
-
-      <button class="button" type="submit" id="continue-button">@messages("featureSwitch.submit")</button>
     }
 }

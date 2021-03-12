@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@this(mainTemplate: MainTemplate)
+@this(mainTemplate: MainTemplate, govukPanel : GovukPanel, govukButton: GovukButton)
 
 @()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -28,23 +28,17 @@
 }
 
 @mainTemplate(
-    title = messages("mta_confirmation.title"),
-    bodyClasses = None,
-    appConfig = appConfig){
+    pageTitle = messages("mta_confirmation.title")){
 
-    <div class="govuk-box-highlight">
-        <h1 class="heading-xlarge">@messages("mta_confirmation.title")</h1>
-    </div>
+    @govukPanel(Panel(title = Text(messages("mta_confirmation.title"))))
 
-    <p>@messages("mta_confirmation.p1")</p>
+    <p class="govuk-body">@messages("mta_confirmation.p1")</p>
 
-    <a
-        id="finish"
-        href=@overviewLink
-        class="button"
-        role="button"
-        type="submit">
-            @messages("common.continue")
-    </a>
+    @govukButton(Button(
+        href = Some(overviewLink),
+        attributes = Map("id" -> "Finish"),
+        content = Text(messages("common.continue"))
+    ))
+
 
 }

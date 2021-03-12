@@ -47,11 +47,11 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
     s"have a button to finish" which {
 
       s"has the correct text of '$continue'" in {
-        elementText("#finish") shouldBe continue
+        elementText(".govuk-button") shouldBe continue
       }
 
       "has the correct link" in {
-        element("#finish").attr("href") shouldBe mockConfig.vatSummaryUrl
+        element(".govuk-button").attr("href") shouldBe mockConfig.vatSummaryUrl
       }
     }
   }
@@ -76,11 +76,11 @@ class MissingTraderAddressConfirmationViewSpec extends ViewBaseSpec with BaseMes
     s"have a button to finish" which {
 
       s"has the correct text of '$continue'" in {
-        elementText("#finish") shouldBe continue
+        elementText(".govuk-button") shouldBe continue
       }
 
       "has the correct link" in {
-        element("#finish").attr("href") shouldBe mockConfig.agentClientLookupAgentAction
+        element(".govuk-button").attr("href") shouldBe mockConfig.agentClientLookupAgentAction
       }
     }
   }

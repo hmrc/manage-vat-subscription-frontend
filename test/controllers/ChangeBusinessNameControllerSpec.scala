@@ -100,7 +100,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
             }
 
             "have a link to the Gov Uk change business details page" in {
-              Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.altContinueLinkText
+              Jsoup.parse(bodyOf(result)).select(".govuk-body > a").text shouldBe ChangeBusinessNamePageMessages.altContinueLinkText
             }
           }
 
@@ -129,7 +129,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
             }
 
             "have a link to the Companies House change business details page" in {
-              Jsoup.parse(bodyOf(result)).getElementById("continue").text shouldBe ChangeBusinessNamePageMessages.continueLink
+              Jsoup.parse(bodyOf(result)).select(".govuk-body > a").text shouldBe ChangeBusinessNamePageMessages.continueLink
             }
           }
         }
@@ -213,7 +213,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -255,7 +255,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -266,7 +266,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       "return ISE (500)" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
 

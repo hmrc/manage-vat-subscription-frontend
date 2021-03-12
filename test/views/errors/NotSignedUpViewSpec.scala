@@ -44,17 +44,17 @@ class NotSignedUpViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct p2 on the page" in {
-      element("#content > article > p > a").attr("href") shouldBe mockConfig.govUkSoftwareGuidanceUrl
+      element("#content p > a").attr("href") shouldBe mockConfig.govUkSoftwareGuidanceUrl
     }
 
     "A Sign Out button" which {
 
       "has the correct text" in {
-        elementText(".button") shouldBe signOut
+        elementText(".govuk-button") shouldBe signOut
       }
 
       "has a URL to the sign out controller" in {
-        element(".button").attr("href") shouldBe controllers.routes.SignOutController.signOut(false).url
+        element(".govuk-button").attr("href") shouldBe controllers.routes.SignOutController.signOut(false).url
       }
     }
   }

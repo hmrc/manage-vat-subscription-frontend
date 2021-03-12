@@ -18,11 +18,11 @@
 
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(title = messages("inFlightChange.title"), appConfig = appConfig) {
+@mainTemplate(pageTitle = messages("inFlightChange.title")) {
 
- <h1 class="heading-large">@messages("inFlightChange.title")</h1>
-<p>@messages("inFlightChange.recentRequest")</p>
-<p>@messages("inFlightChange.untilWeAccept")</p>
-<p>@messages("inFlightChange.acceptOrReject")</p>
-<a href="@appConfig.btaAccountDetails" class="btaAccountDetailsLink">@messages("inFlightChange.backToAccountDetails")</a>
+  <h1 id="page-heading" class="govuk-heading-l">@messages("inFlightChange.title")</h1>
+  <p class="govuk-body">@messages("inFlightChange.recentRequest")</p>
+  <p class="govuk-body">@messages("inFlightChange.untilWeAccept")</p>
+  <p class="govuk-body">@messages("inFlightChange.acceptOrReject")</p>
+  <a class="govuk-link" href="@appConfig.btaAccountDetails">@messages("inFlightChange.backToAccountDetails")</a>
 }

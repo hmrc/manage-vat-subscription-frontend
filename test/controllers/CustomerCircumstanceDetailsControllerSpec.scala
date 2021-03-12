@@ -98,7 +98,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       "return 500" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
 
       "return HTML" in {
@@ -189,7 +189,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       "return 500" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
 
       "return HTML" in {

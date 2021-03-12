@@ -14,7 +14,11 @@
  * limitations under the License.
  *@
 
-@this()
+@this(govukBackLink : GovukBackLink)
 
 @()(implicit messages: Messages, user : User[_])
-<a class="link-back" href='@controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)'>@messages("base.back")</a>
+
+ @govukBackLink(BackLink(
+   href = controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url,
+   content = Text(messages("base.back"))
+ ))

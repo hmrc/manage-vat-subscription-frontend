@@ -99,7 +99,7 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
             block(user).map(result => result.addingToSession(SessionKeys.insolventWithoutAccessKey -> "false"))
           case _ =>
             Logger.warn("[AuthPredicate][checkVatEnrolment] - Failure obtaining insolvency status from Customer Info API")
-            Future.successful(serviceErrorHandler.showInternalServerError)
+            Future.successful(serviceErrorHandler.showInternalServerError(user))
         }
       }
     }

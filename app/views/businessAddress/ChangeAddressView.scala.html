@@ -17,14 +17,12 @@
 @import templates.Headings
 @import helpers.BackToBusinessDetails
 
-@this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails)
+@this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails, govukButton: GovukButton)
 
 @()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(
-    title = messages("change_address.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+    pageTitle = messages("change_address.title")) {
 
     @backToBusinessDetails()
 
@@ -32,22 +30,21 @@
         @headings(messages("change_address.title"))
     </div>
 
-    <p>@messages("change_address.p1")</p>
+    <p class="govuk-body">@messages("change_address.p1")</p>
 
-    <p>@messages("change_address.p2")</p>
+    <p class="govuk-body">@messages("change_address.p2")</p>
 
-    <div class="panel panel-border-wide">
-        <p>@messages("change_address.bulletHeader")</p>
-        <ul class="list list-bullet">
+    <div>
+        <p class="govuk-body">@messages("change_address.bulletHeader")</p>
+        <ul class="govuk-list govuk-list--bullet">
             <li>@messages("change_address.bullet1")</li>
             <li>@messages("change_address.bullet2")</li>
             <li>@messages("change_address.bullet3")</li>
         </ul>
     </div>
 
-    <a href="@controllers.routes.BusinessAddressController.initialiseJourney().url"
-       class="button" role="button" type="submit">
-        @messages("common.continue")
-    </a>
+    @govukButton(Button(href = Some(controllers.routes.BusinessAddressController.initialiseJourney().url),
+        content = Text(messages("common.continue"))
+    ))
 
 }

@@ -30,9 +30,9 @@ class ChangePendingViewSpec extends ViewBaseSpec with BaseMessages with TestUtil
 
   object Selectors {
     val heading = "h1"
-    val paragraphOne = "article > p:nth-child(3)"
-    val paragraphTwo = "article > p:nth-child(4)"
-    val backLink = ".btaAccountDetailsLink"
+    val paragraphOne = "#content p:nth-child(3)"
+    val paragraphTwo = "#content p:nth-child(4)"
+    val backLink = "#content a"
   }
 
   "The change pending view" should {

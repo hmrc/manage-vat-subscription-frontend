@@ -22,38 +22,38 @@
 @(organisationName: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(
-    title = messages("change_business_name.title"),
-    bodyClasses = None,
-    appConfig = appConfig) {
+    pageTitle = messages("change_business_name.title")) {
 
     @backToBusinessDetails()
 
     @headings(messages("change_business_name.h1"))
 
-    <p >
-        @messages("change_business_name.p1") <span class="bold-small">@organisationName</span>.
+    <p class="govuk-body">
+        @messages("change_business_name.p1") <span class="govuk-!-font-weight-bold">@organisationName</span>.
         @messages("change_business_name.p2")
     </p>
 
-    <p>@messages("change_business_name.p3")</p>
-    <ul class="list list-bullet">
+    <p class="govuk-body">@messages("change_business_name.p3")</p>
+    <ul class="govuk-list govuk-list--bullet">
         <li>@Html(messages("change_business_name.bullet1"))</li>
         <li>@Html(messages("change_business_name.bullet2"))</li>
     </ul>
 
-    <p>@messages("change_business_name.p4")</p>
+    <p class="govuk-body">@messages("change_business_name.p4")</p>
 
-    <p>@messages("change_business_name.p5")</p>
-    <ul class="list list-bullet">
+    <p class="govuk-body">@messages("change_business_name.p5")</p>
+    <ul class="govuk-list govuk-list--bullet">
         <li>
-            <a href="@appConfig.govUkVat484Form" target="_blank">@messages("change_business_name.p5.bullet1")</a>
+            <a class="govuk-link" href="@appConfig.govUkVat484Form"
+               target="_blank" rel="noreferrer noopener">@messages("change_business_name.p5.bullet1")</a>
         </li>
         <li>@messages("change_business_name.p5.bullet2")</li>
         <li>@messages("change_business_name.p5.bullet3")</li>
     </ul>
 
-    <a id="continue"
-       target="_blank"
-       href="@controllers.routes.ChangeBusinessNameController.handOffToCOHO().url">@messages("change_business_name.link")</a>
+    <p class="govuk-body">
+        <a href="@controllers.routes.ChangeBusinessNameController.handOffToCOHO().url"
+       class="govuk-link" rel="noreferrer noopener"
+       target="_blank">@messages("change_business_name.link")</a></p>
 
 }

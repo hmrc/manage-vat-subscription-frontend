@@ -30,7 +30,7 @@ class ServiceErrorHandler @Inject()(standardError: StandardError,
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)
                                     (implicit request: Request[_]): Html =
-    standardError(appConfig, pageTitle, heading, message)
+    standardError(pageTitle, heading, message)
 
   def showInternalServerError(implicit request: Request[_]): Result = InternalServerError(internalServerErrorTemplate)
 

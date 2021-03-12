@@ -41,8 +41,8 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     s"have a the back link with correct text and url '$back'" in {
-      elementText("#content > article > a.link-back") shouldBe back
-      element("#content > article > a.link-back").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+      elementText(".govuk-back-link") shouldBe back
+      element(".govuk-back-link").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
 
     s"have the correct p1 of '${viewMessages.p1}'" in {
@@ -54,7 +54,7 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "have the correct text to start the bullet list" in {
-      elementText("#content > article > div > p") shouldBe viewMessages.bulletHeader
+      elementText("#content div > p") shouldBe viewMessages.bulletHeader
     }
 
     "have the correct text for the 3 bullet points" in {
@@ -66,11 +66,11 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
     s"have a button to continue" which {
 
       s"has the correct text of '$continue" in {
-        elementText("#content > article > a.button") shouldBe continue
+        elementText(".govuk-button") shouldBe continue
       }
 
       s"has the correct link to '${controllers.routes.BusinessAddressController.initialiseJourney().url}'" in {
-        element("#content > article > a.button").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
+        element(".govuk-button").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney().url
       }
     }
   }

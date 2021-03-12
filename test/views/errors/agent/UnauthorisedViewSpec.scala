@@ -45,18 +45,18 @@ class UnauthorisedViewSpec extends ViewBaseSpec with BaseMessages {
   "Rendering the unauthorised page" should {
 
     object Selectors {
-      val serviceName = ".header__menu__proposition-name"
+      val serviceName = ".govuk-header__link--service-name"
       val pageHeading = "#content h1"
       val instructions = "#content p:eq(1)"
       val instructionsLink = "#content p:eq(1) > a"
-      val button = "#content .button"
+      val button = "#content .govuk-button"
     }
 
     lazy val view = injectedView()(request, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     s"have the correct document title" in {
-      document.title shouldBe Messages.title
+      document.title shouldBe Messages.pageHeading + titleSuffixAgent
     }
 
     s"have the correct service name" in {

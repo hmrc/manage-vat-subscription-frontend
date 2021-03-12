@@ -36,7 +36,7 @@ common.agent.updateClient1 = We’ll contact
 common.agent.updateClient2 = with an update.
 common.agent.backToClientDetails = Back to client’s details
 
-global.error.InternalServerError500.title = There is a problem with the service - VAT - GOV.UK
+global.error.InternalServerError500.title = There is a problem with the service
 global.error.InternalServerError500.heading = Sorry, there is a problem with the service
 global.error.InternalServerError500.message = Try again later.
 
@@ -62,14 +62,6 @@ not_signed_up.title = You can’t use this service yet
 not_signed_up.heading = You can’t use this service yet
 not_signed_up.text = You need to
 not_signed_up.link = sign up to use software to submit your VAT returns.
-
-featureSwitch.title = Feature switches
-featureSwitch.heading = Features
-featureSwitch.submit = Submit
-features.addDetailRows.enabled = Add detail rows
-features.useLanguageSelector.enabled = Language switch
-features.useOverseasIndicator.enabled = Overseas Indicator Switch
-features.changeClientFeature.enabled = Enable change client links and Finish links where appropriate
 
 customer_details.title = Your business details
 customer_details.agentTitle = Your client’s VAT details

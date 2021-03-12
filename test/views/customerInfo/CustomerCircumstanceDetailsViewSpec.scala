@@ -55,7 +55,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct service name" in {
-                elementText(".header__menu__proposition-name") shouldBe clientServiceName
+                elementText(".govuk-header__link--service-name") shouldBe clientServiceName
               }
 
               s"have a the correct page heading '${viewMessages.heading}'" in {
@@ -63,12 +63,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "display a breadcrumb trail which" in {
-                elementText(".breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
-                elementText(".breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
-                elementText(".breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
-
-                element("#breadcrumb-bta").attr("href") shouldBe "ye olde bta url"
-                element("#breadcrumb-vat").attr("href") shouldBe "/vat-summary"
+                elementText(".govuk-breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
+                elementText(".govuk-breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
+                elementText(".govuk-breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
               }
 
               "the view loads in the partial" should {
@@ -78,7 +75,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "has an about header" in {
-                elementText("#content > article > div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
+                elementText("#content div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
               }
 
               "display the trading name row" which {
@@ -98,7 +95,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#trading-name-status > .visuallyhidden") shouldBe
+                    elementText("#trading-name-status > .govuk-visually-hidden") shouldBe
                       viewMessages.changeTradingNameHidden("Not provided")
                   }
 
@@ -125,7 +122,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#place-of-business-status > .visuallyhidden") shouldBe
+                    elementText("#place-of-business-status > .govuk-visually-hidden") shouldBe
                       viewMessages.changeBusinessAddressHidden(PPOBAddressTestConstants.addLine1)
                   }
 
@@ -142,26 +139,20 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   elementText("#bank-details-text") shouldBe viewMessages.bankDetailsHeading
                 }
 
-                "has a the correct Account Number" which {
-
-                  "has the correct heading for the Account Number" in {
-                    elementText("#bank-details li:nth-child(1)") shouldBe viewMessages.accountNumberHeading
-                  }
-
-                  "has the correct value for the account number" in {
-                    elementText("#bank-details li:nth-child(2)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get
-                  }
+                "has the correct text" in {
+                  elementText("#bank-details") shouldBe s"${viewMessages.accountNumberHeading} " +
+                    customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get +
+                    s" ${viewMessages.sortcodeHeading} ${customerInformationModelMaxIndividual.bankDetails.get.sortCode.get}"
                 }
 
-                "has a the correct Sort Code" which {
+                "has bold styling for the Account Number heading" in {
+                  element("#bank-details span:nth-of-type(1)").hasClass("govuk-!-font-weight-bold")
+                  elementText("#bank-details span:nth-of-type(1)") shouldBe viewMessages.accountNumberHeading
+                }
 
-                  "has the correct heading for the Sort Code" in {
-                    elementText("#bank-details li:nth-child(3)") shouldBe viewMessages.sortcodeHeading
-                  }
-
-                  "has the correct value for the account number" in {
-                    elementText("#bank-details li:nth-child(4)") shouldBe customerInformationModelMaxIndividual.bankDetails.get.sortCode.get
-                  }
+                "has bold styling for the Sort Code heading" in {
+                  element("#bank-details span:nth-of-type(2)").hasClass("govuk-!-font-weight-bold")
+                  elementText("#bank-details span:nth-of-type(2)") shouldBe viewMessages.sortcodeHeading
                 }
 
                 "has a change link" which {
@@ -171,7 +162,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#bank-details-status > .visuallyhidden") shouldBe viewMessages.changeBankDetailsHidden
+                    elementText("#bank-details-status > .govuk-visually-hidden") shouldBe viewMessages.changeBankDetailsHidden
                   }
 
                   "has a link to the payments service" in {
@@ -242,7 +233,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#vat-website-address-status > .visuallyhidden") shouldBe
+                    elementText("#vat-website-address-status > .govuk-visually-hidden") shouldBe
                       viewMessages.changeWebsiteAddressHidden(PPOBAddressTestConstants.website)
                   }
 
@@ -260,15 +251,15 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
                 "contains help text" which {
 
-                  lazy val progressiveDisclosure = element("details")
+                  lazy val progressiveDisclosure = element(".govuk-details")
 
                   "contains the correct text" in {
-                    progressiveDisclosure.select("summary").text() shouldEqual viewMessages.changeNotListed
+                    progressiveDisclosure.select("summary > span").text() shouldEqual viewMessages.changeNotListed
                   }
 
                   "contains content" which {
 
-                    lazy val helpContent = progressiveDisclosure.select("div > p")
+                    lazy val helpContent = progressiveDisclosure.select("div")
 
                     "displays the correct text" in {
                       helpContent.text() shouldEqual viewMessages.helpText
@@ -297,24 +288,24 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
 
                 "has hidden text supporting the nudge icon" in {
-                  elementText(".icon-important") shouldBe viewMessages.warning
+                  elementText(".govuk-warning-text__assistive") shouldBe viewMessages.warning
                 }
 
                 s"has the wording '${viewMessages.unverifiedEmailNudge}' " in {
-                  elementText("#contact-details-section > p:nth-of-type(1) > strong") shouldBe viewMessages.unverifiedEmailNudge
+                  elementText(".govuk-warning-text__text") shouldBe s"${viewMessages.warning} ${viewMessages.unverifiedEmailNudge}"
                 }
 
                 s"the 'resend email' link redirects to ${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}" in {
-                  element("#contact-details-section > p.notice > strong > a").attr("href") shouldBe
+                  element(".govuk-warning-text a").attr("href") shouldBe
                     s"${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}"
                 }
 
                 s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
-                  elementText("#contact-details-section > p:nth-of-type(2)") shouldBe viewMessages.contactDetailsMovedToBTA
+                  elementText("#contact-details-section > .govuk-body") shouldBe viewMessages.contactDetailsMovedToBTA
                 }
 
                 s"has a link to ${mockConfig.btaAccountDetails}" in {
-                  element("#contact-details-section > p > a").attr("href") shouldBe mockConfig.btaAccountDetails
+                  element("#contact-details-section > .govuk-body > a").attr("href") shouldBe mockConfig.btaAccountDetails
                 }
               }
             }
@@ -399,7 +390,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "have the correct hidden text" in {
-              elementText("#place-of-business-status > .visuallyhidden") shouldBe viewMessages.pendingBusinessAddressHidden
+              elementText("#place-of-business-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessAddressHidden
             }
           }
 
@@ -413,7 +404,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-website-address-status > .visuallyhidden") shouldBe viewMessages.pendingWebsiteAddressHidden
+              elementText("#vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
 
@@ -427,7 +418,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-return-dates-status > .visuallyhidden") shouldBe viewMessages.pendingReturnFrequencyHidden
+              elementText("#vat-return-dates-status > .govuk-visually-hidden") shouldBe viewMessages.pendingReturnFrequencyHidden
             }
 
             "display the existing approved return dates" in {
@@ -435,7 +426,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "display a panel with information regarding when the new dates will be applied" in {
-              elementText(".panel-border-wide") shouldBe viewMessages.newReturnDatesApplied
+              elementText(".govuk-inset-text") shouldBe viewMessages.newReturnDatesApplied
             }
           }
 
@@ -449,7 +440,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "has the correct hidden text" in {
-              elementText("#trading-name-status > .visuallyhidden") shouldBe viewMessages.pendingTradingNameHidden
+              elementText("#trading-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingTradingNameHidden
             }
 
             "display the inflight trading name" in {
@@ -467,7 +458,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "have the correct hidden text" in {
-              elementText("#business-name-status > .visuallyhidden") shouldBe viewMessages.pendingBusinessNameHidden
+              elementText("#business-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessNameHidden
             }
 
             "display the inflight business name" in {
@@ -485,7 +476,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-website-address-status > .visuallyhidden") shouldBe viewMessages.pendingWebsiteAddressHidden
+              elementText("#vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
         }
@@ -546,7 +537,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "has the correct hidden text" in {
-                elementText("#trading-name-status > .visuallyhidden") shouldBe viewMessages.changeTradingNameHidden(tradingName)
+                elementText("#trading-name-status > .govuk-visually-hidden") shouldBe viewMessages.changeTradingNameHidden(tradingName)
               }
 
               "has a link to the trading name journey" in {
@@ -617,14 +608,14 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
           "not display a breadcrumb trail" in {
-            elementExtinct(".breadcrumbs li:nth-of-type(1)")
-            elementExtinct(".breadcrumbs li:nth-of-type(2)")
-            elementExtinct(".breadcrumbs li:nth-of-type(3)")
+            elementExtinct(".govuk-breadcrumbs li:nth-of-type(1)")
+            elementExtinct(".govuk-breadcrumbs li:nth-of-type(2)")
+            elementExtinct(".govuk-breadcrumbs li:nth-of-type(3)")
           }
 
           "display the back link" in {
-            elementText(".link-back") shouldBe viewMessages.backText
-            element(".link-back").attr("href") shouldBe
+            elementText(".govuk-back-link") shouldBe viewMessages.backText
+            element(".govuk-back-link").attr("href") shouldBe
               mockConfig.agentClientLookupAgentAction
           }
 
@@ -633,7 +624,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           }
 
           "have the correct service name" in {
-            elementText(".header__menu__proposition-name") shouldBe agentServiceName
+            elementText(".govuk-header__link--service-name") shouldBe agentServiceName
           }
 
           s"have a the correct page heading '${viewMessages.agentHeading}'" in {
@@ -643,7 +634,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           "have a blank field where the 'Change' link would be for email address" which {
 
             "has the visually hidden class" in {
-              element("#vat-email-address-status").hasClass("visuallyhidden") shouldBe true
+              element("#vat-email-address-status").hasClass("govuk-visually-hidden") shouldBe true
             }
 
             "has the correct hidden text" in {
@@ -768,7 +759,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#vat-email-address-status > .visuallyhidden") shouldBe
+                    elementText("#vat-email-address-status > .govuk-visually-hidden") shouldBe
                       viewMessages.changeEmailAddressHidden(PPOBAddressTestConstants.email)
                   }
 
@@ -796,7 +787,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#vat-landline-number-status > .visuallyhidden") shouldBe
+                    elementText("#vat-landline-number-status > .govuk-visually-hidden") shouldBe
                       viewMessages.changeLandlineNumbersHidden
                   }
 
@@ -824,7 +815,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has the correct hidden text" in {
-                    elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.changeMobileNumbersHidden
+                    elementText("#vat-mobile-number-status > .govuk-visually-hidden") shouldBe viewMessages.changeMobileNumbersHidden
                   }
 
                   "has a link to the mobile number journey" in {
@@ -853,7 +844,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-email-address-status > .visuallyhidden") shouldBe viewMessages.pendingEmailAddressHidden
+                elementText("#vat-email-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingEmailAddressHidden
               }
             }
 
@@ -870,7 +861,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-email-address-status > .visuallyhidden") shouldBe viewMessages.pendingEmailAddressHidden
+                elementText("#vat-email-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingEmailAddressHidden
               }
             }
           }
@@ -890,7 +881,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-landline-number-status > .visuallyhidden") shouldBe viewMessages.pendingLandlineNumbersHidden
+                elementText("#vat-landline-number-status > .govuk-visually-hidden") shouldBe viewMessages.pendingLandlineNumbersHidden
               }
             }
 
@@ -907,7 +898,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-landline-number-status > .visuallyhidden") shouldBe viewMessages.pendingLandlineNumbersHidden
+                elementText("#vat-landline-number-status > .govuk-visually-hidden") shouldBe viewMessages.pendingLandlineNumbersHidden
               }
             }
           }
@@ -927,7 +918,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.pendingMobileNumbersHidden
+                elementText("#vat-mobile-number-status > .govuk-visually-hidden") shouldBe viewMessages.pendingMobileNumbersHidden
               }
             }
 
@@ -944,7 +935,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct hidden text" in {
-                elementText("#vat-mobile-number-status > .visuallyhidden") shouldBe viewMessages.pendingMobileNumbersHidden
+                elementText("#vat-mobile-number-status > .govuk-visually-hidden") shouldBe viewMessages.pendingMobileNumbersHidden
               }
             }
           }
