@@ -2,6 +2,8 @@
 
 # Assets
 GET         /assets/*file                                    controllers.Assets.at(path="/public", file)
+->          /govuk-frontend                                   govuk.Routes
+->          /hmrc-frontend                                    hmrcfrontend.Routes
 
 # Pages
 
