@@ -86,6 +86,7 @@ customer_details.status = Statws
 customer_details.about.heading = Manylion busnes
 customer_details.businessName.heading = Enw’r busnes
 customer_details.businessName.change.hidden = Newid enw’r busnes o {0}
+customer_details.businessName.pending.hidden = Newid i’r enw’r busnes ar y gweill
 customer_details.tradingName.heading = Enw masnachu
 customer_details.tradingName.change.hidden = Newidiwch yr enw masnachu o {0}
 customer_details.tradingName.pending.hidden = Newid i’r enw masnachu ar y gweill
