@@ -29,7 +29,7 @@ class SessionTimeoutViewSpec extends ViewBaseSpec {
 
     object Selectors {
       val pageHeading = "#content h1"
-      val instructions = "#content article p"
+      val instructions = "#content p"
     }
 
     lazy val view = injectedView()(request, messages, mockConfig)

@@ -16,7 +16,6 @@
 
 package pages
 
-import assets.BaseITConstants.internalServerErrorTitle
 import common.SessionKeys
 import helpers.BaseIntegrationSpec
 import play.api.libs.ws.WSResponse
@@ -61,7 +60,7 @@ trait BasePageISpec extends BaseIntegrationSpec {
 
         res should have(
           httpStatus(INTERNAL_SERVER_ERROR),
-          pageTitle(internalServerErrorTitle)
+          pageTitle(titleThereIsAProblem + titleSuffixOther)
         )
       }
     }

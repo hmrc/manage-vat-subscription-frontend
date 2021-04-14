@@ -63,8 +63,10 @@ val compile: Seq[ModuleID] = Seq(
   "uk.gov.hmrc"       %% "govuk-template"             % "5.63.0-play-26",
   "uk.gov.hmrc"       %% "play-ui"                    % "9.0.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
-  "uk.gov.hmrc"       %% "play-language"              % "4.10.0-play-26",
-  "com.typesafe.play" %% "play-json-joda"             % "2.6.14"
+  "uk.gov.hmrc"       %% "play-language"              % "4.12.0-play-26",
+  "com.typesafe.play" %% "play-json-joda"             % "2.6.14",
+  "uk.gov.hmrc"       %% "play-frontend-govuk"        % "0.69.0-play-26",
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "0.57.0-play-26"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
@@ -77,6 +79,12 @@ def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
   "org.scalamock"           %% "scalamock-scalatest-support"    % "3.6.0"             % scope,
   "com.github.tomakehurst"  %  "wiremock-jre8"                  % "2.27.2"            % scope,
   "org.mockito"             %  "mockito-core"                   % "3.5.13"            % scope
+)
+
+TwirlKeys.templateImports ++= Seq(
+  "uk.gov.hmrc.govukfrontend.views.html.components._",
+  "uk.gov.hmrc.govukfrontend.views.html.helpers._",
+  "uk.gov.hmrc.hmrcfrontend.views.html.components._"
 )
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {

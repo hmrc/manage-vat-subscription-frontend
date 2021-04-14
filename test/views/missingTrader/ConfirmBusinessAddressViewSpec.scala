@@ -29,16 +29,15 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
 
   object Selectors {
     val pageHeading = "h1"
-    val yesOption = "div.multiple-choice:nth-child(1) > label"
-    val noOption = "div.multiple-choice:nth-child(2) > label"
-    val button = ".button"
-    val errorHeading = "#error-summary-display"
-    val error = "#form-error"
-    val address = ".panel-border-wide"
-    val additionalInfo = ".form-hint"
+    val yesOption = "div.govuk-radios__item:nth-child(1) > label:nth-child(2)"
+    val noOption = "div.govuk-radios__item:nth-child(2) > label:nth-child(2)"
+    val button = ".govuk-button"
+    val error = ".govuk-error-message"
+    val address = ".govuk-inset-text"
+    val additionalInfo = ".govuk-hint"
     val formQuestion = "legend"
-    val errorSummaryHeading = "#error-summary-heading"
-    val errorSummaryList = ".error-summary-list"
+    val errorSummaryHeading = ".govuk-error-summary h2"
+    val errorSummaryList = ".govuk-error-summary__list"
   }
 
   val injectedView: ConfirmBusinessAddressView = inject[ConfirmBusinessAddressView]

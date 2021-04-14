@@ -1,0 +1,48 @@
+$govuk-assets-path: "/vat-through-software/account/assets/lib/govuk-frontend/govuk/assets/";
+$hmrc-assets-path: "/vat-through-software/account/assets/lib/hmrc-frontend/hmrc/assets/";
+
+@import "lib/govuk-frontend/govuk/all";
+@import "lib/hmrc-frontend/hmrc/all";
+
+.app-reference-number {
+  display: block;
+  font-weight: bold;
+}
+
+.govuk-header__content > nav {
+  float: right;
+}
+
+.govuk-main-wrapper {
+  padding-top: 0;
+}
+
+.govuk-back-link {
+  margin-bottom: 40px;
+}
+
+.govuk-header__link--service-name:hover {
+  text-decoration: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+#service-info-list {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    display: block;
+}
+
+#service-info-list > li > a {
+    float: left;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 0.5em;
+}
+
+@media screen and (max-width: 900px) {
+    #service-info-list > li > a {
+        float: none;
+    }
+}

@@ -16,31 +16,37 @@
 
 @import testOnly.models.StubAddressLookupJourneyConfig
 @import views.html.MainTemplate
+@import templates.Headings
 
-@this(mainTemplate: MainTemplate)
+@this(mainTemplate: MainTemplate, headings: Headings, govukButton: GovukButton)
 
 @()(implicit user: User[_], messagesApi: MessagesApi, messages: Messages, appConfig: config.AppConfig)
 
 @row(field: String, value: String) = {
-    <div><dt class="cya-question">@field</dt><dd id="@field" class="cya-answer">@value</dd></div>
+    <dl class="govuk-summary-list govuk-!-margin-bottom-1">
+        <div class="govuk-summary-list__row">
+            <dt id="field-value" class="govuk-summary-list__key">@field</dt>
+            <dd id="vat-website-address" class="govuk-summary-list__value">@value</dd>
+        </div>
+    </dl>
 }
 
-@mainTemplate(title = "Stub Address Lookup Frontend", bodyClasses = None, appConfig = appConfig) {
+@mainTemplate(pageTitle = "Stub Address Lookup Frontend") {
 
     @defining(StubAddressLookupJourneyConfig.stubModel){ stubModel =>
 
-        <label><h1>Address Lookup</h1></label>
-
-        <h2>Sent Json</h2>
-        <dl class="govuk-check-your-answers cya-questions-short form-group">
+            @headings(messages("Address Lookup"))
+        <dl class="govuk-summary-list">
+        <h2 class="govuk-heading-m">Sent Json</h2>
             @row("continueUrl", stubModel.options.continueUrl)
             @row("navTitle", stubModel.labels.en.appLevelLabels.navTitle.get)
             @row("welsh navTitle", stubModel.labels.cy.appLevelLabels.navTitle.get)
             @row("showPhaseBanner",stubModel.options.showPhaseBanner.get.toString)
             @row("ukMode",stubModel.options.ukMode.get.toString)
-        <br>
+        </dl>
 
-        <h2>Lookup Page Json</h2>
+        <dl class="govuk-summary-list">
+        <h2 class="govuk-heading-m">Lookup Page Json</h2>
             @stubModel.labels.en.lookupPageLabels.map{ lookupPage =>
                 @row("title",lookupPage.title.get)
                 @row("heading",lookupPage.heading.get)
@@ -54,9 +60,10 @@
                 @row("welsh filterLabel",lookupPage.filterLabel.get)
                 @row("welsh postcodeLabel",lookupPage.postcodeLabel.get)
             }
-        <br>
+        </dl>
 
-        <h2>Select Page Json</h2>
+            <dl class="govuk-summary-list">
+        <h2 class="govuk-heading-m">Select Page Json</h2>
             @stubModel.labels.en.selectPageLabels.map{ selectPage =>
                 @row("title",selectPage.title.get)
                 @row("heading",selectPage.heading.get)
@@ -68,9 +75,10 @@
                 @row("welsh heading",selectPage.heading.get)
                 @row("welsh submitLabel",selectPage.submitLabel.get)
             }
-        <br>
+            </dl>
 
-        <h2>Confirm Page Json</h2>
+                <dl class="govuk-summary-list">
+        <h2 class="govuk-heading-m">Confirm Page Json</h2>
             @stubModel.labels.en.confirmPageLabels.map{ confirmPage =>
                 @row("title",confirmPage.title.get)
                 @row("heading",confirmPage.heading.get)
@@ -82,9 +90,12 @@
                 @row("welsh heading",confirmPage.heading.get)
                 @row("welsh showConfirmChangeText",confirmPage.showConfirmChangeText.get.toString)
             }
-        </dl>
+                </dl>
 
-        <a class="form-group button" role="button" type="submit" id="continue-button"
-        href="@stubModel.options.continueUrl">Submit</a>
+    @govukButton(Button(
+        href = Some(stubModel.options.continueUrl),
+        content = Text("Submit")
+    ))
+
     }
 }

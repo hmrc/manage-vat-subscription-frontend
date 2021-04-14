@@ -17,7 +17,7 @@
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
 @import models.returnFrequency.ReturnPeriod
 @import helpers.{RenderReturnFrequency, RenderAddress, AddStatusRowHelper}
-@import templates.{Breadcrumb, OpenInNewTab}
+@import templates.{Breadcrumb}
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
@@ -26,7 +26,10 @@
       renderAddress: RenderAddress,
       addStatusRowHelper: AddStatusRowHelper,
       breadcrumb: Breadcrumb,
-      openInNewTab: OpenInNewTab)
+      govukBackLink : GovukBackLink,
+      govukDetails : GovukDetails,
+      govukInsetText : GovukInsetText,
+      govukWarningText : GovukWarningText)
 
 @(circumstances: CircumstanceDetails,
   serviceInfoContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
@@ -37,334 +40,347 @@
   }
 }
 
+@emailVerficationSection = {
+    @messages("emailWarning.confirmEmail")
+    <a class="govuk-link" href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
+    @messages("emailWarning.confirmIt")
+}
+
+@changeNotListed = {
+    @messages("customer_details.changeNotListed.youCan")
+    <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="@appConfig.govUkChangeVatRegistrationDetails">@messages("customer_details.changeNotListed.makeOtherChanges") @messages("common.newTab")</a>
+    @messages("customer_details.changeNotListed.useAForm")
+}
+
 @customerName(orgName: String, isPending: Boolean) = {
-  <div>
-    <dt id="business-name-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="business-name-text" class="govuk-summary-list__key">
       @messages("customer_details.businessName.heading")
     </dt>
-    <dd id="business-name" class="cya-answer">
+    <dd id="business-name" class="govuk-summary-list__value">
       @orgName
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(findDeregStatus(circumstances) == Registered) {
         @if(isPending) {
-          <span id="business-name-status"
-                class="bold">
+          <span id="business-name-status" class="govuk-!-font-weight-bold">
             <span aria-hidden="true">@messages("customer_details.pending")</span>
-            <span class="visuallyhidden">@messages("customer_details.businessName.pending.hidden")</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.businessName.pending.hidden")</span>
           </span>
         } else {
-          <a id="business-name-status"
-             href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+          <a id="business-name-status" class="govuk-link" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
             <span aria-hidden="true">@messages("customer_details.change")</span>
-            <span class="visuallyhidden">@messages("customer_details.businessName.change.hidden", orgName)</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.businessName.change.hidden", orgName)</span>
           </a>
         }
       }
     </dd>
   </div>
+
 }
 
 @customerAddress(address: PPOBAddress, pending: Boolean) = {
-  <div>
-    <dt id="businessAddressHeading" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="businessAddressHeading" class="govuk-summary-list__key">
       @messages("customer_details.businessAddress.heading")
     </dt>
-    <dd id="businessAddress" class="cya-answer">
+    <dd id="businessAddress" class="govuk-summary-list__value">
       @renderAddress(address)
     </dd>
     @if(!circumstances.customerDetails.overseasIndicator) {
-      <dd class="cya-change">
+      <dd class="govuk-summary-list__actions">
       @if(pending){
-        <span id="place-of-business-status"
-              class="bold">
-          <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.businessAddress.pending.hidden")</span>
-        </span>
-      } else {
-        <a id="place-of-business-status"
-           href="@controllers.routes.BusinessAddressController.show().url">
-          <span aria-hidden="true">@messages("customer_details.change")</span>
-          <span class="visuallyhidden">@messages("customer_details.businessAddress.change.hidden",address.line1)</span>
-        </a>
+          <span id="place-of-business-status" class="govuk-!-font-weight-bold">
+            <span aria-hidden="true">@messages("customer_details.pending")</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
+          </span>
+          } else {
+          <a id="place-of-business-status" class="govuk-link" href="@{controllers.routes.BusinessAddressController.show().url}">
+            <span aria-hidden="true">@messages("customer_details.change")</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden",address.line1)</span>
+          </a>
       }
       </dd>
-    } else {<dd class="cya-change"></dd>}
+    } else {<dd class="govuk-summary-list__actions"></dd>}
   </div>
+
 }
 
 @customerBankDetails(bankDetails: BankDetails, pending: Boolean) = {
-  <div>
-    <dt id="bank-details-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="bank-details-text" class="govuk-summary-list__key">
       @messages("customer_details.bankAccount.heading")
       <span id="repayments-only"
-            class="form-hint">
+            class="govuk-hint">
         @messages("customer_details.bankAccount.repaymentsOnly")
       </span>
     </dt>
-    <dd id="bank-details" class="cya-answer">
-      <ol>
+    <dd id="bank-details" class="govuk-summary-list__value">
+      <p class="govuk-body">
         @bankDetails.bankAccountNumber.map { accNum =>
-          <li class="bold">@messages("customer_details.bankAccount.number")</li>
-          <li>@accNum</li>
+          <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.number")</span><br />
+          @accNum<br />
         }
         @bankDetails.sortCode.map { sortcode =>
-          <li class="bold">@messages("customer_details.bankAccount.sortcode")</li>
-          <li>@sortcode</li>
+          <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.sortcode")</span><br />
+          @sortcode
         }
-      </ol>
+      </p>
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(pending){
-        <span id="bank-details-status"
-              class="bold">
+        <span id="bank-details-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.bankAccount.pending.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.bankAccount.pending.hidden")</span>
         </span>
-      } else {
-        <a id="bank-details-status"
-           href="@controllers.routes.PaymentsController.sendToPayments()">
+        } else {
+        <a id="bank-details-status" class="govuk-link" href="@{controllers.routes.PaymentsController.sendToPayments()}">
           <span aria-hidden="true">@messages("customer_details.change")</span>
-          <span class="visuallyhidden">@messages("customer_details.bankAccount.change.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
         </a>
       }
     </dd>
   </div>
+
 }
 
 @customerReturnPeriod(period: ReturnPeriod, pending: Boolean) = {
-  <div>
-    <dt id="vat-return-dates-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="vat-return-dates-text" class="govuk-summary-list__key">
       @messages("customer_details.returnFrequency.heading")
     </dt>
-    <dd id="vat-return-dates" class="cya-answer">
+    <dd id="vat-return-dates" class="govuk-summary-list__value">
       @renderReturnFrequency(period)
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(findDeregStatus(circumstances) == Registered) {
         @if(pending){
-          <span id="vat-return-dates-status"
-                class="bold">
+          <span id="vat-return-dates-status" class="govuk-!-font-weight-bold">
             <span aria-hidden="true">@messages("customer_details.pending")</span>
-            <span class="visuallyhidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
           </span>
         } else {
-          <a id="vat-return-dates-status"
-              href="@appConfig.vatReturnPeriodFrontendUrl">
+          <a id="vat-return-dates-status" class="govuk-link" href="@{appConfig.vatReturnPeriodFrontendUrl}">
             <span aria-hidden="true">@messages("customer_details.change")</span>
-            <span class="visuallyhidden">@messages("customer_details.returnFrequency.change.hidden", renderReturnFrequency(period))</span>
+            <span class="govuk-visually-hidden">@messages("customer_details.returnFrequency.change.hidden", renderReturnFrequency(period))</span>
           </a>
         }
       }
     </dd>
   </div>
+
 }
 
 @customerEmailAddress(emailAddress: Option[String], emailPending: Boolean) = {
-  <div>
-    <dt id="vat-email-address-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="vat-email-address-text" class="govuk-summary-list__key">
         @messages("customer_details.contactDetails.emailAddress")
     </dt>
-    <dd id="vat-email-address" class="cya-answer">
+    <dd id="vat-email-address" class="govuk-summary-list__value">
         @emailAddress match {
             case Some(email) => { @email }
             case None => { @messages("customer_details.notProvided") }
         }
       </dd>
-      <dd class="cya-change">
+      <dd class="govuk-summary-list__actions">
         @(emailPending, user.isAgent) match {
           case (true, _) => {
-            <span id="vat-email-address-status"
-                  class="bold">
+            <span id="vat-email-address-status" class="govuk-!-font-weight-bold">
               <span aria-hidden="true">@messages("customer_details.pending")</span>
-              <span class="visuallyhidden">@messages("customer_details.contactDetails.emailAddress.pending.hidden")</span>
+              <span class="govuk-visually-hidden">@messages("customer_details.contactDetails.emailAddress.pending.hidden")</span>
             </span>
           }
           case (false, true) => {
-            <span id="vat-email-address-status" class="visuallyhidden">
+            <span id="vat-email-address-status" class="govuk-visually-hidden">
               @messages("customer_details.contactDetails.emailAddress.agent.change.hidden")
             </span>
           }
           case (false, false) => {
-            <a id="vat-email-address-status"
-               href="@appConfig.vatCorrespondenceChangeEmailUrl">
+            <a id="vat-email-address-status" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeEmailUrl}">
               <span aria-hidden="true">
                 @emailAddress match {
                   case Some(_) => { @messages("customer_details.change") }
                   case None => { @messages("customer_details.add") }
                 }
               </span>
-              <span class="visuallyhidden">@messages("customer_details.contactDetails.emailAddress.change.hidden",
+              <span class="govuk-visually-hidden">@messages("customer_details.contactDetails.emailAddress.change.hidden",
                 emailAddress.getOrElse(messages("customer_details.notProvided")))</span>
             </a>
           }
         }
       </dd>
   </div>
+
 }
 
 @customerLandlineNumber(landlineNumber: Option[String], pendingLandlineNumber: Boolean) = {
-  <div>
-    <dt id="vat-landline-number-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="vat-landline-number-text" class="govuk-summary-list__key">
       @messages("customer_details.phoneNumbers.landline.heading")
     </dt>
-    <dd id="vat-landline-number" class="cya-answer">
+    <dd id="vat-landline-number" class="govuk-summary-list__value">
       @landlineNumber.getOrElse(messages("customer_details.notProvided"))
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(pendingLandlineNumber) {
-        <span id="vat-landline-number-status"
-              class="bold">
+        <span id="vat-landline-number-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.phoneNumbers.landline.pending.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.landline.pending.hidden")</span>
         </span>
       } else {
-        <a id="vat-landline-number-status"
-           href="@appConfig.vatCorrespondenceChangeLandlineNumberUrl">
+        <a id="vat-landline-number-status" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeLandlineNumberUrl}">
           <span aria-hidden="true">
             @landlineNumber match {
               case None => { @messages("customer_details.add") }
               case _ => { @messages("customer_details.change") }
             }
           </span>
-          <span class="visuallyhidden">@messages("customer_details.phoneNumbers.landline.change.hidden",
+          <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.landline.change.hidden",
             landlineNumber.getOrElse(messages("customer_details.notProvided")))</span>
         </a>
       }
     </dd>
   </div>
+
 }
 
 @customerMobileNumber(mobileNumber: Option[String], pendingMobileNumber: Boolean) = {
-  <div>
-    <dt id="vat-mobile-number-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="vat-mobile-number-text" class="govuk-summary-list__key">
       @messages("customer_details.phoneNumbers.mobile.heading")
     </dt>
-    <dd id="vat-mobile-number" class="cya-answer">
+    <dd id="vat-mobile-number" class="govuk-summary-list__value">
       @mobileNumber.getOrElse(messages("customer_details.notProvided"))
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(pendingMobileNumber) {
-        <span id="vat-mobile-number-status"
-              class="bold">
+        <span id="vat-mobile-number-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.phoneNumbers.mobile.pending.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.mobile.pending.hidden")</span>
         </span>
       } else {
-        <a id="vat-mobile-number-status"
-           href="@appConfig.vatCorrespondenceChangeMobileNumberUrl">
+        <a id="vat-mobile-number-status" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeMobileNumberUrl}">
           <span aria-hidden="true">
             @mobileNumber match {
               case None => { @messages("customer_details.add") }
               case _ => { @messages("customer_details.change") }
             }
           </span>
-          <span class="visuallyhidden">@messages("customer_details.phoneNumbers.mobile.change.hidden",
+          <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.mobile.change.hidden",
             mobileNumber.getOrElse(messages("customer_details.notProvided")))</span>
         </a>
       }
     </dd>
   </div>
+
 }
 
 @customerWebsite(websiteAddress: Option[String], pendingWebsite: Boolean) = {
-  <div>
-    <dt id="vat-website-address-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="vat-website-address-text" class="govuk-summary-list__key">
       @messages("customer_details.websiteAddress.heading")
     </dt>
-    <dd id="vat-website-address" class="cya-answer">
+    <dd id="vat-website-address" class="govuk-summary-list__value">
       @websiteAddress.getOrElse(messages("customer_details.notProvided"))
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(pendingWebsite) {
-        <span id="vat-website-address-status"
-              class="bold">
+        <span id="vat-website-address-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.websiteAddress.pending.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.websiteAddress.pending.hidden")</span>
         </span>
-      } else {
-        <a id="vat-website-address-status"
-           href="@appConfig.vatCorrespondenceChangeWebsiteUrl">
+        } else {
+        <a id="vat-website-address-status" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeWebsiteUrl}">
           <span aria-hidden="true">
             @websiteAddress match {
               case Some(_) => { @messages("customer_details.change") }
               case None => { @messages("customer_details.add") }
             }
           </span>
-          <span class="visuallyhidden">@messages("customer_details.websiteAddress.change.hidden",
+          <span class="govuk-visually-hidden">@messages("customer_details.websiteAddress.change.hidden",
             websiteAddress.getOrElse(messages("customer_details.notProvided")))</span>
         </a>
       }
     </dd>
   </div>
+
 }
 
 @customerTradingName(tradingName: Option[String], isPending: Boolean) = {
-  <div>
-    <dt id="trading-name-text" class="cya-question">
+
+  <div class="govuk-summary-list__row">
+    <dt id="trading-name-text" class="govuk-summary-list__key">
       @messages("customer_details.tradingName.heading")
     </dt>
-    <dd id="trading-name" class="cya-answer">
+    <dd id="trading-name" class="govuk-summary-list__value">
       @tradingName.getOrElse(messages("customer_details.notProvided"))
     </dd>
-    <dd class="cya-change">
+    <dd class="govuk-summary-list__actions">
       @if(isPending) {
-        <span id="trading-name-status"
-              class="bold">
+        <span id="trading-name-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
-          <span class="visuallyhidden">@messages("customer_details.tradingName.pending.hidden")</span>
+          <span class="govuk-visually-hidden">@messages("customer_details.tradingName.pending.hidden")</span>
         </span>
-      } else {
-        <a id="trading-name-status"
-           href="@appConfig.vatDesignatoryDetailsTradingNameUrl">
+        } else {
+        <a id="trading-name-status" class="govuk-link" href="@{appConfig.vatDesignatoryDetailsTradingNameUrl}">
           <span aria-hidden="true">
             @tradingName match {
               case None => { @messages("customer_details.add") }
               case _ => { @messages("customer_details.change") }
             }
           </span>
-          <span class="visuallyhidden">@messages("customer_details.tradingName.change.hidden",
+          <span class="govuk-visually-hidden">@messages("customer_details.tradingName.change.hidden",
             tradingName.getOrElse(messages("customer_details.notProvided")))</span>
         </a>
       }
     </dd>
   </div>
+
 }
 
 @mainTemplate(
-  title = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
-  bodyClasses = None,
+  pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   btaLinks = Some(serviceInfoContent),
-  contentHeader = Some(bc),
-  appConfig = appConfig) {
+  breadCrumbs = Some(bc)) {
 
     @if(user.isAgent){
-      <a class="link-back" href='@appConfig.agentClientLookupAgentAction'>@messages("base.back")</a>
+        @govukBackLink(BackLink(
+            href = appConfig.agentClientLookupAgentAction,
+            content = Text(messages("base.back"))
+        ))
     }
 
     @if(user.isAgent) {
-      <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.agentH1")</h1>
+      <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
     } else {
-      <h1 id="page-heading" class="heading-xlarge">@messages("customer_details.h1")</h1>
+      <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.h1")</h1>
     }
 
   @findDeregStatus(circumstances) match {
     case futureDate: FutureDereg => {
-      <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;"><p>
-        @messages("customer_details.registration.deregister.choose_deregistration_date", futureDate.date.toLongDate)</p>
-      </div>
+        @govukInsetText(InsetText(
+            content = Text(messages("customer_details.registration.deregister.choose_deregistration_date", futureDate.date.toLongDate))
+        ))
     }
     case pastDate: PastDereg => {
-      <div class="panel panel-border-wide" style="background:#eef5fa; border-left:#3e73b0 solid 5px;">
-        <p>@messages("customer_details.registration.deregister.deregistration_date", pastDate.date.toLongDate) </p>
-      </div>
+        @govukInsetText(InsetText(
+            content = Text(messages("customer_details.registration.deregister.deregistration_date", pastDate.date.toLongDate))
+        ))
     }
     case _ => { }
   }
 
-  <div class="form-group">
-    <h2 class="heading-medium">@messages("customer_details.about.heading")</h2>
-    <dl class="govuk-check-your-answers cya-questions-short">
+<div id="business-details-section">
+    <h2 class="govuk-heading-m">@messages("customer_details.about.heading")</h2>
+        <dl class="govuk-summary-list">
 
       @if(!circumstances.customerDetails.overseasIndicator) {
         @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
@@ -413,45 +429,40 @@
       }
 
     </dl>
-  </div>
+</div>
 
   @circumstances.returnPeriod.map { period =>
 
     @if(circumstances.pendingReturnPeriod.isDefined) {
-      <div class="panel panel-border-wide">
-        @messages("customer_details.returnFrequency.newDates")
-      </div>
+        @govukInsetText(InsetText(
+            content = Text(messages("customer_details.returnFrequency.newDates")
+        )
+        ))
     }
 
-    <div id="return-details-section" class="form-group">
-      <h2 class="heading-medium">@messages("customer_details.returnFrequencySection.heading")</h2>
-      <dl class="govuk-check-your-answers cya-questions-short">
+<div id="return-details-section">
+      <h2 class="govuk-heading-m">@messages("customer_details.returnFrequencySection.heading")</h2>
+        <dl class="govuk-summary-list">
         @customerReturnPeriod(period, pending = circumstances.pendingReturnPeriod.isDefined)
       </dl>
-    </div>
+</div>
   }
 
-  <div id="contact-details-section" class="form-group">
-    <h2 class="heading-medium">@messages("customer_details.contactDetails.heading")</h2>
+<div id="contact-details-section">
+    <h2 class="govuk-heading-m">@messages("customer_details.contactDetails.heading")</h2>
 
     @if(appConfig.features.contactDetailsMovedToBTA() && !user.isAgent) {
       @if(circumstances.email.isDefined && !circumstances.emailVerified && !circumstances.pendingPPOBSection) {
-        <p class="notice">
-          <i class="icon icon-important">
-            <span class="visually-hidden">@messages("common.warning")</span>
-          </i>
-          <strong class="bold-small">
-              @messages("emailWarning.confirmEmail")
-              <a href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
-              @messages("emailWarning.confirmIt")
-          </strong>
-        </p>
+            @govukWarningText(WarningText(
+                iconFallbackText = "Warning",
+                content = HtmlContent(emailVerficationSection)
+            ))
       }
-    <p> @messages("customer_details.movedToBTAMessage.pt1")
-      <a href=@appConfig.btaAccountDetails> @messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
-    </p>
+            <p class="govuk-body"> @messages("customer_details.movedToBTAMessage.pt1")
+              <a href=@appConfig.btaAccountDetails> @messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
+            </p>
     } else {
-      <dl class="govuk-check-your-answers cya-questions-short">
+    <dl class="govuk-summary-list">
         @customerEmailAddress(
           if(circumstances.pendingPPOBSection) circumstances.pendingEmail else circumstances.email,
           (circumstances.pendingPPOBSection && !circumstances.sameEmail)
@@ -468,19 +479,11 @@
         }
       </dl>
     }
-  </div>
+</div>
 
-  <details>
-    <summary>
-      <span class="summary" >@messages("customer_details.changeNotListed")</span>
-    </summary>
-    <div class="panel-indent">
-      <p>@messages("customer_details.changeNotListed.youCan")
-        @openInNewTab(
-          appConfig.govUkChangeVatRegistrationDetails,
-          messages("customer_details.changeNotListed.makeOtherChanges")
-        )
-      @messages("customer_details.changeNotListed.useAForm")</p>
-    </div>
-  </details>
+        @govukDetails(Details(
+            summary = Text(messages("customer_details.changeNotListed")),
+            content = HtmlContent(changeNotListed)
+        ))
+
 }

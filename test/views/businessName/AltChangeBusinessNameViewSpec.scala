@@ -33,10 +33,10 @@ class AltChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
     object Selectors {
       val wrapper = "#content"
       val pageHeading = s"$wrapper h1"
-      val p1 = s"$wrapper article p:nth-of-type(1)"
-      val p2 = s"$wrapper article p:nth-of-type(2)"
-      val link = s"$wrapper #continue"
-      val backLink = ".link-back"
+      val p1 = s"$wrapper p:nth-of-type(1)"
+      val p2 = s"$wrapper p:nth-of-type(2)"
+      val link = ".govuk-body > a"
+      val backLink = ".govuk-back-link"
     }
 
     "a regular user accesses the page" should {

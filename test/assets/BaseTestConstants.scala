@@ -31,4 +31,6 @@ object BaseTestConstants {
   val formBundle = "XA1234567"
   val agentEmail = "agentEmail@test.com"
   val internalServerErrorTitle = "There is a problem with the service - VAT - GOV.UK"
+  val internalServerErrorTitleUser = "There is a problem with the service - Business tax account - GOV.UK"
+  val internalServerErrorTitleAgent = "There is a problem with the service - Your client’s VAT details - GOV.UK"
 }

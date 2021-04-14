@@ -57,8 +57,7 @@ trait ViewBaseSpec extends TestUtil with GuiceOneAppPerSuite {
 
   def formatHtml(markup: String): String = Jsoup.parseBodyFragment(s"\n$markup\n").toString.trim
 
-  def paragraph(index: Int)(implicit document: Document): String = elementText(s"article > p:nth-of-type($index)")
+  def paragraph(index: Int)(implicit document: Document): String = elementText(s"#content p:nth-of-type($index)")
 
-  def bullet(index: Int)(implicit document: Document): String = elementText(s"article li:nth-of-type($index)")
-
+  def bullet(index: Int)(implicit document: Document): String = elementText(s"#content li:nth-of-type($index)")
 }

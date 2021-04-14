@@ -18,19 +18,22 @@
 
 @(heading: String, id: String, link: String, repaymentHint: Boolean = false)(implicit messages: Messages)
 
-<div>
-    <dt id="@id-text" class="cya-question">
+<dl class="govuk-summary-list govuk-!-margin-bottom-9">
+
+<div class="govuk-summary-list__row">
+    <dt id="@id-text" class="govuk-summary-list__key">
         @heading
         @if(repaymentHint){
-            <span id="repayments-only" class="form-hint">
+            <span id="repayments-only" class="govuk-hint">
                 @messages("customer_details.bankAccount.repaymentsOnly")
             </span>
         }
     </dt>
-    <dd id="@id" class="cya-answer">
+    <dd id="@id" class="govuk-summary-list__value">
         @messages("customer_details.none")
     </dd>
-    <dd id="@id-status" class="cya-change">
+    <dd id="@id-status" class="govuk-summary-list__value">
         <a href="@link">@messages("customer_details.add")</a>
     </dd>
 </div>
+</dl>

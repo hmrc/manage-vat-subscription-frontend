@@ -18,6 +18,7 @@ package controllers.predicates
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants.{customerInformationInsolvent, customerInformationModelMaxOrganisation}
+import assets.CustomerAddressTestConstants.titleSuffixAgent
 import assets.messages._
 import common.SessionKeys
 import mocks.MockAuth
@@ -86,7 +87,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
         }
 
         "render the Unauthorised Agent page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.title
+          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.pageHeading + titleSuffixAgent
         }
       }
     }

@@ -18,7 +18,6 @@ package pages
 
 import helpers.BaseIntegrationSpec
 import models.payments.PaymentRedirectModel
-import assets.BaseITConstants.internalServerErrorTitle
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 import play.api.libs.ws.WSResponse
 import stubs.{PaymentStub, VatSubscriptionStub}
@@ -67,7 +66,7 @@ class PaymentsControllerISpec extends BaseIntegrationSpec {
 
         res should have(
           httpStatus(INTERNAL_SERVER_ERROR),
-          pageTitle(internalServerErrorTitle)
+          pageTitle(titleThereIsAProblem + titleSuffixUser)
         )
       }
     }

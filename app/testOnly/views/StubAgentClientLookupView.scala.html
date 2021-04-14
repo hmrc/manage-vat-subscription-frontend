@@ -14,33 +14,34 @@
  * limitations under the License.
  *@
 
-@import helper.CSRF
 @import testOnly.models.StubAgentClientLookupModel
-@import views.html.templates.inputs.Text
 @import views.html.MainTemplate
 
-@this(mainTemplate: MainTemplate, text: Text)
+@this(mainTemplate: MainTemplate, govukButton: GovukButton, govukInput : GovukInput, formWithCSRF: FormWithCSRF)
 
 @(form: Form[StubAgentClientLookupModel], redirectUrl: String)(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(title = "Stub Agent Client Lookup Frontend", bodyClasses = None, appConfig = appConfig) {
+@mainTemplate(pageTitle = "Stub Agent Client Lookup Frontend") {
 
-    @helper.form(action = testOnly.controllers.routes.StubAgentClientLookupController.post) {
-        @CSRF.formField
+@formWithCSRF(action = testOnly.controllers.routes.StubAgentClientLookupController.post) {
 
-        <fieldset>
+    @govukInput(Input(
+        id = "vrn",
+        name = "vrn",
+            label = Label(
+                isPageHeading = true,
+                classes = "govuk-label--l",
+                content = Text("Client VRN")
+    )
+    ))
 
-            <label><h2>Client VRN</h2></label>
-            @text(form("vrn"), "Client VRN")
+        @govukButton(Button(
+            content = Text("Submit")
+        ))
 
-        </fieldset>
-
-        <div class="form-group">
-            <button class="button" type="submit" id="continue-button">Submit</button>
-        </div>
-
-        <label><h4>RedirectUrl:</h4></label>
-        <input type="text" name="redirectUrl" id="redirectUrl" value="@redirectUrl" style="width:100%;border:none;" readonly>
+        <h4 class="govuk-heading-s">RedirectUrl:</h4>
+        <input type="hidden" name="redirectUrl" value="@redirectUrl">
+        <p id="redirectUrl" class="govuk-body">@redirectUrl</p>
 
     }
 }

@@ -23,23 +23,25 @@
 @(model: AltChangeBusinessNameViewModel)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(
-  title = messages("change_business_name.title"),
-  bodyClasses = None,
-  appConfig = appConfig) {
+  pageTitle = messages("change_business_name.title")) {
 
     @backToBusinessDetails()
 
     @headings(messages("change_business_name.h1"))
 
-    <p>
-      @messages("change_business_name.p1") <span class="bold-small">@model.orgName</span>.
+    <p class="govuk-body">
+      @messages("change_business_name.p1") <span class="govuk-!-font-weight-bold">@model.orgName</span>.
     </p>
 
-    <p>
+    <p class="govuk-body">
       @messages(model.p1Message)
       @messages(model.p2Message)
     </p>
 
-    <a id="continue" target="_blank" href="@model.linkUrl">
-        @messages("change_business_name.alternative.link")</a>
+<p class="govuk-body">
+    <a href="@model.linkUrl"
+      class="govuk-link" rel="noreferrer noopener"
+       target="_blank">@messages("change_business_name.alternative.link")</a>
+</p>
+
 }

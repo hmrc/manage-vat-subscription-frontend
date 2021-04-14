@@ -35,7 +35,7 @@ common.agent.updateClient1 = Byddwn yn cysylltu â
 common.agent.updateClient2 = gyda diweddariad.
 common.agent.backToClientDetails = Yn ôl i fanylion y cleient
 
-global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth – TAW – GOV.UK
+global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth
 global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
 global.error.InternalServerError500.message = Rhowch gynnig arall arni yn nes ymlaen.
 global.error.badRequest400.title = Cais drwg – 400
@@ -67,12 +67,6 @@ not_signed_up.title = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.heading = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.text = Mae’n rhaid i chi
 not_signed_up.link = gofrestru i ddefnyddio meddalwedd er mwyn cyflwyno’ch Ffurflenni TAW.
-
-featureSwitch.title =
-featureSwitch.heading = Nodweddion
-featureSwitch.submit = Cyflwyno
-features.addDetailRows.enabled = Ychwanegu rhesi manylion
-features.useLanguageSelector.enabled =
 
 customer_details.title = Manylion eich busnes
 customer_details.agentTitle = Manylion TAW eich cleient

@@ -15,46 +15,68 @@
  *@
 
 @import helpers.RenderAddress
-@import forms.MissingTraderForm._
 @import uk.gov.hmrc.play.views.html.helpers.FormWithCSRF
-@import templates.inputs.RadioGroup
 @import models.circumstanceInfo.PPOBAddress
-@import views.html.templates.errors.ErrorSummary
 
-@this(mainTemplate: MainTemplate, radioGroup: RadioGroup, renderAddress: RenderAddress, form: FormWithCSRF, errorSummary: ErrorSummary)
+@this(mainTemplate: MainTemplate, renderAddress: RenderAddress, form: FormWithCSRF,
+govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : GovukRadios, govukInsetText : GovukInsetText)
 
 @(ppob: PPOBAddress, missingTraderForm: Form[YesNo])(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(
-  title = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
-          else messages("missingTrader.title"),
-  appConfig = appConfig
-) {
+  pageTitle = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
+          else messages("missingTrader.title")) {
 
-  @errorSummary(messages("common.errorSummary.heading"), missingTraderForm)
+@if(missingTraderForm.hasErrors) {
+    @govukErrorSummary(ErrorSummary(
+        errorList = Seq(
+            ErrorLink(
+                href = Some("#yes_no"),
+                content = Text(messages("missingTrader.error"))
+            )),
+            title = Text(messages("common.errorSummary.heading"))
+    ))
+}
 
-  <h1 class="heading-large">@messages("missingTrader.title")</h1>
+  <h1 class="govuk-heading-l">@messages("missingTrader.title")</h1>
 
-  <div class="panel panel-border-wide">
-    @renderAddress(ppob)
-  </div>
+    @govukInsetText(InsetText(
+        content = HtmlContent(renderAddress(ppob))
+    ))
 
-  <span class="form-hint">@messages("missingTrader.addInfo")</span>
+  <span class="govuk-hint">@messages("missingTrader.addInfo")</span>
 
-  @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit, 'novalidate -> "novalidate") {
+  @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit) {
 
-    @radioGroup(
-      field = missingTraderForm(yesNo),
-      choices = Seq(
-        yes -> messages("common.yes"),
-        no -> messages("common.no")
-      ),
-      question = messages("missingTrader.question"),
-      inline = true
-    )
+    @govukRadios(Radios(
+        idPrefix = Some("yes_no"),
+        classes = "govuk-radios--inline",
+        name = "yes_no",
+        fieldset = Some(Fieldset(
+            legend = Some(Legend(
+            content = Text(messages("missingTrader.question")),
+            classes = "govuk-fieldset__legend--m",
+            isPageHeading = false
+        ))
+    )),
+    items = Seq(
+        RadioItem(
+            content = Text(messages("common.yes")),
+            value = Some("yes"),
+        ),
+        RadioItem(
+            content = Text(messages("common.no")),
+            value = Some("no"),
+        )
+    ),
+    errorMessage = missingTraderForm("yes_no").error.map { err =>
+    ErrorMessage(content = Text(messages(err.message)))
+    }
+    ))
 
-    <button class="button" type="submit" id="continue">
-      @messages("common.continue")
-    </button>
+    @govukButton(Button(
+        content = Text(messages("common.continue"))
+    ))
+
   }
 }

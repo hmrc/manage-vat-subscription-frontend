@@ -16,6 +16,7 @@
 
 package controllers.predicates
 
+import assets.BaseTestConstants.internalServerErrorTitleUser
 import assets.CircumstanceDetailsTestConstants._
 import assets.messages.ChangePendingMessages
 import mocks.MockAuth
@@ -136,7 +137,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
       }
 
       "show the technical difficulties page" in {
-        messages(document.title) shouldBe "There is a problem with the service - VAT - GOV.UK"
+        messages(document.title) shouldBe internalServerErrorTitleUser
       }
     }
   }

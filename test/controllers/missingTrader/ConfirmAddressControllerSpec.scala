@@ -58,8 +58,6 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
           controller.show(request.withSession(SessionKeys.missingTraderConfirmedAddressKey -> "true"))
         }
 
-        lazy val document = Jsoup.parse(bodyOf(result))
-
         "return 200" in {
           status(result) shouldBe Status.OK
         }

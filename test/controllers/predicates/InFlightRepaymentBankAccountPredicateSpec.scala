@@ -108,7 +108,7 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
       "return 500" in {
         status(result) shouldBe INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
   }

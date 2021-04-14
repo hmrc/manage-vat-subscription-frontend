@@ -16,7 +16,6 @@
 
 package pages
 
-import assets.BaseITConstants.internalServerErrorTitle
 import common.SessionKeys
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
@@ -117,8 +116,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Bank details is displayed")
               res should have(
-                elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-                elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get)
+                isElementVisible("#bank-details")(isVisible = true)
               )
 
               And("Return frequency is displayed")
@@ -205,7 +203,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(INTERNAL_SERVER_ERROR),
-            pageTitle(internalServerErrorTitle)
+            pageTitle(titleThereIsAProblem + titleSuffixUser)
           )
         }
       }
@@ -223,16 +221,13 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "render the Customer Circumstances page with correct details shown" in {
 
-              given.user.isAuthenticated
-
-              And("A succesful partial is returned")
-              ServiceInfoStub.stubServiceInfoPartial
+              given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Individual")
               VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation, partyType = Some("50")))
 
               When("I call to show the Customer Circumstances page")
-              val res = show()
+              val res = show(Some(VRN))
 
               Then("Status should be OK")
               res should have(httpStatus(OK))
@@ -251,8 +246,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("Bank details is displayed")
               res should have(
-                elementText("#bank-details li:nth-of-type(2)")(bankDetails.bankAccountNumber.get),
-                elementText("#bank-details li:nth-of-type(4)")(bankDetails.sortCode.get)
+                isElementVisible("#bank-details")(isVisible = false)
               )
 
               And("Return frequency is displayed")
@@ -269,17 +263,17 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
             "Render the Internal Server Error page" in {
 
-              given.user.isAuthenticated
+              given.agent.isSignedUpToAgentServices
 
               And("An unsuccessful response is returned")
               VatSubscriptionStub.getClientDetailsError(VRN)
 
               When("I call to show the Customer Circumstances page")
-              val res = show()
+              val res = show(Some(VRN))
 
               res should have(
                 httpStatus(INTERNAL_SERVER_ERROR),
-                pageTitle(internalServerErrorTitle)
+                pageTitle(titleThereIsAProblem + titleSuffixAgent)
               )
             }
           }
@@ -361,7 +355,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
           res should have(
             httpStatus(FORBIDDEN),
-            pageTitle(Messages("unauthorised.agent.title") + titleSuffixOther)
+            pageTitle(Messages("unauthorised.agent.title") + titleSuffixAgent)
           )
         }
       }

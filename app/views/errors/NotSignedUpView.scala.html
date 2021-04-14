@@ -16,23 +16,20 @@
 
 @import templates.Headings
 
-@this(mainTemplate: MainTemplate, headings: Headings)
+@this(mainTemplate: MainTemplate, headings: Headings, govukButton: GovukButton)
 
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(title = messages("not_signed_up.title"), bodyClasses = None, appConfig = appConfig) {
+@mainTemplate(pageTitle = messages("not_signed_up.title")) {
 
     @headings(messages("not_signed_up.heading"))
 
-    <p >
-        @messages("not_signed_up.text") <a href="@appConfig.govUkSoftwareGuidanceUrl">@messages("not_signed_up.link")</a>
+    <p class="govuk-body">
+        @messages("not_signed_up.text") <a class="govuk-link" href="@appConfig.govUkSoftwareGuidanceUrl">@messages("not_signed_up.link")</a>
     </p>
 
-
-
-    <a href="@routes.SignOutController.signOut(false)"
-       class="button"
-       role="button">
-        @messages("base.sign-out")
-    </a>
+    @govukButton(Button(
+        href = Some(routes.SignOutController.signOut(authorised = false).url),
+        content = Text(messages("base.sign-out"))
+    ))
 }

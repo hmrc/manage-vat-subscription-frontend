@@ -21,7 +21,7 @@
 @(address: PPOBAddress)()
 
 @defining(Seq(address.line2, address.postCode).flatten) { addressLines =>
-  <p>
+  <p class="govuk-body">
     @address.line1 @if(addressLines.nonEmpty){<br />}
     @addressLines.map { line =>
       @line @if(addressLines.last != line){<br />}
