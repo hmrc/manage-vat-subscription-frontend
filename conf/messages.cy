@@ -74,7 +74,6 @@ customer_details.h1 = Manylion eich busnes
 customer_details.agentH1 = Manylion TAW eich cleient
 customer_details.change = Newid
 customer_details.add = Ychwanegu
-customer_details.none = Dim
 customer_details.pending = Ar y gweill
 customer_details.status = Statws
 customer_details.about.heading = Manylion busnes

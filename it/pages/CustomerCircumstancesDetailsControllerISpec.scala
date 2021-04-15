@@ -61,8 +61,8 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               And("There is an option to add bank details")
               res should have(
-                elementText("#bank-details")(expectedValue = "None"),
-                elementText("#bank-details-status")(expectedValue = "Add")
+                elementText("#bank-details")(expectedValue = "Not provided"),
+                elementText("#bank-details-status > span:nth-of-type(1)")(expectedValue = "Add")
               )
 
               And("There is no business name row")
@@ -158,31 +158,6 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               And("Business name is displayed")
               res should have(
                 isElementVisible("#business-name")(isVisible = true)
-              )
-            }
-          }
-
-          "organisation name is not returned" should {
-
-            "not render the Business name row" in {
-
-              given.user.isAuthenticated
-
-              And("A succesful partial is returned")
-              ServiceInfoStub.stubServiceInfoPartial
-
-              And("A successful response with minimum details returned for an Organisation")
-              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
-
-              When("I call to show the Customer Circumstances page")
-              val res = show()
-
-              Then("Status should be OK")
-              res should have(httpStatus(OK))
-
-              And("No Business name is displayed")
-              res should have(
-                isElementVisible("#business-name")(isVisible = false)
               )
             }
           }
