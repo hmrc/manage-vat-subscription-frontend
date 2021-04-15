@@ -16,15 +16,14 @@
 
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
 @import models.returnFrequency.ReturnPeriod
-@import helpers.{RenderReturnFrequency, RenderAddress, AddStatusRowHelper}
-@import templates.{Breadcrumb}
+@import helpers.{RenderReturnFrequency, RenderAddress}
+@import templates.Breadcrumb
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
 
 @this(mainTemplate: MainTemplate,
       renderReturnFrequency: RenderReturnFrequency,
       renderAddress: RenderAddress,
-      addStatusRowHelper: AddStatusRowHelper,
       breadcrumb: Breadcrumb,
       govukBackLink : GovukBackLink,
       govukDetails : GovukDetails,
@@ -108,7 +107,7 @@
 
 }
 
-@customerBankDetails(bankDetails: BankDetails, pending: Boolean) = {
+@customerBankDetails(bankDetails: Option[BankDetails], pending: Boolean) = {
 
   <div class="govuk-summary-list__row">
     <dt id="bank-details-text" class="govuk-summary-list__key">
@@ -120,13 +119,17 @@
     </dt>
     <dd id="bank-details" class="govuk-summary-list__value">
       <p class="govuk-body">
-        @bankDetails.bankAccountNumber.map { accNum =>
-          <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.number")</span><br />
-          @accNum<br />
-        }
-        @bankDetails.sortCode.map { sortcode =>
-          <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.sortcode")</span><br />
-          @sortcode
+        @bankDetails.fold {
+          @messages("customer_details.notProvided")
+        } { details =>
+          @details.bankAccountNumber.map { accNum =>
+            <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.number")</span> <br />
+            @accNum <br />
+          }
+          @details.sortCode.map { sortcode =>
+            <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.sortcode")</span> <br />
+            @sortcode
+          }
         }
       </p>
     </dd>
@@ -138,7 +141,12 @@
         </span>
         } else {
         <a id="bank-details-status" class="govuk-link" href="@{controllers.routes.PaymentsController.sendToPayments()}">
-          <span aria-hidden="true">@messages("customer_details.change")</span>
+          <span aria-hidden="true">
+            @bankDetails match {
+              case None => { @messages("customer_details.add") }
+              case _ => { @messages("customer_details.change") }
+            }
+          </span>
           <span class="govuk-visually-hidden">@messages("customer_details.bankAccount.change.hidden")</span>
         </a>
       }
@@ -416,15 +424,9 @@
 
       @if(appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
         @circumstances.pendingBankDetails.fold {
-          @if(circumstances.bankDetails.isDefined){
-            @circumstances.bankDetails.map{ bankDetails =>
-                @customerBankDetails(bankDetails, false)
-            }
-          } else {
-              @addStatusRowHelper(messages("customer_details.bankAccount.heading"), "bank-details", repaymentHint = true, link = controllers.routes.PaymentsController.sendToPayments().url)
-          }
-        }{ pendingBankDetails =>
-          @customerBankDetails(pendingBankDetails, true)
+          @customerBankDetails(circumstances.bankDetails, pending = false)
+        }{ pendingBankChanges =>
+          @customerBankDetails(Some(pendingBankChanges), pending = true)
         }
       }
 

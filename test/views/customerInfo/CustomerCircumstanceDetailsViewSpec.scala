@@ -482,6 +482,26 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
       }
 
+      "with no bank details" should {
+        lazy val view = injectedView(customerInformationModelMin, getPartialHtmlNotAgent)(user, messages, mockConfig)
+        lazy implicit val document: Document = Jsoup.parse(view.body)
+
+        "display the 'Not provided' text in place of the bank details" in {
+          elementText("#bank-details") shouldBe "Not provided"
+        }
+
+        "display an 'Add' link for changing the bank details" which {
+
+          "has the correct text" in {
+            elementText("#bank-details-status > span:nth-of-type(1)") shouldBe viewMessages.add
+          }
+
+          "links to the correspondence details service" in {
+            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+          }
+        }
+      }
+
       "with no website" should {
 
         lazy val view = injectedView(customerInformationModelMin, getPartialHtmlNotAgent)(user, messages, mockConfig)
