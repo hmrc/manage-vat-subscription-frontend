@@ -461,7 +461,8 @@
             ))
       }
             <p class="govuk-body"> @messages("customer_details.movedToBTAMessage.pt1")
-              <a href=@appConfig.btaAccountDetails> @messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
+              <a href="@appConfig.btaAccountDetails"
+                 class="govuk-link">@messages("customer_details.movedToBTAMessage.pt2")</a>@messages("common.fullStop")
             </p>
     } else {
     <dl class="govuk-summary-list">
