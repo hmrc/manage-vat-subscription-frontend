@@ -16,13 +16,12 @@
 
 package connectors
 
-import config.VatcHeaderCarrierForPartialsConverter
 import org.scalamock.scalatest.MockFactory
 import play.api.http.Status
 import play.twirl.api.Html
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
 import uk.gov.hmrc.http.HttpClient
-import uk.gov.hmrc.play.partials.HtmlPartial
+import uk.gov.hmrc.play.partials.{HeaderCarrierForPartialsConverter, HtmlPartial}
 import uk.gov.hmrc.play.partials.HtmlPartial.{Failure, Success}
 import utils.TestUtil
 import views.html.templates.BTANavigationLinks
@@ -30,7 +29,7 @@ import views.html.templates.BTANavigationLinks
 import scala.concurrent.{ExecutionContext, Future}
 
 class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
-  val header: VatcHeaderCarrierForPartialsConverter = inject[VatcHeaderCarrierForPartialsConverter]
+  val header: HeaderCarrierForPartialsConverter = inject[HeaderCarrierForPartialsConverter]
   val httpClient: HttpClient = mock[HttpClient]
 
   val validHtml: Html = Html("<nav>BTA lINK</nav>")
@@ -40,8 +39,9 @@ class ServiceInfoPartialConnectorSpec extends TestUtil with MockFactory  {
     val result :Future[HtmlPartial] = Future.successful(Success(None,validHtml))
     lazy val connector: ServiceInfoPartialConnector = {
 
-      (httpClient.GET[HtmlPartial](_: String)(_: HttpReads[HtmlPartial],_: HeaderCarrier,_: ExecutionContext))
-        .stubs(*,*,*,*)
+      (httpClient.GET[HtmlPartial](_: String, _: Seq[(String, String)], _: Seq[(String, String)])
+                                  (_: HttpReads[HtmlPartial],_: HeaderCarrier,_: ExecutionContext))
+        .stubs(*,*,*,*,*,*)
         .returns(result)
 
       new ServiceInfoPartialConnector(httpClient, header, btaNavigationLinks)(messagesApi, mockConfig)

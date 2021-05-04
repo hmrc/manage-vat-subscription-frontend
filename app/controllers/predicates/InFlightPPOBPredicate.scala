@@ -25,7 +25,7 @@ import play.api.mvc.Results.Conflict
 import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.HeaderCarrierConverter
+import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.errors.ChangePendingView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -42,7 +42,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
 
   override def refine[A](request: User[A]): Future[Either[Result, User[A]]] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromHeadersAndSession(request.headers, Some(request.session))
+    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     implicit val user: User[A] = request
 
     customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {

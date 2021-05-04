@@ -16,27 +16,28 @@
 
 package connectors
 
-import config.{AppConfig, VatcHeaderCarrierForPartialsConverter}
-import javax.inject.{Inject, Singleton}
+import config.AppConfig
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Request
 import play.twirl.api.Html
-import uk.gov.hmrc.http.HttpClient
-import uk.gov.hmrc.play.partials.HtmlPartial
+import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import uk.gov.hmrc.play.partials.HtmlPartial._
-import scala.concurrent.{ExecutionContext, Future}
+import uk.gov.hmrc.play.partials.{HeaderCarrierForPartialsConverter, HtmlPartial}
 import views.html.templates.BTANavigationLinks
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ServiceInfoPartialConnector @Inject()(val http: HttpClient,
-                                            hcForPartials: VatcHeaderCarrierForPartialsConverter,
+                                            hcForPartials: HeaderCarrierForPartialsConverter,
                                             btaNavigationLinks: BTANavigationLinks)
                                            (implicit val messagesApi: MessagesApi,
                                             val config: AppConfig) extends HtmlPartialHttpReads with I18nSupport {
-  import hcForPartials._
 
-  def getServiceInfoPartial()(implicit request: Request[_], executionContext: ExecutionContext): Future[Html] =
+  def getServiceInfoPartial()(implicit request: Request[_], executionContext: ExecutionContext): Future[Html] = {
+    implicit val hc: HeaderCarrier = hcForPartials.fromRequestWithEncryptedCookie(request)
     http.GET[HtmlPartial](config.btaPartialUrl) recover connectionExceptionsAsHtmlPartialFailure map {
       p =>
         p.successfulContentOrElse(btaNavigationLinks())
@@ -45,4 +46,5 @@ class ServiceInfoPartialConnector @Inject()(val http: HttpClient,
         Logger.warn(s"[ServiceInfoPartialConnector][getServiceInfoPartial] - Unexpected error retrieving BTA partial")
         btaNavigationLinks()
     }
+  }
 }
