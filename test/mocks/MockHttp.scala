@@ -39,7 +39,7 @@ trait MockHttp extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
   }
 
   def setupMockHttpGet[T](url: String)(response: T): OngoingStubbing[Future[T]] =
-    when(mockHttp.GET[T](ArgumentMatchers.eq(url))
+    when(mockHttp.GET[T](ArgumentMatchers.eq(url), ArgumentMatchers.any(), ArgumentMatchers.any())
       (ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(Future.successful(response))
 
   def setupMockHttpPost[I,O](url: String)(response: O): OngoingStubbing[Future[O]] =
