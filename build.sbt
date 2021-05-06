@@ -63,10 +63,9 @@ val compile: Seq[ModuleID] = Seq(
   "uk.gov.hmrc"       %% "govuk-template"             % "5.66.0-play-26",
   "uk.gov.hmrc"       %% "play-ui"                    % "9.2.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
-  "uk.gov.hmrc"       %% "play-language"              % "4.12.0-play-26",
   "com.typesafe.play" %% "play-json-joda"             % "2.6.14",
   "uk.gov.hmrc"       %% "play-frontend-govuk"        % "0.71.0-play-26",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "0.59.0-play-26"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "0.60.0-play-26"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
@@ -78,7 +77,7 @@ def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
   "org.scalatestplus.play"  %% "scalatestplus-play"             % "3.1.3"             % scope,
   "org.scalamock"           %% "scalamock-scalatest-support"    % "3.6.0"             % scope,
   "com.github.tomakehurst"  %  "wiremock-jre8"                  % "2.27.2"            % scope,
-  "org.mockito"             %  "mockito-core"                   % "3.5.13"            % scope
+  "org.mockito"             %  "mockito-core"                   % "3.5.15"            % scope
 )
 
 TwirlKeys.templateImports ++= Seq(
