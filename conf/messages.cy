@@ -135,6 +135,14 @@ change_business_name.p5.bullet2 = ychwanegu enw newydd eich busnes yn adran 1
 change_business_name.p5.bullet3 = dychwelyd y ffurflen atom ynghyd â’ch Tystysgrif Ymgorffori newydd
 change_business_name.link = Yn eich blaen i Dŷ’r Cwmnïau (yn agor tab newydd)
 
+change_business_name.alternative.user1 = Ni allwch newid enw’r busnes ar eich cyfrif TAW.
+change_business_name.alternative.user2 = Mae’n rhaid i chi newid enw’ch busnes drwy ddefnyddio gwasanaeth gwahanol.
+change_business_name.alternative.user.charity = Mae’n rhaid i chi newid enw’ch busnes drwy’r Comisiwn Elusennau.
+change_business_name.alternative.agent1 = Ni allwch newid enw busnes eich cleient drwy ei gyfrif TAW.
+change_business_name.alternative.agent2 = Mae’n rhaid i chi newid enw’r busnes drwy ddefnyddio gwasanaeth gwahanol.
+change_business_name.alternative.agent.charity = Mae’n rhaid i chi newid enw’r busnes drwy’r Comisiwn Elusennau.
+change_business_name.alternative.link = Darllenwch yr arweiniad ar sut i newid enw busnes ac unrhyw fanylion busnes eraill (yn agor tab newydd).
+
 change_address.title = Newid ble mae’r busnes yn gwneud y rhan fwyaf o’i waith
 change_address.p1 = Gelwir hyn hefyd yn brif leoliad y busnes.
 change_address.p2 = Os yw hyn mewn gwahanol leoliadau, defnyddiwch y cyfeiriad lle y mae’n cadw ei gofnodion busnes. Gallai hyn fod yn gyfeiriad cartref.
