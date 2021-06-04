@@ -128,9 +128,35 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         ec)
     }
 
+    "the user has a pending address change" should {
+
+      def controller: BusinessAddressController = setup(
+        addressLookupResponse = Right(customerAddressMax),
+        businessAddressResponse = Right(SubscriptionUpdateResponseModel(""))
+      )
+
+      lazy val result: Future[Result] = {
+        mockCustomerDetailsSuccess(customerInformationPendingPPOBModel)
+        controller.show(request)
+      }
+
+      "return 409 Conflict" in {
+        status(result) shouldBe Status.CONFLICT
+      }
+
+      "return HTML" in {
+        contentType(result) shouldBe Some("text/html")
+        charset(result) shouldBe Some("utf-8")
+      }
+
+      s"have the heading '${ChangePendingMessages.heading}'" in {
+        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+      }
+    }
+
     "address lookup service returns success" when {
 
-      "and business address service returns success" should {
+      "business address service returns success" should {
 
         def controller: BusinessAddressController = setup(
           addressLookupResponse = Right(customerAddressMax),
@@ -139,7 +165,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "for an Individual" should {
 
-          lazy val result = controller.callback("12345")(request)
+          lazy val result = {
+            mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+            controller.callback("12345")(request)
+          }
 
           "return See Other (303)" in {
             status(result) shouldBe Status.SEE_OTHER
@@ -152,7 +181,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "for an Agent" should {
 
-          lazy val result = controller.callback("12345")(fakeRequestWithClientsVRN)
+          lazy val result = {
+            mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+            controller.callback("12345")(fakeRequestWithClientsVRN)
+          }
 
           "return See Other (303)" in {
             mockAgentAuthorised()
@@ -168,12 +200,17 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
     "address lookup service returns success" when {
 
-      "and business address service returns an error" should {
+      "business address service returns an error" should {
 
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
-          businessAddressResponse = Left(errorModel))
-        lazy val result = controller.callback("12345")(request)
+          businessAddressResponse = Left(errorModel)
+        )
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+          controller.callback("12345")(request)
+        }
 
         "return InternalServerError" in {
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
@@ -187,7 +224,11 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       lazy val controller = setup(
         addressLookupResponse = Left(errorModel),
         businessAddressResponse = Left(errorModel))
-      lazy val result = controller.callback("12345")(request)
+
+      lazy val result = {
+        mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+        controller.callback("12345")(request)
+      }
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR

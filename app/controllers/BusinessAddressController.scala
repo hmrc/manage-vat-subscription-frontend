@@ -62,7 +62,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
     }
   }
 
-  val callback: String => Action[AnyContent] = id => authenticate.async { implicit user =>
+  val callback: String => Action[AnyContent] = id => (authenticate andThen inFlightPPOBCheck).async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
         ppobService.updatePPOB(user, address, id) map {
