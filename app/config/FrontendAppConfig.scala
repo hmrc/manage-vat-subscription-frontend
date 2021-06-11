@@ -151,7 +151,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override def contactPreferencesUrl(vrn: String): String = contactPreferencesService + s"/contact-preferences/vat/vrn/$vrn"
 
   override lazy val addressLookupCallbackUrl: String =
-    signInContinueBaseUrl + controllers.routes.BusinessAddressController.callback("").url
+    signInContinueBaseUrl + servicesConfig.getString(Keys.addressLookupCallback)
 
   override lazy val agentServicesGovUkGuidance: String = servicesConfig.getString(Keys.govUkSetupAgentServices)
 

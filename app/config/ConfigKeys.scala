@@ -63,6 +63,7 @@ object ConfigKeys {
   val governmentGatewayHost: String = "government-gateway.host"
 
   val addressLookupFrontend: String = "address-lookup-frontend"
+  val addressLookupCallback: String = s"$addressLookupFrontend.callbackUrl"
   val addressLookupFrontendHost: String = s"$addressLookupFrontend.host"
 
   val surveyHost: String = "feedback-frontend.host"
