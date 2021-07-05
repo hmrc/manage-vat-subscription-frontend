@@ -21,10 +21,12 @@
 
 @(organisationName: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(
-    pageTitle = messages("change_business_name.title")) {
-
+@backLink = {
     @backToBusinessDetails()
+}
+
+@mainTemplate(
+    pageTitle = messages("change_business_name.title"), backLinkContent = Some(backLink)) {
 
     @headings(messages("change_business_name.h1"))
 

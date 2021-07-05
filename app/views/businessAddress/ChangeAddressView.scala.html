@@ -36,9 +36,11 @@
   </div>
 }
 
-@mainTemplate(pageTitle = messages("change_address.title")) {
+@backLink = {
+    @backToBusinessDetails()
+}
 
-  @backToBusinessDetails()
+@mainTemplate(pageTitle = messages("change_address.title"), backLinkContent = Some(backLink)) {
 
   @headings(messages("change_address.title"))
 
