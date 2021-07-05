@@ -39,6 +39,15 @@
   }
 }
 
+@backLink = {
+  @if(user.isAgent){
+    @govukBackLink(BackLink(
+      href = appConfig.agentClientLookupAgentAction,
+      content = Text(messages("base.back"))
+    ))
+  }
+}
+
 @emailVerficationSection = {
     @messages("emailWarning.confirmEmail")
     <a class="govuk-link" href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
@@ -357,14 +366,8 @@
 @mainTemplate(
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   btaLinks = Some(serviceInfoContent),
-  breadCrumbs = Some(bc)) {
-
-    @if(user.isAgent){
-        @govukBackLink(BackLink(
-            href = appConfig.agentClientLookupAgentAction,
-            content = Text(messages("base.back"))
-        ))
-    }
+  breadCrumbs = Some(bc),
+  backLinkContent = Some(backLink)) {
 
     @if(user.isAgent) {
       <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
