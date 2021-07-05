@@ -39,6 +39,13 @@
   }
 }
 
+@backLink = {
+  @govukBackLink(BackLink(
+    href = appConfig.agentClientLookupAgentAction,
+    content = Text(messages("base.back"))
+  ))
+}
+
 @emailVerficationSection = {
     @messages("emailWarning.confirmEmail")
     <a class="govuk-link" href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
@@ -360,10 +367,7 @@
   breadCrumbs = Some(bc)) {
 
     @if(user.isAgent){
-        @govukBackLink(BackLink(
-            href = appConfig.agentClientLookupAgentAction,
-            content = Text(messages("base.back"))
-        ))
+      backLinkContent = Some(backLink)
     }
 
     @if(user.isAgent) {
