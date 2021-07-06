@@ -67,7 +67,6 @@
             Cy -> appConfig.routeToSwitchLanguage("cymraeg").url
     ))
     @backLinkContent
-    @breadCrumbs
 }
 
 @scripts = {
@@ -113,6 +112,7 @@ govukHeader(Header(
 }
 
 @fullContent = {
+    @breadCrumbs
     <div id="content" class="govuk-!-margin-bottom-6">
         @mainContent
     </div>
