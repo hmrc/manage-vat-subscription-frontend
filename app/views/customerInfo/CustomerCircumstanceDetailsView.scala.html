@@ -363,7 +363,6 @@
 @mainTemplate(
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   btaLinks = Some(serviceInfoContent),
-  breadCrumbs = Some(bc),
   navLinkContent = Some(navLink)) {
 
     @if(user.isAgent) {
