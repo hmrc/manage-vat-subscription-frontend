@@ -33,20 +33,17 @@
 @(circumstances: CircumstanceDetails,
   serviceInfoContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
-@bc = {
-  @if(!user.isAgent){
-    @breadcrumb()
-  }
-}
-
-@backLink = {
+@navLink = {
   @if(user.isAgent){
     @govukBackLink(BackLink(
       href = appConfig.agentClientLookupAgentAction,
       content = Text(messages("base.back"))
     ))
+  } else {
+    @breadcrumb()
   }
 }
+
 
 @emailVerficationSection = {
     @messages("emailWarning.confirmEmail")
@@ -367,7 +364,7 @@
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   btaLinks = Some(serviceInfoContent),
   breadCrumbs = Some(bc),
-  backLinkContent = Some(backLink)) {
+  navLinkContent = Some(navLink)) {
 
     @if(user.isAgent) {
       <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
