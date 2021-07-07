@@ -34,9 +34,8 @@
   serviceName: Option[String] = None,
   showSignOut: Boolean = true,
   feedbackOnSignOut: Boolean = true,
-  backLinkContent: Option[Html] = None,
+  navLinkContent: Option[Html] = None,
   btaLinks: Option[Html] = None,
-  breadCrumbs: Option[Html] = None
 )(mainContent: Html)(implicit request : Request[_], messages: Messages, appConfig: AppConfig)
 
 @navTitle = @{
@@ -66,7 +65,7 @@
             En -> appConfig.routeToSwitchLanguage("english").url,
             Cy -> appConfig.routeToSwitchLanguage("cymraeg").url
     ))
-    @backLinkContent
+    @navLinkContent
 }
 
 @scripts = {
@@ -112,7 +111,6 @@ govukHeader(Header(
 }
 
 @fullContent = {
-    @breadCrumbs
     <div id="content" class="govuk-!-margin-bottom-6">
         @mainContent
     </div>
