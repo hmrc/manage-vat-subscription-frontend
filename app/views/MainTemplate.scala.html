@@ -17,17 +17,17 @@
 @import config.AppConfig
 @import views.utils.ServiceNameUtil
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
-@import uk.gov.hmrc.govukfrontend.views.viewmodels.header.Header
-@import uk.gov.hmrc.play.views.html.layouts.TrackingConsentSnippet
+@import uk.gov.hmrc.hmrcfrontend.views.config.StandardBetaBanner
 
 @this(govukLayout: GovukLayout,
     govukHeader: GovukHeader,
-    govukPhaseBanner: GovukPhaseBanner,
+    standardBetaBanner: StandardBetaBanner,
     hmrcReportTechnicalIssue: HmrcReportTechnicalIssue,
     hmrcLanguageSelect: HmrcLanguageSelect,
     hmrcTimeoutDialog: HmrcTimeoutDialog,
+    hmrcStandardHeader: HmrcStandardHeader,
     hmrcStandardFooter: HmrcStandardFooter,
-    trackingConsentSnippet: TrackingConsentSnippet
+    hmrcTrackingConsentSnippet: HmrcTrackingConsentSnippet
 )
 
 @(pageTitle: String,
@@ -46,18 +46,7 @@
     }
 }
 
-@phaseBannerContent = {
-    @messages("feedback.before")
-    <a id="beta-banner-feedback" class="govuk-link" href="@appConfig.feedbackUrl">
-        @messages("feedback.link")</a>
-    @messages("feedback.after")
-}
-
 @beforeContentHtml = {
-    @govukPhaseBanner(PhaseBanner(
-        tag = Some(Tag(content = Text(messages("banner.phaseName")))),
-        content = HtmlContent(phaseBannerContent)
-    ))
     @btaLinks
     @hmrcLanguageSelect(LanguageSelect(
         language = if (messages.lang.language == "en") En else Cy,
@@ -77,7 +66,7 @@
 }
 
 @head = {
-  @trackingConsentSnippet(nonce = None)
+@hmrcTrackingConsentSnippet()
   <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/application.css")' media="all">
 
   @if(showSignOut) {
@@ -92,16 +81,12 @@
 }
 
 @header = @{
-govukHeader(Header(
-    serviceName = Some(navTitle),
-    navigation =
-        if(showSignOut)
-            Some(Seq(HeaderNavigation(
-            text = Some(messages("base.sign-out")),
-            href = Some(routes.SignOutController.signOut(feedbackOnSignOut).url)
-        )))
-    else None
-    ))
+hmrcStandardHeader(
+serviceName = Some(navTitle),
+signOutUrl = if(showSignOut) Some(routes.SignOutController.signOut(feedbackOnSignOut).url) else None,
+phaseBanner = Some(standardBetaBanner(url = appConfig.feedbackUrl)),
+displayHmrcBanner = false
+)
 }
 
 @getHelpHtml = @{hmrcReportTechnicalIssue(ReportTechnicalIssue(
