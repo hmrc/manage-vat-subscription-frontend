@@ -140,6 +140,13 @@
             content = Text("Enable business name row"),
             value = "true",
             checked = appConfig.features.organisationNameRowEnabled()
+        ),
+        CheckboxItem(
+            id= Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
+            name = Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
+            content = Text("Enable Overseas Change of PPOB"),
+            value = "false",
+            checked = appConfig.features.allowOverseasChangeOfPPOBEnabled()
         )
         )
     ))

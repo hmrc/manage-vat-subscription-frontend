@@ -37,7 +37,6 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "<empty>",
     ".*Reverse.*",
     ".*standardError*.*",
-    ".*govuk_wrapper*.*",
     ".*main_template*.*",
     "uk.gov.hmrc.BuildInfo",
     "app.*",

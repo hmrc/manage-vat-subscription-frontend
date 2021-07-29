@@ -60,7 +60,8 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
             tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
-            organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled()
+            organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled(),
+            allowOverseasChangeOfPPOBEnabled = appConfig.features.allowOverseasChangeOfPPOBEnabled()
           )
         )
         Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -91,6 +92,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
     appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)
     appConfig.features.organisationNameRowEnabled(model.organisationNameRowEnabled)
+    appConfig.features.allowOverseasChangeOfPPOBEnabled(model.allowOverseasChangeOfPPOBEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

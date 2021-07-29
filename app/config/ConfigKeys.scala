@@ -45,6 +45,7 @@ object ConfigKeys {
   val contactPrefMigrationFeature: String = "features.contactPrefMigration.enabled"
   val tradingNameRowFeature: String = "features.tradingNameRowR19.enabled"
   val organisationNameRowFeature: String = "features.organisationNameRow19.enabled"
+  val allowOverseasChangeOfPPOBFeature: String ="features.allowOverseasChangeOfAddressR21.enabled"
 
   // GOV UK
   val changeToBusinessDetailsUrl: String = "gov-uk.guidance.change-to-business-details.url"
