@@ -93,9 +93,13 @@
                 </dl>
 
     @govukButton(Button(
-        href = Some(stubModel.options.continueUrl),
-        content = Text("Submit")
+        href = Some(controllers.routes.BusinessAddressController.callback("uk").url),
+        content = Text("Submit UK address")
     ))
-
+    @govukButton(Button(
+        href = Some(controllers.routes.BusinessAddressController.callback("overseas").url),
+        classes = "govuk-button--secondary",
+        content = Text("Submit overseas address")
+    ))
     }
 }
