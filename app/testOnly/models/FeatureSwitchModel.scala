@@ -31,4 +31,5 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               contactDetailsMovedToBTA: Boolean,
                               contactPrefMigrationFeature: Boolean,
                               tradingNameRowEnabled: Boolean,
-                              organisationNameRowEnabled: Boolean)
+                              organisationNameRowEnabled: Boolean,
+                              allowOverseasChangeOfPPOBEnabled: Boolean)

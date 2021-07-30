@@ -50,7 +50,8 @@ object FeatureSwitchForm {
       ConfigKeys.contactDetailsMovedToBTA -> boolean,
       ConfigKeys.contactPrefMigrationFeature -> boolean,
       ConfigKeys.tradingNameRowFeature -> boolean,
-      ConfigKeys.organisationNameRowFeature -> boolean
+      ConfigKeys.organisationNameRowFeature -> boolean,
+      ConfigKeys.allowOverseasChangeOfPPOBFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )
 }
