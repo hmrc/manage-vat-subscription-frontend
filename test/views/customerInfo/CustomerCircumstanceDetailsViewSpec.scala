@@ -678,24 +678,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
     }
   }
 
-  "the showPhoneNumbersAndWebsite feature switch is disabled" should {
-
-    lazy val view = {
-      mockConfig.features.showContactNumbersAndWebsite(false)
-      injectedView(customerInformationModelMaxIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
-    }
-
-    lazy implicit val document: Document = Jsoup.parse(view.body)
-
-    "the phone numbers section is hidden" in {
-      elementExtinct("#vat-phone-numbers")
-    }
-
-    "the website section is hidden" in {
-      elementExtinct("#vat-website-address")
-    }
-  }
-
   "the user is an overseas business" should {
 
     lazy val view = injectedView(overseasCompany, getPartialHtmlNotAgent)(user, messages, mockConfig)
