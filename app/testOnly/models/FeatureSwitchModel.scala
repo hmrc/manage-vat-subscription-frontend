@@ -20,7 +20,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
                               stubContactPreferences: Boolean,
-                              allowAgentBankAccountChange: Boolean,
                               showContactNumbersAndWebsite: Boolean,
                               languageFeatureEnabled: Boolean,
                               useOverseasIndicatorEnabled: Boolean,

@@ -39,7 +39,6 @@ object FeatureSwitchForm {
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.stubContactPreferencesFeature -> boolean,
-      ConfigKeys.allowAgentBankAccountChange -> boolean,
       ConfigKeys.contactNumbersAndWebsiteFeature -> boolean,
       ConfigKeys.useLanguageSelectorFeature -> boolean,
       ConfigKeys.useOverseasIndicator -> boolean,

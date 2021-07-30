@@ -43,7 +43,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
     implicit val user: User[A] = request
 
-    if (appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
+    if (!user.isAgent) {
       customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
           Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
