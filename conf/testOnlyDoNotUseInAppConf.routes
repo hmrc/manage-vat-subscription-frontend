@@ -18,11 +18,9 @@ GET        /vat-through-software/account/test-only/vaclf-stub                   
 GET        /vat-through-software/account/test-only/vaclf-stub-unauth                  testOnly.controllers.StubAgentClientLookupController.unauth(redirectUrl: String)
 POST       /vat-through-software/account/test-only/vaclf-stub                         testOnly.controllers.StubAgentClientLookupController.post
 
-GET        /vat-through-software/account/test-only/address-lookup-stub/confirmed      testOnly.controllers.StubAddressLookupController.callback(id: String)
+GET        /vat-through-software/account/test-only/address-lookup-stub/api/confirmed  testOnly.controllers.StubAddressLookupController.getAddress(id: String)
 
 GET        /vat-through-software/account/test-only/address-lookup-stub/view           testOnly.controllers.StubAddressLookupController.show()
-# NOCSRF
-POST       /vat-through-software/account/test-only/address-lookup-stub/api/init       testOnly.controllers.StubAddressLookupController.initialiseJourney
 
 # NOCSRF
 POST       /vat-through-software/account/test-only/address-lookup-stub/api/v2/init    testOnly.controllers.StubAddressLookupController.initialiseJourney

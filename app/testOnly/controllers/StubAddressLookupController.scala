@@ -18,8 +18,8 @@ package testOnly.controllers
 
 import config.AppConfig
 import controllers.predicates.AuthPredicate
+
 import javax.inject.Inject
-import models.customerAddress.AddressModel
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -27,7 +27,7 @@ import play.mvc.Http.HeaderNames
 import testOnly.views.html.StubAddressLookupView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
                                             stubAddressLookupView: StubAddressLookupView,
@@ -36,19 +36,34 @@ class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
                                             implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  def initialiseJourney(): Action[JsValue] = Action.async(parse.json) { _ =>
-    Future.successful(
-      Accepted(Json.toJson(AddressModel(Some("line1"), Some("line2"), None, None, None, Some("EN"))))
-        .withHeaders(HeaderNames.LOCATION -> testOnly.controllers.routes.StubAddressLookupController.show().url)
-    )
+  def initialiseJourney(): Action[JsValue] = Action(parse.json) { _ =>
+    Accepted.withHeaders(HeaderNames.LOCATION -> testOnly.controllers.routes.StubAddressLookupController.show().url)
   }
 
   def show(): Action[AnyContent] = authenticate { implicit user =>
     Ok(stubAddressLookupView())
   }
 
-  def callback(id: String): Action[AnyContent] = authenticate { implicit user =>
-    Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
+  def getAddress(id: String): Action[AnyContent] = Action { _ =>
+    id match {
+      case "overseas" =>
+        Ok(Json.obj(
+          "lines" -> Json.arr("Strada Falsa 1", "Rome"),
+          "country" -> Json.obj(
+            "code" -> "IT",
+            "name" -> "Italy"
+          )
+        ))
+      case "uk" =>
+        Ok(Json.obj(
+          "lines" -> Json.arr("1 Fake Street", "Telford"),
+          "postcode" -> "TF1 1AA",
+          "country" -> Json.obj(
+            "code" -> "GB",
+            "name" -> "United Kingdom"
+          )
+        ))
+      case _ => NotFound
+    }
   }
-
 }

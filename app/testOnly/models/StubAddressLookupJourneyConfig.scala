@@ -61,7 +61,7 @@ object StubAddressLookupJourneyConfig {
 
   implicit def stubModel(implicit user: User[_], messagesApi: MessagesApi, config: AppConfig): StubAddressLookupJourneyConfig = {
     Json.toJson(AddressLookupJsonBuilder(
-      testOnly.controllers.routes.StubAddressLookupController.callback("1").url)
+      controllers.routes.BusinessAddressController.callback("").url)
     ).as[StubAddressLookupJourneyConfig]
   }
   implicit val confirmPageFormat: OFormat[ConfirmPage] = Json.format[ConfirmPage]
