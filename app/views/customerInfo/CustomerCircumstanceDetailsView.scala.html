@@ -421,7 +421,7 @@
         )
       }
 
-      @if(appConfig.features.allowAgentBankAccountChange() || !user.isAgent) {
+      @if(!user.isAgent) {
         @circumstances.pendingBankDetails.fold {
           @customerBankDetails(circumstances.bankDetails, pending = false)
         }{ pendingBankChanges =>

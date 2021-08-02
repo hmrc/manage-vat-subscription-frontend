@@ -617,64 +617,45 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
       "changeClient feature switch is on" when {
 
-        "the allowAgentBankAccountChange feature is set to true" should {
-
-          lazy val view = {
-            mockConfig.features.changeClientFeature(true)
-            mockConfig.features.allowAgentBankAccountChange(true)
-            injectedView(customerInformationModelMaxIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
-          }
-
-          lazy implicit val document: Document = Jsoup.parse(view.body)
-
-          "not display a breadcrumb trail" in {
-            elementExtinct(".govuk-breadcrumbs li:nth-of-type(1)")
-            elementExtinct(".govuk-breadcrumbs li:nth-of-type(2)")
-            elementExtinct(".govuk-breadcrumbs li:nth-of-type(3)")
-          }
-
-          "display the back link" in {
-            elementText(".govuk-back-link") shouldBe viewMessages.backText
-            element(".govuk-back-link").attr("href") shouldBe
-              mockConfig.agentClientLookupAgentAction
-          }
-
-          s"have the correct document title '${viewMessages.title}'" in {
-            document.title shouldBe viewMessages.agentTitle
-          }
-
-          "have the correct service name" in {
-            elementText(".govuk-header__link--service-name") shouldBe agentServiceName
-          }
-
-          s"have a the correct page heading '${viewMessages.agentHeading}'" in {
-            elementText("h1") shouldBe viewMessages.agentHeading
-          }
-
-          "have a blank field where the 'Change' link would be for email address" which {
-
-            "has the visually hidden class" in {
-              element("#vat-email-address-status").hasClass("govuk-visually-hidden") shouldBe true
-            }
-
-            "has the correct hidden text" in {
-              elementText("#vat-email-address-status") shouldBe viewMessages.changeEmailAddressAgentHidden
-            }
-          }
+        lazy val view = {
+          mockConfig.features.changeClientFeature(true)
+          injectedView(customerInformationModelMaxIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
         }
 
-        "the allowAgentBankAccountChange feature is set to false" should {
+        lazy implicit val document: Document = Jsoup.parse(view.body)
 
-          lazy val view = {
-            mockConfig.features.changeClientFeature(true)
-            mockConfig.features.allowAgentBankAccountChange(false)
-            injectedView(customerInformationModelMaxIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
+        "not display a breadcrumb trail" in {
+          elementExtinct(".govuk-breadcrumbs li:nth-of-type(1)")
+          elementExtinct(".govuk-breadcrumbs li:nth-of-type(2)")
+          elementExtinct(".govuk-breadcrumbs li:nth-of-type(3)")
+        }
+
+        "display the back link" in {
+          elementText(".govuk-back-link") shouldBe viewMessages.backText
+          element(".govuk-back-link").attr("href") shouldBe
+            mockConfig.agentClientLookupAgentAction
+        }
+
+        s"have the correct document title '${viewMessages.title}'" in {
+          document.title shouldBe viewMessages.agentTitle
+        }
+
+        "have the correct service name" in {
+          elementText(".govuk-header__link--service-name") shouldBe agentServiceName
+        }
+
+        s"have a the correct page heading '${viewMessages.agentHeading}'" in {
+          elementText("h1") shouldBe viewMessages.agentHeading
+        }
+
+        "have a blank field where the 'Change' link would be for email address" which {
+
+          "has the visually hidden class" in {
+            element("#vat-email-address-status").hasClass("govuk-visually-hidden") shouldBe true
           }
 
-          lazy implicit val document: Document = Jsoup.parse(view.body)
-
-          "not display the Change Bank Account details row" in {
-            elementExtinct("#bank-details-text")
+          "has the correct hidden text" in {
+            elementText("#vat-email-address-status") shouldBe viewMessages.changeEmailAddressAgentHidden
           }
         }
       }
