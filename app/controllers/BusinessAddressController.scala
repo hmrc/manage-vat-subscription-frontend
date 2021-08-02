@@ -23,7 +23,6 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
-import models.contactPreferences.ContactPreference
 import models.contactPreferences.ContactPreference._
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -101,15 +100,10 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
               ContactPreferenceAuditModel(user.vrn, contactPreference.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
               Some(controllers.routes.ChangeBusinessNameController.show().url)
             )
-            contactPreference.preference match {
-              case ContactPreference.digital if appConfig.features.emailVerifiedFeature() =>
-                Ok(changeAddressConfirmationView(
-                  contactPref = Some(digital),
-                  emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
-                ))
-              case preference =>
-                Ok(changeAddressConfirmationView(contactPref = Some(preference)))
-            }
+            Ok(changeAddressConfirmationView(
+              contactPref = Some(contactPreference.preference),
+              emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+            ))
           case None => Ok(changeAddressConfirmationView())
         }
       case Left (_) => Ok(changeAddressConfirmationView())
@@ -124,17 +118,13 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
           Some(controllers.routes.ChangeBusinessNameController.show().url)
         )
-        cPref.preference match {
-          case `digital` if appConfig.features.emailVerifiedFeature() =>
-            customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-              case Right(details) =>
-                Ok(changeAddressConfirmationView(
-                  contactPref = Some(digital),
-                  emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
-                ))
-              case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
-            }
-          case preference => Future.successful(Ok(changeAddressConfirmationView(contactPref = Some(preference))))
+        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+          case Right(details) =>
+            Ok(changeAddressConfirmationView(
+              contactPref = Some(cPref.preference),
+              emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
+            ))
+          case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
         }
       case Left(_) =>
         Future.successful(Ok(changeAddressConfirmationView()))

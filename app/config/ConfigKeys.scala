@@ -35,7 +35,6 @@ object ConfigKeys {
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
-  val emailVerifiedFeature: String = "features.emailVerifiedFeature.enabled"
   val missingTraderAddressIntercept: String = "features.missingTraderAddressIntercept.enabled"
   val contactDetailsMovedToBTA: String = "features.contactDetailsMovedToBTA.enabled"
   val contactPrefMigrationFeature: String = "features.contactPrefMigration.enabled"
