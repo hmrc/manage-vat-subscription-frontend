@@ -414,12 +414,10 @@
         }
       }
 
-      @if(appConfig.features.showContactNumbersAndWebsite()) {
-        @customerWebsite(
-          if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
-          (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
-        )
-      }
+      @customerWebsite(
+        if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
+        (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
+      )
 
       @if(!user.isAgent) {
         @circumstances.pendingBankDetails.fold {
@@ -469,16 +467,14 @@
           if(circumstances.pendingPPOBSection) circumstances.pendingEmail else circumstances.email,
           (circumstances.pendingPPOBSection && !circumstances.sameEmail)
         )
-        @if(appConfig.features.showContactNumbersAndWebsite()) {
-          @customerLandlineNumber(
-            if(circumstances.pendingPPOBSection) circumstances.pendingLandline else circumstances.landlineNumber,
-            (circumstances.pendingPPOBSection && !circumstances.samePhone)
-          )
-          @customerMobileNumber(
-            if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
-            (circumstances.pendingPPOBSection && !circumstances.sameMobile)
-          )
-        }
+        @customerLandlineNumber(
+          if(circumstances.pendingPPOBSection) circumstances.pendingLandline else circumstances.landlineNumber,
+          (circumstances.pendingPPOBSection && !circumstances.samePhone)
+        )
+        @customerMobileNumber(
+          if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
+          (circumstances.pendingPPOBSection && !circumstances.sameMobile)
+        )
       </dl>
     }
 </div>

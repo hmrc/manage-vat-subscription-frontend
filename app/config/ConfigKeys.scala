@@ -34,7 +34,6 @@ object ConfigKeys {
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val stubContactPreferencesFeature: String = "features.stubContactPreferences.enabled"
-  val contactNumbersAndWebsiteFeature: String = "features.showContactNumbersAndWebsite.enabled"
   val useLanguageSelectorFeature: String = "features.useLanguageSelector.enabled"
   val useOverseasIndicator: String = "features.useOverseasIndicator.enabled"
   val changeClientFeature: String = "features.changeClientFeature.enabled"
