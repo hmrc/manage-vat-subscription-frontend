@@ -27,7 +27,6 @@ class Features @Inject()(implicit config: Configuration) {
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)
   val stubContactPreferences = new Feature(ConfigKeys.stubContactPreferencesFeature)
-  val allowAgentBankAccountChange = new Feature(ConfigKeys.allowAgentBankAccountChange)
   val showContactNumbersAndWebsite = new Feature(ConfigKeys.contactNumbersAndWebsiteFeature)
   val useLanguageSelector = new Feature(ConfigKeys.useLanguageSelectorFeature)
   val useOverseasIndicator = new Feature(ConfigKeys.useOverseasIndicator)
