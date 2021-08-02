@@ -26,7 +26,7 @@ import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
 @Singleton
-class CustomerCircumstancesHttpParser @Inject()(implicit appConfig: AppConfig) {
+class CustomerCircumstancesHttpParser @Inject()() {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
@@ -37,7 +37,7 @@ class CustomerCircumstancesHttpParser @Inject()(implicit appConfig: AppConfig) {
       response.status match {
         case Status.OK =>
           Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
-          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(appConfig.features.useOverseasIndicator())).fold(
+          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(true)).fold(
             invalid => {
               Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
               Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
