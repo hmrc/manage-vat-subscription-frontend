@@ -18,7 +18,10 @@
 
 @this(mainTemplate: MainTemplate, updateClient: UpdateClient, govukPanel : GovukPanel, govukButton: GovukButton)
 
-@(clientName: Option[String] = None, agentEmail: Option[String] = None, contactPref: Option[String] = None, emailVerified: Boolean = false)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(clientName: Option[String] = None,
+  agentEmail: Option[String] = None,
+  contactPref: Option[String] = None,
+  emailVerified: Boolean = false)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @finishButtonText = @{
     if(user.isAgent) "common.agent.backToClientDetails" else "common.finish"
@@ -32,33 +35,14 @@
 
     @if(user.isAgent){
 
-
-        @agentEmail match {
-
-            case Some(email) => {
-
-                @if(appConfig.features.disableBulkPaper()) {
-                <p class="govuk-body">@messages("change_address_confirmation.agent.bulkPaper.p1-1")
-                <strong class="govuk-!-font-weight-bold">@email</strong>
-                @messages("change_address_confirmation.agent.bulkPaper.p1-2")</p>
-                @updateClient(clientName)
-
-                } else {
-
-                    <p class="govuk-body">@messages("change_address_confirmation.agent.p1-1")
-                    <strong class="govuk-!-font-weight-bold">@email</strong>
-                    @messages("change_address_confirmation.agent.p1-2")</p>
-                    @updateClient(clientName)
-                }
-            }
-
-            case None => {
-                @if(!appConfig.features.disableBulkPaper()) {
-                    <p class="govuk-body">@messages("common.agent.confirmationLetter")</p>
-                }
-                    @updateClient(clientName)
-            }
+        @agentEmail.map { email =>
+            <p class="govuk-body">@messages("change_address_confirmation.agent.bulkPaper.p1-1")
+            <strong class="govuk-!-font-weight-bold">@email</strong>
+            @messages("change_address_confirmation.agent.bulkPaper.p1-2")</p>
         }
+
+        @updateClient(clientName)
+
     } else {
 
         @contactPref match {

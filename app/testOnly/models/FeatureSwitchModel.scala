@@ -21,7 +21,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               stubAddressLookup: Boolean,
                               stubContactPreferences: Boolean,
                               changeClientFeature: Boolean,
-                              disableBulkPaper: Boolean,
                               missingTraderAddressIntercept: Boolean,
                               contactDetailsMovedToBTA: Boolean,
                               contactPrefMigrationFeature: Boolean,

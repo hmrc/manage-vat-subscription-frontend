@@ -50,7 +50,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
             changeClientFeature = appConfig.features.changeClientFeature(),
-            disableBulkPaper = appConfig.features.disableBulkPaper(),
             missingTraderAddressIntercept = appConfig.features.missingTraderAddressIntercept(),
             contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
@@ -76,7 +75,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
     appConfig.features.changeClientFeature(model.changeClientFeature)
-    appConfig.features.disableBulkPaper(model.disableBulkPaper)
     appConfig.features.missingTraderAddressIntercept(model.missingTraderAddressIntercept)
     appConfig.features.contactDetailsMovedToBTA(model.contactDetailsMovedToBTA)
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
