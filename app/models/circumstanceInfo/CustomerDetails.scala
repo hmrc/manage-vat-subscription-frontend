@@ -111,7 +111,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         "nameIsReadOnly" -> model.nameIsReadOnly,
         "isInsolvent" -> model.isInsolvent,
         "continueToTrade" -> model.continueToTrade,
-        "insolvencyType" -> model.insolvencyType
-      ) ++ (Json.obj("overseasIndicator" -> model.overseasIndicator))
+        "insolvencyType" -> model.insolvencyType,
+        "overseasIndicator" -> model.overseasIndicator
+      )
   }
 }
