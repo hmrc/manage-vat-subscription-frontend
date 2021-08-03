@@ -49,7 +49,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
-            languageFeatureEnabled = appConfig.features.useLanguageSelector(),
             useOverseasIndicatorEnabled = appConfig.features.useOverseasIndicator(),
             changeClientFeature = appConfig.features.changeClientFeature(),
             emailVerifiedFeature = appConfig.features.emailVerifiedFeature(),
@@ -78,7 +77,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
-    appConfig.features.useLanguageSelector(model.languageFeatureEnabled)
     appConfig.features.useOverseasIndicator(model.useOverseasIndicatorEnabled)
     appConfig.features.changeClientFeature(model.changeClientFeature)
     appConfig.features.emailVerifiedFeature(model.emailVerifiedFeature)
