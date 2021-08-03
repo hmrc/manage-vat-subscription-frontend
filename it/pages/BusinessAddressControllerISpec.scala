@@ -180,7 +180,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         And("a valid CircumstanceDetails model is returned")
         BusinessAddressStub.getFullInformation(
-          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
         )
 
         And("A response model is returned from the backend")
@@ -215,7 +215,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         And("a valid CircumstanceDetails model is returned")
         BusinessAddressStub.getFullInformation(
-          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
         )
 
         And("A response model is returned from the backend")
@@ -250,7 +250,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           And("a valid CircumstanceDetails model is returned")
           BusinessAddressStub.getFullInformation(
-            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
           )
 
           And("A response model is returned from the backend")
@@ -300,7 +300,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
           And("a valid CircumstanceDetails model is returned")
           BusinessAddressStub.getFullInformation(
-            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes(true))
+            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
           )
 
           And("A response model is returned from the backend")

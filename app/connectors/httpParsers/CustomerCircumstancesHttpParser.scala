@@ -16,7 +16,6 @@
 
 package connectors.httpParsers
 
-import config.AppConfig
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
@@ -37,7 +36,7 @@ class CustomerCircumstancesHttpParser @Inject()() {
       response.status match {
         case Status.OK =>
           Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
-          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads(true)).fold(
+          response.json.validate[CircumstanceDetails](CircumstanceDetails.reads).fold(
             invalid => {
               Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
               Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")

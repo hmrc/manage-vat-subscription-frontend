@@ -88,8 +88,8 @@ object CircumstanceDetails extends JsonReadUtil {
   private val missingTraderPath = __ \ "missingTrader"
   private val commsPreferencePath = __ \ "commsPreference"
 
-  implicit val reads: Boolean => Reads[CircumstanceDetails] = isLatestRelease => (
-      customerDetailsPath.read[CustomerDetails](CustomerDetails.reads(isLatestRelease)) and
+  implicit val reads: Reads[CircumstanceDetails] = (
+      customerDetailsPath.read[CustomerDetails](CustomerDetails.reads) and
       flatRateSchemePath.readOpt[FlatRateScheme] and
       ppobPath.read[PPOB] and
       bankDetailsPath.readOpt[BankDetails] and
@@ -102,8 +102,8 @@ object CircumstanceDetails extends JsonReadUtil {
       commsPreferencePath.readOpt[ContactPreference](ContactPreference.circumstancePrefReads)
     )(CircumstanceDetails.apply _)
 
-  implicit val writes: Boolean => Writes[CircumstanceDetails] = isLatestRelease => (
-      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes(isLatestRelease)) and
+  implicit val writes: Writes[CircumstanceDetails] = (
+      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes) and
       flatRateSchemePath.writeNullable[FlatRateScheme] and
       ppobPath.write[PPOB] and
       bankDetailsPath.writeNullable[BankDetails] and
