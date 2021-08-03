@@ -39,7 +39,6 @@ object FeatureSwitchForm {
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.stubContactPreferencesFeature -> boolean,
-      ConfigKeys.useOverseasIndicator -> boolean,
       ConfigKeys.changeClientFeature -> boolean,
       ConfigKeys.emailVerifiedFeature -> boolean,
       ConfigKeys.disableBulkPaper -> boolean,

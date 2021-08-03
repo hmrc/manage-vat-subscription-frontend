@@ -71,8 +71,7 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
   private val continueToTradePath = __ \ "continueToTrade"
   private val insolvencyTypePath = __ \ "insolvencyType"
 
-  implicit val reads: Boolean => Reads[CustomerDetails] = isRelease10 =>
-    if(isRelease10) {
+  implicit val reads: Reads[CustomerDetails] = {
       for {
         firstName <- firstNamePath.readOpt[String]
         lastname <- lastNamePath.readOpt[String]
@@ -98,34 +97,9 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         continueToTrade,
         insolvencyType
       )
-    } else {
-      for {
-        firstName <- firstNamePath.readOpt[String]
-        lastname <- lastNamePath.readOpt[String]
-        orgName <- organisationNamePath.readOpt[String]
-        tradingName <- tradingNamePath.readOpt[String]
-        welshIndicator <- welshIndicatorPath.readOpt[Boolean]
-        hasFlatRateScheme <- hasFrsPath.read[Boolean]
-        nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
-        isInsolvent <- isInsolventPath.read[Boolean]
-        continueToTrade <- continueToTradePath.readNullable[Boolean]
-        insolvencyType <- insolvencyTypePath.readNullable[String]
-      } yield CustomerDetails(
-        firstName,
-        lastname,
-        orgName,
-        tradingName,
-        welshIndicator,
-        hasFlatRateScheme,
-        overseasIndicator = false,
-        nameIsReadOnly,
-        isInsolvent,
-        continueToTrade,
-        insolvencyType
-      )
     }
 
-  implicit val writes: Boolean => Writes[CustomerDetails] = isRelease10 => Writes {
+  implicit val writes: Writes[CustomerDetails] = Writes {
     model =>
       jsonObjNoNulls(
         "firstName" -> model.firstName,
@@ -137,7 +111,8 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
         "nameIsReadOnly" -> model.nameIsReadOnly,
         "isInsolvent" -> model.isInsolvent,
         "continueToTrade" -> model.continueToTrade,
-        "insolvencyType" -> model.insolvencyType
-      ) ++ (if(isRelease10) Json.obj("overseasIndicator" -> model.overseasIndicator) else Json.obj())
+        "insolvencyType" -> model.insolvencyType,
+        "overseasIndicator" -> model.overseasIndicator
+      )
   }
 }

@@ -20,7 +20,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
                               stubContactPreferences: Boolean,
-                              useOverseasIndicatorEnabled: Boolean,
                               changeClientFeature: Boolean,
                               emailVerifiedFeature: Boolean,
                               disableBulkPaper: Boolean,
