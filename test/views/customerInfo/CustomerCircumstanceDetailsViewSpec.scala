@@ -678,24 +678,42 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
     }
   }
 
-  "the user is an overseas business" should {
+  "the user is an overseas business" when {
 
     lazy val view = injectedView(overseasCompany, getPartialHtmlNotAgent)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
-    "not display business name" in {
-      elementExtinct("#business-name-text")
-      elementExtinct("#business-name")
-      elementExtinct("#business-name-status")
+    "the overseas PPOB change feature is on" should {
+
+      "not display business name" in {
+        elementExtinct("#business-name-text")
+        elementExtinct("#business-name")
+        elementExtinct("#business-name-status")
+      }
+
+      "display PPOB" in {
+        elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
+        elementText("#businessAddress") shouldBe addLine1
+      }
+
+      "have a link to change the PPOB" in {
+        mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
+        elementText("#place-of-business-status > span:nth-of-type(1)") shouldBe viewMessages.change
+      }
     }
 
-    "display PPOB" in {
-      elementText("#businessAddressHeading") shouldBe viewMessages.businessAddressHeading
-      elementText("#businessAddress") shouldBe addLine1
-    }
+    "the allow overseas PPOB change feature is off" should {
 
-    "not give the option to change PPOB" in {
-      elementExtinct("#place-of-business-status")
+      lazy val view = {
+        mockConfig.features.allowOverseasChangeOfPPOBEnabled(false)
+        injectedView(overseasCompany, getPartialHtmlNotAgent)(user, messages, mockConfig)
+      }
+      lazy implicit val document: Document = Jsoup.parse(view.body)
+
+      "not have a link to change the PPOB" in {
+        elementExtinct("#place-of-business-status > span:nth-of-type(1)")
+
+      }
     }
   }
 
