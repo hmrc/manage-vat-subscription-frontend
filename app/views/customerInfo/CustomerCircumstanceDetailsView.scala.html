@@ -94,21 +94,29 @@
     <dd id="businessAddress" class="govuk-summary-list__value">
       @renderAddress(address)
     </dd>
-    @if(!circumstances.customerDetails.overseasIndicator) {
-      <dd class="govuk-summary-list__actions">
-      @if(pending){
-          <span id="place-of-business-status" class="govuk-!-font-weight-bold">
-            <span aria-hidden="true">@messages("customer_details.pending")</span>
-            <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
-          </span>
+      @(appConfig.features.allowOverseasChangeOfPPOBEnabled(), circumstances.customerDetails.overseasIndicator) match {
+        case (false, true) => {
+          <dd class="govuk-summary-list__actions"></dd>
+        }
+        case _ => {
+          <dd class="govuk-summary-list__actions">
+          @if(pending) {
+            <span id="place-of-business-status" class="govuk-!-font-weight-bold">
+              <span aria-hidden="true">@messages("customer_details.pending")</span>
+              <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
+            </span>
           } else {
-          <a id="place-of-business-status" class="govuk-link" href="@{controllers.routes.BusinessAddressController.show().url}">
-            <span aria-hidden="true">@messages("customer_details.change")</span>
-            <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden",address.line1)</span>
-          </a>
+            <a id="place-of-business-status" class="govuk-link" href="@{
+              controllers.routes.BusinessAddressController.show().url
+            }">
+              <span aria-hidden="true">@messages("customer_details.change")</span>
+              <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden", address.line1)</span>
+            </a>
+          }
+          </dd>
+        }
+
       }
-      </dd>
-    } else {<dd class="govuk-summary-list__actions"></dd>}
   </div>
 
 }
@@ -389,45 +397,45 @@
     <h2 class="govuk-heading-m">@messages("customer_details.about.heading")</h2>
         <dl class="govuk-summary-list">
 
-      @if(!circumstances.customerDetails.overseasIndicator) {
-        @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
-          case (Some(orgName), true) => {
-            @customerName(
-              if(circumstances.pendingOrgName.isDefined) circumstances.pendingOrgName.get else orgName,
-              circumstances.pendingOrgName.isDefined && !circumstances.sameBusinessName
+          @if(!circumstances.customerDetails.overseasIndicator) {
+            @(circumstances.customerDetails.organisationName, circumstances.validPartyType) match {
+              case (Some(orgName), true) => {
+                @customerName(
+                  if(circumstances.pendingOrgName.isDefined) circumstances.pendingOrgName.get else orgName,
+                  circumstances.pendingOrgName.isDefined && !circumstances.sameBusinessName
+                )
+              }
+              case _ => {}
+            }
+          }
+
+          @if(appConfig.features.tradingNameRowEnabled()) {
+            @customerTradingName(
+              if(circumstances.pendingTradingName.isDefined) circumstances.pendingTradingName else circumstances.customerDetails.tradingName,
+              circumstances.pendingTradingName.isDefined && !circumstances.sameTradingName
             )
           }
-          case _ => {}
-        }
-      }
 
-      @if(appConfig.features.tradingNameRowEnabled()) {
-        @customerTradingName(
-          if(circumstances.pendingTradingName.isDefined) circumstances.pendingTradingName else circumstances.customerDetails.tradingName,
-          circumstances.pendingTradingName.isDefined && !circumstances.sameTradingName
-        )
-      }
+          @{circumstances.pendingPPOBAddress match {
+            case Some(pendingPPOB) if(pendingPPOB != circumstances.ppob.address) =>  customerAddress(pendingPPOB, true)
+            case _  =>  customerAddress(circumstances.ppob.address, false)
+            }
+          }
 
-      @{circumstances.pendingPPOBAddress match {
-        case Some(pendingPPOB) if(pendingPPOB != circumstances.ppob.address) =>  customerAddress(pendingPPOB, true)
-        case _  =>  customerAddress(circumstances.ppob.address, false)
-        }
-      }
+          @customerWebsite(
+            if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
+            (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
+          )
 
-      @customerWebsite(
-        if(circumstances.pendingPPOBSection) circumstances.pendingWebsite else circumstances.website,
-        (circumstances.pendingPPOBSection && !circumstances.sameWebsite)
-      )
+          @if(!user.isAgent) {
+            @circumstances.pendingBankDetails.fold {
+              @customerBankDetails(circumstances.bankDetails, pending = false)
+            }{ pendingBankChanges =>
+              @customerBankDetails(Some(pendingBankChanges), pending = true)
+            }
+          }
 
-      @if(!user.isAgent) {
-        @circumstances.pendingBankDetails.fold {
-          @customerBankDetails(circumstances.bankDetails, pending = false)
-        }{ pendingBankChanges =>
-          @customerBankDetails(Some(pendingBankChanges), pending = true)
-        }
-      }
-
-    </dl>
+        </dl>
 </div>
 
   @circumstances.returnPeriod.map { period =>
@@ -475,13 +483,13 @@
           if(circumstances.pendingPPOBSection) circumstances.pendingMobile else circumstances.mobileNumber,
           (circumstances.pendingPPOBSection && !circumstances.sameMobile)
         )
-      </dl>
+    </dl>
     }
 </div>
 
-        @govukDetails(Details(
-            summary = Text(messages("customer_details.changeNotListed")),
-            content = HtmlContent(changeNotListed)
-        ))
+  @govukDetails(Details(
+      summary = Text(messages("customer_details.changeNotListed")),
+      content = HtmlContent(changeNotListed)
+  ))
 
 }
