@@ -58,13 +58,6 @@
             checked = appConfig.features.stubContactPreferences()
         ),
         CheckboxItem(
-            id = Some(ConfigKeys.changeClientFeature),
-            name = Some(ConfigKeys.changeClientFeature),
-            content = Text("Enable change client links and Finish links where appropriate"),
-            value = "true",
-            checked = appConfig.features.changeClientFeature()
-        ),
-        CheckboxItem(
             id = Some(ConfigKeys.missingTraderAddressIntercept),
             name = Some(ConfigKeys.missingTraderAddressIntercept),
             content = Text("Intercept missing traders on entry to confirm address."),

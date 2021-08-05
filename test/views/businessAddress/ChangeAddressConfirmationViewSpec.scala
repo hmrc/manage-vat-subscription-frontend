@@ -168,9 +168,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
 
     "they have selected to receive email notifications" when {
 
-      "there is a client name and the changeClient feature switch is on" should {
+      "there is a client name" should {
         lazy val view: Html = {
-          mockConfig.features.changeClientFeature(true)
           injectedView(
             clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         }
@@ -204,44 +203,7 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         }
       }
 
-      "there is a client name and the changeClient feature switch is off" should {
-        lazy val view: Html = {
-          mockConfig.features.changeClientFeature(false)
-          injectedView(
-            clientName = Some("MyCompany Ltd"), agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
-        }
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        s"have the correct document title of '${viewMessages.titleAgent}'" in {
-          document.title shouldBe viewMessages.titleAgent
-        }
-
-        s"have the correct page heading of '${viewMessages.heading}'" in {
-          elementText("h1") shouldBe viewMessages.heading
-        }
-
-        s"have the correct p1 of '${viewMessages.p1Agent}'" in {
-          paragraph(1) shouldBe viewMessages.p1Agent
-        }
-
-        s"have the correct p2 of '${viewMessages.p2Agent}'" in {
-          paragraph(2) shouldBe viewMessages.p2Agent
-        }
-
-        "have a button to finish" which {
-
-          s"has the correct text of '$finishAgent" in {
-            elementText(".govuk-button") shouldBe finishAgent
-          }
-
-          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
-            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
-          }
-        }
-      }
-
       "there is no client name" should {
-
         lazy val view: Html = injectedView(agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
@@ -249,27 +211,27 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(2) shouldBe viewMessages.p2AgentNoClientName
         }
       }
-    }
 
-    "they have selected to not receive email notifications" when {
+      "they have selected to not receive email notifications" when {
 
-      "there is a client name" should {
+        "there is a client name" should {
 
-        lazy val view: Html = injectedView(clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
+          lazy val view: Html = injectedView(clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
+          lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p1 of '${viewMessages.p2Agent}'" in {
-          paragraph(1) shouldBe viewMessages.p2Agent
+          s"have the correct p1 of '${viewMessages.p2Agent}'" in {
+            paragraph(1) shouldBe viewMessages.p2Agent
+          }
         }
-      }
 
-      "there is no client name" should {
+        "there is no client name" should {
 
-        lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
-        lazy implicit val document: Document = Jsoup.parse(view.body)
+          lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
+          lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p1 of '${viewMessages.p2AgentNoClientName}'" in {
-          paragraph(1) shouldBe viewMessages.p2AgentNoClientName
+          s"have the correct p1 of '${viewMessages.p2AgentNoClientName}'" in {
+            paragraph(1) shouldBe viewMessages.p2AgentNoClientName
+          }
         }
       }
     }

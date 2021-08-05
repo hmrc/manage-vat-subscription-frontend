@@ -39,7 +39,6 @@ object FeatureSwitchForm {
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.stubContactPreferencesFeature -> boolean,
-      ConfigKeys.changeClientFeature -> boolean,
       ConfigKeys.missingTraderAddressIntercept -> boolean,
       ConfigKeys.contactDetailsMovedToBTA -> boolean,
       ConfigKeys.contactPrefMigrationFeature -> boolean,

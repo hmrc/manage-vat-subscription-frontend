@@ -615,10 +615,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
     "an Agent" when {
 
-      "changeClient feature switch is on" when {
-
         lazy val view = {
-          mockConfig.features.changeClientFeature(true)
           injectedView(customerInformationModelMaxIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
         }
 
@@ -658,22 +655,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             elementText("#vat-email-address-status") shouldBe viewMessages.changeEmailAddressAgentHidden
           }
         }
-      }
-
-      "changeClient feature switch is off" should {
-
-        lazy val view = {
-          mockConfig.features.changeClientFeature(false)
-          injectedView(customerInformationModelMaxIndividual, getPartialHtmlAgent)(agentUser, messages, mockConfig)
-        }
-
-        lazy implicit val document: Document = Jsoup.parse(view.body)
-
-        "not display the Finish button" in {
-          val finishSelector = "#finish-button"
-          elementExtinct(finishSelector)
-        }
-      }
 
     }
   }
