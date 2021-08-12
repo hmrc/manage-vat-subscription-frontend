@@ -26,6 +26,8 @@ object AddressLookupMessages {
   val editAddressLinkText = "Edit the address manually"
   val confirmHeading = "Confirm the new principal place of business"
   val submitLabel = "Find Address"
+  val manualAddressLink = "The address does not have a postcode or is outside the UK"
+  val postcodeLabel = "Postal or ZIP code (optional)"
 
   val startHeadingCy = "Beth yw’r prif fan busnes newydd?"
   val filterCy = "Enw neu rif yr eiddo"
@@ -36,6 +38,8 @@ object AddressLookupMessages {
   val confirmHeadingCy = "Cadarnhewch y prif fan busnes newydd"
   val continueCy = "Yn eich blaen"
   val submitLabelCy = "Dod o hyd i gyfeiriad"
+  val manualAddressLinkCy = "Nid oes gan y cyfeiriad god post neu mae y tu allan i’r DU"
+  val postcodeLabelCy = "Cod post neu god ardal (dewisol)"
 
   val clientServiceNameCy = "Cyfrif Treth Busnes"
   val agentServiceNameCy = "Manylion TAW eich cleient"

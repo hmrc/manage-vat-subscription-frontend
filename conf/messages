@@ -180,6 +180,8 @@ address_lookupPage.selectPage.heading = Select the new address
 address_lookupPage.selectPage.editLink = Edit the address manually
 address_lookupPage.confirmPage.heading = Confirm the new principal place of business
 address_lookupPage.lookupPage.submit = Find Address
+address_lookupPage.overseas = The address does not have a postcode or is outside the UK
+address_lookupPage.postalCode = Postal or ZIP code (optional)
 
 breadcrumb.bta = Business tax account
 breadcrumb.yourVatAccount = Your VAT account

@@ -26,6 +26,8 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
 
     "Serialize to new address lookup Json when using addressLookup v2" when {
 
+      mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
+
       "the continueUrl is given and the user is not an agent" in {
 
         Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(user, messagesApi, mockConfig)) shouldBe clientAddressLookupV2Json
