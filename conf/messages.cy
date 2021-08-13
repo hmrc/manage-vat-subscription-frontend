@@ -184,6 +184,8 @@ address_lookupPage.selectPage.heading = Dewiswch y cyfeiriad newydd
 address_lookupPage.selectPage.editLink = Golygwch y cyfeiriad â llaw
 address_lookupPage.confirmPage.heading = Cadarnhewch y prif fan busnes newydd
 address_lookupPage.lookupPage.submit = Dod o hyd i gyfeiriad
+address_lookupPage.overseas = Nid oes gan y cyfeiriad god post neu mae y tu allan i’r DU
+address_lookupPage.postalCode = Cod post neu god ardal (dewisol)
 
 breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatAccount = Eich cyfrif TAW

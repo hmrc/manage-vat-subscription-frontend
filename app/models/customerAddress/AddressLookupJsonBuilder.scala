@@ -27,7 +27,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
   // general journey overrides
   val showPhaseBanner: Boolean = true
-  val ukMode: Boolean = true
+  val ukMode: Boolean = !config.features.allowOverseasChangeOfPPOBEnabled()
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = conf.accessibilityReportUrl
@@ -57,7 +57,8 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
       "heading" -> message("address_lookupPage.heading"),
       "filterLabel" -> message("address_lookupPage.filter"),
       "postcodeLabel" -> message("address_lookupPage.postcode"),
-      "submitLabel" -> message("address_lookupPage.lookupPage.submit")
+      "submitLabel" -> message("address_lookupPage.lookupPage.submit"),
+      if (config.features.allowOverseasChangeOfPPOBEnabled()) "manualAddressLinkText" -> message("address_lookupPage.overseas") else {"" -> ""}
     )
 
     val confirmPageLabels: Messages => JsObject = message => Json.obj(
@@ -67,7 +68,8 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
     )
 
     val editPageLabels: Messages => JsObject = message => Json.obj(
-      "submitLabel" -> message("common.continue")
+      "submitLabel" -> message("common.continue"),
+      if (config.features.allowOverseasChangeOfPPOBEnabled()) "postcodeLabel" -> message("address_lookupPage.postalCode") else {"" -> ""}
     )
 
     val phaseBannerHtml: Messages => String = message =>

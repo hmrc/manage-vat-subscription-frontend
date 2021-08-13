@@ -160,7 +160,7 @@ object CustomerAddressTestConstants extends BaseMessages {
       "accessibilityFooterUrl" -> "/vat-through-software/accessibility-statement",
       "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
-      "ukMode" -> true,
+      "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 1800,
         "timeoutUrl" -> "/unauth-signout"
@@ -183,7 +183,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "heading" -> AddressLookupMessages.startHeading,
           "filterLabel" -> AddressLookupMessages.filter,
           "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel" -> AddressLookupMessages.submitLabel
+          "submitLabel" -> AddressLookupMessages.submitLabel,
+          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLink
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeading,
@@ -191,7 +192,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "submitLabel" -> continue
+          "submitLabel" -> continue,
+          "postcodeLabel" -> AddressLookupMessages.postcodeLabel
         )
       ),
       "cy" -> Json.obj(
@@ -210,7 +212,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "heading" -> AddressLookupMessages.startHeadingCy,
           "filterLabel" -> AddressLookupMessages.filterCy,
           "postcodeLabel" -> AddressLookupMessages.postcodeCy,
-         "submitLabel" -> AddressLookupMessages.submitLabelCy
+         "submitLabel" -> AddressLookupMessages.submitLabelCy,
+          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLinkCy
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeadingCy,
@@ -218,7 +221,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "submitLabel" -> AddressLookupMessages.continueCy
+          "submitLabel" -> AddressLookupMessages.continueCy,
+          "postcodeLabel" -> AddressLookupMessages.postcodeLabelCy
         )
       )
     )
@@ -231,7 +235,7 @@ object CustomerAddressTestConstants extends BaseMessages {
       "accessibilityFooterUrl" -> "/vat-through-software/accessibility-statement",
       "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
-      "ukMode" -> true,
+      "ukMode" -> false,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 1800,
         "timeoutUrl" -> "/unauth-signout"
@@ -254,7 +258,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "heading" -> AddressLookupMessages.startHeading,
           "filterLabel" -> AddressLookupMessages.filter,
           "postcodeLabel" -> AddressLookupMessages.postcode,
-          "submitLabel" -> AddressLookupMessages.submitLabel
+          "submitLabel" -> AddressLookupMessages.submitLabel,
+          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLink
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeading,
@@ -262,7 +267,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "submitLabel" -> continue
+          "submitLabel" -> continue,
+          "postcodeLabel" -> AddressLookupMessages.postcodeLabel
         )
       ),
       "cy" -> Json.obj(
@@ -281,7 +287,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "heading" -> AddressLookupMessages.startHeadingCy,
           "filterLabel" -> AddressLookupMessages.filterCy,
           "postcodeLabel" -> AddressLookupMessages.postcodeCy,
-          "submitLabel" -> AddressLookupMessages.submitLabelCy
+          "submitLabel" -> AddressLookupMessages.submitLabelCy,
+          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLinkCy
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeadingCy,
@@ -289,7 +296,8 @@ object CustomerAddressTestConstants extends BaseMessages {
           "showConfirmChangeText" -> false
         ),
         "editPageLabels" -> Json.obj(
-          "submitLabel" -> AddressLookupMessages.continueCy
+          "submitLabel" -> AddressLookupMessages.continueCy,
+          "postcodeLabel" -> AddressLookupMessages.postcodeLabelCy
         )
       )
     )
