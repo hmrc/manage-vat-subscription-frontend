@@ -69,7 +69,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
     val editPageLabels: Messages => JsObject = message => Json.obj(
       "submitLabel" -> message("common.continue"),
-      "postcodeLabel" -> message("address_lookupPage.postalCode")
+      if (config.features.allowOverseasChangeOfPPOBEnabled()) "postcodeLabel" -> message("address_lookupPage.postalCode") else {"" -> ""}
     )
 
     val phaseBannerHtml: Messages => String = message =>
