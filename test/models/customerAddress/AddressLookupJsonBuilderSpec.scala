@@ -24,7 +24,7 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
 
   "AddressLookupJsonBuilder" should {
 
-    "Serialize to new address lookup Json when using addressLookup v2" when {
+    "Serialize to new address lookup Json when using addressLookup v2 and allowOverseasChangeOfPPOB feature switch has been turned on" when {
 
       mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
 
