@@ -21,28 +21,51 @@ import assets.messages.BaseMessages
 
 class ServiceNameUtilSpec extends TestUtil with BaseMessages {
 
-  "ServiceNameUtil.generateHeader" when {
+  ".generateHeader" when {
 
     "given a User who is an Agent" should {
 
-      s"return the agent service name ${agentServiceName}" in {
-        ServiceNameUtil.generateHeader(agentUser,messages) shouldBe agentServiceName
+      s"return the agent service name $agentServiceName" in {
+        ServiceNameUtil.generateHeader(agentUser, messages) shouldBe agentServiceName
       }
     }
 
     "given a User who is not an Agent" should {
 
-      s"return the client service name ${clientServiceName}" in {
-        ServiceNameUtil.generateHeader(user,messages) shouldBe clientServiceName
+      s"return the client service name $clientServiceName" in {
+        ServiceNameUtil.generateHeader(user, messages) shouldBe clientServiceName
       }
     }
 
-    "NOT given a user" should {
+    "not given a User" should {
 
-      s"return the client service name ${clientServiceName}" in {
-        ServiceNameUtil.generateHeader(request,messages) shouldBe otherServiceName
+      s"return the client service name $clientServiceName" in {
+        ServiceNameUtil.generateHeader(request, messages) shouldBe otherServiceName
+      }
+    }
+  }
+
+  ".generateServiceUrl" when {
+
+    "given a User who is an Agent" should {
+
+      "return the Agent Hub URL" in {
+        ServiceNameUtil.generateServiceUrl(agentUser, mockConfig) shouldBe Some(mockConfig.agentClientLookupAgentAction)
       }
     }
 
+    "given a User who is not an Agent" should {
+
+      "return the BTA home URL" in {
+        ServiceNameUtil.generateServiceUrl(user, mockConfig) shouldBe Some(mockConfig.btaHomeUrl)
+      }
+    }
+
+    "not given a User" should {
+
+      "return None" in {
+        ServiceNameUtil.generateServiceUrl(request, mockConfig) shouldBe None
+      }
+    }
   }
 }

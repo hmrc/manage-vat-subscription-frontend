@@ -66,7 +66,7 @@
 }
 
 @head = {
-@hmrcTrackingConsentSnippet()
+  @hmrcTrackingConsentSnippet()
   <link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/application.css")' media="all">
 
   @if(showSignOut) {
@@ -81,18 +81,20 @@
 }
 
 @header = @{
-hmrcStandardHeader(
-serviceName = Some(navTitle),
-signOutUrl = if(showSignOut) Some(routes.SignOutController.signOut(feedbackOnSignOut).url) else None,
-phaseBanner = Some(standardBetaBanner(url = appConfig.feedbackUrl)),
-displayHmrcBanner = false
-)
+  hmrcStandardHeader(
+    serviceName = Some(navTitle),
+    serviceUrl = ServiceNameUtil.generateServiceUrl,
+    signOutUrl = if(showSignOut) Some(routes.SignOutController.signOut(feedbackOnSignOut).url) else None,
+    phaseBanner = Some(standardBetaBanner(url = appConfig.feedbackUrl)),
+    displayHmrcBanner = false
+  )
 }
 
-@getHelpHtml = @{hmrcReportTechnicalIssue(ReportTechnicalIssue(
+@getHelpHtml = @{
+  hmrcReportTechnicalIssue(ReportTechnicalIssue(
     serviceCode = appConfig.contactFormServiceIdentifier,
     language = if (messages.lang.code == "cy") Cy else En
-    ))
+  ))
 }
 
 @fullContent = {
@@ -109,4 +111,4 @@ displayHmrcBanner = false
     beforeContentBlock = Some(beforeContentHtml),
     footerBlock = Some(hmrcStandardFooter(accessibilityStatementUrl = Some(appConfig.accessibilityReportUrl))),
     scriptsBlock = Some(scripts)
-    )(fullContent)
+)(fullContent)
