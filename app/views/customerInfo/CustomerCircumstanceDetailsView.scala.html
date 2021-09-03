@@ -458,7 +458,7 @@
 <div id="contact-details-section">
     <h2 class="govuk-heading-m">@messages("customer_details.contactDetails.heading")</h2>
 
-    @if(appConfig.features.contactDetailsMovedToBTA() && !user.isAgent) {
+    @if(!user.isAgent) {
       @if(circumstances.email.isDefined && !circumstances.emailVerified && !circumstances.pendingPPOBSection) {
             @govukWarningText(WarningText(
                 iconFallbackText = "Warning",

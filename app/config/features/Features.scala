@@ -26,7 +26,6 @@ class Features @Inject()(implicit config: Configuration) {
 
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)
-  val contactDetailsMovedToBTA = new Feature(ConfigKeys.contactDetailsMovedToBTA)
   val contactPrefMigrationFeature = new Feature(ConfigKeys.contactPrefMigrationFeature)
   val tradingNameRowEnabled = new Feature(ConfigKeys.tradingNameRowFeature)
   val organisationNameRowEnabled = new Feature(ConfigKeys.organisationNameRowFeature)

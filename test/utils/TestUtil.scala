@@ -38,7 +38,6 @@ trait TestUtil extends UnitSpec with GuiceOneAppPerSuite with BeforeAndAfterEach
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    mockConfig.features.contactDetailsMovedToBTA(true)
     mockConfig.features.tradingNameRowEnabled(true)
     mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
     SharedMetricRegistries.clear()

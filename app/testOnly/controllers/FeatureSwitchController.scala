@@ -48,7 +48,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
-            contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
             tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
             organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled(),
@@ -70,7 +69,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
-    appConfig.features.contactDetailsMovedToBTA(model.contactDetailsMovedToBTA)
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
     appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)
     appConfig.features.organisationNameRowEnabled(model.organisationNameRowEnabled)
