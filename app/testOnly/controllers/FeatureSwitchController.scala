@@ -49,7 +49,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             stubContactPreferences = appConfig.features.stubContactPreferences(),
-            missingTraderAddressIntercept = appConfig.features.missingTraderAddressIntercept(),
             contactDetailsMovedToBTA = appConfig.features.contactDetailsMovedToBTA(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
             tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
@@ -73,7 +72,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.stubContactPreferences(model.stubContactPreferences)
-    appConfig.features.missingTraderAddressIntercept(model.missingTraderAddressIntercept)
     appConfig.features.contactDetailsMovedToBTA(model.contactDetailsMovedToBTA)
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
     appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)

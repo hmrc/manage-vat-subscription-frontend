@@ -48,9 +48,8 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
 
   def show: Action[AnyContent] = authPredicate.async { implicit user =>
 
-    (appConfig.features.missingTraderAddressIntercept(), user.session.get(SessionKeys.missingTraderConfirmedAddressKey)) match {
-      case (false, _) => Future.successful(NotFound(errorHandler.notFoundTemplate))
-      case (_, Some("true")) => Future.successful(Ok(missingTraderAddressConfirmationView()))
+    user.session.get(SessionKeys.missingTraderConfirmedAddressKey) match {
+      case Some("true") => Future.successful(Ok(missingTraderAddressConfirmationView()))
       case _ => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) if details.missingTrader =>
           auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show().url))
@@ -62,24 +61,21 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
     }
   }
 
-  def submit: Action[AnyContent] = authPredicate.async { implicit user =>
-    if(appConfig.features.missingTraderAddressIntercept()) {
-      form.bindFromRequest().fold(
-        error => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
-          case Right(details) => BadRequest(confirmBusinessAddressView(details.ppobAddress, error))
-          case Left(_) => errorHandler.showInternalServerError
-        },
-        {
-          case Yes =>
-            ppobService.validateBusinessAddress(user.vrn).map {
-              case Right(_) => Ok(missingTraderAddressConfirmationView()).addingToSession(SessionKeys.missingTraderConfirmedAddressKey -> "true")
-              case Left(_) => errorHandler.showInternalServerError
-            }
-          case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
-        }
-      )
-    } else {
-      Future.successful(BadRequest(errorHandler.badRequestTemplate))
+  def submit: Action[AnyContent] = authPredicate.async { implicit user => {
+    form.bindFromRequest().fold(
+      error => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
+        case Right(details) => BadRequest(confirmBusinessAddressView(details.ppobAddress, error))
+        case Left(_) => errorHandler.showInternalServerError
+      },
+      {
+        case Yes =>
+          ppobService.validateBusinessAddress(user.vrn).map {
+            case Right(_) => Ok(missingTraderAddressConfirmationView()).addingToSession(SessionKeys.missingTraderConfirmedAddressKey -> "true")
+            case Left(_) => errorHandler.showInternalServerError
+          }
+        case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
+      }
+    )
     }
   }
 }

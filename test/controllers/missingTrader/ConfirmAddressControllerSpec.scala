@@ -32,11 +32,6 @@ import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddres
 
 class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBService {
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    mockConfig.features.missingTraderAddressIntercept(true)
-  }
-
   val controller = new ConfirmAddressController(
     mcc,
     mockAuthPredicate,
@@ -146,23 +141,6 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       }
     }
 
-    "the missingTraderAddressIntercept feature switch is off" should {
-
-      lazy val result = {
-        mockConfig.features.missingTraderAddressIntercept(false)
-        controller.show(request)
-      }
-
-      "return 404" in {
-        status(result) shouldBe Status.NOT_FOUND
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
-    }
-
     insolvencyCheck(controller.show)
   }
 
@@ -216,23 +194,6 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       lazy val result = {
         setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
         controller.submit(request.withFormUrlEncodedBody())
-      }
-
-      "return 400" in {
-        status(result) shouldBe Status.BAD_REQUEST
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
-    }
-
-    "the missingTraderAddressIntercept feature switch is off" should {
-
-      lazy val result = {
-        mockConfig.features.missingTraderAddressIntercept(false)
-        controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.no))
       }
 
       "return 400" in {
