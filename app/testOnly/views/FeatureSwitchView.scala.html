@@ -51,13 +51,6 @@
             checked = appConfig.features.stubAddressLookup()
         ),
         CheckboxItem(
-            id = Some(ConfigKeys.missingTraderAddressIntercept),
-            name = Some(ConfigKeys.missingTraderAddressIntercept),
-            content = Text("Intercept missing traders on entry to confirm address."),
-            value = "true",
-            checked = appConfig.features.missingTraderAddressIntercept()
-        ),
-        CheckboxItem(
             id = Some(ConfigKeys.contactDetailsMovedToBTA),
             name = Some(ConfigKeys.contactDetailsMovedToBTA),
             content = Text("Replace contact details with link to BTA"),
