@@ -38,7 +38,6 @@ object FeatureSwitchForm {
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
-      ConfigKeys.stubContactPreferencesFeature -> boolean,
       ConfigKeys.missingTraderAddressIntercept -> boolean,
       ConfigKeys.contactDetailsMovedToBTA -> boolean,
       ConfigKeys.contactPrefMigrationFeature -> boolean,

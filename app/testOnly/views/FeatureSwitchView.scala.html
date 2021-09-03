@@ -51,13 +51,6 @@
             checked = appConfig.features.stubAddressLookup()
         ),
         CheckboxItem(
-            id = Some(ConfigKeys.stubContactPreferencesFeature),
-            name = Some(ConfigKeys.stubContactPreferencesFeature),
-            content = Text("Stub Contact Preferences"),
-            value = "true",
-            checked = appConfig.features.stubContactPreferences()
-        ),
-        CheckboxItem(
             id = Some(ConfigKeys.missingTraderAddressIntercept),
             name = Some(ConfigKeys.missingTraderAddressIntercept),
             content = Text("Intercept missing traders on entry to confirm address."),
