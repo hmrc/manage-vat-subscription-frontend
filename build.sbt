@@ -18,9 +18,7 @@ import play.core.PlayVersion
 import play.sbt.routes.RoutesKeys
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings._
-import uk.gov.hmrc.SbtAutoBuildPlugin
 import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
-import uk.gov.hmrc.versioning.SbtGitVersioning
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
@@ -57,7 +55,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "5.8.0",
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "5.12.0",
   "uk.gov.hmrc"       %% "play-partials"              % "8.1.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
   "com.typesafe.play" %% "play-json-joda"             % "2.6.14",

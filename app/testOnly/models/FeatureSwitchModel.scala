@@ -20,7 +20,6 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
                               stubContactPreferences: Boolean,
-                              missingTraderAddressIntercept: Boolean,
                               contactDetailsMovedToBTA: Boolean,
                               contactPrefMigrationFeature: Boolean,
                               tradingNameRowEnabled: Boolean,
