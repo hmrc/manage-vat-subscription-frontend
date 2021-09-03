@@ -338,22 +338,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
             }
-
-            "the tradingNameRowEnabled feature is disabled" should {
-
-              "not display the trading name row" which {
-
-                lazy val view = {
-                  mockConfig.features.tradingNameRowEnabled(false)
-                  injectedView(customerInformationNoPendingIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
-                }
-                lazy implicit val document: Document = Jsoup.parse(view.body)
-
-                "the trading name section is hidden" in {
-                  elementExtinct("#trading-name")
-                }
-              }
-            }
           }
         }
 
