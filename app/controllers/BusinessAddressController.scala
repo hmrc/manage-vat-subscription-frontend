@@ -23,11 +23,10 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
-import models.contactPreferences.ContactPreference._
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import services.{AddressLookupService, ContactPreferenceService, CustomerCircumstanceDetailsService, PPOBService}
+import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
 
@@ -37,7 +36,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                                           val inFlightPPOBCheck: InFlightPPOBPredicate,
                                           addressLookupService: AddressLookupService,
-                                          contactPreferenceService: ContactPreferenceService,
                                           ppobService: PPOBService,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           changeAddressView: ChangeAddressView,
@@ -86,7 +84,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           Ok(changeAddressConfirmationView(agentEmail = email))
       }
     } else {
-      if(appConfig.features.contactPrefMigrationFeature()) contactPrefRenderView else renderView
+       contactPrefRenderView
     }
   }
 
@@ -110,23 +108,4 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
     }
   }
 
-  private def renderView(implicit user: User[AnyContent]): Future[Result] =
-    contactPreferenceService.getContactPreference(user.vrn).flatMap {
-      case Right(cPref) =>
-
-        auditService.extendedAudit(
-          ContactPreferenceAuditModel(user.vrn, cPref.preference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-          Some(controllers.routes.ChangeBusinessNameController.show().url)
-        )
-        customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
-          case Right(details) =>
-            Ok(changeAddressConfirmationView(
-              contactPref = Some(cPref.preference),
-              emailVerified = details.ppob.contactDetails.exists(_.emailVerified contains true)
-            ))
-          case _ => Ok(changeAddressConfirmationView(contactPref = Some(digital)))
-        }
-      case Left(_) =>
-        Future.successful(Ok(changeAddressConfirmationView()))
-    }
 }
