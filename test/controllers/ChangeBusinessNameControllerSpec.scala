@@ -36,7 +36,6 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    mockConfig.features.organisationNameRowEnabled(true)
   }
 
   object TestChangeBusinessNameController extends ChangeBusinessNameController(
@@ -54,8 +53,6 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
   "Calling the .show action" when {
 
     "the user has the customer information necessary to access the page" when {
-
-      "the organisation name R19 feature switch is enabled" when {
 
         "the user's data is mastered in ETMP" should {
 
@@ -133,29 +130,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
             }
           }
         }
-      }
 
-      "the organisation name R19 feature switch is disabled" should {
-
-        lazy val result: Future[Result] = {
-          mockConfig.features.organisationNameRowEnabled(false)
-          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          TestChangeBusinessNameController.show(request)
-        }
-
-        "return OK (200)" in {
-          status(result) shouldBe Status.OK
-        }
-
-        "return HTML" in {
-          contentType(result) shouldBe Some("text/html")
-          charset(result) shouldBe Some("utf-8")
-        }
-
-        s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
-        }
-      }
     }
 
     "the user does not have an organisation name" should {
