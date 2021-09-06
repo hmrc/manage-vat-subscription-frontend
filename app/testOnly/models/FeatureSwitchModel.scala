@@ -19,7 +19,6 @@ package testOnly.models
 case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
-                              contactDetailsMovedToBTA: Boolean,
                               contactPrefMigrationFeature: Boolean,
                               tradingNameRowEnabled: Boolean,
                               organisationNameRowEnabled: Boolean,
