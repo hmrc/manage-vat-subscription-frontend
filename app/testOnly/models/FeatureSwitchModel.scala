@@ -20,6 +20,5 @@ case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwi
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
                               contactPrefMigrationFeature: Boolean,
-                              tradingNameRowEnabled: Boolean,
                               organisationNameRowEnabled: Boolean,
                               allowOverseasChangeOfPPOBEnabled: Boolean)

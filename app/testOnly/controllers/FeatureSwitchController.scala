@@ -49,7 +49,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
             contactPrefMigrationFeature = appConfig.features.contactPrefMigrationFeature(),
-            tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
             organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled(),
             allowOverseasChangeOfPPOBEnabled = appConfig.features.allowOverseasChangeOfPPOBEnabled()
           )
@@ -70,7 +69,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
     appConfig.features.contactPrefMigrationFeature(model.contactPrefMigrationFeature)
-    appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)
     appConfig.features.organisationNameRowEnabled(model.organisationNameRowEnabled)
     appConfig.features.allowOverseasChangeOfPPOBEnabled(model.allowOverseasChangeOfPPOBEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {

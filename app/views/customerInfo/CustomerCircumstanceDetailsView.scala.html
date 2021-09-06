@@ -409,12 +409,10 @@
             }
           }
 
-          @if(appConfig.features.tradingNameRowEnabled()) {
-            @customerTradingName(
-              if(circumstances.pendingTradingName.isDefined) circumstances.pendingTradingName else circumstances.customerDetails.tradingName,
-              circumstances.pendingTradingName.isDefined && !circumstances.sameTradingName
-            )
-          }
+          @customerTradingName(
+            if(circumstances.pendingTradingName.isDefined) circumstances.pendingTradingName else circumstances.customerDetails.tradingName,
+            circumstances.pendingTradingName.isDefined && !circumstances.sameTradingName
+          )
 
           @{circumstances.pendingPPOBAddress match {
             case Some(pendingPPOB) if(pendingPPOB != circumstances.ppob.address) =>  customerAddress(pendingPPOB, true)
