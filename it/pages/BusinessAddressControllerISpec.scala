@@ -24,11 +24,10 @@ import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.Status._
-import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{OK, SEE_OTHER}
-import stubs.{BusinessAddressStub, ContactPreferencesStub, VatSubscriptionStub}
+import stubs.{BusinessAddressStub, VatSubscriptionStub}
 
 class BusinessAddressControllerISpec extends BasePageISpec {
 
@@ -313,31 +312,6 @@ class BusinessAddressControllerISpec extends BasePageISpec {
             httpStatus(INTERNAL_SERVER_ERROR)
           )
         }
-      }
-    }
-  }
-
-  "Calling BusinessAddressController.nonAgentConfirmation" when {
-
-    def nonAgentConfirmation(): WSResponse = get("/change-business-address/confirmation/non-agent", session)
-
-    "the user is an individual" should {
-
-      "render the confirmation page" in {
-
-        mockAppConfig.features.contactPrefMigrationFeature(false)
-        given.user.isAuthenticated
-
-        And("A successful response is returned from contact preferences")
-        ContactPreferencesStub.getContactPrefs(OK, Json.obj("preference" -> "DiGiTaL"))
-
-        When("I call to show the Business Address change page")
-        val res = nonAgentConfirmation()
-
-        res should have(
-          httpStatus(OK),
-          elementText("#preference-message")(Messages("contact_preference.digital"))
-        )
       }
     }
   }
