@@ -18,7 +18,6 @@ package models.circumstanceInfo
 
 import config.AppConfig
 import models.JsonReadUtil
-import models.contactPreferences.ContactPreference
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, Writes, __}
@@ -33,7 +32,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
                                pendingChanges: Option[PendingChanges],
                                partyType: Option[String],
                                missingTrader: Boolean,
-                               commsPreference:Option[ContactPreference]) {
+                               commsPreference: Option[String]) {
 
   val ppobAddress: PPOBAddress = ppob.address
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
@@ -99,7 +98,7 @@ object CircumstanceDetails extends JsonReadUtil {
       pendingChangesPath.readOpt[PendingChanges] and
       partyTypePath.readOpt[String] and
       missingTraderPath.read[Boolean] and
-      commsPreferencePath.readOpt[ContactPreference](ContactPreference.circumstancePrefReads)
+      commsPreferencePath.readOpt[String]
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Writes[CircumstanceDetails] = (
@@ -113,6 +112,6 @@ object CircumstanceDetails extends JsonReadUtil {
       pendingChangesPath.writeNullable[PendingChanges] and
       partyTypePath.writeNullable[String] and
       missingTraderPath.write[Boolean] and
-      commsPreferencePath.writeNullable[ContactPreference](ContactPreference.circumstancePrefWrites)
+      commsPreferencePath.writeNullable[String]
     )(unlift(CircumstanceDetails.unapply))
 }
