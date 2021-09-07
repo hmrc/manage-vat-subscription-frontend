@@ -39,7 +39,6 @@ object FeatureSwitchForm {
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
       ConfigKeys.contactPrefMigrationFeature -> boolean,
-      ConfigKeys.organisationNameRowFeature -> boolean,
       ConfigKeys.allowOverseasChangeOfPPOBFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )

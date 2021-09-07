@@ -34,7 +34,6 @@ object ConfigKeys {
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val contactPrefMigrationFeature: String = "features.contactPrefMigration.enabled"
-  val organisationNameRowFeature: String = "features.organisationNameRow19.enabled"
   val allowOverseasChangeOfPPOBFeature: String ="features.allowOverseasChangeOfAddressR21.enabled"
 
   // GOV UK
@@ -46,8 +45,7 @@ object ConfigKeys {
   val govUkTrustNameChangeUrl: String = "gov-uk.guidance.trust-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
 
-  val partyTypes: String = "party-types"
-  val partyTypesR19: String = "party-types-r19"
+  val partyTypesOrgNameRow: String = "party-types-orgNameRow"
   val partyTypesNspItmpOrSAMastered: String = "party-types-nspItmpOrSAMastered"
   val partyTypesTrusts: String = "party-types-trusts"
 
