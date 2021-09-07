@@ -36,7 +36,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                                           val inFlightPPOBCheck: InFlightPPOBPredicate,
                                           addressLookupService: AddressLookupService,
-                                          contactPreferenceService: ContactPreferenceService,
                                           ppobService: PPOBService,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           changeAddressView: ChangeAddressView,

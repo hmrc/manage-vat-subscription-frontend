@@ -24,11 +24,10 @@ import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.Status._
-import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{OK, SEE_OTHER}
-import stubs.{BusinessAddressStub, ContactPreferencesStub, VatSubscriptionStub}
+import stubs.{BusinessAddressStub, VatSubscriptionStub}
 
 class BusinessAddressControllerISpec extends BasePageISpec {
 
