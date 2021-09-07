@@ -74,8 +74,6 @@ trait AppConfig {
   val agentClientLookupAgentAction: String
   def agentClientLookupUrl: String
   def agentClientUnauthorisedUrl: String
-  val contactPreferencesService: String
-  def contactPreferencesUrl(vrn: String): String
   def languageMap: Map[String,Lang]
   val routeToSwitchLanguage: String => Call
   val accessibilityReportUrl: String
@@ -139,12 +137,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
       servicesConfig.baseUrl(Keys.addressLookupFrontend)
     }
   }
-
-  override lazy val contactPreferencesService: String = {
-      servicesConfig.baseUrl(Keys.contactPreferencesService)
-    }
-
-  override def contactPreferencesUrl(vrn: String): String = contactPreferencesService + s"/contact-preferences/vat/vrn/$vrn"
 
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + servicesConfig.getString(Keys.addressLookupCallback)

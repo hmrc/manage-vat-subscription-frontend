@@ -74,8 +74,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val vatAgentClientLookupFrontendUrl: String = "/vaclf"
   override def agentClientLookupUrl: String = "/agent-client-lookup"
   override def agentClientUnauthorisedUrl: String = "agent-client-unauthorised"
-  override val contactPreferencesService: String = ""
-  override def contactPreferencesUrl(vrn: String): String = s"contact-preferences/vat/vrn/$vrn"
   override val govUkVat484Form: String = "/link-to-page"
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
   override def languageMap: Map[String, Lang] = Map(

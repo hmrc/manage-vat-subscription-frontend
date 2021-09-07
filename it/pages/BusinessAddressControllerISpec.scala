@@ -19,11 +19,12 @@ package pages
 import assets.BusinessAddressITConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
-import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, customerDetailsMin, organisation}
+import helpers.IntegrationTestConstants._
 import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.Status._
+import play.api.i18n.Messages
 import play.api.libs.json.Json
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers.{OK, SEE_OTHER}
@@ -312,6 +313,30 @@ class BusinessAddressControllerISpec extends BasePageISpec {
             httpStatus(INTERNAL_SERVER_ERROR)
           )
         }
+      }
+    }
+  }
+
+  "Calling BusinessAddressController.nonAgentConfirmation" when {
+
+    def nonAgentConfirmation(): WSResponse = get("/change-business-address/confirmation/non-agent", session)
+
+    "the user is an individual" should {
+
+      "render the confirmation page" in {
+
+        given.user.isAuthenticated
+
+        And("A successful response is returned from VAT subscription")
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual))
+
+        When("I call to show the Business Address change page")
+        val res = nonAgentConfirmation()
+
+        res should have(
+          httpStatus(OK),
+          elementText("#preference-message")(Messages("contact_preference.email"))
+        )
       }
     }
   }

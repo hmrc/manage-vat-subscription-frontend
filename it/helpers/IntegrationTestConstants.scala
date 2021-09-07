@@ -19,7 +19,6 @@ package helpers
 import java.util.UUID
 
 import models.circumstanceInfo._
-import models.contactPreferences.ContactPreference
 import models.returnFrequency.Jan
 
 object IntegrationTestConstants {
@@ -166,7 +165,7 @@ object IntegrationTestConstants {
       businessName = Some("Stationery'n'Boats")
     )),
     partyType = partyType,
-    commsPreference = Some(ContactPreference("DIGITAL"))
+    commsPreference = Some("DIGITAL")
   )
 
   def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(

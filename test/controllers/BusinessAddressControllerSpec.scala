@@ -21,8 +21,7 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, ChangePendingMessages}
 import audit.models.ContactPreferenceAuditModel
-import mocks.services.{MockAddressLookupService, MockBusinessAddressService, MockContactPreferenceService}
-import models.contactPreferences.ContactPreference
+import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
 import models.core.SubscriptionUpdateResponseModel
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
@@ -33,11 +32,10 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
-import ContactPreference._
 import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
-  MockBusinessAddressService with MockContactPreferenceService {
+  MockBusinessAddressService {
 
   override def afterEach(): Unit = reset(mockAuditingService)
 
@@ -346,7 +344,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockAgentAuthorised()
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)
         }
 
@@ -369,7 +366,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockAgentAuthorised()
           mockCustomerDetailsError()
-          mockContactPreferenceSuccess(ContactPreference("DIGITAL"))
           controller.confirmation("agent")(agentUser)
         }
 
@@ -453,7 +449,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
           "the user does not have a verified email address" should {
             lazy val result = {
-              mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some(ContactPreference(digital))))
+              mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some("DIGITAL")))
               controller.confirmation("non-agent")(request)
             }
             lazy val document = Jsoup.parse(bodyOf(result))
@@ -488,7 +484,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference is set to 'PAPER'" should {
 
         lazy val result = {
-          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some(ContactPreference(paper))))
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some("PAPER")))
           controller.confirmation("non-agent")(request)
         }
         lazy val document = Jsoup.parse(bodyOf(result))
