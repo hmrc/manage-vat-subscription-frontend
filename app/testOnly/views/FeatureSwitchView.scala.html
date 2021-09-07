@@ -51,13 +51,6 @@
             checked = appConfig.features.stubAddressLookup()
         ),
         CheckboxItem(
-            id = Some(ConfigKeys.contactPrefMigrationFeature),
-            name = Some(ConfigKeys.contactPrefMigrationFeature),
-            content = Text("Retrieve contact pref from vat-subscription"),
-            value = "true",
-            checked = appConfig.features.contactPrefMigrationFeature()
-        ),
-        CheckboxItem(
             id= Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
             name = Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
             content = Text("Enable Overseas Change of PPOB"),

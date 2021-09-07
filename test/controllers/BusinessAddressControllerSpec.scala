@@ -402,8 +402,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
             "the call to customerCircumstanceDetails succeeds" should {
               lazy val result = {
-                mockConfig.features.contactPrefMigrationFeature(true)
-                mockConfig.features.contactPrefMigrationFeature(true)
                 mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
                 controller.confirmation("non-agent")(request)
               }
@@ -436,8 +434,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
             "the call to customerCircumstanceDetails fails" should {
               lazy val result = {
-                mockConfig.features.contactPrefMigrationFeature(true)
-                mockConfig.features.contactPrefMigrationFeature(true)
                 mockCustomerDetailsError()
                 controller.confirmation("non-agent")(request)
               }
@@ -461,8 +457,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
           "the user does not have a verified email address" should {
             lazy val result = {
-              mockConfig.features.contactPrefMigrationFeature(true)
-              mockConfig.features.contactPrefMigrationFeature(true)
               mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some(ContactPreference(digital))))
               controller.confirmation("non-agent")(request)
             }
@@ -498,7 +492,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference is set to 'PAPER'" should {
 
         lazy val result = {
-          mockConfig.features.contactPrefMigrationFeature(true)
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some(ContactPreference(paper))))
           controller.confirmation("non-agent")(request)
         }
@@ -522,8 +515,6 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       "contactPreference returns an error" should {
 
         lazy val result = {
-          mockConfig.features.contactPrefMigrationFeature(true)
-          mockConfig.features.contactPrefMigrationFeature(true)
           mockCustomerDetailsError()
 
           controller.confirmation("non-agent")(request)
