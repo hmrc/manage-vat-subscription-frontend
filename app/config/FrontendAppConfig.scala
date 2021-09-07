@@ -184,8 +184,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val vatDesignatoryDetailsBusinessNameUrl: String =
     servicesConfig.getString(Keys.vatDesignatoryDetailsNewBusinessNameUrl)
 
-  override def partyTypes: Seq[String] =
-    if(features.organisationNameRowEnabled()) getStringSeq(Keys.partyTypesR19) else getStringSeq(Keys.partyTypes)
+  override def partyTypes: Seq[String] = getStringSeq(Keys.partyTypesOrgNameRow)
 
   override val partyTypesNspItmpOrSAMastered: Seq[String] = getStringSeq(Keys.partyTypesNspItmpOrSAMastered)
 

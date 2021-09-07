@@ -50,12 +50,12 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                   !circumstances.customerDetails.overseasIndicator &&
                                   circumstances.validPartyType
 
-        (baseAccess, appConfig.features.organisationNameRowEnabled(), circumstances.customerDetails.nameIsReadOnly) match {
-          case (true, true, Some(false)) =>
+        (baseAccess, circumstances.customerDetails.nameIsReadOnly) match {
+          case (true, Some(false)) =>
             Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
-          case (true, true, Some(true)) if circumstances.nspItmpPartyType||circumstances.trustPartyType =>
+          case (true, Some(true)) if circumstances.nspItmpPartyType||circumstances.trustPartyType =>
             renderAltChangeBusinessView(circumstances)
-          case (true, _, _) =>
+          case (true, _) =>
             Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
           case _ =>
             Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))

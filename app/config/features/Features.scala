@@ -26,7 +26,5 @@ class Features @Inject()(implicit config: Configuration) {
 
   val stubAgentClientLookup = new Feature(ConfigKeys.stubAgentClientLookupFeature)
   val stubAddressLookup = new Feature(ConfigKeys.stubAddressLookupFeature)
-  val tradingNameRowEnabled = new Feature(ConfigKeys.tradingNameRowFeature)
-  val organisationNameRowEnabled = new Feature(ConfigKeys.organisationNameRowFeature)
   val allowOverseasChangeOfPPOBEnabled = new Feature(ConfigKeys.allowOverseasChangeOfPPOBFeature)
 }

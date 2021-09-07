@@ -19,6 +19,4 @@ package testOnly.models
 case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
                               stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean,
-                              tradingNameRowEnabled: Boolean,
-                              organisationNameRowEnabled: Boolean,
                               allowOverseasChangeOfPPOBEnabled: Boolean)

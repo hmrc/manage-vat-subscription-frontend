@@ -38,8 +38,6 @@ object FeatureSwitchForm {
         )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean,
-      ConfigKeys.tradingNameRowFeature -> boolean,
-      ConfigKeys.organisationNameRowFeature -> boolean,
       ConfigKeys.allowOverseasChangeOfPPOBFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
   )

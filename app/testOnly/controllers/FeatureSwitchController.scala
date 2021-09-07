@@ -48,8 +48,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup(),
-            tradingNameRowEnabled = appConfig.features.tradingNameRowEnabled(),
-            organisationNameRowEnabled = appConfig.features.organisationNameRowEnabled(),
             allowOverseasChangeOfPPOBEnabled = appConfig.features.allowOverseasChangeOfPPOBEnabled()
           )
         )
@@ -68,8 +66,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
-    appConfig.features.tradingNameRowEnabled(model.tradingNameRowEnabled)
-    appConfig.features.organisationNameRowEnabled(model.organisationNameRowEnabled)
     appConfig.features.allowOverseasChangeOfPPOBEnabled(model.allowOverseasChangeOfPPOBEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
