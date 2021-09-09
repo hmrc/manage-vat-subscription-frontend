@@ -47,7 +47,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
   Seq(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
-    ScoverageKeys.coverageMinimum := 95,
+    ScoverageKeys.coverageMinimumStmtTotal := 95,
     ScoverageKeys.coverageFailOnMinimum := true,
     ScoverageKeys.coverageHighlighting := true
   )
@@ -59,8 +59,7 @@ val compile: Seq[ModuleID] = Seq(
   "uk.gov.hmrc"       %% "play-partials"              % "8.1.0-play-26",
   "org.typelevel"     %% "cats"                       % "0.9.0",
   "com.typesafe.play" %% "play-json-joda"             % "2.6.14",
-  "uk.gov.hmrc"       %% "play-frontend-govuk"        % "0.82.0-play-26",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "0.87.0-play-26"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "1.4.0-play-26"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
@@ -77,7 +76,6 @@ def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
 
 TwirlKeys.templateImports ++= Seq(
   "uk.gov.hmrc.govukfrontend.views.html.components._",
-  "uk.gov.hmrc.govukfrontend.views.html.helpers._",
   "uk.gov.hmrc.hmrcfrontend.views.html.components._"
 )
 
