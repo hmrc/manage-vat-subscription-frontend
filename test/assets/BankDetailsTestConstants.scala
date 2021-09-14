@@ -22,7 +22,7 @@ import play.api.libs.json.{JsValue, Json}
 object BankDetailsTestConstants {
 
   val accName = "**********************"
-  val accNum = "**7425"
+  val accNum = "****7425"
   val accSort = "69***"
 
   val bankDetailsModelMax: BankDetails = BankDetails(Some(accName), Some(accNum), Some(accSort))

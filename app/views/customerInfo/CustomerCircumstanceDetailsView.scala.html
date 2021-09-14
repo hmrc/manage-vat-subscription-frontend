@@ -138,11 +138,11 @@
         } { details =>
           @details.bankAccountNumber.map { accNum =>
             <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.number")</span> <br />
-            @accNum <br />
+            @messages("customer_details.bankAccount.numberEndingWith") @accNum.substring(4) <br />
           }
           @details.sortCode.map { sortcode =>
             <span class="govuk-!-font-weight-bold">@messages("customer_details.bankAccount.sortcode")</span> <br />
-            @sortcode
+            @messages("customer_details.bankAccount.sortcodeStartingWith") @sortcode.substring(0,2)
           }
         }
       </p>

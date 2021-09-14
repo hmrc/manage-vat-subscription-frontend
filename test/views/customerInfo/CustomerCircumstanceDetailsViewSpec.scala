@@ -140,9 +140,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
 
                 "has the correct text" in {
-                  elementText("#bank-details") shouldBe s"${viewMessages.accountNumberHeading} " +
-                    customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get +
-                    s" ${viewMessages.sortcodeHeading} ${customerInformationModelMaxIndividual.bankDetails.get.sortCode.get}"
+                  elementText("#bank-details") shouldBe s"${viewMessages.accountNumberHeading} " + viewMessages.accountNumberEnding + " " +
+                    customerInformationModelMaxIndividual.bankDetails.get.bankAccountNumber.get.substring(4) +
+                    s" ${viewMessages.sortcodeHeading} " + viewMessages.sortcodeStarting + " " + customerInformationModelMaxIndividual.bankDetails.get.sortCode.get.substring(0,2)
                 }
 
                 "has bold styling for the Account Number heading" in {
