@@ -41,6 +41,6 @@ object AddressLookupMessages {
   val manualAddressLinkCy = "Nid oes gan y cyfeiriad god post neu mae y tu allan i’r DU"
   val postcodeLabelCy = "Cod post neu god ardal (dewisol)"
 
-  val clientServiceNameCy = "Cyfrif Treth Busnes"
+  val clientServiceNameCy = "Rheoli eich cyfrif TAW"
   val agentServiceNameCy = "Manylion TAW eich cleient"
 }
