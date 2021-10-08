@@ -47,11 +47,11 @@ class MainTemplateSpec extends ViewBaseSpec {
       lazy implicit val document: Document = Jsoup.parse(view.body)
 
       "have the correct service name" in {
-        elementText(".govuk-header__link--service-name") shouldBe "Business tax account"
+        elementText(".govuk-header__link--service-name") shouldBe "Manage your VAT account"
       }
 
       "have the correct service URL" in {
-        element(".govuk-header__link--service-name").attr("href") shouldBe mockConfig.btaHomeUrl
+        element(".govuk-header__link--service-name").attr("href") shouldBe mockConfig.vatSummaryUrl
       }
     }
 

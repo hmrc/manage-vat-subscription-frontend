@@ -42,7 +42,7 @@ class ConfirmAddressPageSpec extends BasePageISpec {
 
         res should have(
           httpStatus(Status.OK),
-          pageTitle("We’ve had a problem delivering mail to this address - Business tax account - GOV.UK")
+          pageTitle("We’ve had a problem delivering mail to this address - Manage your VAT account - GOV.UK")
         )
       }
     }
@@ -67,7 +67,7 @@ class ConfirmAddressPageSpec extends BasePageISpec {
 
         res should have(
           httpStatus(Status.BAD_REQUEST),
-          pageTitle("Error: We’ve had a problem delivering mail to this address - Business tax account - GOV.UK")
+          pageTitle("Error: We’ve had a problem delivering mail to this address - Manage your VAT account - GOV.UK")
         )
       }
     }
