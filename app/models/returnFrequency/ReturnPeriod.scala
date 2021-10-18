@@ -16,8 +16,8 @@
 
 package models.returnFrequency
 
-import play.api.Logger
 import play.api.libs.json._
+import utils.LoggerUtil
 
 sealed trait ReturnPeriod {
   def id: String
@@ -55,7 +55,7 @@ case object Annual extends ReturnPeriod {
   override val auditValue: String = "Annually"
 }
 
-object ReturnPeriod {
+object ReturnPeriod extends LoggerUtil {
 
   val validAnnualPeriodKeys = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
 
@@ -66,7 +66,7 @@ object ReturnPeriod {
     case Monthly.id => Some(Monthly)
     case Annual.id => Some(Annual)
     case unknown =>
-      Logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
+      logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
       None
   }
 

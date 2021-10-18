@@ -19,29 +19,29 @@ package connectors.httpParsers
 import connectors.httpParsers.ResponseHttpParser.HttpPostResult
 import models.core.ErrorModel
 import models.payments.PaymentRedirectModel
-import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import utils.LoggerUtil
 
-object PaymentsHttpParser {
+object PaymentsHttpParser extends LoggerUtil {
 
-  implicit object PaymentsReads extends HttpReads[HttpPostResult[PaymentRedirectModel]] {
+  implicit object PaymentsReads extends HttpReads[HttpPostResult[PaymentRedirectModel]]{
 
     override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
 
       response.status match {
         case Status.CREATED => {
-          Logger.debug("[PaymentsHttpParser][read]: Status CREATED")
+          logger.debug("[PaymentsHttpParser][read]: Status CREATED")
           response.json.validate[PaymentRedirectModel].fold(
             invalid => {
-              Logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
+              logger.warn(s"[PaymentsHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from payments"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned, with response: ${response.body}")
+          logger.warn(s"[PaymentsHttpParser][read]: Unexpected Response, Status $status returned, with response: ${response.body}")
           Left(ErrorModel(status,"Downstream error returned when retrieving payment redirect"))
       }
     }

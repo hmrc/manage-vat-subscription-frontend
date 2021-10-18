@@ -23,11 +23,11 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
-import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import utils.LoggerUtil
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -44,7 +44,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                                           val auditService: AuditService,
                                           val mcc: MessagesControllerComponents,
                                           implicit val appConfig: AppConfig,
-                                          implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+                                          implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggerUtil {
 
   val show: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
     Future.successful(Ok(changeAddressView()))
@@ -54,7 +54,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         Redirect(response.redirectUrl)
-      case Left(_) => Logger.warn(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) => logger.warn(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
     }
   }
@@ -65,10 +65,10 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
             Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
-          case Left(_) => Logger.warn(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
+          case Left(_) => logger.warn(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
-      case Left(_) => Logger.warn(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) => logger.warn(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
         Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }

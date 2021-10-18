@@ -17,10 +17,11 @@
 package models.circumstanceInfo
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 import assets.FlatRateSchemeTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class FlatRateSchemeSpec extends UnitSpec {
+class FlatRateSchemeSpec extends AnyWordSpecLike with Matchers {
 
   "FlatRateScheme Reads" should {
     "parse the json correctly when all optional fields are populated" in {

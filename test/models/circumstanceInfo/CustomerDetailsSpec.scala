@@ -17,10 +17,11 @@
 package models.circumstanceInfo
 
 import assets.CustomerDetailsTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 
-class CustomerDetailsSpec extends UnitSpec {
+class CustomerDetailsSpec extends AnyWordSpecLike with Matchers {
 
   "CustomerDetailsModel" when {
 

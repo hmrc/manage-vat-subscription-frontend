@@ -45,7 +45,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
           mockAgentAuthorised()
           val result = target(request)
           status(result) shouldBe Status.OK
-          await(bodyOf(result)) shouldBe "test"
+          contentAsString(result) shouldBe "test"
         }
       }
 
@@ -59,7 +59,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
         }
 
         "render the Unauthorised Agent page" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe AgentUnauthorisedPageMessages.pageHeading
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe AgentUnauthorisedPageMessages.pageHeading
         }
       }
     }
@@ -79,13 +79,13 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
         mockUserWithoutAffinity()
         val result = target(request)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
     "a user with no active session" should {
 
-      lazy val result = await(target(request))
+      lazy val result = target(request)
 
       "return 303 (Redirect)" in {
         mockMissingBearerToken()
@@ -101,7 +101,7 @@ class AuthoriseAsAgentOnlySpec extends MockAuth {
 
       "return 500 (Internal Server Error)" in {
         mockUnauthorised()
-        val result = await(target(request))
+        val result = target(request)
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
     }

@@ -17,10 +17,11 @@
 package models.returnFrequency
 
 import assets.UpdateReturnPeriodTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 
-class UpdateReturnPeriodSpec extends UnitSpec {
+class UpdateReturnPeriodSpec extends AnyWordSpecLike with Matchers {
 
   "UpdateReturnPeriod" should {
 

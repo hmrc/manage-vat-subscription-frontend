@@ -22,6 +22,7 @@ import mocks.connectors.MockSubscriptionConnector
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import utils.TestUtil
+import play.api.test.Helpers._
 
 import scala.concurrent.Future
 

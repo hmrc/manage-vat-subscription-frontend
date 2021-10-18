@@ -19,15 +19,17 @@ package mocks.services
 import models.core.ErrorModel
 import models.customerAddress.{AddressLookupOnRampModel, AddressModel}
 import services.AddressLookupService
-import uk.gov.hmrc.play.test.UnitSpec
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
+
 import scala.concurrent.Future
 
-trait MockAddressLookupService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockAddressLookupService extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach with Matchers {
 
   val mockAddressLookupService: AddressLookupService = mock[AddressLookupService]
 

@@ -20,12 +20,12 @@ import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
-import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import utils.LoggerUtil
 
 @Singleton
-class CustomerCircumstancesHttpParser @Inject()() {
+class CustomerCircumstancesHttpParser @Inject()() extends LoggerUtil {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
@@ -35,11 +35,11 @@ class CustomerCircumstancesHttpParser @Inject()() {
 
       response.status match {
         case Status.OK =>
-          Logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
+          logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
           response.json.validate[CircumstanceDetails](CircumstanceDetails.reads).fold(
             invalid => {
-              Logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
-              Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
+              logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
+              logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
@@ -47,7 +47,7 @@ class CustomerCircumstancesHttpParser @Inject()() {
 
         case status =>
           if(!expectedErrorStatuses.contains(status)) {
-            Logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
+            logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
           }
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
       }

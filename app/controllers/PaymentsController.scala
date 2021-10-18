@@ -21,11 +21,11 @@ import audit.models.BankAccountHandOffAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightRepaymentBankAccountPredicate}
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{CustomerCircumstanceDetailsService, PaymentsService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,7 +38,7 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
                                    val inFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate,
                                    val mcc: MessagesControllerComponents,
                                    implicit val config: AppConfig,
-                                   implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+                                   implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggerUtil {
 
   val sendToPayments: Action[AnyContent] = (authenticate andThen inFlightRepaymentBankAccountPredicate).async { implicit user =>
     subscriptionService.getCustomerCircumstanceDetails(user.vrn).flatMap {
@@ -51,7 +51,7 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
             )
             Redirect(response.nextUrl)
           case _ =>
-            Logger.debug("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
+            logger.debug("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) => Future.successful(serviceErrorHandler.showInternalServerError)

@@ -20,6 +20,7 @@ import assets.BaseTestConstants.errorModel
 import assets.PaymentsTestConstants._
 import mocks.connectors.MockPaymentsConnector
 import utils.TestUtil
+import play.api.test.Helpers._
 
 class PaymentsServiceSpec extends TestUtil with MockPaymentsConnector {
 

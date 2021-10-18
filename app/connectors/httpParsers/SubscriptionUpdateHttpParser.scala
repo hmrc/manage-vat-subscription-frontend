@@ -18,11 +18,11 @@ package connectors.httpParsers
 
 import connectors.httpParsers.ResponseHttpParser.HttpPutResult
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
-import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import utils.LoggerUtil
 
-object SubscriptionUpdateHttpParser {
+object SubscriptionUpdateHttpParser extends LoggerUtil {
 
   implicit object SubscriptionUpdateReads extends HttpReads[HttpPutResult[SubscriptionUpdateResponseModel]] {
 
@@ -30,16 +30,16 @@ object SubscriptionUpdateHttpParser {
 
       response.status match {
         case Status.OK =>
-          Logger.debug("[SubscriptionUpdateHttpParser][read]: Status OK")
+          logger.debug("[SubscriptionUpdateHttpParser][read]: Status OK")
           response.json.validate[SubscriptionUpdateResponseModel].fold(
             invalid => {
-              Logger.warn(s"[SubscriptionUpdateHttpParser][read]: Invalid Json - $invalid")
+              logger.warn(s"[SubscriptionUpdateHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
           )
         case status =>
-          Logger.warn(s"[SubscriptionUpdateHttpParser][read]: Unexpected Response, Status $status returned")
+          logger.warn(s"[SubscriptionUpdateHttpParser][read]: Unexpected Response, Status $status returned")
           Left(ErrorModel(status, "Downstream error returned when updating Subscription Details"))
       }
     }

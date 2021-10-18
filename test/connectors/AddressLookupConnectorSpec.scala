@@ -40,6 +40,7 @@ import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampMode
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 import scala.concurrent.Future
 

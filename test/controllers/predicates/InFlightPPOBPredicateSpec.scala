@@ -22,8 +22,10 @@ import assets.messages.ChangePendingMessages
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.test.Helpers._
 
-class InFlightPPOBPredicateSpec extends MockAuth {
+
+class InFlightPPOBPredicateSpec extends MockAuth  {
 
   "The InFlightPPOBPredicate" when {
 
@@ -45,7 +47,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingEmailModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(result))
 
       "return 409 Conflict" in {
         status(result) shouldBe Status.CONFLICT
@@ -79,7 +81,7 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingPhoneModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(result))
 
       "return 409 Conflict" in {
         status(result) shouldBe Status.CONFLICT

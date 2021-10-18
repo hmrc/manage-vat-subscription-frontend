@@ -17,10 +17,11 @@
 package models.updatePPOB
 
 import assets.UpdatePPOBAddressTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 
-class UpdatePPOBSpec extends UnitSpec {
+class UpdatePPOBSpec extends AnyWordSpecLike with Matchers {
 
   "UpdatePPOBModel" should {
 

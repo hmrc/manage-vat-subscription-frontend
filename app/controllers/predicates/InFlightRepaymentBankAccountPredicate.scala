@@ -19,13 +19,13 @@ package controllers.predicates
 import config.{AppConfig, ServiceErrorHandler}
 import javax.inject.Inject
 import models.User
-import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -34,7 +34,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
                                                       val mcc: MessagesControllerComponents,
                                                       implicit val appConfig: AppConfig,
                                                       implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[User, User] with I18nSupport {
+  extends ActionRefiner[User, User] with I18nSupport with LoggerUtil {
 
   override def messagesApi: MessagesApi = mcc.messagesApi
 
@@ -49,7 +49,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
           Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect()))
         case Right(_) => Right(user)
         case Left(error) =>
-          Logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
+          logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
           Left(serviceErrorHandler.showInternalServerError)
       }
     }

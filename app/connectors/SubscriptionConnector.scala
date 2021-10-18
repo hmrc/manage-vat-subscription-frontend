@@ -25,16 +25,16 @@ import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
-import play.api.Logger
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SubscriptionConnector @Inject()(val http: HttpClient,
                                       val config: AppConfig,
-                                        customerCircumstancesHttpParser: CustomerCircumstancesHttpParser) {
+                                        customerCircumstancesHttpParser: CustomerCircumstancesHttpParser) extends LoggerUtil{
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
@@ -44,7 +44,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
-    Logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
+    logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
     http.GET(url)(customerCircumstancesHttpParser.CustomerCircumstanceReads, headerCarrier, ec)
   }
 

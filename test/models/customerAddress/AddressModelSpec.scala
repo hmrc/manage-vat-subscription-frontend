@@ -17,10 +17,11 @@
 package models.customerAddress
 
 import assets.CustomerAddressTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 
-class AddressModelSpec extends UnitSpec {
+class AddressModelSpec extends AnyWordSpecLike with Matchers {
 
   "CustomerAddressModel" should {
 

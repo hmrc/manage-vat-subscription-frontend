@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-package config
+package utils
 
-import com.google.inject.AbstractModule
-import services.EnrolmentsAuthService
-import uk.gov.hmrc.auth.core.AuthorisedFunctions
+import org.slf4j.{Logger, LoggerFactory}
+import play.api.LoggerLike
 
-class DIModule extends AbstractModule {
-  override def configure(): Unit = {
-    bind(classOf[AppConfig]).to(classOf[FrontendAppConfig]).asEagerSingleton()
-    bind(classOf[AuthorisedFunctions]).to(classOf[EnrolmentsAuthService])
-  }
+trait LoggerUtil extends LoggerLike {
+  override val logger: Logger = LoggerFactory.getLogger("application")
 }

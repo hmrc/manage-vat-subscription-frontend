@@ -58,7 +58,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
         SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan ,
         SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodFeb
       ))
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(result))
 
       "return 200" in {
         getPartial(Html(""))
@@ -98,7 +98,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       "return 500" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
       }
 
       "return HTML" in {
@@ -189,7 +189,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       "return 500" in {
         mockCustomerDetailsError()
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
       }
 
       "return HTML" in {

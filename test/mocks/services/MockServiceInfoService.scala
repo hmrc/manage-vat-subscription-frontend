@@ -19,12 +19,14 @@ package mocks.services
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import play.twirl.api.Html
 import services.ServiceInfoService
-import uk.gov.hmrc.play.test.UnitSpec
 
-trait MockServiceInfoService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+import scala.concurrent.Future
+
+trait MockServiceInfoService extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach {
 
   val mockServiceInfoService: ServiceInfoService = mock[ServiceInfoService]
 
@@ -35,6 +37,6 @@ trait MockServiceInfoService extends UnitSpec with MockitoSugar with BeforeAndAf
 
   def getPartial(response: Html): Unit= {
     when(mockServiceInfoService.getPartial()(ArgumentMatchers.any(), ArgumentMatchers.any()))
-      .thenReturn(response)
+      .thenReturn(Future.successful(response))
   }
 }

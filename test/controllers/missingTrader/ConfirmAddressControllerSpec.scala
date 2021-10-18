@@ -63,7 +63,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         }
 
         s"have the h1 as ${MissingTraderAddressConfirmationPageMessages.h1}" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe MissingTraderAddressConfirmationPageMessages.h1
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe MissingTraderAddressConfirmationPageMessages.h1
         }
       }
 

@@ -22,12 +22,12 @@ import models.customerAddress.{AddressLookupOnRampModel, AddressModel}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
-trait MockAddressLookupConnector extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockAddressLookupConnector extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach {
 
   val mockAddressLookupConnector: AddressLookupConnector = mock[AddressLookupConnector]
 
