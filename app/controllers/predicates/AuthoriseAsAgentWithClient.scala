@@ -46,7 +46,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
       .withDelegatedAuthRule(EnrolmentKeys.mtdVatDelegatedAuthRule)
 
   private val arn: Enrolments => String = _.enrolments.collectFirst {
-    case Enrolment("HMRC-AS-AGENT", EnrolmentIdentifier(_, arnValue) :: _, _, _) => arnValue
+    case Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arnValue)), _ , _) => arnValue
   }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
 
   override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser

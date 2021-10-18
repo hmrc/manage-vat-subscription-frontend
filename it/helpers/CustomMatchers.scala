@@ -19,11 +19,11 @@ package helpers
 import org.jsoup.Jsoup
 import org.scalatest._
 import org.scalatest.matchers._
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Reads
 import play.api.libs.ws.WSResponse
-import uk.gov.hmrc.play.test.UnitSpec
 
-trait   CustomMatchers extends UnitSpec with GivenWhenThen {
+trait CustomMatchers extends AnyWordSpecLike with GivenWhenThen {
 
   def httpStatus(expectedValue: Int): HavePropertyMatcher[WSResponse, Int] =
     new HavePropertyMatcher[WSResponse, Int] {

@@ -24,6 +24,6 @@ case class AgentUser[A](arn: String) (implicit request: Request[A]) extends Wrap
 object AgentUser {
   def apply[A](enrolments: Enrolments)(implicit request: Request[A]): AgentUser[A] =
     enrolments.enrolments.collectFirst {
-      case Enrolment("HMRC-AS-AGENT", EnrolmentIdentifier(_, arn) :: _, _, _) => AgentUser(arn)
+      case Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _) => AgentUser(arn)
     }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
 }
