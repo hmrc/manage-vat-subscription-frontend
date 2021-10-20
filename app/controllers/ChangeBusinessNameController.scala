@@ -78,7 +78,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
       case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
         auditService.extendedAudit(
           HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
-          Some(controllers.routes.ChangeBusinessNameController.show().url)
+          Some(controllers.routes.ChangeBusinessNameController.show.url)
         )
         Redirect(appConfig.govUkCohoNameChangeUrl)
       case _ => serviceErrorHandler.showInternalServerError

@@ -58,7 +58,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
 
   val submitFeatureSwitch: Action[AnyContent] = Action.async { implicit request =>
     FeatureSwitchForm.form.bindFromRequest().fold(
-      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch())),
+      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch)),
       success = handleSuccess
     )
   }
@@ -70,7 +70,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
-          case OK => Redirect(routes.FeatureSwitchController.featureSwitch())
+          case OK => Redirect(routes.FeatureSwitchController.featureSwitch)
           case _ => InternalServerError("Failed to update feature switches in VAT Subscription")
         }
     }

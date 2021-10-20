@@ -96,7 +96,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
           case Some(contactPreference) =>
             auditService.extendedAudit(
               ContactPreferenceAuditModel(user.vrn, contactPreference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-              Some(controllers.routes.ChangeBusinessNameController.show().url)
+              Some(controllers.routes.ChangeBusinessNameController.show.url)
             )
             Ok(changeAddressConfirmationView(
               contactPref = Some(contactPreference),

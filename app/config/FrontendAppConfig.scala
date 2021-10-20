@@ -106,7 +106,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override lazy val signInContinueBaseUrl: String = servicesConfig.getString(Keys.signInContinueBaseUrl)
   private lazy val signInContinueUrl: String =
-    SafeRedirectUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl
+    SafeRedirectUrl(signInContinueBaseUrl + controllers.routes.CustomerCircumstanceDetailsController.redirect.url).encodedUrl
 
   private lazy val signInOrigin = servicesConfig.getString(Keys.appName)
   override lazy val signInUrl: String = s"$signInBaseUrl?continue=$signInContinueUrl&origin=$signInOrigin"
@@ -163,7 +163,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val agentInvitationsFastTrack: String = servicesConfig.getString(Keys.agentInvitationsFastTrack)
 
   override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
-    s"&backUrl=${SafeRedirectUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect().url).encodedUrl}"
+    s"&backUrl=${SafeRedirectUrl(host + controllers.routes.CustomerCircumstanceDetailsController.redirect.url).encodedUrl}"
 
   override lazy val vatCorrespondenceChangeEmailUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeEmailUrl)
   override lazy val vatCorrespondenceChangeLandlineNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceChangeLandlineNumberUrl)
@@ -197,9 +197,9 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override def agentClientLookupUrl: String =
     if (features.stubAgentClientLookup()) {
-      testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+      testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
     } else {
-      vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+      vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
     }
 
   override val agentClientLookupAgentAction: String =
@@ -212,9 +212,9 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override def agentClientUnauthorisedUrl: String =
     if (features.stubAgentClientLookup()) {
-      testOnly.controllers.routes.StubAgentClientLookupController.unauth(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+      testOnly.controllers.routes.StubAgentClientLookupController.unauth(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
     } else {
-      vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+      vatAgentClientLookupUnauthorised(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
     }
 
   override def languageMap: Map[String, Lang] = Map(

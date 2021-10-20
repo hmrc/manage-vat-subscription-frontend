@@ -270,7 +270,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               res should have(
                 httpStatus(SEE_OTHER),
                 redirectURI(
-                  testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+                  testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
                 )
               )
             }
@@ -291,7 +291,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
                 res should have(
                   httpStatus(SEE_OTHER),
-                  redirectURI(mockAppConfig.vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect().url))
+                  redirectURI(mockAppConfig.vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect.url))
                 )
               }
             }
@@ -310,7 +310,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 res should have(
                   httpStatus(SEE_OTHER),
                   redirectURI(
-                    testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect().url).url
+                    testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
                   )
                 )
               }

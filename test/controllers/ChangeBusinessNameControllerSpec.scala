@@ -211,7 +211,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
         verify(mockAuditingService)
           .extendedAudit(
             ArgumentMatchers.eq(HandOffToCOHOAuditModel(user, customerInformationModelMaxOrganisation.customerDetails.organisationName.get)),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.ChangeBusinessNameController.show().url))
+            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.ChangeBusinessNameController.show.url))
           )(
             ArgumentMatchers.any[HeaderCarrier],
             ArgumentMatchers.any[ExecutionContext]

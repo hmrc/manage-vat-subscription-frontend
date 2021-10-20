@@ -47,7 +47,7 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
           case Right(response) =>
             auditService.extendedAudit(
               BankAccountHandOffAuditModel(user, response.nextUrl),
-              Some(routes.PaymentsController.sendToPayments().url)
+              Some(routes.PaymentsController.sendToPayments.url)
             )
             Redirect(response.nextUrl)
           case _ =>

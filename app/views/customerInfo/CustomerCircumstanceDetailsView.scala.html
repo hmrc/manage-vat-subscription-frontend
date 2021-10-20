@@ -74,7 +74,7 @@
             <span class="govuk-visually-hidden">@messages("customer_details.businessName.pending.hidden")</span>
           </span>
         } else {
-          <a id="business-name-status" class="govuk-link" href="@{controllers.routes.ChangeBusinessNameController.show().url}">
+          <a id="business-name-status" class="govuk-link" href="@{controllers.routes.ChangeBusinessNameController.show.url}">
             <span aria-hidden="true">@messages("customer_details.change")</span>
             <span class="govuk-visually-hidden">@messages("customer_details.businessName.change.hidden", orgName)</span>
           </a>
@@ -107,7 +107,7 @@
             </span>
           } else {
             <a id="place-of-business-status" class="govuk-link" href="@{
-              controllers.routes.BusinessAddressController.show().url
+              controllers.routes.BusinessAddressController.show.url
             }">
               <span aria-hidden="true">@messages("customer_details.change")</span>
               <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden", address.line1)</span>
@@ -154,7 +154,7 @@
           <span class="govuk-visually-hidden">@messages("customer_details.bankAccount.pending.hidden")</span>
         </span>
         } else {
-        <a id="bank-details-status" class="govuk-link" href="@{controllers.routes.PaymentsController.sendToPayments()}">
+        <a id="bank-details-status" class="govuk-link" href="@{controllers.routes.PaymentsController.sendToPayments}">
           <span aria-hidden="true">
             @bankDetails match {
               case None => { @messages("customer_details.add") }
