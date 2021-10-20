@@ -17,10 +17,11 @@
 package models.circumstanceInfo
 
 import play.api.libs.json.Json
-import uk.gov.hmrc.play.test.UnitSpec
 import assets.BankDetailsTestConstants._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class BankDetailsSpec extends UnitSpec {
+class BankDetailsSpec extends AnyWordSpecLike with Matchers {
 
   "BankDetails Reads" should {
     "parse the json correctly when all optional fields are populated" in {

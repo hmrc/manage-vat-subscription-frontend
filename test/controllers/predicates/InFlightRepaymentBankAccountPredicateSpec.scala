@@ -19,8 +19,12 @@ package controllers.predicates
 import assets.CircumstanceDetailsTestConstants._
 import mocks.MockAuth
 import org.jsoup.Jsoup
-import play.api.test.Helpers._
+import play.api.test.Helpers.{await, contentAsString, defaultAwaitTimeout, redirectLocation, status}
 import assets.BaseTestConstants._
+import play.api.http.Status
+import play.api.http.Status.INTERNAL_SERVER_ERROR
+
+import scala.concurrent.Future
 
 class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
@@ -32,15 +36,15 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
         lazy val result = {
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          await(mockInFlightRepaymentBankAccountPredicate.refine(user).left.get)
+          await(mockInFlightRepaymentBankAccountPredicate.refine(user)).left.get
         }
 
         "return 303" in {
-          status(result) shouldBe SEE_OTHER
+          status(Future.successful(result)) shouldBe Status.SEE_OTHER
         }
 
-        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
-          redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect.url}" in {
+          redirectLocation(Future.successful(result)) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
         }
       }
 
@@ -73,12 +77,12 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
       lazy val result = {
         mockCustomerDetailsError()
-        await(mockInFlightRepaymentBankAccountPredicate.refine(user).left.get)
+        await(mockInFlightRepaymentBankAccountPredicate.refine(user)).left.get
       }
 
       "return 500" in {
-        status(result) shouldBe INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+        status(Future.successful(result)) shouldBe INTERNAL_SERVER_ERROR
+        messages(Jsoup.parse(contentAsString(Future.successful(result))).title) shouldBe internalServerErrorTitleUser
       }
     }
   }

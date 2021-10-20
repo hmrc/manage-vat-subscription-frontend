@@ -18,7 +18,6 @@ package testOnly.controllers
 
 import config.AppConfig
 import javax.inject.{Inject, Singleton}
-import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import testOnly.connectors.VatSubscriptionFeaturesConnector
@@ -27,6 +26,7 @@ import testOnly.models.FeatureSwitchModel
 import testOnly.views.html.FeatureSwitchView
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -36,13 +36,13 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
                                         implicit val mcc: MessagesControllerComponents,
                                         implicit val ec: ExecutionContext,
                                         implicit val appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport {
+  extends FrontendController(mcc) with I18nSupport with LoggerUtil {
 
   val featureSwitch: Action[AnyContent] = Action.async { implicit request =>
 
     vatSubscriptionFeaturesConnector.getFeatures.map {
       vatSubFeatures =>
-        Logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
+        logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
         val form = FeatureSwitchForm.form.fill(
           FeatureSwitchModel(
             vatSubFeatures,
@@ -51,14 +51,14 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
             allowOverseasChangeOfPPOBEnabled = appConfig.features.allowOverseasChangeOfPPOBEnabled()
           )
         )
-        Logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
+        logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
         Ok(featureSwitchView(form))
     }
   }
 
   val submitFeatureSwitch: Action[AnyContent] = Action.async { implicit request =>
     FeatureSwitchForm.form.bindFromRequest().fold(
-      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch())),
+      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch)),
       success = handleSuccess
     )
   }
@@ -70,7 +70,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {
-          case OK => Redirect(routes.FeatureSwitchController.featureSwitch())
+          case OK => Redirect(routes.FeatureSwitchController.featureSwitch)
           case _ => InternalServerError("Failed to update feature switches in VAT Subscription")
         }
     }

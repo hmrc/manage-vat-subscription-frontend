@@ -73,7 +73,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangeAddressPageMessages.heading}'" in {
-        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressPageMessages.heading
+        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressPageMessages.heading
       }
     }
 
@@ -94,7 +94,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangePendingMessages.heading}'" in {
-        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -146,7 +146,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangePendingMessages.heading}'" in {
-        messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -210,7 +210,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "return InternalServerError" in {
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
     }
@@ -228,7 +228,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -299,7 +299,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         s"have the heading '${ChangePendingMessages.heading}'" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
         }
       }
     }
@@ -314,7 +314,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -357,7 +357,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
 
@@ -379,7 +379,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
     }
@@ -397,7 +397,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
                 mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
                 controller.confirmation("non-agent")(request)
               }
-              lazy val document = Jsoup.parse(bodyOf(result))
+              lazy val document = Jsoup.parse(contentAsString(result))
 
               "return 200" in {
                 status(result) shouldBe Status.OK
@@ -429,7 +429,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
                 mockCustomerDetailsError()
                 controller.confirmation("non-agent")(request)
               }
-              lazy val document = Jsoup.parse(bodyOf(result))
+              lazy val document = Jsoup.parse(contentAsString(result))
 
               "return 200" in {
                 status(result) shouldBe Status.OK
@@ -452,7 +452,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
               mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some("DIGITAL")))
               controller.confirmation("non-agent")(request)
             }
-            lazy val document = Jsoup.parse(bodyOf(result))
+            lazy val document = Jsoup.parse(contentAsString(result))
 
             "return 200" in {
               status(result) shouldBe Status.OK
@@ -487,7 +487,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some("PAPER")))
           controller.confirmation("non-agent")(request)
         }
-        lazy val document = Jsoup.parse(bodyOf(result))
+        lazy val document = Jsoup.parse(contentAsString(result))
 
         "return 200" in {
           status(result) shouldBe Status.OK
@@ -511,7 +511,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
           controller.confirmation("non-agent")(request)
         }
-        lazy val document = Jsoup.parse(bodyOf(result))
+        lazy val document = Jsoup.parse(contentAsString(result))
 
         "return 200" in {
           status(result) shouldBe Status.OK

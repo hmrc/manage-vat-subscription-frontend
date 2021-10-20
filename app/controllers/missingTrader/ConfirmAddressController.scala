@@ -52,7 +52,7 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
       case Some("true") => Future.successful(Ok(missingTraderAddressConfirmationView()))
       case _ => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) if details.missingTrader =>
-          auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show().url))
+          auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show.url))
           Ok(confirmBusinessAddressView(details.ppobAddress, form))
         case Right(_) if user.isAgent => Redirect(appConfig.agentClientLookupAgentAction)
         case Right(_) => Redirect(appConfig.vatSummaryUrl)
@@ -73,7 +73,7 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
             case Right(_) => Ok(missingTraderAddressConfirmationView()).addingToSession(SessionKeys.missingTraderConfirmedAddressKey -> "true")
             case Left(_) => errorHandler.showInternalServerError
           }
-        case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney()))
+        case No => Future.successful(Redirect(controllers.routes.BusinessAddressController.initialiseJourney))
       }
     )
     }

@@ -23,12 +23,13 @@ import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.UpdatePPOB
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockSubscriptionConnector extends UnitSpec with MockFactory with BeforeAndAfterEach {
+trait MockSubscriptionConnector extends AnyWordSpecLike with MockFactory with BeforeAndAfterEach with Matchers {
 
   val mockSubscriptionConnector: SubscriptionConnector = mock[SubscriptionConnector]
 

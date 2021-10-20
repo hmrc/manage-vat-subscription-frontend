@@ -22,6 +22,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.Request
 import play.twirl.api.{Html, HtmlFormat}
 import utils.TestUtil
+import play.api.test.Helpers._
 
 import scala.concurrent.{ExecutionContext, Future}
 

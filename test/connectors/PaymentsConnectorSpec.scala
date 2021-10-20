@@ -23,6 +23,7 @@ import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
+import play.api.test.Helpers._
 
 import scala.concurrent.Future
 
@@ -36,7 +37,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
 
     val continueUrl = "continue-url"
     def postPaymentsDetailsResult: Future[HttpPostResult[PaymentRedirectModel]] =
-      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", true, "returnUrl", "backUrl", "convenienceUrl", None, None))
+      TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", isAgent = true, "returnUrl", "backUrl", "convenienceUrl", None, None))
 
     "for postPaymentsDetails method" when {
 

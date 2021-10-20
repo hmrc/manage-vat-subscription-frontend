@@ -19,12 +19,12 @@ package connectors.httpParsers
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import models.core.ErrorModel
 import models.customerAddress.AddressModel
-import play.api.Logger
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
+import utils.LoggerUtil
 
 
-object AddressLookupHttpParser {
+object AddressLookupHttpParser extends LoggerUtil {
 
   implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
 
@@ -32,17 +32,17 @@ object AddressLookupHttpParser {
 
       response.status match {
         case Status.OK => {
-          Logger.debug("[AddressLookupHttpParser][read]: Status OK")
+          logger.debug("[AddressLookupHttpParser][read]: Status OK")
           response.json.validate[AddressModel](AddressModel.customerAddressReads).fold(
             invalid => {
-              Logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
+              logger.warn(s"[AddressLookupHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json returned from Address Lookup"))
             },
             valid => Right(valid)
           )
         }
         case status =>
-          Logger.warn(s"[AddressLookupHttpParser][read]: Unexpected Response, Status $status returned")
+          logger.warn(s"[AddressLookupHttpParser][read]: Unexpected Response, Status $status returned")
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerAddressModel from AddressLookup"))
       }
     }

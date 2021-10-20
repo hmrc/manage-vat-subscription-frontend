@@ -16,8 +16,8 @@
 
 package models.returnFrequency
 
-import play.api.Logger
 import play.api.libs.json._
+import utils.LoggerUtil
 
 sealed trait ReturnPeriod {
   def id: String
@@ -29,33 +29,38 @@ case object Jan extends ReturnPeriod {
   override val internalId: String = "MA"
   override val id: String = "January"
   override val auditValue: String = "January, April, July and October"
+  implicit val writes: Writes[Jan.type] = Writes { _ => Json.obj("stdReturnPeriod" -> internalId)}
 }
 
 case object Feb extends ReturnPeriod {
   override val internalId: String = "MB"
   override val id: String = "February"
   override val auditValue: String = "February, May, August and November"
+  implicit val writes: Writes[Feb.type] = Writes { _ => Json.obj("stdReturnPeriod" -> internalId )}
 }
 
 case object Mar extends ReturnPeriod {
   override val internalId: String = "MC"
   override val id: String = "March"
   override val auditValue: String = "March, June, September and December"
+  implicit val writes: Writes[Mar.type] = Writes { _ => Json.obj("stdReturnPeriod" -> internalId )}
 }
 
 case object Monthly extends ReturnPeriod {
   override val internalId: String = "MM"
   override val id: String = "Monthly"
   override val auditValue: String = "Every month"
+  implicit val writes: Writes[Monthly.type] = Writes { _ => Json.obj("stdReturnPeriod" -> internalId )}
 }
 
 case object Annual extends ReturnPeriod {
   override val internalId: String = "AN"
   override val id: String = "Annually"
   override val auditValue: String = "Annually"
+  implicit val writes: Writes[Annual.type] = Writes { _ => Json.obj("stdReturnPeriod" -> internalId )}
 }
 
-object ReturnPeriod {
+object ReturnPeriod extends LoggerUtil {
 
   val validAnnualPeriodKeys = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
 
@@ -66,7 +71,7 @@ object ReturnPeriod {
     case Monthly.id => Some(Monthly)
     case Annual.id => Some(Annual)
     case unknown =>
-      Logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
+      logger.warn(s"[ConfirmVatDatesController].[getReturnFrequency] Session contains invalid frequency: $unknown")
       None
   }
 

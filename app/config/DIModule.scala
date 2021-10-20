@@ -21,7 +21,7 @@ import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core.AuthorisedFunctions
 
 class DIModule extends AbstractModule {
-  def configure(): Unit = {
+  override def configure(): Unit = {
     bind(classOf[AppConfig]).to(classOf[FrontendAppConfig]).asEagerSingleton()
     bind(classOf[AuthorisedFunctions]).to(classOf[EnrolmentsAuthService])
   }

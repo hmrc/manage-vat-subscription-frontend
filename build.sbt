@@ -55,23 +55,23 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-26" % "5.13.0",
-  "uk.gov.hmrc"       %% "play-partials"              % "8.2.0-play-26",
-  "org.typelevel"     %% "cats"                       % "0.9.0",
-  "com.typesafe.play" %% "play-json-joda"             % "2.6.14",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "1.9.0-play-26"
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "5.15.0",
+  "uk.gov.hmrc"       %% "play-partials"              % "8.2.0-play-28",
+  "com.typesafe.play" %% "play-json-joda"             % "2.9.2",
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "1.19.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"             %% "hmrctest"                       % "3.10.0-play-26"     % scope,
-  "org.scalatest"           %% "scalatest"                      % "3.0.9"             % scope,
-  "org.pegdown"             %  "pegdown"                        % "1.6.0"             % scope,
-  "org.jsoup"               %  "jsoup"                          % "1.13.1"            % scope,
-  "com.typesafe.play"       %% "play-test"                      % PlayVersion.current % scope,
-  "org.scalatestplus.play"  %% "scalatestplus-play"             % "3.1.3"             % scope,
-  "org.scalamock"           %% "scalamock-scalatest-support"    % "3.6.0"             % scope,
-  "com.github.tomakehurst"  %  "wiremock-jre8"                  % "2.28.0"            % scope,
-  "org.mockito"             %  "mockito-core"                   % "3.11.0"            % scope
+  "org.scalatest"           %% "scalatest"                      % "3.1.4"              % scope,
+  "org.pegdown"             %  "pegdown"                        % "1.6.0"              % scope,
+  "org.jsoup"               %  "jsoup"                          % "1.14.1"             % scope,
+  "com.typesafe.play"       %% "play-test"                      % PlayVersion.current  % scope,
+  "org.scalatestplus.play"  %% "scalatestplus-play"             % "5.1.0"              % scope,
+  "org.scalamock"           %% "scalamock-scalatest-support"    % "3.6.0"              % scope,
+  "com.github.tomakehurst"  %  "wiremock-jre8"                  % "2.26.3"             % scope,
+  "org.mockito"             %  "mockito-core"                   % "3.2.0"             % scope,
+  "com.vladsch.flexmark"    % "flexmark-all"                    % "0.36.8"             % scope,
+  "org.scalatestplus"      %% "scalatestplus-mockito"           % "1.0.0-M2"            % scope
 )
 
 TwirlKeys.templateImports ++= Seq(

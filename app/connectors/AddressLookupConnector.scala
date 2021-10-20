@@ -22,14 +22,14 @@ import connectors.httpParsers.InitialiseAddressLookupHttpParser._
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import javax.inject.{Inject, Singleton}
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
-import play.api.Logger
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupConnector @Inject()(val http: HttpClient,
-                                       implicit val config: AppConfig) {
+                                       implicit val config: AppConfig) extends LoggerUtil{
 
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
@@ -46,7 +46,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupService}/api/confirmed?id=$id"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] ={
-    Logger.debug(s"[AddressLookupConnector][getAddress]: Calling getAddress with URL - ${getAddressUrl(id)}")
+    logger.debug(s"[AddressLookupConnector][getAddress]: Calling getAddress with URL - ${getAddressUrl(id)}")
     http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
   }
 }

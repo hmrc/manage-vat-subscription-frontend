@@ -17,9 +17,10 @@
 package forms
 
 import models.returnFrequency.ReturnDatesModel
-import uk.gov.hmrc.play.test.UnitSpec
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 
-class ChooseDatesFormSpec extends UnitSpec {
+class ChooseDatesFormSpec extends AnyWordSpecLike with Matchers {
 
   "Binding a form with invalid data" when {
 

@@ -25,6 +25,7 @@ import uk.gov.hmrc.play.partials.{HeaderCarrierForPartialsConverter, HtmlPartial
 import uk.gov.hmrc.play.partials.HtmlPartial.{Failure, Success}
 import utils.TestUtil
 import views.html.templates.BTANavigationLinks
+import play.api.test.Helpers._
 
 import scala.concurrent.{ExecutionContext, Future}
 

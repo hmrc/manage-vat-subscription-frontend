@@ -18,10 +18,11 @@ package forms
 
 import forms.MissingTraderForm._
 import models.{No, Yes}
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.data.FormError
-import uk.gov.hmrc.play.test.UnitSpec
 
-class MissingTraderFormSpec extends UnitSpec {
+class MissingTraderFormSpec extends AnyWordSpecLike with Matchers {
 
   "MissingTraderForm" should {
 

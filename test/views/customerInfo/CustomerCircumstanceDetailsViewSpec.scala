@@ -55,7 +55,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct service name" in {
-                elementText(".govuk-header__link--service-name") shouldBe clientServiceName
+                elementText(".hmrc-header__service-name") shouldBe clientServiceName
               }
 
               s"have a the correct page heading '${viewMessages.heading}'" in {
@@ -127,7 +127,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has a link to the business address journey" in {
-                    element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show().url
+                    element("#place-of-business-status").attr("href") shouldBe controllers.routes.BusinessAddressController.show.url
                   }
                 }
               }
@@ -166,7 +166,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
 
                   "has a link to the payments service" in {
-                    element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+                    element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments.url
                   }
                 }
               }
@@ -295,9 +295,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   elementText(".govuk-warning-text__text") shouldBe s"${viewMessages.warning} ${viewMessages.unverifiedEmailNudge}"
                 }
 
-                s"the 'resend email' link redirects to ${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}" in {
+                s"the 'resend email' link redirects to ${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}" in {
                   element(".govuk-warning-text a").attr("href") shouldBe
-                    s"${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification()}"
+                    s"${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}"
                 }
 
                 s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
@@ -481,7 +481,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
           }
 
           "links to the correspondence details service" in {
-            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments().url
+            element("#bank-details-status").attr("href") shouldBe controllers.routes.PaymentsController.sendToPayments.url
           }
         }
       }
@@ -622,7 +622,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
 
         "have the correct service name" in {
-          elementText(".govuk-header__link--service-name") shouldBe agentServiceName
+          elementText(".hmrc-header__service-name") shouldBe agentServiceName
         }
 
         s"have a the correct page heading '${viewMessages.agentHeading}'" in {

@@ -20,6 +20,7 @@ import assets.CustomerAddressTestConstants._
 import mocks.connectors.MockAddressLookupConnector
 import models.customerAddress.AddressLookupOnRampModel
 import utils.TestUtil
+import play.api.test.Helpers._
 
 class AddressLookupServiceSpec extends TestUtil with MockAddressLookupConnector {
 

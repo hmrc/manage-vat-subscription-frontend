@@ -20,6 +20,7 @@ import audit.mocks.MockAuditingService
 import mocks.MockAuth
 import play.api.http.Status
 import play.api.mvc.{Action, AnyContent}
+import play.api.test.Helpers._
 
 trait ControllerBaseSpec extends MockAuth with MockAuditingService {
 

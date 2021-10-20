@@ -21,14 +21,14 @@ import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.scalamock.handlers.CallHandler3
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.http.Status
 import services.PPOBService
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockPPOBService extends UnitSpec with MockFactory with BeforeAndAfterEach {
+trait MockPPOBService extends AnyWordSpecLike with MockFactory with BeforeAndAfterEach {
 
   val mockPPOBService: PPOBService = mock[PPOBService]
 

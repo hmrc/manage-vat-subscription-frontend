@@ -63,7 +63,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         }
 
         s"have the h1 as ${MissingTraderAddressConfirmationPageMessages.h1}" in {
-          messages(Jsoup.parse(bodyOf(result)).select("h1").text) shouldBe MissingTraderAddressConfirmationPageMessages.h1
+          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe MissingTraderAddressConfirmationPageMessages.h1
         }
       }
 
@@ -83,7 +83,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         }
 
         "send an audit event" in {
-          verifyExtendedAudit(MissingTraderAuditModel(vrn), Some(routes.ConfirmAddressController.show().url))
+          verifyExtendedAudit(MissingTraderAuditModel(vrn), Some(routes.ConfirmAddressController.show.url))
         }
       }
     }
@@ -185,7 +185,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       }
 
       "redirect to the initialise PPOB journey action" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.initialiseJourney().url)
+        redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.initialiseJourney.url)
       }
     }
 

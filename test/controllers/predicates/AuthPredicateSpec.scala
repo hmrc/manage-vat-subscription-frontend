@@ -46,7 +46,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
         mockUserWithoutAffinity()
         val result = target(request)
         status(target(request)) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitle
+        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitle
       }
     }
 
@@ -64,7 +64,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
 
         "an authorised exception is returned from Auth" should {
 
-          lazy val result = await(target(fakeRequestWithClientsVRN))
+          lazy val result = target(fakeRequestWithClientsVRN)
 
           "return Internal server error (500)" in {
             mockUnauthorised()
@@ -72,14 +72,14 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
           }
 
           "render the Internal server error page" in {
-            Jsoup.parse(bodyOf(result)).title shouldBe internalServerErrorTitle
+            Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitle
           }
         }
       }
 
       "the Agent does NOT have an Active HMRC-AS-AGENT enrolment" should {
 
-        lazy val result = await(target(fakeRequestWithClientsVRN))
+        lazy val result = target(fakeRequestWithClientsVRN)
 
         "return Forbidden" in {
           mockAgentWithoutEnrolment()
@@ -87,7 +87,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
         }
 
         "render the Unauthorised Agent page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe AgentUnauthorisedPageMessages.pageHeading + titleSuffixAgent
+          Jsoup.parse(contentAsString(result)).title shouldBe AgentUnauthorisedPageMessages.pageHeading + titleSuffixAgent
         }
       }
     }
@@ -164,7 +164,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
 
       "they do NOT have an active HMRC-MTD-VAT enrolment" should {
 
-        lazy val result = await(target(request))
+        lazy val result = target(request)
 
         "return Forbidden (403)" in {
           mockIndividualWithoutEnrolment()
@@ -172,7 +172,7 @@ class AuthPredicateSpec extends MockAuth with MockCustomerCircumstanceDetailsSer
         }
 
         "render the Not Signed Up page" in {
-          Jsoup.parse(bodyOf(result)).title shouldBe NotSignedUpPageMessages.title
+          Jsoup.parse(contentAsString(result)).title shouldBe NotSignedUpPageMessages.title
         }
       }
     }

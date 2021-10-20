@@ -22,13 +22,13 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import services.ReturnFrequencyService
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
-trait MockReturnFrequencyService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockReturnFrequencyService extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach {
 
   val mockReturnFrequencyService: ReturnFrequencyService = mock[ReturnFrequencyService]
 

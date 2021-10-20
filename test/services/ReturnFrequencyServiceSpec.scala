@@ -20,6 +20,7 @@ import mocks.connectors.MockSubscriptionConnector
 import models.core.SubscriptionUpdateResponseModel
 import models.returnFrequency.Jan
 import utils.TestUtil
+import play.api.test.Helpers._
 
 class ReturnFrequencyServiceSpec extends TestUtil with MockSubscriptionConnector {
 

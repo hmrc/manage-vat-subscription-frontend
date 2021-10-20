@@ -22,8 +22,12 @@ import assets.messages.ChangePendingMessages
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.test.Helpers._
 
-class InFlightPPOBPredicateSpec extends MockAuth {
+import scala.concurrent.Future
+
+
+class InFlightPPOBPredicateSpec extends MockAuth  {
 
   "The InFlightPPOBPredicate" when {
 
@@ -45,10 +49,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingEmailModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 409 Conflict" in {
-        status(result) shouldBe Status.CONFLICT
+        status(Future.successful(result)) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -62,10 +66,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingPPOBModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 409 Conflict" in {
-        status(result) shouldBe Status.CONFLICT
+        status(Future.successful(result)) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -79,10 +83,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingPhoneModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 409 Conflict" in {
-        status(result) shouldBe Status.CONFLICT
+        status(Future.successful(result)) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -96,10 +100,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingMobileModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 409 Conflict" in {
-        status(result) shouldBe Status.CONFLICT
+        status(Future.successful(result)) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -113,10 +117,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsSuccess(customerInformationPendingWebsiteModel)
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 409 Conflict" in {
-        status(result) shouldBe Status.CONFLICT
+        status(Future.successful(result)) shouldBe Status.CONFLICT
       }
 
       "show the 'change pending' error page" in {
@@ -130,10 +134,10 @@ class InFlightPPOBPredicateSpec extends MockAuth {
         mockCustomerDetailsError()
         await(mockInFlightPPOBPredicate.refine(user)).left.get
       }
-      lazy val document = Jsoup.parse(bodyOf(result))
+      lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
       "return 500" in {
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+        status(Future.successful(result)) shouldBe Status.INTERNAL_SERVER_ERROR
       }
 
       "show the technical difficulties page" in {

@@ -52,7 +52,7 @@
     content = HtmlContent(insetTextHtml)
   ))
 
-  @govukButton(Button(href = Some(controllers.routes.BusinessAddressController.initialiseJourney().url),
+  @govukButton(Button(href = Some(controllers.routes.BusinessAddressController.initialiseJourney.url),
     content = Text(messages("common.continue"))
   ))
 }

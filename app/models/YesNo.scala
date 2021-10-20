@@ -43,9 +43,11 @@ object YesNo {
 object Yes extends YesNo {
   override def toString: String = "yes"
   override val value: Boolean = true
+  implicit val writes: Writes[Yes.type] = Writes { _ => Json.obj("isYes" -> value)}
 }
 
 object No extends YesNo {
   override def toString: String = "no"
   override val value: Boolean = false
+  implicit val writes: Writes[No.type] = Writes { _ => Json.obj("isYes" -> value)}
 }

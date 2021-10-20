@@ -21,13 +21,13 @@ import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
+import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
 import services.PPOBService
-import uk.gov.hmrc.play.test.UnitSpec
 
 import scala.concurrent.Future
 
-trait MockBusinessAddressService extends UnitSpec with MockitoSugar with BeforeAndAfterEach {
+trait MockBusinessAddressService extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach {
 
   val mockBusinessAddressService: PPOBService = mock[PPOBService]
 

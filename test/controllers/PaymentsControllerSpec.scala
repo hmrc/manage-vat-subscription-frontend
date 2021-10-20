@@ -69,7 +69,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
           verify(mockAuditingService)
             .extendedAudit(
               ArgumentMatchers.eq(BankAccountHandOffAuditModel(user, successPaymentsResponse)),
-              ArgumentMatchers.eq[Option[String]](Some(controllers.routes.PaymentsController.sendToPayments().url))
+              ArgumentMatchers.eq[Option[String]](Some(controllers.routes.PaymentsController.sendToPayments.url))
             )(
               ArgumentMatchers.any[HeaderCarrier],
               ArgumentMatchers.any[ExecutionContext]
@@ -88,7 +88,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
 
@@ -99,7 +99,7 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
         "return 500 (ISE)" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(bodyOf(result)).title) shouldBe internalServerErrorTitleUser
+          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
     }
@@ -113,8 +113,8 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
         status(result) shouldBe Status.SEE_OTHER
       }
 
-      s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect().url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect().url)
+      s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect.url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
       }
     }
 

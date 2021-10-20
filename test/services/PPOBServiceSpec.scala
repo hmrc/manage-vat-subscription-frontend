@@ -29,6 +29,7 @@ import org.mockito.Mockito.verify
 import play.api.http.Status
 import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUtil
+import play.api.test.Helpers._
 
 import scala.concurrent.ExecutionContext
 
