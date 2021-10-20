@@ -21,7 +21,8 @@
         headings: Headings,
         backToBusinessDetails: BackToBusinessDetails,
         govukButton: GovukButton,
-        govukInsetText: GovukInsetText)
+        govukInsetText: GovukInsetText,
+        govukWarningText : GovukWarningText)
 
 @()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
@@ -51,6 +52,11 @@
   @govukInsetText(InsetText(
     content = HtmlContent(insetTextHtml)
   ))
+
+    @govukWarningText(WarningText(
+        iconFallbackText = "Warning",
+        content = Text(messages("change_address.warning"))
+    ))
 
   @govukButton(Button(href = Some(controllers.routes.BusinessAddressController.initialiseJourney.url),
     content = Text(messages("common.continue"))
