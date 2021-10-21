@@ -147,6 +147,7 @@ change_address.bulletHeader = You cannot use:
 change_address.bullet1 = the address of a third-party accountant or tax agent
 change_address.bullet2 = a PO box address
 change_address.bullet3 = a ‘care of’ address
+change_address.warning = You can enter up to 35 characters on each line. Only enter English characters, even if the address is not in the UK.
 
 change_address_confirmation.title = You have asked to change the business address
 change_address_confirmation.h2 = What happens next

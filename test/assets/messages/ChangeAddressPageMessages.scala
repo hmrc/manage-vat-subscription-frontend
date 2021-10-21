@@ -25,4 +25,6 @@ object ChangeAddressPageMessages extends BaseMessages {
   val bullet1: String = "the address of a third-party accountant or tax agent"
   val bullet2: String = "a PO box address"
   val bullet3: String = "a ‘care of’ address"
+  val warning: String = "Warning"
+  val warningText: String = "You can enter up to 35 characters on each line. Only enter English characters, even if the address is not in the UK."
 }
