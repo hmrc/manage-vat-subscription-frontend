@@ -29,7 +29,6 @@ import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBS
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import utils.LoggerUtil
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
-import views.html.errors.PPOBAddressFailureView
 
 import scala.concurrent.{ExecutionContext, Future}
 

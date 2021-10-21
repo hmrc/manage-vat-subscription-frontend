@@ -28,7 +28,7 @@
 
 @mainTemplate(pageTitle = messages("PPOB.addressFailure.title"), navLinkContent = Some(backLink)) {
 
-@headings(messages("PPOB.addressFailure.title"))
+@headings(messages("PPOB.addressFailure.heading"))
 
 <p class="govuk-body">
     @messages("PPOB.addressFailure.text")
@@ -38,12 +38,12 @@
 
     @govukButton(Button(
     href = Some(controllers.routes.BusinessAddressController.initialiseJourney.url),
-    content = Text("Try again")
+    content = Text(messages("base.tryAgain"))
     ))
     @govukButton(Button(
     href = Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url),
     classes = "govuk-button--secondary",
-    content = Text("Cancel")
+    content = Text(messages("base.cancel"))
     ))
 </div>
 

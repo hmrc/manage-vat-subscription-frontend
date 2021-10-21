@@ -61,13 +61,13 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
     "have the correct button text for Try Again" in {
       elementText(Selectors.buttonTryAgain) shouldBe PPOBAddressFailureMessages.button1
     }
-    "have the correct href link for Try Again" in {
+    "have the correct location for Try Again" in {
       element(Selectors.buttonTryAgain).attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney.url
     }
     "have the correct button text for Cancel" in {
       elementText(Selectors.buttonCancel) shouldBe PPOBAddressFailureMessages.button2
     }
-    "have the correct href link for Cancel" in {
+    "have the correct href location for Cancel" in {
       element(Selectors.buttonCancel).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
     }
   }

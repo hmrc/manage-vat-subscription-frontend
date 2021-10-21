@@ -1,5 +1,7 @@
 base.sign-out = Allgofnodi
 base.back = Yn ôl
+base.tryAgain = Rhowch gynnig arall arni
+base.cancel = Canslo
 
 #Feedback
 feedback.title = Rhoi adborth
@@ -212,3 +214,7 @@ btaNavLinks.home = Hafan
 btaNavLinks.manageAccount = Rheoli’r cyfrif
 btaNavLinks.messages = Negeseuon
 btaNavLinks.helpAndContact = Cymorth a chysylltu
+
+PPOB.addressFailure.title = Mae’n ddrwg gennym, ni allwn ychwanegu’r cyfeiriad busnes hwn
+PPOB.addressFailure.heading = Mae’n ddrwg gennym, ni allwn ychwanegu’r cyfeiriad busnes hwn
+PPOB.addressFailure.text = Gallwch ond ychwanegu hyd at 35 cymeriad plaen ar bob llinell.

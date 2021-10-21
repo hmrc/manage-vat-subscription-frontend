@@ -18,9 +18,9 @@ package assets.messages
 
 object PPOBAddressFailureMessages extends BaseMessages {
 
-  val heading = "Sorry, we can not add this business address"
+  val heading = "Sorry, we cannot add this business address"
 
-  val title = "Sorry, we can not add this business address - Manage your VAT account - GOV.UK"
+  val title = "Sorry, we cannot add this business address - Manage your VAT account - GOV.UK"
 
   val paragraph = "You can only add up to 35 English alphabet characters on each line."
 
