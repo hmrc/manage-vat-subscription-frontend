@@ -17,7 +17,7 @@
 package services
 
 import mocks.connectors.MockSubscriptionConnector
-import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
+import models.core.{AddressValidationError, ErrorModel, SubscriptionUpdateResponseModel}
 import assets.CustomerAddressTestConstants._
 import assets.BaseTestConstants.{formBundle, vrn}
 import assets.PPOBAddressTestConstants._
@@ -42,24 +42,37 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
     new PPOBService(mockSubscriptionConnector, mockAuditingService)
   }
 
-  "Calling .updatePPOB" should {
+  "Calling .updatePPOB" when {
 
-    val subscriptionResult = SubscriptionUpdateResponseModel(formBundle)
+    "the address is valid" should {
 
-    lazy val service = setup(Right(subscriptionResult))
-    lazy val result = service.updatePPOB(user, customerAddressMax, "")
+      val subscriptionResult = SubscriptionUpdateResponseModel(formBundle)
 
-    "return successful SubscriptionUpdateResponseModel" in {
-      await(result) shouldBe Right(subscriptionResult)
+      lazy val service = setup(Right(subscriptionResult))
+      lazy val result = service.updatePPOB(user, customerAddressMax, "")
 
-      verify(mockAuditingService)
-        .extendedAudit(
-          ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, Some(partyType))),
-          ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
-        )(
-          ArgumentMatchers.any[HeaderCarrier],
-          ArgumentMatchers.any[ExecutionContext]
-        )
+      "return successful SubscriptionUpdateResponseModel" in {
+        await(result) shouldBe Right(subscriptionResult)
+
+        verify(mockAuditingService)
+          .extendedAudit(
+            ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, Some(partyType))),
+            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
+          )(
+            ArgumentMatchers.any[HeaderCarrier],
+            ArgumentMatchers.any[ExecutionContext]
+          )
+      }
+    }
+
+    "the address is invalid" should {
+
+      lazy val service = new PPOBService(mockSubscriptionConnector, mockAuditingService)
+      lazy val result = service.updatePPOB(user, customerAddressForeignChars, "")
+
+      "return an AddressValidationError" in {
+        await(result) shouldBe Left(AddressValidationError)
+      }
     }
   }
 
@@ -90,4 +103,26 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
     }
 
   }
+
+  "Calling .validateChars" should {
+
+    lazy val service = new PPOBService(mockSubscriptionConnector, mockAuditingService)
+
+    "return false if any lines in the address are longer than 35 chars" in {
+      service.validateChars(customerAddressLong) shouldBe false
+    }
+
+    "return false if any lines in the address are 0 chars" in {
+      service.validateChars(customerAddressZero) shouldBe false
+    }
+
+    "return false if the address has foreign chars in it" in {
+      service.validateChars(customerAddressForeignChars) shouldBe false
+    }
+
+    "return true otherwise" in {
+      service.validateChars(customerAddressMax) shouldBe true
+    }
+  }
+
 }

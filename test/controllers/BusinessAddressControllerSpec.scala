@@ -22,7 +22,7 @@ import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, ChangePendingMessages}
 import audit.models.ContactPreferenceAuditModel
 import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
-import models.core.SubscriptionUpdateResponseModel
+import models.core.{AddressValidationError, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
@@ -32,6 +32,8 @@ import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
+import views.html.errors.PPOBAddressFailureView
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
@@ -49,6 +51,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockCustomerDetailsService,
       inject[ChangeAddressView],
       inject[ChangeAddressConfirmationView],
+      inject[PPOBAddressFailureView],
       serviceErrorHandler,
       mockAuditingService,
       mcc,
@@ -117,6 +120,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockCustomerDetailsService,
         inject[ChangeAddressView],
         inject[ChangeAddressConfirmationView],
+        inject[PPOBAddressFailureView],
         serviceErrorHandler,
         mockAuditingService,
         mcc,
@@ -192,11 +196,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
         }
       }
-    }
 
-    "address lookup service returns success" when {
-
-      "business address service returns an error" should {
+      "business address service returns a generic error" should {
 
         lazy val controller = setup(
           addressLookupResponse = Right(customerAddressMax),
@@ -213,7 +214,29 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
         }
       }
+
+      "the address fails to validate because of foreign or too many characters" should {
+
+        lazy val controller = setup(
+          addressLookupResponse = Right(customerAddressMax),
+          businessAddressResponse = Left(AddressValidationError)
+        )
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+          controller.callback("12345")(request)
+        }
+
+        "return a Bad Request" in {
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+
+        "render the address validation error page" in {
+          messages(Jsoup.parse(contentAsString(result)).title) shouldBe validationErrorTitle
+        }
+      }
     }
+
 
     "address lookup service returns an error" should {
 
@@ -255,6 +278,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         mockCustomerDetailsService,
         inject[ChangeAddressView],
         inject[ChangeAddressConfirmationView],
+        inject[PPOBAddressFailureView],
         serviceErrorHandler,
         mockAuditingService,
         mcc,
@@ -331,6 +355,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       mockCustomerDetailsService,
       inject[ChangeAddressView],
       inject[ChangeAddressConfirmationView],
+      inject[PPOBAddressFailureView],
       serviceErrorHandler,
       mockAuditingService,
       mcc,
