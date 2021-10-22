@@ -20,10 +20,10 @@
 
 @this(mainTemplate: MainTemplate, headings: Headings, govukButton: GovukButton, backToAddressConfirmation: BackToAddressConfirmation)
 
-@()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
+@(id: String)(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
 
 @backLink = {
-    @backToAddressConfirmation()
+    @backToAddressConfirmation(id)
 }
 
 @mainTemplate(pageTitle = messages("PPOB.addressFailure.title"), navLinkContent = Some(backLink)) {

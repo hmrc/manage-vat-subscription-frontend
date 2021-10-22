@@ -86,6 +86,7 @@ trait AppConfig {
   val btaPartialUrl: String
   val btaAccountDetails: String
   val gtmContainer: String
+  def addressLookUpConfirmUrl(id : String) : String
 }
 
 @Singleton
@@ -137,6 +138,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
       servicesConfig.baseUrl(Keys.addressLookupFrontend)
     }
   }
+
+  override def addressLookUpConfirmUrl(id : String): String = s"$addressLookupUrlHost/lookup-address/$id/confirm"
 
   override lazy val addressLookupCallbackUrl: String =
     signInContinueBaseUrl + servicesConfig.getString(Keys.addressLookupCallback)
@@ -241,4 +244,5 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val btaPartialUrl: String = btaMicroserviceUrl + servicesConfig.getString(Keys.businessTaxAccountPartialUrl)
   override lazy val btaAccountDetails: String = btaBaseUrl + servicesConfig.getString(Keys.businessTaxAccountDetails)
   override val gtmContainer: String = servicesConfig.getString(Keys.gtmContainer)
+
 }

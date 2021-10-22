@@ -16,9 +16,9 @@
 
 @this(govukBackLink : GovukBackLink)
 
-@()(implicit messages: Messages, user : User[_])
+@(id : String)(implicit messages: Messages, user : User[_], appConfig: config.AppConfig)
 
 @govukBackLink(BackLink(
-href = controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix).url,
+href = appConfig.addressLookUpConfirmUrl(id),
 content = Text(messages("base.back"))
 ))

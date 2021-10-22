@@ -27,6 +27,8 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
 
   val injectedView: PPOBAddressFailureView = inject[PPOBAddressFailureView]
 
+  val testId = "test-id"
+
   object Selectors {
     val heading = "h1"
     val paragraphOne = "#content > p"
@@ -37,7 +39,7 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
 
   "The PPOB addresss failure view" should {
 
-    lazy val view = injectedView()(user, messages, mockConfig)
+    lazy val view = injectedView(testId)(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct title" in {
@@ -56,7 +58,7 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
       elementText(Selectors.backLink) shouldBe PPOBAddressFailureMessages.back
     }
     "have the correct href for the back link" in {
-      element(Selectors.backLink).attr("href") shouldBe controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix).url
+      element(Selectors.backLink).attr("href") shouldBe mockConfig.addressLookUpConfirmUrl(testId)
     }
     "have the correct button text for Try Again" in {
       elementText(Selectors.buttonTryAgain) shouldBe PPOBAddressFailureMessages.button1
