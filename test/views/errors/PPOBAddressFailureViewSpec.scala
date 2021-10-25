@@ -23,7 +23,7 @@ import views.html.errors.PPOBAddressFailureView
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 
-class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with TestUtil{
+class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with TestUtil {
 
   val injectedView: PPOBAddressFailureView = inject[PPOBAddressFailureView]
 
@@ -54,23 +54,29 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
       elementText(Selectors.paragraphOne) shouldBe PPOBAddressFailureMessages.paragraph
     }
 
-    "have the correct text for the back link" in {
-      elementText(Selectors.backLink) shouldBe PPOBAddressFailureMessages.back
+    "a back link" which {
+      "should have the correct text" in {
+        elementText(Selectors.backLink) shouldBe PPOBAddressFailureMessages.back
+      }
+      "should the correct location" in {
+        element(Selectors.backLink).attr("href") shouldBe mockConfig.addressLookUpConfirmUrl(testId)
+      }
     }
-    "have the correct href for the back link" in {
-      element(Selectors.backLink).attr("href") shouldBe mockConfig.addressLookUpConfirmUrl(testId)
+    "a try again button" which {
+      "should have the correct text" in {
+        elementText(Selectors.buttonTryAgain) shouldBe PPOBAddressFailureMessages.button1
+      }
+      "should have the correct location" in {
+        element(Selectors.buttonTryAgain).attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney.url
+      }
     }
-    "have the correct button text for Try Again" in {
-      elementText(Selectors.buttonTryAgain) shouldBe PPOBAddressFailureMessages.button1
-    }
-    "have the correct location for Try Again" in {
-      element(Selectors.buttonTryAgain).attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney.url
-    }
-    "have the correct button text for Cancel" in {
-      elementText(Selectors.buttonCancel) shouldBe PPOBAddressFailureMessages.button2
-    }
-    "have the correct href location for Cancel" in {
-      element(Selectors.buttonCancel).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+    "a cancel button" which {
+      "should have the correct text" in {
+        elementText(Selectors.buttonCancel) shouldBe PPOBAddressFailureMessages.button2
+      }
+      "should have the correct location" in {
+        element(Selectors.buttonCancel).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+      }
     }
   }
 }
