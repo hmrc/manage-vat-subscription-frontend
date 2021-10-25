@@ -63,6 +63,14 @@ class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
             "name" -> "United Kingdom"
           )
         ))
+      case "invalid" =>
+        Ok(Json.obj(
+          "lines" -> Json.arr("Falsche Straße 1", "Berlin"),
+          "country" -> Json.obj(
+            "code" -> "DE",
+            "name" -> "Germany"
+          )
+        ))
       case _ => NotFound
     }
   }
