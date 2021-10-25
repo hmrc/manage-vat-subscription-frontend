@@ -94,4 +94,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val btaPartialUrl: String = "/business-account/partial/service-info"
   override val btaAccountDetails: String = "/bta/account-details"
   override val gtmContainer: String = "x"
+
+  override def addressLookUpConfirmUrl(id: String): String = s"lookup-address/$id/confirm"
 }

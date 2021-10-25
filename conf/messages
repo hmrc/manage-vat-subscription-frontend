@@ -1,5 +1,7 @@
 base.sign-out = Sign out
 base.back = Back
+base.tryAgain = Try again
+base.cancel = Cancel
 
 #Feedback
 feedback.title = Give feedback
@@ -209,3 +211,8 @@ btaNavLinks.home = Home
 btaNavLinks.manageAccount = Manage account
 btaNavLinks.messages = Messages
 btaNavLinks.helpAndContact = Help and contact
+
+PPOB.addressFailure.title = Sorry, we cannot add this business address
+PPOB.addressFailure.heading = Sorry, we cannot add this business address
+PPOB.addressFailure.text = You can only add up to 35 English alphabet characters on each line.
+
