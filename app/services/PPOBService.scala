@@ -24,7 +24,7 @@ import connectors.httpParsers.ResponseHttpParser.HttpPutResult
 import javax.inject.{Inject, Singleton}
 import models.User
 import models.circumstanceInfo.CircumstanceDetails
-import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
+import models.core.{AddressValidationError, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressModel
 import models.updatePPOB.{UpdatePPOB, UpdatePPOBAddress}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -38,7 +38,7 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
 
   private def buildPPOBUpdateModel(addressModel: AddressModel,
                                    circumstanceDetails: CircumstanceDetails,
-                                   transactorOrCapacitorEmail: Option[String]) = {
+                                   transactorOrCapacitorEmail: Option[String]): UpdatePPOB = {
 
     val updateAddress: UpdatePPOBAddress = UpdatePPOBAddress(
       line1 = addressModel.line1,
@@ -57,24 +57,27 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
     )
   }
 
-
   def updatePPOB(user: User[_], address: AddressModel, id: String)
-                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
+                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[models.core.Error, SubscriptionUpdateResponseModel]] = {
 
-    subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
-      case Right(customerDetails) =>
-        auditService.extendedAudit(
-          ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, customerDetails.partyType),
-          Some(controllers.routes.BusinessAddressController.callback(id).url)
-        )
-        subscriptionConnector.updatePPOB(
-          user.vrn,
-          buildPPOBUpdateModel(address, customerDetails, user.session.get(SessionKeys.verifiedAgentEmail))
-        ) map {
-          case Right(success) => Right(success)
-          case Left(error) => Left(error)
-        }
-      case Left(error) => Future.successful(Left(error))
+    if(validateChars(address)) {
+      subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
+        case Right(customerDetails) =>
+          auditService.extendedAudit(
+            ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, customerDetails.partyType),
+            Some(controllers.routes.BusinessAddressController.callback(id).url)
+          )
+          subscriptionConnector.updatePPOB(
+            user.vrn,
+            buildPPOBUpdateModel(address, customerDetails, user.session.get(SessionKeys.verifiedAgentEmail))
+          ) map {
+            case Right(success) => Right(success)
+            case Left(error) => Left(error)
+          }
+        case Left(error) => Future.successful(Left(error))
+      }
+    } else {
+      Future.successful(Left(AddressValidationError))
     }
   }
 
@@ -83,4 +86,11 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
     subscriptionConnector.validateBusinessAddress(vrn)
   }
 
+  def validateChars(address: AddressModel): Boolean = {
+    val addressRegex = "^[A-Za-z0-9 \\-,.&'\\/()!]{1,35}$"
+    address.line1.fold(true)(x => x.matches(addressRegex)) &&
+      address.line2.fold(true)(x => x.matches(addressRegex)) &&
+      address.line3.fold(true)(x => x.matches(addressRegex)) &&
+      address.line4.fold(true)(x => x.matches(addressRegex))
+  }
 }

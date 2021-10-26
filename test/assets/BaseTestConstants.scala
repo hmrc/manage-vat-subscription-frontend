@@ -33,4 +33,5 @@ object BaseTestConstants {
   val internalServerErrorTitle = "There is a problem with the service - VAT - GOV.UK"
   val internalServerErrorTitleUser = "There is a problem with the service - Manage your VAT account - GOV.UK"
   val internalServerErrorTitleAgent = "There is a problem with the service - Your client’s VAT details - GOV.UK"
+  val validationErrorTitle = "Sorry, we cannot add this business address - Manage your VAT account - GOV.UK"
 }

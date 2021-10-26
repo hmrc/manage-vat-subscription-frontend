@@ -16,7 +16,7 @@
 
 package mocks.services
 
-import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
+import models.core.SubscriptionUpdateResponseModel
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito.{reset, _}
 import org.mockito.stubbing.OngoingStubbing
@@ -31,7 +31,7 @@ trait MockBusinessAddressService extends AnyWordSpecLike with MockitoSugar with 
 
   val mockBusinessAddressService: PPOBService = mock[PPOBService]
 
-  type BusinessAddressResponse = Either[ErrorModel, SubscriptionUpdateResponseModel]
+  type BusinessAddressResponse = Either[models.core.Error, SubscriptionUpdateResponseModel]
 
   override def beforeEach(): Unit = {
     super.beforeEach()

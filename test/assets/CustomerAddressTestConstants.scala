@@ -24,6 +24,8 @@ import play.api.libs.json.{JsObject, Json}
 object CustomerAddressTestConstants extends BaseMessages {
 
   val addressLine1 = "line 1"
+  val veryLongAddressLine1 = "liiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiine 1"
+  val foreignCharsLine1 = "1 Falsche Straße"
   val addressLine2 = "line 2"
   val addressLine3 = "line 3"
   val addressLine4 = "line 4"
@@ -52,6 +54,9 @@ object CustomerAddressTestConstants extends BaseMessages {
     Some(countryCode)
   )
 
+  val customerAddressLong: AddressModel = customerAddressMax.copy(line1 = Some(veryLongAddressLine1))
+  val customerAddressZero: AddressModel = customerAddressMax.copy(line1 = Some(""))
+  val customerAddressForeignChars: AddressModel = customerAddressMax.copy(line1 = Some(foreignCharsLine1))
 
   val customerAddressMin: AddressModel = AddressModel(None, None, None, None, None, None)
 

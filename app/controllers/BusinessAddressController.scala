@@ -23,12 +23,14 @@ import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
 import javax.inject.{Inject, Singleton}
 import models.User
+import models.core.AddressValidationError
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import services.{AddressLookupService, CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import utils.LoggerUtil
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
+import views.html.errors.PPOBAddressFailureView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,6 +42,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           changeAddressView: ChangeAddressView,
                                           changeAddressConfirmationView: ChangeAddressConfirmationView,
+                                          ppobAddressFailureView: PPOBAddressFailureView,
                                           val serviceErrorHandler: ServiceErrorHandler,
                                           val auditService: AuditService,
                                           val mcc: MessagesControllerComponents,
@@ -65,10 +68,15 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
             Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
-          case Left(_) => logger.warn(s"[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
+          case Left(AddressValidationError) =>
+            logger.warn("[BusinessAddressController][callback] Address validation error, rendering error page")
+            BadRequest(ppobAddressFailureView(id))
+          case Left(_) =>
+            logger.warn("[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
-      case Left(_) => logger.warn(s"[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) =>
+        logger.warn("[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
         Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
