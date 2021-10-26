@@ -17,13 +17,14 @@
 package assets
 
 import common.EnrolmentKeys
+import models.{NavContent, NavLinks}
 import models.core.ErrorModel
 import play.api.http.Status
 import uk.gov.hmrc.auth.core.Enrolment
 
 object BaseTestConstants {
 
-  val errorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
+  val errorModel: ErrorModel = ErrorModel(Status.INTERNAL_SERVER_ERROR, "Some Error, oh no!")
   val arn = "ABCD12345678901"
   val vrn: String = "999999999"
   val trustVrn: String = "999902541"
@@ -34,4 +35,10 @@ object BaseTestConstants {
   val internalServerErrorTitleUser = "There is a problem with the service - Manage your VAT account - GOV.UK"
   val internalServerErrorTitleAgent = "There is a problem with the service - Your client’s VAT details - GOV.UK"
   val validationErrorTitle = "Sorry, we cannot add this business address - Manage your VAT account - GOV.UK"
+  val navContent: NavContent = NavContent(
+    NavLinks("Home", "Hafan", "http://localhost:9999/home"),
+    NavLinks("Account", "Crfrif", "http://localhost:9999/account"),
+    NavLinks("Messages", "Negeseuon", "http://localhost:9999/messages", Some(1)),
+    NavLinks("Help", "Cymorth", "http://localhost:9999/help")
+  )
 }
