@@ -16,7 +16,7 @@
 
 package mocks.services
 
-import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -35,8 +35,8 @@ trait MockServiceInfoService extends AnyWordSpecLike with MockitoSugar with Befo
     reset(mockServiceInfoService)
   }
 
-  def getPartial(response: Html): Unit= {
-    when(mockServiceInfoService.getPartial()(ArgumentMatchers.any(), ArgumentMatchers.any()))
+  def getPartial(response: Html): Unit = {
+    when(mockServiceInfoService.getPartial(any(), any(), any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

@@ -80,10 +80,6 @@ trait AppConfig {
   val vatReturnPeriodFrontendUrl: String
   val btaBaseUrl: String
   val btaHomeUrl: String
-  val btaMessagesUrl: String
-  val btaManageAccountUrl: String
-  val btaHelpAndContactUrl: String
-  val btaPartialUrl: String
   val btaAccountDetails: String
   val gtmContainer: String
   def addressLookUpConfirmUrl(id : String) : String
@@ -150,7 +146,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override lazy val bankAccountCoc: String = servicesConfig.baseUrl(Keys.bankAccountCoc)
 
-  override lazy val btaUrl: String = servicesConfig.getString("business-tax-account.host") + "/business-account"
+  override lazy val btaUrl: String = servicesConfig.getString(Keys.businessTaxAccountHost) + "/business-account"
   override lazy val vatSummaryUrl: String = servicesConfig.getString("vat-summary-frontend.host") + "/vat-through-software/vat-overview"
 
   override lazy val countryCodeJson: JsValue = environment.resourceAsStream("country-codes.json") match {
@@ -233,15 +229,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   private lazy val vatReturnPeriodFrontendHost: String = servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendHost)
   override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendUrl)
 
-  private lazy val helpAndContactFrontendUrl: String = servicesConfig.getString(Keys.helpAndContactFrontendBase)
-
-  private lazy val btaMicroserviceUrl: String = servicesConfig.baseUrl(Keys.businessTaxAccount)
   override lazy val btaBaseUrl: String = servicesConfig.getString(Keys.businessTaxAccountHost)
   override lazy val btaHomeUrl: String = btaBaseUrl + servicesConfig.getString(Keys.businessTaxAccountUrl)
-  override lazy val btaMessagesUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountMessagesUrl)
-  override lazy val btaManageAccountUrl: String = btaHomeUrl + servicesConfig.getString(Keys.businessTaxAccountManageAccountUrl)
-  override lazy val btaHelpAndContactUrl: String = helpAndContactFrontendUrl + servicesConfig.getString(Keys.helpAndContactHelpUrl)
-  override lazy val btaPartialUrl: String = btaMicroserviceUrl + servicesConfig.getString(Keys.businessTaxAccountPartialUrl)
   override lazy val btaAccountDetails: String = btaBaseUrl + servicesConfig.getString(Keys.businessTaxAccountDetails)
   override val gtmContainer: String = servicesConfig.getString(Keys.gtmContainer)
 
