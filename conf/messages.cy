@@ -153,7 +153,7 @@ change_address.bulletHeader = Ni allwch ddefnyddio:
 change_address.bullet1 = cyfeiriad cyfrifydd neu asiant treth trydydd parti
 change_address.bullet2 = cyfeiriad blwch Swyddfa’r Post
 change_address.bullet3 = cyfeiriad ‘dan ofal’
-change_address.warning = Gallwch nodi hyd at 35 cymeriad ar bob llinell. Nodwch gymeriadau plaen yn unig.
+change_address.warning = Gallwch nodi hyd at 35 cymeriad ar bob llinell. Nodwch gymeriadau plaen yn unig, hyd yn oed os nad yw’r cyfeiriad yn y DU.
 
 change_address_confirmation.title = Rydych wedi gofyn am newid cyfeiriad y busnes
 change_address_confirmation.h2 = Yr hyn sy’n digwydd nesaf
