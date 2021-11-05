@@ -62,7 +62,7 @@ unauthorised.agentJourneyDisabled.p2 = If your client needs to change their busi
 not_signed_up.title = You can’t use this service yet
 not_signed_up.heading = You can’t use this service yet
 not_signed_up.text = You need to
-not_signed_up.link = sign up to use software to submit your VAT returns.
+not_signed_up.link = sign up to use software to submit your VAT Returns
 
 customer_details.title = Your business details
 customer_details.agentTitle = Your client’s VAT details

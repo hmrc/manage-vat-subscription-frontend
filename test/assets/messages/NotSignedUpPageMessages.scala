@@ -20,5 +20,5 @@ object NotSignedUpPageMessages extends BaseMessages {
 
   val title = "You can’t use this service yet" + titleSuffixOther
   val pageHeading = "You can’t use this service yet"
-  val text = "You need to sign up to use software to submit your VAT returns."
+  val text = "You need to sign up to use software to submit your VAT Returns."
 }
