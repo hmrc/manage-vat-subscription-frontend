@@ -43,8 +43,8 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
           status(Future.successful(result)) shouldBe Status.SEE_OTHER
         }
 
-        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect.url}" in {
-          redirectLocation(Future.successful(result)) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
+        s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show.url}" in {
+          redirectLocation(Future.successful(result)) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
         }
       }
 

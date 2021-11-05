@@ -35,7 +35,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
     "the user is a Principle Entity" when {
 
-      def show(sessionVrn: Option[String] = None): WSResponse = get(s"$path/non-agent", formatSessionVrn(sessionVrn))
+      def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
 
       "a success response is received from get customer details" when {
 
@@ -186,7 +186,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
     "the user is an Agent" when {
 
-      def show(sessionVrn: Option[String] = None): WSResponse = get(path + "/agent", formatSessionVrn(sessionVrn))
+      def show(sessionVrn: Option[String] = None): WSResponse = get(path, formatSessionVrn(sessionVrn))
 
       "the Agent is signed up for HMRC-AS-AGENT (authorised)" when {
 
@@ -270,7 +270,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               res should have(
                 httpStatus(SEE_OTHER),
                 redirectURI(
-                  testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
+                  testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.show.url).url
                 )
               )
             }
@@ -291,7 +291,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
                 res should have(
                   httpStatus(SEE_OTHER),
-                  redirectURI(mockAppConfig.vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.redirect.url))
+                  redirectURI(mockAppConfig.vatAgentClientLookupHandoff(controllers.routes.CustomerCircumstanceDetailsController.show.url))
                 )
               }
             }
@@ -310,7 +310,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 res should have(
                   httpStatus(SEE_OTHER),
                   redirectURI(
-                    testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.redirect.url).url
+                    testOnly.controllers.routes.StubAgentClientLookupController.show(controllers.routes.CustomerCircumstanceDetailsController.show.url).url
                   )
                 )
               }
@@ -336,7 +336,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
       }
     }
 
-    getAuthenticationTests(s"$path/non-agent")
+    getAuthenticationTests(path)
   }
 
   "Calling the sendEmailVerification action" when {

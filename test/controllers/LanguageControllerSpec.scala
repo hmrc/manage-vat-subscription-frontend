@@ -58,7 +58,7 @@ class LanguageControllerSpec extends ControllerBaseSpec {
       "one is not provided" in {
         lazy val result = controller.switchToLanguage("english")(emptyFakeRequest)
 
-        val expectedResponse = controllers.routes.CustomerCircumstanceDetailsController.redirect.url
+        val expectedResponse = controllers.routes.CustomerCircumstanceDetailsController.show.url
 
         status(result) shouldBe SEE_OTHER
         cookies(result).get("PLAY_LANG").get.value shouldBe "en"

@@ -54,7 +54,7 @@
 
     }
 
-    @govukButton(Button(href = Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url),
+    @govukButton(Button(href = Some(controllers.routes.CustomerCircumstanceDetailsController.show.url),
         attributes = Map("id" -> "Finish"),
         content = Text(messages(finishButtonText))
     ))

@@ -35,19 +35,20 @@ import views.html.errors.PPOBAddressFailureView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
-                                          val inFlightPPOBCheck: InFlightPPOBPredicate,
+class BusinessAddressController @Inject()(authenticate: AuthPredicate,
+                                          inFlightPPOBCheck: InFlightPPOBPredicate,
                                           addressLookupService: AddressLookupService,
                                           ppobService: PPOBService,
                                           customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                           changeAddressView: ChangeAddressView,
                                           changeAddressConfirmationView: ChangeAddressConfirmationView,
                                           ppobAddressFailureView: PPOBAddressFailureView,
-                                          val serviceErrorHandler: ServiceErrorHandler,
-                                          val auditService: AuditService,
-                                          val mcc: MessagesControllerComponents,
-                                          implicit val appConfig: AppConfig,
-                                          implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggerUtil {
+                                          serviceErrorHandler: ServiceErrorHandler,
+                                          auditService: AuditService,
+                                          mcc: MessagesControllerComponents)
+                                         (implicit appConfig: AppConfig,
+                                          ec: ExecutionContext) extends
+  FrontendController(mcc) with I18nSupport with LoggerUtil {
 
   val show: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
     Future.successful(Ok(changeAddressView()))
@@ -67,7 +68,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
       case Right(address) =>
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
-            Redirect(controllers.routes.BusinessAddressController.confirmation(user.redirectSuffix))
+            Redirect(controllers.routes.BusinessAddressController.confirmation)
           case Left(AddressValidationError) =>
             logger.warn("[BusinessAddressController][callback] Address validation error, rendering error page")
             BadRequest(ppobAddressFailureView(id))
@@ -81,7 +82,7 @@ class BusinessAddressController @Inject()(val authenticate: AuthPredicate,
     }
   }
 
-  val confirmation: String => Action[AnyContent] = _ => authenticate.async { implicit user =>
+  val confirmation: Action[AnyContent] = authenticate.async { implicit user =>
     if (user.isAgent) {
       val email = user.session.get(SessionKeys.verifiedAgentEmail)
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {

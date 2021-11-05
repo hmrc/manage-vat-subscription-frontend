@@ -191,7 +191,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI("/vat-through-software/account/change-business-address/confirmation/non-agent")
+          redirectURI("/vat-through-software/account/change-business-address/confirmation")
         )
       }
     }
@@ -226,7 +226,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(SEE_OTHER),
-          redirectURI("/vat-through-software/account/change-business-address/confirmation/agent")
+          redirectURI("/vat-through-software/account/change-business-address/confirmation")
         )
       }
     }
@@ -317,9 +317,9 @@ class BusinessAddressControllerISpec extends BasePageISpec {
     }
   }
 
-  "Calling BusinessAddressController.nonAgentConfirmation" when {
+  "Calling BusinessAddressController.confirmation" when {
 
-    def nonAgentConfirmation(): WSResponse = get("/change-business-address/confirmation/non-agent", session)
+    def nonAgentConfirmation(): WSResponse = get("/change-business-address/confirmation", session)
 
     "the user is an individual" should {
 

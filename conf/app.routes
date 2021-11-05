@@ -2,8 +2,7 @@
 
 # Pages
 
-GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.redirect
-GET         /change-business-details/:userType               controllers.CustomerCircumstanceDetailsController.show(userType: String)
+GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.show
 GET         /send-verification                               controllers.CustomerCircumstanceDetailsController.sendEmailVerification
 
 GET         /change-business-address                         controllers.BusinessAddressController.show
@@ -13,7 +12,7 @@ GET         /change-business-name                            controllers.ChangeB
 GET         /change-business-name/coho-handoff               controllers.ChangeBusinessNameController.handOffToCOHO
 
 GET         /change-business-address/callback                controllers.BusinessAddressController.callback(id: String)
-GET         /change-business-address/confirmation/:userType  controllers.BusinessAddressController.confirmation(userType: String)
+GET         /change-business-address/confirmation            controllers.BusinessAddressController.confirmation
 
 GET         /change-client-vat-number                        controllers.agentClientRelationship.ConfirmClientVrnController.changeClient
 

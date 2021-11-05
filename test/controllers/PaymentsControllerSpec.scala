@@ -113,8 +113,8 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
         status(result) shouldBe Status.SEE_OTHER
       }
 
-      s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.redirect.url}" in {
-        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.redirect.url)
+      s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show.url}" in {
+        redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
       }
     }
 

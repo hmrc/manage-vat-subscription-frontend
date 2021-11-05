@@ -58,7 +58,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
           case (true, _) =>
             Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
           case _ =>
-            Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix))
+            Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)
         }
       case _ => serviceErrorHandler.showInternalServerError
     }
