@@ -25,7 +25,7 @@
     @headings(messages("not_signed_up.heading"))
 
     <p class="govuk-body">
-        @messages("not_signed_up.text") <a class="govuk-link" href="@appConfig.govUkSoftwareGuidanceUrl">@messages("not_signed_up.link")</a>
+        @messages("not_signed_up.text") <a class="govuk-link" href="@appConfig.govUkSoftwareGuidanceUrl">@messages("not_signed_up.link")</a>@messages("common.fullStop")
     </p>
 
     @govukButton(Button(

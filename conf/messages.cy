@@ -67,7 +67,7 @@ unauthorised.agentJourneyDisabled.p2 = Os oes angen i’ch cleient newid ei fany
 not_signed_up.title = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.heading = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.text = Mae’n rhaid i chi
-not_signed_up.link = gofrestru i ddefnyddio meddalwedd er mwyn cyflwyno’ch Ffurflenni TAW.
+not_signed_up.link = gofrestru i ddefnyddio meddalwedd er mwyn cyflwyno’ch Ffurflenni TAW
 
 customer_details.title = Manylion eich busnes
 customer_details.agentTitle = Manylion TAW eich cleient
