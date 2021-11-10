@@ -55,7 +55,7 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
 
     s"have a the back link with correct text and url '$back'" in {
       elementText(Selectors.backLink) shouldBe back
-      element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+      element(Selectors.backLink).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
     }
 
     s"have a the correct page heading of '${viewMessages.heading}'" in {

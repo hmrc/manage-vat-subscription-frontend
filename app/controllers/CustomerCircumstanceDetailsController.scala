@@ -32,29 +32,25 @@ import views.html.customerInfo.CustomerCircumstanceDetailsView
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CustomerCircumstanceDetailsController @Inject()(val authenticate: AuthPredicate,
-                                                      val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
-                                                      val serviceErrorHandler: ServiceErrorHandler,
-                                                      val auditService: AuditService,
-                                                      val serviceInfoService: ServiceInfoService,
+class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicate,
+                                                      customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
+                                                      serviceErrorHandler: ServiceErrorHandler,
+                                                      auditService: AuditService,
+                                                      serviceInfoService: ServiceInfoService,
                                                       customerCircumstanceDetailsView: CustomerCircumstanceDetailsView,
-                                                      val mcc: MessagesControllerComponents,
-                                                      implicit val appConfig: AppConfig,
-                                                      implicit val executionContext: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggerUtil {
+                                                      mcc: MessagesControllerComponents)
+                                                     (implicit appConfig: AppConfig,
+                                                      executionContext: ExecutionContext) extends
+  FrontendController(mcc) with I18nSupport with LoggerUtil {
 
-  val redirect: Action[AnyContent] = authenticate.async {
-    implicit user =>
-      Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix)))
-  }
-
-  val show: String => Action[AnyContent] = _ => authenticate.async {
+  val show: Action[AnyContent] = authenticate.async {
     implicit user =>
       logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
         case Right(circumstances) =>
           auditService.extendedAudit(
             ViewVatSubscriptionAuditModel(user, circumstances),
-            Some(controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+            Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
           )
           serviceInfoService.getPartial.map { result =>
             Ok(customerCircumstanceDetailsView(circumstances, result))

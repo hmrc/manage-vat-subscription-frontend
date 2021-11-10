@@ -54,9 +54,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       inject[PPOBAddressFailureView],
       serviceErrorHandler,
       mockAuditingService,
-      mcc,
-      mockConfig,
-      ec
+      mcc
     )
 
     "the user is authorised and does not have any conflicting inflight data" should {
@@ -123,9 +121,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         inject[PPOBAddressFailureView],
         serviceErrorHandler,
         mockAuditingService,
-        mcc,
-        mockConfig,
-        ec)
+        mcc
+      )
     }
 
     "the user has a pending address change" should {
@@ -175,7 +172,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
 
           "Redirect to the confirmation page" in {
-            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation("non-agent").url)
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation.url)
           }
         }
 
@@ -192,7 +189,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           }
 
           "Redirect to the confirmation page" in {
-            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation("agent").url)
+            redirectLocation(result) shouldBe Some(controllers.routes.BusinessAddressController.confirmation.url)
           }
         }
       }
@@ -281,9 +278,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         inject[PPOBAddressFailureView],
         serviceErrorHandler,
         mockAuditingService,
-        mcc,
-        mockConfig,
-        ec)
+        mcc
+      )
     }
 
     "address lookup service returns success" when {
@@ -358,9 +354,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       inject[PPOBAddressFailureView],
       serviceErrorHandler,
       mockAuditingService,
-      mcc,
-      mockConfig,
-      ec)
+      mcc
+    )
 
     "the user is an agent" when {
 
@@ -369,7 +364,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockAgentAuthorised()
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          controller.confirmation("agent")(agentUser)
+          controller.confirmation(agentUser)
         }
 
         "return 200" in {
@@ -391,7 +386,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockAgentAuthorised()
           mockCustomerDetailsError()
-          controller.confirmation("agent")(agentUser)
+          controller.confirmation(agentUser)
         }
 
         "return 200" in {
@@ -420,7 +415,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
             "the call to customerCircumstanceDetails succeeds" should {
               lazy val result = {
                 mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-                controller.confirmation("non-agent")(request)
+                controller.confirmation(request)
               }
               lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -452,7 +447,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
             "the call to customerCircumstanceDetails fails" should {
               lazy val result = {
                 mockCustomerDetailsError()
-                controller.confirmation("non-agent")(request)
+                controller.confirmation(request)
               }
               lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -475,7 +470,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
           "the user does not have a verified email address" should {
             lazy val result = {
               mockCustomerDetailsSuccess(customerInformationModelMin.copy(commsPreference = Some("DIGITAL")))
-              controller.confirmation("non-agent")(request)
+              controller.confirmation(request)
             }
             lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -510,7 +505,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         lazy val result = {
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(commsPreference = Some("PAPER")))
-          controller.confirmation("non-agent")(request)
+          controller.confirmation(request)
         }
         lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -534,7 +529,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         lazy val result = {
           mockCustomerDetailsError()
 
-          controller.confirmation("non-agent")(request)
+          controller.confirmation(request)
         }
         lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -553,7 +548,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
       }
 
-      insolvencyCheck(controller.confirmation("non-agent"))
+      insolvencyCheck(controller.confirmation)
     }
   }
 }

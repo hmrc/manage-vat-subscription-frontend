@@ -52,7 +52,7 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
           checkAgentEnrolment(allEnrolments, f)
         case (_, _) =>
           logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
-          Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show("non-agent")))
+          Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
         }
 
       case _ =>

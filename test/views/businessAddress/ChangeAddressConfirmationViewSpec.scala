@@ -58,8 +58,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
             elementText(".govuk-button") shouldBe finish
           }
 
-          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show.url}'" in {
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
           }
         }
       }
@@ -90,8 +90,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
             elementText(".govuk-button") shouldBe finish
           }
 
-          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show.url}'" in {
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
           }
         }
       }
@@ -124,8 +124,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           elementText(".govuk-button") shouldBe finish
         }
 
-        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show.url}'" in {
+          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
         }
       }
     }
@@ -157,8 +157,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           elementText(".govuk-button") shouldBe finish
         }
 
-        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url}'" in {
-          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("non-agent").url
+        s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show.url}'" in {
+          element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
         }
       }
     }
@@ -197,8 +197,8 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
             elementText(".govuk-button") shouldBe finishAgent
           }
 
-          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show("agent").url}'" in {
-            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show("agent").url
+          s"has the correct link to '${controllers.routes.CustomerCircumstanceDetailsController.show.url}'" in {
+            element(".govuk-button").attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
           }
         }
       }

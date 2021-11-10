@@ -46,7 +46,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
     if (!user.isAgent) {
       customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
-          Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect))
+          Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
         case Right(_) => Right(user)
         case Left(error) =>
           logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
@@ -54,7 +54,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
       }
     }
     else{
-      Future(Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.redirect)))
+      Future(Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)))
     }
   }
 }

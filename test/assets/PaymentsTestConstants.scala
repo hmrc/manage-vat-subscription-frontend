@@ -25,9 +25,9 @@ object PaymentsTestConstants extends {
   val principlePaymentStart: PaymentStartModel = PaymentStartModel(
     vrn,
     isAgent = false,
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("non-agent"),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show,
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show,
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show,
     None,
     None
   )
@@ -35,8 +35,8 @@ object PaymentsTestConstants extends {
   val agentPaymentStart: PaymentStartModel = PaymentStartModel(
     vrn,
     isAgent = true,
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
-    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show("agent"),
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show,
+    "/manage-vat-subscription-frontend" + controllers.routes.CustomerCircumstanceDetailsController.show,
     "/agent-client-lookup",
     None,
     None

@@ -52,9 +52,9 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "5.15.0",
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "5.16.0",
   "com.typesafe.play" %% "play-json-joda"             % "2.9.2",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "1.19.0-play-28"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "1.22.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(

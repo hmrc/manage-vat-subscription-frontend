@@ -75,7 +75,7 @@ class PPOBAddressFailureViewSpec extends ViewBaseSpec with BaseMessages with Tes
         elementText(Selectors.buttonCancel) shouldBe PPOBAddressFailureMessages.button2
       }
       "should have the correct location" in {
-        element(Selectors.buttonCancel).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url
+        element(Selectors.buttonCancel).attr("href") shouldBe controllers.routes.CustomerCircumstanceDetailsController.show.url
       }
     }
   }

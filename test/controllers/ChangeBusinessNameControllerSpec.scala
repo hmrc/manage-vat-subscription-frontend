@@ -145,7 +145,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       }
 
       "redirect to the business details page" in {
-        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show.url)
       }
     }
 
@@ -161,7 +161,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       }
 
       "redirect to the business details page" in {
-        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show.url)
       }
     }
 
@@ -177,7 +177,7 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
       }
 
       "redirect to the business details page" in {
-        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show(user.redirectSuffix).url)
+        redirectLocation(result) shouldBe Some(routes.CustomerCircumstanceDetailsController.show.url)
       }
     }
 
