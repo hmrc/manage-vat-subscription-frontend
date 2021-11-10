@@ -64,6 +64,10 @@ unauthorised.agentJourneyDisabled.title = Ni allwch newid manylion busnes eich c
 unauthorised.agentJourneyDisabled.p1 = Ni all asiantau newid manylion busnes eu cleientiaid eto.
 unauthorised.agentJourneyDisabled.p2 = Os oes angen i’ch cleient newid ei fanylion busnes, bydd angen iddo fewngofnodi gan ddefnyddio’i fanylion ei hun ar gyfer Porth y Llywodraeth.
 
+insolventError.title = Mae’n ddrwg gennym - ni allwch gael mynediad at y gwasanaeth hwn
+insolventError.message = Mae’ch busnes wedi’i ddatgan yn ansolfent.
+insolventError.buttonText = Ewch i’ch cyfrif treth busnes
+
 not_signed_up.title = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.heading = Ni allwch ddefnyddio’r gwasanaeth hwn eto
 not_signed_up.text = Mae’n rhaid i chi
