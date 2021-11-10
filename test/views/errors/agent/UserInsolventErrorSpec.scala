@@ -17,7 +17,7 @@
 package views.errors.agent
 
 
-import messages.UserInsolventMessages
+import assets.messages.UserInsolventMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
@@ -33,9 +33,10 @@ class UserInsolventErrorSpec extends ViewBaseSpec {
       val pageHeading = "#insolvent-without-access-heading"
       val message = "#insolvent-without-access-body"
       val button = ".govuk-button"
+      val signOutLink = "#sign-out-link"
     }
 
-    lazy val view = userInsolvent()(request, messages, mockConfig)
+    lazy val view = userInsolvent()(user, messages, mockConfig)
     lazy implicit val document: Document = Jsoup.parse(view.body)
 
     "have the correct document title" in {
@@ -48,6 +49,14 @@ class UserInsolventErrorSpec extends ViewBaseSpec {
 
     "have the correct body" in {
       elementText(Selectors.message) shouldBe UserInsolventMessages.message
+    }
+
+    "have a sign out link" in {
+      element(Selectors.signOutLink).attr("href") shouldBe "/vat-through-software/account/  sign-out?authorised=false"
+    }
+
+    "the sign out link should have the correct text" in {
+      elementText(Selectors.signOutLink) shouldBe UserInsolventMessages.signOutLink
     }
 
     "have the correct button text" in {
