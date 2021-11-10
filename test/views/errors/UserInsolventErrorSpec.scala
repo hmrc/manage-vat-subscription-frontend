@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package views.errors.agent
-
+package views.errors
 
 import assets.messages.UserInsolventMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec
-import views.html.errors.agent.UserInsolventError
+import views.html.errors.UserInsolventError
 
 class UserInsolventErrorSpec extends ViewBaseSpec {
 
@@ -52,7 +51,7 @@ class UserInsolventErrorSpec extends ViewBaseSpec {
     }
 
     "have a sign out link" in {
-      element(Selectors.signOutLink).attr("href") shouldBe "/vat-through-software/account/  sign-out?authorised=false"
+      element(Selectors.signOutLink).attr("href") shouldBe "/vat-through-software/account/sign-out?authorised=false"
     }
 
     "the sign out link should have the correct text" in {

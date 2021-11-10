@@ -28,7 +28,8 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import utils.LoggerUtil
 import views.html.errors.NotSignedUpView
-import views.html.errors.agent.{UnauthorisedView, UserInsolventError}
+import views.html.errors.agent.UnauthorisedView
+import views.html.errors.UserInsolventError
 
 import scala.concurrent.{ExecutionContext, Future}
 

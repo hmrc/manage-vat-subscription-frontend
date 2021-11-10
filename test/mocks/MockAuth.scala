@@ -27,7 +27,8 @@ import org.mockito.stubbing.OngoingStubbing
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.{Retrieval, ~}
 import utils.TestUtil
-import views.html.errors.agent.{UnauthorisedView, UserInsolventError}
+import views.html.errors.agent.UnauthorisedView
+import views.html.errors.UserInsolventError
 import views.html.errors.{ChangePendingView, NotSignedUpView}
 
 import scala.concurrent.Future
