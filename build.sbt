@@ -23,8 +23,6 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
 
-val silencerVersion = "1.7.6"
-
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
@@ -96,16 +94,6 @@ lazy val microservice: Project = Project(appName, file("."))
   .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(majorVersion := 0)
-  .settings(
-    // ***************
-    // Use the silencer plugin to suppress warnings
-    // You may turn it on for `views` too to suppress warnings from unused imports in compiled twirl templates, but this will hide other warnings.
-    scalacOptions += "-P:silencer:pathFilters=routes;views",
-    libraryDependencies ++= Seq(
-    compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
-    "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full
-  )
-)
   .settings(
     Keys.fork in Test := true,
     javaOptions in Test += "-Dlogger.resource=logback-test.xml",
