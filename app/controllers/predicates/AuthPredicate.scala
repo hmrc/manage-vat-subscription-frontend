@@ -29,6 +29,7 @@ import uk.gov.hmrc.auth.core.retrieve.~
 import utils.LoggerUtil
 import views.html.errors.NotSignedUpView
 import views.html.errors.agent.UnauthorisedView
+import views.html.errors.UserInsolventError
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,6 +41,7 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
                               val serviceErrorHandler: ServiceErrorHandler,
                               agentUnauthorisedView: UnauthorisedView,
                               notSignedUpView: NotSignedUpView,
+                              insolventView: UserInsolventError,
                               override val mcc: MessagesControllerComponents)
                              (implicit val appConfig: AppConfig,
                               implicit val executionContext: ExecutionContext)
@@ -87,12 +89,12 @@ class AuthPredicate @Inject()(override val messagesApi: MessagesApi,
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.vatEnrolmentId)) {
       val user = User(enrolments)
       request.session.get(SessionKeys.insolventWithoutAccessKey) match {
-        case Some("true") => Future.successful(Forbidden(notSignedUpView()))
+        case Some("true") => Future.successful(Forbidden(insolventView()(user, request2Messages,appConfig)))
         case Some("false") => block(user)
         case _ => customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).flatMap {
           case Right(details) if details.customerDetails.isInsolventWithoutAccess =>
             logger.debug("[AuthPredicate][checkVatEnrolment] - User is insolvent and not continuing to trade")
-            Future.successful(Forbidden(notSignedUpView()).addingToSession(SessionKeys.insolventWithoutAccessKey -> "true"))
+            Future.successful(Forbidden(insolventView()(user, request2Messages,appConfig)).addingToSession(SessionKeys.insolventWithoutAccessKey -> "true"))
           case Right(_) =>
             logger.debug("[AuthPredicate][checkVatEnrolment] - Authenticated as principle")
             block(user).map(result => result.addingToSession(SessionKeys.insolventWithoutAccessKey -> "false"))

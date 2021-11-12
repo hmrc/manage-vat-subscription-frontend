@@ -113,3 +113,5 @@ lazy val microservice: Project = Project(appName, file("."))
     parallelExecution in IntegrationTest := false)
   .settings(resolvers ++= Seq(
   ))
+
+
