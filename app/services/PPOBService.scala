@@ -69,7 +69,7 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
           )
           subscriptionConnector.updatePPOB(
             user.vrn,
-            buildPPOBUpdateModel(address, customerDetails, user.session.get(SessionKeys.verifiedAgentEmail))
+            buildPPOBUpdateModel(address, customerDetails, user.session.get(SessionKeys.mtdVatvcVerifiedAgentEmail))
           ) map {
             case Right(success) => Right(success)
             case Left(error) => Left(error)

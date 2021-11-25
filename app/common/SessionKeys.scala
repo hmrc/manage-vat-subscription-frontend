@@ -18,10 +18,10 @@ package common
 
 object SessionKeys {
 
-  val CURRENT_RETURN_FREQUENCY: String = "CURRENT_RETURN_FREQUENCY"
-  val NEW_RETURN_FREQUENCY: String = "RETURN_FREQUENCY"
-  val CLIENT_VRN: String = "CLIENT_VRN"
-  val verifiedAgentEmail: String = "verifiedAgentEmail"
+  val mtdVatvcCurrentReturnFrequency: String = "mtdVatvcCurrentReturnFrequency"
+  val mtdVatvcNewReturnFrequency: String = "mtdVatvcNewReturnFrequency"
+  val mtdVatvcClientVrn: String = "mtdVatvcClientVrn"
+  val mtdVatvcVerifiedAgentEmail: String = "mtdVatvcVerifiedAgentEmail"
   val vatCorrespondencePrepopulationEmailKey: String = "vatCorrespondencePrepopulationEmail"
   val inFlightContactDetailsChangeKey: String = "inFlightContactDetailsChange"
   val insolventWithoutAccessKey: String = "insolventWithoutAccess"

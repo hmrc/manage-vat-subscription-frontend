@@ -54,11 +54,11 @@ trait TestUtil extends AnyWordSpecLike with GuiceOneAppPerSuite with BeforeAndAf
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "false")
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.CLIENT_VRN -> vrn, SessionKeys.verifiedAgentEmail -> agentEmail)
+    FakeRequest().withSession(SessionKeys.mtdVatvcClientVrn -> vrn, SessionKeys.mtdVatvcVerifiedAgentEmail -> agentEmail)
   implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession(
-    SessionKeys.CLIENT_VRN -> vrn,
-    SessionKeys.NEW_RETURN_FREQUENCY -> "Jan",
-    SessionKeys.CURRENT_RETURN_FREQUENCY -> "Monthly"
+    SessionKeys.mtdVatvcClientVrn -> vrn,
+    SessionKeys.mtdVatvcNewReturnFrequency -> "Jan",
+    SessionKeys.mtdVatvcCurrentReturnFrequency -> "Monthly"
   )
   lazy val insolventRequest: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "true")

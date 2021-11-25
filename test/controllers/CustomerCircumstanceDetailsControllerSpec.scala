@@ -53,8 +53,8 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     "the user is authorised and a CustomerDetailsModel" should {
 
       lazy val result = TestCustomerCircumstanceDetailsController.show(request.withSession(
-        SessionKeys.NEW_RETURN_FREQUENCY -> returnPeriodJan ,
-        SessionKeys.CURRENT_RETURN_FREQUENCY -> returnPeriodFeb
+        SessionKeys.mtdVatvcNewReturnFrequency -> returnPeriodJan ,
+        SessionKeys.mtdVatvcCurrentReturnFrequency -> returnPeriodFeb
       ))
       lazy val document = Jsoup.parse(contentAsString(result))
 
@@ -84,8 +84,8 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       }
 
       "remove the data" in {
-        session(result).get(SessionKeys.NEW_RETURN_FREQUENCY) shouldBe None
-        session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe None
+        session(result).get(SessionKeys.mtdVatvcNewReturnFrequency) shouldBe None
+        session(result).get(SessionKeys.mtdVatvcCurrentReturnFrequency) shouldBe None
       }
     }
 

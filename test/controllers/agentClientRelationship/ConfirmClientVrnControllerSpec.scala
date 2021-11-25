@@ -52,15 +52,15 @@ class ConfirmClientVrnControllerSpec extends ControllerBaseSpec {
           }
 
           "have removed the Clients VRN from session" in {
-            session(result).get(SessionKeys.CLIENT_VRN) shouldBe None
+            session(result).get(SessionKeys.mtdVatvcClientVrn) shouldBe None
           }
 
           "have removed the ReturnFrequency from session" in {
-            session(result).get(SessionKeys.NEW_RETURN_FREQUENCY) shouldBe None
+            session(result).get(SessionKeys.mtdVatvcNewReturnFrequency) shouldBe None
           }
 
           "have removed the CurrentReturnFrequency from session" in {
-            session(result).get(SessionKeys.CURRENT_RETURN_FREQUENCY) shouldBe None
+            session(result).get(SessionKeys.mtdVatvcCurrentReturnFrequency) shouldBe None
           }
         }
       }

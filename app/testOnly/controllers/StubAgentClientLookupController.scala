@@ -37,14 +37,14 @@ class StubAgentClientLookupController @Inject()(stubAgentClientLookupView: StubA
 
   def unauth(redirectUrl: String): Action[AnyContent] = Action { implicit request =>
     Ok(stubAgentClientUnauthView(redirectUrl))
-      .removingFromSession(SessionKeys.CLIENT_VRN)
+      .removingFromSession(SessionKeys.mtdVatvcClientVrn)
   }
 
   def post: Action[AnyContent] = Action { implicit request =>
     StubAgentClientLookupForm.form.bindFromRequest().fold(
       err => InternalServerError(s"Failed to bind model:\n\nError: $err"),
       success => Redirect(success.redirectUrl)
-        .addingToSession(SessionKeys.CLIENT_VRN -> success.vrn)
+        .addingToSession(SessionKeys.mtdVatvcClientVrn -> success.vrn)
     )
   }
 }

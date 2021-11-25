@@ -40,7 +40,7 @@ class ConfirmClientVrnController @Inject()(val authenticate: AuthoriseAsAgentWit
     implicit user =>
       Future.successful(
         Redirect(appConfig.agentClientLookupUrl)
-          .removingFromSession(SessionKeys.CLIENT_VRN, SessionKeys.NEW_RETURN_FREQUENCY, SessionKeys.CURRENT_RETURN_FREQUENCY)
+          .removingFromSession(SessionKeys.mtdVatvcClientVrn, SessionKeys.mtdVatvcNewReturnFrequency, SessionKeys.mtdVatvcCurrentReturnFrequency)
       )
   }
 

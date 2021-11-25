@@ -84,7 +84,7 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
 
   val confirmation: Action[AnyContent] = authenticate.async { implicit user =>
     if (user.isAgent) {
-      val email = user.session.get(SessionKeys.verifiedAgentEmail)
+      val email = user.session.get(SessionKeys.mtdVatvcVerifiedAgentEmail)
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) =>
           val entityName = details.customerDetails.clientName
