@@ -35,7 +35,7 @@ class ReturnFrequencyService @Inject()(subscriptionConnector: SubscriptionConnec
                             ec: ExecutionContext,
                             user: User[_]): Future[Either[ErrorModel, SubscriptionUpdateResponseModel]] = {
 
-    val updateReturnPeriod = UpdateReturnPeriod(frequency.internalId, user.session.get(SessionKeys.verifiedAgentEmail))
+    val updateReturnPeriod = UpdateReturnPeriod(frequency.internalId, user.session.get(SessionKeys.mtdVatvcVerifiedAgentEmail))
     subscriptionConnector.updateReturnFrequency(vrn, updateReturnPeriod)
   }
 }

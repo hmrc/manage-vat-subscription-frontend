@@ -23,7 +23,7 @@ import play.api.test.Helpers.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 
 trait BasePageISpec extends BaseIntegrationSpec {
 
-  def formatSessionVrn: Option[String] => Map[String, String] = _.fold(Map.empty[String, String])(x => Map(SessionKeys.CLIENT_VRN -> x))
+  def formatSessionVrn: Option[String] => Map[String, String] = _.fold(Map.empty[String, String])(x => Map(SessionKeys.mtdVatvcClientVrn -> x))
 
   def postAuthenticationTests(path: String, sessionVrn: Option[String] = None)(formData: Map[String, Seq[String]]): Unit =
     authenticationTests(path, post(path, formatSessionVrn(sessionVrn))(formData))

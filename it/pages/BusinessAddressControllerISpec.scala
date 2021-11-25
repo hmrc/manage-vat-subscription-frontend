@@ -32,8 +32,8 @@ import stubs.{BusinessAddressStub, VatSubscriptionStub}
 
 class BusinessAddressControllerISpec extends BasePageISpec {
 
-  val session: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN)
-  val sessionVrnAndWelsh: Map[String, String] = Map(SessionKeys.CLIENT_VRN -> VRN, "PLAY_LANG" -> "cy")
+  val session: Map[String, String] = Map(SessionKeys.mtdVatvcClientVrn -> VRN)
+  val sessionVrnAndWelsh: Map[String, String] = Map(SessionKeys.mtdVatvcClientVrn -> VRN, "PLAY_LANG" -> "cy")
   lazy val mockAppConfig: FrontendAppConfig = app.injector.instanceOf[FrontendAppConfig]
 
 

@@ -54,7 +54,7 @@ class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicat
           )
           serviceInfoService.getPartial.map { result =>
             Ok(customerCircumstanceDetailsView(circumstances, result))
-              .removingFromSession(SessionKeys.NEW_RETURN_FREQUENCY,SessionKeys.CURRENT_RETURN_FREQUENCY)
+              .removingFromSession(SessionKeys.mtdVatvcNewReturnFrequency,SessionKeys.mtdVatvcCurrentReturnFrequency)
           }
         case _ =>
           logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")

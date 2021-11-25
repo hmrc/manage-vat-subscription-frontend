@@ -52,7 +52,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
   override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
     implicit val req: Request[A] = request
-    request.session.get(SessionKeys.CLIENT_VRN) match {
+    request.session.get(SessionKeys.mtdVatvcClientVrn) match {
       case Some(vrn) =>
         logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
         enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
