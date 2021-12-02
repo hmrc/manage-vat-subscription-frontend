@@ -46,10 +46,12 @@
     } else {
 
         @contactPref match {
-            case Some("DIGITAL") => {<p class="govuk-body" id="preference-message">@messages(if(emailVerified){"contact_preference.email"}else{"contact_preference.digital"})</p>}
+            case Some("DIGITAL") => {<p class="govuk-body" id="preference-message">@messages(if(emailVerified){"contact_preference.email"}else{"contact_preference.digital"})</p>
+            <p class="govuk-body">@messages("contact_preference.updateInformation")</p>}
             case Some("PAPER") => {<p class="govuk-body" id="preference-message">@messages("contact_preference.paper")</p>}
             case _ => {<p class="govuk-body">@messages("contact_preference.contactPrefError")</p>}
         }
+
         <p class="govuk-body">@messages("contact_preference.contact")</p>
 
     }

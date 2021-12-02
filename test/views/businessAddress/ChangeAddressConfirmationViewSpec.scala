@@ -48,8 +48,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(1) shouldBe viewMessages.digiPrefEmailVerified
         }
 
-        s"have the correct p2 of '${viewMessages.contactDetails}'" in {
-          paragraph(2) shouldBe viewMessages.contactDetails
+        s"have the correct p2 of '${viewMessages.updateInformation}'" in {
+          paragraph(2) shouldBe viewMessages.updateInformation
+        }
+
+        s"have the correct p3 of '${viewMessages.contactDetails}'" in {
+          paragraph(3) shouldBe viewMessages.contactDetails
         }
 
         s"have a button to finish" which {
@@ -80,8 +84,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           paragraph(1) shouldBe viewMessages.digitalPref
         }
 
-        s"have the correct p2 of '${viewMessages.contactDetails}'" in {
-          paragraph(2) shouldBe viewMessages.contactDetails
+        s"have the correct p2 of '${viewMessages.updateInformation}'" in {
+          paragraph(2) shouldBe viewMessages.updateInformation
+        }
+
+        s"have the correct p3 of '${viewMessages.contactDetails}'" in {
+          paragraph(3) shouldBe viewMessages.contactDetails
         }
 
         s"have a button to finish" which {
