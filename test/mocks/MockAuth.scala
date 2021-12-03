@@ -18,7 +18,6 @@ package mocks
 
 import _root_.services.EnrolmentsAuthService
 import assets.BaseTestConstants._
-import audit.AuditService
 import controllers.predicates._
 import mocks.services.MockCustomerCircumstanceDetailsService
 import org.mockito.ArgumentMatchers
@@ -55,11 +54,8 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
   val mockAuthAsAgentWithClient: AuthoriseAsAgentWithClient =
     new AuthoriseAsAgentWithClient(
       mockEnrolmentsAuthService,
-      inject[AuditService],
       serviceErrorHandler,
-      mcc,
-      mockConfig,
-      ec
+      mcc
     )
 
   val mockAuthPredicate: AuthPredicate =
@@ -98,10 +94,7 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
   val mockInFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate =
     new InFlightRepaymentBankAccountPredicate(
       mockCustomerDetailsService,
-      serviceErrorHandler,
-      mcc,
-      mockConfig,
-      ec
+      serviceErrorHandler
     )
 
   def mockIndividualAuthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
@@ -166,10 +159,10 @@ trait MockAuth extends TestUtil with MockCustomerCircumstanceDetailsService {
       )
     ))
 
-  def mockMissingBearerToken()(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+  def mockMissingBearerToken(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
     setupAuthResponse(Future.failed(MissingBearerToken()))
 
-  def mockUnauthorised()(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
+  def mockUnauthorised(): OngoingStubbing[Future[~[Option[AffinityGroup], Enrolments]]] =
     setupAuthResponse(Future.failed(InsufficientEnrolments()))
 
 }

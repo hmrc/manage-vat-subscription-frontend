@@ -19,7 +19,7 @@ package controllers.predicates
 import assets.CircumstanceDetailsTestConstants._
 import mocks.MockAuth
 import org.jsoup.Jsoup
-import play.api.test.Helpers.{await, contentAsString, defaultAwaitTimeout, redirectLocation, status}
+import play.api.test.Helpers.{LOCATION, await, contentAsString, defaultAwaitTimeout}
 import assets.BaseTestConstants._
 import play.api.http.Status
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -40,11 +40,11 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
         }
 
         "return 303" in {
-          status(Future.successful(result)) shouldBe Status.SEE_OTHER
+          result.header.status shouldBe Status.SEE_OTHER
         }
 
         s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show.url}" in {
-          redirectLocation(Future.successful(result)) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
+          result.header.headers.get(LOCATION) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
         }
       }
 
@@ -81,8 +81,21 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
       }
 
       "return 500" in {
-        status(Future.successful(result)) shouldBe INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(Future.successful(result))).title) shouldBe internalServerErrorTitleUser
+        result.header.status shouldBe INTERNAL_SERVER_ERROR
+        Jsoup.parse(contentAsString(Future.successful(result))).title shouldBe internalServerErrorTitleUser
+      }
+    }
+
+    "the user is an agent" should {
+
+      lazy val result = await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser)).left.get
+
+      "return 303" in {
+        result.header.status shouldBe Status.SEE_OTHER
+      }
+
+      "redirect to the CustomerCircumstanceDetailsController show action" in {
+        result.header.headers.get(LOCATION) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
       }
     }
   }

@@ -17,7 +17,6 @@
 package models.circumstanceInfo
 
 import config.AppConfig
-import models.JsonReadUtil
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Reads, Writes, __}
@@ -73,7 +72,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
 
 }
 
-object CircumstanceDetails extends JsonReadUtil {
+object CircumstanceDetails {
 
   private val customerDetailsPath = __ \ "customerDetails"
   private val flatRateSchemePath = __ \ "flatRateScheme"
@@ -89,16 +88,16 @@ object CircumstanceDetails extends JsonReadUtil {
 
   implicit val reads: Reads[CircumstanceDetails] = (
       customerDetailsPath.read[CustomerDetails](CustomerDetails.reads) and
-      flatRateSchemePath.readOpt[FlatRateScheme] and
+      flatRateSchemePath.readNullable[FlatRateScheme] and
       ppobPath.read[PPOB] and
-      bankDetailsPath.readOpt[BankDetails] and
-      returnPeriodPath.readOpt[ReturnPeriod] and
-      deregistrationPath.readOpt[Deregistration] and
-      changeIndicatorsPath.readOpt[ChangeIndicators] and
-      pendingChangesPath.readOpt[PendingChanges] and
-      partyTypePath.readOpt[String] and
+      bankDetailsPath.readNullable[BankDetails] and
+      returnPeriodPath.readNullable[ReturnPeriod] and
+      deregistrationPath.readNullable[Deregistration] and
+      changeIndicatorsPath.readNullable[ChangeIndicators] and
+      pendingChangesPath.readNullable[PendingChanges] and
+      partyTypePath.readNullable[String] and
       missingTraderPath.read[Boolean] and
-      commsPreferencePath.readOpt[String]
+      commsPreferencePath.readNullable[String]
     )(CircumstanceDetails.apply _)
 
   implicit val writes: Writes[CircumstanceDetails] = (

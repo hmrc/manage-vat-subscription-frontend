@@ -16,7 +16,6 @@
 
 package models.circumstanceInfo
 
-import models.JsonReadUtil
 import play.api.libs.json.{__, Writes, Reads}
 import play.api.libs.functional.syntax._
 
@@ -25,7 +24,7 @@ case class FlatRateScheme(FRSCategory: Option[String],
                           limitedCostTrader: Option[Boolean],
                           startDate: Option[String])
 
-object FlatRateScheme extends JsonReadUtil {
+object FlatRateScheme {
 
   private val frsCategoryPath = __ \ "FRSCategory"
   private val frsPerecentPath =  __ \ "FRSPercentage"
@@ -33,10 +32,10 @@ object FlatRateScheme extends JsonReadUtil {
   private val startDatePath = __ \ "startDate"
 
   implicit val reads: Reads[FlatRateScheme] = (
-    frsCategoryPath.readOpt[String] and
-      frsPerecentPath.readOpt[BigDecimal] and
-      limitedCostPath.readOpt[Boolean] and
-      startDatePath.readOpt[String]
+    frsCategoryPath.readNullable[String] and
+      frsPerecentPath.readNullable[BigDecimal] and
+      limitedCostPath.readNullable[Boolean] and
+      startDatePath.readNullable[String]
     )(FlatRateScheme.apply _)
 
   implicit val writes: Writes[FlatRateScheme] = (

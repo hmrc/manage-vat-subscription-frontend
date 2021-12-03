@@ -84,5 +84,15 @@ class AuthoriseAsAgentWithClientSpec extends MockAuth {
         redirectLocation(result) shouldBe Some(mockConfig.agentClientUnauthorisedUrl)
       }
     }
+
+    "the user has no affinity group" should {
+
+      lazy val result = target(fakeRequestWithClientsVRN)
+
+      "return 500 (INTERNAL_SERVER_ERROR)" in {
+        mockAgentWithoutAffinity()
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+    }
   }
 }

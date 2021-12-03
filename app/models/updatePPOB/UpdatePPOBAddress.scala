@@ -16,7 +16,6 @@
 
 package models.updatePPOB
 
-import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -27,7 +26,7 @@ case class UpdatePPOBAddress(line1: Option[String],
                              postCode: Option[String],
                              countryCode: Option[String])
 
-object UpdatePPOBAddress extends JsonReadUtil {
+object UpdatePPOBAddress {
 
   private val line1Path = JsPath \ "line1"
   private val line2Path =  JsPath \ "line2"

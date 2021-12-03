@@ -16,22 +16,21 @@
 
 package models.circumstanceInfo
 
-import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
 case class BankDetails(accountHolderName:Option[String],bankAccountNumber:Option[String],sortCode:Option[String])
 
-object BankDetails extends JsonReadUtil {
+object BankDetails {
 
   private val accountHolderNamePath = __ \ "accountHolderName"
   private val bankAccountNumberPath = __ \ "bankAccountNumber"
   private val sortCodePath = __ \ "sortCode"
 
   implicit val reads: Reads[BankDetails] = (
-    accountHolderNamePath.readOpt[String] and
-      bankAccountNumberPath.readOpt[String] and
-      sortCodePath.readOpt[String]
+    accountHolderNamePath.readNullable[String] and
+      bankAccountNumberPath.readNullable[String] and
+      sortCodePath.readNullable[String]
     )(BankDetails.apply _)
 
   implicit val writes: Writes[BankDetails] = (

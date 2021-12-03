@@ -16,11 +16,9 @@
 
 package controllers.predicates
 
-import audit.AuditService
 import common.{EnrolmentKeys, SessionKeys}
 import config.{AppConfig, ServiceErrorHandler}
-import javax.inject.{Inject, Singleton}
-import models.User
+import models.{AgentUser, User}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.EnrolmentsAuthService
@@ -29,25 +27,21 @@ import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
 import utils.LoggerUtil
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuthService,
-                                           val auditService: AuditService,
-                                           val serviceErrorHandler: ServiceErrorHandler,
-                                           override val mcc: MessagesControllerComponents,
-                                           implicit val appConfig: AppConfig,
-                                           implicit val executionContext: ExecutionContext)
+                                           serviceErrorHandler: ServiceErrorHandler,
+                                           mcc: MessagesControllerComponents)
+                                          (implicit appConfig: AppConfig,
+                                           val executionContext: ExecutionContext)
   extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] with LoggerUtil {
 
   private def delegatedAuthRule(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
       .withIdentifier(EnrolmentKeys.vatIdentifierId, vrn)
       .withDelegatedAuthRule(EnrolmentKeys.mtdVatDelegatedAuthRule)
-
-  private val arn: Enrolments => String = _.enrolments.collectFirst {
-    case Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arnValue)), _ , _) => arnValue
-  }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
 
   override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], block: User[A] => Future[Result]): Future[Result] = {
@@ -59,7 +53,8 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
           case None ~ _ =>
             Future.successful(serviceErrorHandler.showInternalServerError)
           case _ ~ allEnrolments =>
-            val user = User(vrn, active = true, Some(arn(allEnrolments)))
+            val agent = AgentUser(allEnrolments)
+            val user = User(vrn, active = true, Some(agent.arn))
             block(user)
         } recover {
           case _: NoActiveSession =>
