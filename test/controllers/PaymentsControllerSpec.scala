@@ -17,7 +17,7 @@
 package controllers
 
 import assets.BaseTestConstants._
-import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisationPending, customerInformationWithPartyType}
+import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisationPending, customerInformationNoPendingIndividual}
 import assets.PaymentsTestConstants._
 import audit.models.BankAccountHandOffAuditModel
 import mocks.services.MockPaymentsService
@@ -48,20 +48,13 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
     "user has no in-flight repayment bank account change" when {
 
-      def setup(customerDetailsResponse: CircumstanceDetailsResponse = Right(customerInformationWithPartyType(None)),
-                paymentsResponse: PaymentsResponse): PaymentsController = {
-
-        setupMockPaymentsService(paymentsResponse)
-        setupMockCustomerDetails(vrn)(customerDetailsResponse)
-        mockIndividualAuthorised()
-
-        TestPaymentController
-      }
-
       "the PaymentsService returns a Right(PaymentRedirectModel)" should {
 
-        lazy val controller = setup(paymentsResponse = Right(successPaymentsResponseModel))
-        lazy val result = controller.sendToPayments(request)
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+          setupMockPaymentsService(Right(successPaymentsResponseModel))
+          TestPaymentController.sendToPayments(request)
+        }
 
         "return 303 (Redirect)" in {
           status(result) shouldBe Status.SEE_OTHER
@@ -83,38 +76,51 @@ class PaymentsControllerSpec extends ControllerBaseSpec with MockPaymentsService
 
       "the PaymentsService returns an error" should {
 
-        lazy val controller = setup(paymentsResponse = Left(errorModel))
-        lazy val result = controller.sendToPayments(request)
-
-        "return 500 (ISE)" in {
-          status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationNoPendingIndividual)
+          setupMockPaymentsService(Left(errorModel))
+          TestPaymentController.sendToPayments(request)
         }
-      }
 
-      "the CustomerCircumstanceDetailsService returns an error" should {
-
-        lazy val controller = setup(customerDetailsResponse = Left(errorModel), paymentsResponse = Left(errorModel))
-        lazy val result = controller.sendToPayments(request)
-
-        "return 500 (ISE)" in {
+        "return 500" in {
           status(result) shouldBe INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
+        }
+
+        "render the internal server error page" in {
+          Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitleUser
         }
       }
     }
 
     "user has an in-flight repayment bank account change" should {
 
-      lazy val result = TestPaymentController.sendToPayments(request)
+      lazy val result = {
+        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
+        TestPaymentController.sendToPayments(request)
+      }
 
       "return SEE_OTHER (303)" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisationPending)
         status(result) shouldBe Status.SEE_OTHER
       }
 
       s"redirect to ${controllers.routes.CustomerCircumstanceDetailsController.show.url}" in {
         redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
+      }
+    }
+
+    "there was an error retrieving customer information in the second call, after the inflight predicate" should {
+
+      lazy val result = {
+        mockDoubleCustomerDetails(Right(customerInformationNoPendingIndividual), Left(errorModel))
+        TestPaymentController.sendToPayments(request)
+      }
+
+      "return 500" in {
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
+      }
+
+      "render the internal server error page" in {
+        Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitleUser
       }
     }
 

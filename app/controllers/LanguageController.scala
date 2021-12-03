@@ -27,8 +27,6 @@ class LanguageController @Inject()(val appConfig: AppConfig,
                                    val mcc: MessagesControllerComponents)
   extends FrontendController(mcc) with I18nSupport {
 
-  def langToCall: String => Call = appConfig.routeToSwitchLanguage
-
   protected[controllers] def fallbackURL: String = controllers.routes.CustomerCircumstanceDetailsController.show.url
 
   def languageMap: Map[String, Lang] = appConfig.languageMap

@@ -189,15 +189,35 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       }
     }
 
-    "there are errors in the form" should {
+    "there are errors in the form" when {
+
+      "the customer info call is successful" should {
+
+        lazy val result = {
+          setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+          controller.submit(request.withFormUrlEncodedBody())
+        }
+
+        "return 400" in {
+          status(result) shouldBe Status.BAD_REQUEST
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+      }
+    }
+
+    "the customer info call is unsuccessful" should {
 
       lazy val result = {
-        setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+        mockCustomerDetailsError()
         controller.submit(request.withFormUrlEncodedBody())
       }
 
-      "return 400" in {
-        status(result) shouldBe Status.BAD_REQUEST
+      "return 500" in {
+        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
       }
 
       "return HTML" in {

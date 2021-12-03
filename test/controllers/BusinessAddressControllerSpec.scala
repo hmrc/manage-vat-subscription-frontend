@@ -74,7 +74,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangeAddressPageMessages.heading}'" in {
-        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressPageMessages.heading
+        Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangeAddressPageMessages.heading
       }
     }
 
@@ -95,7 +95,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangePendingMessages.heading}'" in {
-        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+        Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -147,7 +147,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
       }
 
       s"have the heading '${ChangePendingMessages.heading}'" in {
-        messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+        Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangePendingMessages.heading
       }
     }
 
@@ -208,7 +208,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
         "return InternalServerError" in {
           status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-          messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
+          Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitleUser
         }
       }
 
@@ -229,7 +229,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the address validation error page" in {
-          messages(Jsoup.parse(contentAsString(result)).title) shouldBe validationErrorTitle
+          Jsoup.parse(contentAsString(result)).title shouldBe validationErrorTitle
         }
       }
     }
@@ -248,7 +248,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
+        Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -319,7 +319,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         s"have the heading '${ChangePendingMessages.heading}'" in {
-          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangePendingMessages.heading
+          Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangePendingMessages.heading
         }
       }
     }
@@ -334,7 +334,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       "return InternalServerError" in {
         status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
+        Jsoup.parse(contentAsString(result)).title shouldBe internalServerErrorTitleUser
       }
     }
 
@@ -377,7 +377,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
 
@@ -399,7 +399,7 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
+          Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
         }
       }
     }
@@ -439,8 +439,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
               }
 
               "render the Business Address confirmation view" in {
-                messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-                messages(document.select("#content p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digiPrefEmailVerified
+                document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+                document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.digiPrefEmailVerified
               }
             }
 
@@ -461,8 +461,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
               }
 
               "render the Business Address confirmation view" in {
-                messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-                messages(document.select("#content p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+                document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+                document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
               }
             }
           }
@@ -494,8 +494,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
             }
 
             "render the Business Address confirmation view" in {
-              messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-              messages(document.select("#content p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.digitalPref
+              document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+              document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.digitalPref
             }
           }
         }
@@ -519,8 +519,31 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-          messages(document.select("#content p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.paperPref
+          document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+          document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.paperPref
+        }
+      }
+
+      "the user has no contact preference preference on record" should {
+
+        lazy val result = {
+          mockCustomerDetailsSuccess(customerInformationModelMin)
+          controller.confirmation(request)
+        }
+        lazy val document = Jsoup.parse(contentAsString(result))
+
+        "return 200" in {
+          status(result) shouldBe Status.OK
+        }
+
+        "return HTML" in {
+          contentType(result) shouldBe Some("text/html")
+          charset(result) shouldBe Some("utf-8")
+        }
+
+        "render the Business Address confirmation view" in {
+          document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+          document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
         }
       }
 
@@ -543,8 +566,8 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
         }
 
         "render the Business Address confirmation view" in {
-          messages(document.select("h1").text) shouldBe ChangeAddressConfirmationPageMessages.heading
-          messages(document.select("#content p:nth-of-type(1)").text()) shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
+          document.select("h1").text shouldBe ChangeAddressConfirmationPageMessages.heading
+          document.select("#content p:nth-of-type(1)").text() shouldBe ChangeAddressConfirmationPageMessages.contactPrefError
         }
       }
 
