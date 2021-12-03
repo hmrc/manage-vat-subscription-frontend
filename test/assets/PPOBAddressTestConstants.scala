@@ -82,6 +82,8 @@ object PPOBAddressTestConstants {
     Some(emailVerified)
   )
 
+  val contactDetailsNoEmail = contactDetailsModelMax.copy(emailAddress = None)
+
   val contactDetailsEmailUnverified: ContactDetails = contactDetailsModelMax.copy(emailVerified = Some(false))
 
   val contactDetailsModelMaxPending = ContactDetails(

@@ -233,14 +233,14 @@ object CustomerAddressTestConstants extends BaseMessages {
     )
   )
 
-  val agentAddressLookupV2Json: JsObject = Json.obj(fields =
+  def agentAddressLookupV2Json(featureSwitchOn: Boolean): JsObject = Json.obj(fields =
     "version" -> 2,
     "options" -> Json.obj(
       "continueUrl" -> "/lookup-address/confirmed",
       "accessibilityFooterUrl" -> "/vat-through-software/accessibility-statement",
       "deskProServiceName" -> "VATC",
       "showPhaseBanner" -> true,
-      "ukMode" -> false,
+      "ukMode" -> !featureSwitchOn,
       "timeoutConfig" -> Json.obj(
         "timeoutAmount" -> 1800,
         "timeoutUrl" -> "/unauth-signout"
@@ -255,8 +255,8 @@ object CustomerAddressTestConstants extends BaseMessages {
         "selectPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.selectHeading,
           "heading" -> AddressLookupMessages.selectHeading,
-          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText,
-          "submitLabel" -> continue
+          "submitLabel" -> continue,
+          "editAddressLinkText" -> AddressLookupMessages.editAddressLinkText
         ),
         "lookupPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.startHeading,
@@ -264,7 +264,7 @@ object CustomerAddressTestConstants extends BaseMessages {
           "filterLabel" -> AddressLookupMessages.filter,
           "postcodeLabel" -> AddressLookupMessages.postcode,
           "submitLabel" -> AddressLookupMessages.submitLabel,
-          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLink
+          if(featureSwitchOn) { "manualAddressLinkText" -> AddressLookupMessages.manualAddressLink } else { "" -> "" }
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeading,
@@ -273,7 +273,7 @@ object CustomerAddressTestConstants extends BaseMessages {
         ),
         "editPageLabels" -> Json.obj(
           "submitLabel" -> continue,
-          "postcodeLabel" -> AddressLookupMessages.postcodeLabel
+          if(featureSwitchOn) { "postcodeLabel" -> AddressLookupMessages.postcodeLabel } else { "" -> "" }
         )
       ),
       "cy" -> Json.obj(
@@ -293,7 +293,7 @@ object CustomerAddressTestConstants extends BaseMessages {
           "filterLabel" -> AddressLookupMessages.filterCy,
           "postcodeLabel" -> AddressLookupMessages.postcodeCy,
           "submitLabel" -> AddressLookupMessages.submitLabelCy,
-          "manualAddressLinkText" -> AddressLookupMessages.manualAddressLinkCy
+          if(featureSwitchOn) { "manualAddressLinkText" -> AddressLookupMessages.manualAddressLinkCy } else { "" -> "" }
         ),
         "confirmPageLabels" -> Json.obj(
           "title" -> AddressLookupMessages.confirmHeadingCy,
@@ -302,7 +302,7 @@ object CustomerAddressTestConstants extends BaseMessages {
         ),
         "editPageLabels" -> Json.obj(
           "submitLabel" -> AddressLookupMessages.continueCy,
-          "postcodeLabel" -> AddressLookupMessages.postcodeLabelCy
+          if(featureSwitchOn) { "postcodeLabel" -> AddressLookupMessages.postcodeLabelCy } else { "" -> "" }
         )
       )
     )

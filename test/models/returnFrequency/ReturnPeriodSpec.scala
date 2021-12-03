@@ -117,5 +117,9 @@ class ReturnPeriodSpec extends AnyWordSpecLike with Matchers {
     "output a fully populated MM ReturnPeriod object with all fields populated" in {
       Json.toJson(Monthly) shouldBe returnPeriodMMJson
     }
+
+    "output correct JSON for an annual return period" in {
+      Json.toJson(Annual) shouldBe returnPeriodANJson
+    }
   }
 }

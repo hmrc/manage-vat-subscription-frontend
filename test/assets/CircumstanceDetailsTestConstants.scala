@@ -246,6 +246,26 @@ object CircumstanceDetailsTestConstants {
     commsPreference = Some("DIGITAL")
   )
 
+  val customerInformationSomePendingIndividual: CircumstanceDetails = customerInformationNoPendingIndividual.copy(
+    pendingChanges = Some(PendingChanges(
+      ppob = None,
+      bankDetails = Some(bankDetailsModelMax),
+      returnPeriod = None,
+      tradingName = None,
+      businessName = None
+    ))
+  )
+
+  val customerInformationPendingNoInfo: CircumstanceDetails = customerInformationModelMaxIndividual.copy(
+    pendingChanges = Some(PendingChanges(
+      ppob = Some(ppobModelMin),
+      bankDetails = None,
+      returnPeriod = None,
+      tradingName = None,
+      businessName = None
+    ))
+  )
+
   val customerInformationNoPendingIndividualDeregistered: CircumstanceDetails = CircumstanceDetails(
     customerDetails = individual,
     flatRateScheme = Some(frsModelMax),
