@@ -54,83 +54,125 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
     "the user has the customer information necessary to access the page" when {
 
-        "the user's data is mastered in ETMP" should {
+      "the user's data is mastered in ETMP" should {
+
+        lazy val result: Future[Result] = {
+          mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+          TestChangeBusinessNameController.show(request)
+        }
+
+        "return SEE_OTHER (303)" in {
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the change business name page on vat-designatory-details-frontend" in {
+          redirectLocation(result) shouldBe Some(mockConfig.vatDesignatoryDetailsBusinessNameUrl)
+        }
+      }
+
+      "the user's data is not mastered in ETMP" when {
+
+        "the user has a party type to indicate their org name is mastered in NSP/ITMP" should {
 
           lazy val result: Future[Result] = {
-            mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
+            mockCustomerDetailsSuccess(
+              customerInformationModelMaxOrganisation.copy(
+                customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
+                partyType = Some("Z1"))
+            )
             TestChangeBusinessNameController.show(request)
           }
 
-          "return SEE_OTHER (303)" in {
-            status(result) shouldBe Status.SEE_OTHER
+          lazy val body = Jsoup.parse(contentAsString(result))
+
+          "return OK (200)" in {
+            status(result) shouldBe Status.OK
           }
 
-          "redirect to the change business name page on vat-designatory-details-frontend" in {
-            redirectLocation(result) shouldBe Some(mockConfig.vatDesignatoryDetailsBusinessNameUrl)
-          }
-        }
-
-        "the user's data is not mastered in ETMP" when {
-
-          "the user has party type of Z1 or 1" should {
-
-            lazy val result: Future[Result] = {
-              mockCustomerDetailsSuccess(
-                customerInformationModelMaxOrganisation.copy(
-                  customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
-                  partyType = Some("Z1"))
-              )
-              TestChangeBusinessNameController.show(request)
-            }
-
-            "return OK (200)" in {
-              status(result) shouldBe Status.OK
-            }
-
-            "return HTML" in {
-              contentType(result) shouldBe Some("text/html")
-              charset(result) shouldBe Some("utf-8")
-            }
-
-            s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-              Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
-            }
-
-            "have a link to the Gov Uk change business details page" in {
-              Jsoup.parse(contentAsString(result)).select(".govuk-body > a").text shouldBe ChangeBusinessNamePageMessages.altContinueLinkText
-            }
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
           }
 
-          "the user has party type of 4,7,10,50,51 or 54" should {
+          "have the correct heading" in {
+            body.select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
+          }
 
-            lazy val result: Future[Result] = {
-              mockCustomerDetailsSuccess(
-                customerInformationModelMaxOrganisation.copy(
-                  customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
-                  partyType = Some("4"))
-              )
-              TestChangeBusinessNameController.show(request)
-            }
+          "have the correct guidance regarding making the change via an alternate service" in {
+            body.select("p.govuk-body:nth-child(3)").text shouldBe ChangeBusinessNamePageMessages.altP2
+          }
 
-            "return OK (200)" in {
-              status(result) shouldBe Status.OK
-            }
-
-            "return HTML" in {
-              contentType(result) shouldBe Some("text/html")
-              charset(result) shouldBe Some("utf-8")
-            }
-
-            s"have the heading '${ChangeBusinessNamePageMessages.heading}'" in {
-              messages(Jsoup.parse(contentAsString(result)).select("h1").text) shouldBe ChangeBusinessNamePageMessages.heading
-            }
-
-            "have a link to the Companies House change business details page" in {
-              Jsoup.parse(contentAsString(result)).select(".govuk-body > a").text shouldBe ChangeBusinessNamePageMessages.continueLink
-            }
+          "have a link to the GOV.UK change business details page" in {
+            body.select(".govuk-body > a").attr("href") shouldBe mockConfig.govUkChangeToBusinessDetails
           }
         }
 
+        "the user has a party type to indicate they are a charity or trust" should {
+
+          lazy val result: Future[Result] = {
+            mockCustomerDetailsSuccess(
+              customerInformationModelMaxOrganisation.copy(
+                customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
+                partyType = Some("9"))
+            )
+            TestChangeBusinessNameController.show(request)
+          }
+
+          lazy val body = Jsoup.parse(contentAsString(result))
+
+          "return OK (200)" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "have the correct heading" in {
+            body.select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
+          }
+
+          "have the correct guidance regarding making the change via the Charities Commission" in {
+            body.select("p.govuk-body:nth-child(3)").text shouldBe ChangeBusinessNamePageMessages.altP2Trust
+          }
+
+          "have a link to the GOV.UK trusts/charities name change page" in {
+            body.select(".govuk-body > a").attr("href") shouldBe mockConfig.govUkTrustNameChangeUrl
+          }
+        }
+
+        "the user has any other supported party type" should {
+
+          lazy val result: Future[Result] = {
+            mockCustomerDetailsSuccess(
+              customerInformationModelMaxOrganisation.copy(
+                customerDetails = organisation.copy(nameIsReadOnly = Some(true)),
+                partyType = Some("4"))
+            )
+            TestChangeBusinessNameController.show(request)
+          }
+
+          lazy val body = Jsoup.parse(contentAsString(result))
+
+          "return OK (200)" in {
+            status(result) shouldBe Status.OK
+          }
+
+          "return HTML" in {
+            contentType(result) shouldBe Some("text/html")
+            charset(result) shouldBe Some("utf-8")
+          }
+
+          "have the correct heading" in {
+            body.select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
+          }
+
+          "have a link to Companies House" in {
+            body.select(".govuk-body > a").attr("href") shouldBe routes.ChangeBusinessNameController.handOffToCOHO.url
+          }
+        }
+      }
     }
 
     "the user does not have an organisation name" should {

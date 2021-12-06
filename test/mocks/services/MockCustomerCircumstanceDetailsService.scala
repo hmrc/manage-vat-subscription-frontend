@@ -20,6 +20,7 @@ import assets.BaseTestConstants._
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito._
 import org.mockito.stubbing.OngoingStubbing
 import org.scalatest.BeforeAndAfterEach
@@ -28,7 +29,6 @@ import org.scalatestplus.mockito.MockitoSugar
 import services.CustomerCircumstanceDetailsService
 
 import scala.concurrent.Future
-
 
 trait MockCustomerCircumstanceDetailsService extends AnyWordSpecLike with MockitoSugar with BeforeAndAfterEach {
 
@@ -41,12 +41,20 @@ trait MockCustomerCircumstanceDetailsService extends AnyWordSpecLike with Mockit
     reset(mockCustomerDetailsService)
   }
 
-  def setupMockCustomerDetails(vrn: String)(response: CircumstanceDetailsResponse): OngoingStubbing[Future[CircumstanceDetailsResponse]] = {
-    when(mockCustomerDetailsService.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(ArgumentMatchers.any(), ArgumentMatchers.any()))
+  def setupMockCustomerDetails(vrn: String)
+                              (response: CircumstanceDetailsResponse): OngoingStubbing[Future[CircumstanceDetailsResponse]] =
+    when(mockCustomerDetailsService.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(any(), any()))
       .thenReturn(Future.successful(response))
-  }
 
-  def mockCustomerDetailsSuccess(customerDetails: CircumstanceDetails): OngoingStubbing[Future[CircumstanceDetailsResponse]] = setupMockCustomerDetails(vrn)(Right(customerDetails))
-  def mockCustomerDetailsError(): OngoingStubbing[Future[CircumstanceDetailsResponse]] = setupMockCustomerDetails(vrn)(Left(errorModel))
+  def mockCustomerDetailsSuccess(customerDetails: CircumstanceDetails): OngoingStubbing[Future[CircumstanceDetailsResponse]] =
+    setupMockCustomerDetails(vrn)(Right(customerDetails))
+  def mockCustomerDetailsError(): OngoingStubbing[Future[CircumstanceDetailsResponse]] =
+    setupMockCustomerDetails(vrn)(Left(errorModel))
+
+  def mockDoubleCustomerDetails(firstResponse: CircumstanceDetailsResponse,
+                                secondResponse: CircumstanceDetailsResponse): OngoingStubbing[Future[CircumstanceDetailsResponse]] =
+    when(mockCustomerDetailsService.getCustomerCircumstanceDetails(ArgumentMatchers.eq(vrn))(any(), any()))
+      .thenReturn(Future.successful(firstResponse))
+      .thenReturn(Future.successful(secondResponse))
 }
 
