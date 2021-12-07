@@ -16,7 +16,6 @@
 
 package models.circumstanceInfo
 
-import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -28,7 +27,7 @@ case class PPOBAddress(line1: String,
                        postCode: Option[String],
                        countryCode: String)
 
-object PPOBAddress extends JsonReadUtil {
+object PPOBAddress {
 
   private val line1Path = JsPath \ "line1"
   private val line2Path =  JsPath \ "line2"
@@ -40,11 +39,11 @@ object PPOBAddress extends JsonReadUtil {
 
   implicit val reads: Reads[PPOBAddress] = (
     line1Path.read[String] and
-      line2Path.readOpt[String] and
-      line3Path.readOpt[String] and
-      line4Path.readOpt[String] and
-      line5Path.readOpt[String] and
-      postCodePath.readOpt[String] and
+      line2Path.readNullable[String] and
+      line3Path.readNullable[String] and
+      line4Path.readNullable[String] and
+      line5Path.readNullable[String] and
+      postCodePath.readNullable[String] and
       countryCodePath.read[String]
     )(PPOBAddress.apply _)
 

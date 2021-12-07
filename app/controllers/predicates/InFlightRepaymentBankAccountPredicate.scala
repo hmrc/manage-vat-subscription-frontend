@@ -16,12 +16,11 @@
 
 package controllers.predicates
 
-import config.{AppConfig, ServiceErrorHandler}
+import config.ServiceErrorHandler
 import javax.inject.Inject
 import models.User
-import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.Redirect
-import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
+import play.api.mvc.{ActionRefiner, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
@@ -30,13 +29,9 @@ import utils.LoggerUtil
 import scala.concurrent.{ExecutionContext, Future}
 
 class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesService: CustomerCircumstanceDetailsService,
-                                                      val serviceErrorHandler: ServiceErrorHandler,
-                                                      val mcc: MessagesControllerComponents,
-                                                      implicit val appConfig: AppConfig,
-                                                      implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[User, User] with I18nSupport with LoggerUtil {
-
-  override def messagesApi: MessagesApi = mcc.messagesApi
+                                                      serviceErrorHandler: ServiceErrorHandler)
+                                                     (implicit val executionContext: ExecutionContext)
+  extends ActionRefiner[User, User] with LoggerUtil {
 
   override def refine[A](request: User[A]): Future[Either[Result, User[A]]] = {
 
@@ -53,7 +48,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
           Left(serviceErrorHandler.showInternalServerError)
       }
     }
-    else{
+    else {
       Future(Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)))
     }
   }

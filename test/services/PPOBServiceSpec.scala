@@ -108,20 +108,30 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
 
     lazy val service = new PPOBService(mockSubscriptionConnector, mockAuditingService)
 
-    "return false if any lines in the address are longer than 35 chars" in {
-      service.validateChars(customerAddressLong) shouldBe false
+    "return false" when {
+
+      "any lines in the address are longer than 35 chars" in {
+        service.validateChars(customerAddressLong) shouldBe false
+      }
+
+      "if any lines in the address are 0 chars" in {
+        service.validateChars(customerAddressZero) shouldBe false
+      }
+
+      "if the address has foreign chars in it" in {
+        service.validateChars(customerAddressForeignChars) shouldBe false
+      }
     }
 
-    "return false if any lines in the address are 0 chars" in {
-      service.validateChars(customerAddressZero) shouldBe false
-    }
+    "return true" when {
 
-    "return false if the address has foreign chars in it" in {
-      service.validateChars(customerAddressForeignChars) shouldBe false
-    }
+      "all lines are populated and contain valid chars" in {
+        service.validateChars(customerAddressMax) shouldBe true
+      }
 
-    "return true otherwise" in {
-      service.validateChars(customerAddressMax) shouldBe true
+      "no lines are populated" in {
+        service.validateChars(customerAddressMin)
+      }
     }
   }
 

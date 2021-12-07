@@ -16,8 +16,6 @@
 
 package models.customerAddress
 
-
-import models.JsonReadUtil
 import play.api.libs.functional.syntax._
 import play.api.libs.json.{Writes, _}
 
@@ -28,7 +26,7 @@ case class AddressModel(line1: Option[String],
                         postcode: Option[String],
                         countryCode: Option[String])
 
-object AddressModel extends JsonReadUtil {
+object AddressModel {
 
   val customerAddressReads: Reads[AddressModel] = for {
     lines <- (__ \\ "lines").readNullable[Seq[String]]

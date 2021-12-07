@@ -16,7 +16,6 @@
 
 package models.circumstanceInfo
 
-import models.JsonReadUtil
 import play.api.libs.json._
 import utils.JsonObjectSugar
 
@@ -57,7 +56,7 @@ case class CustomerDetails(firstName: Option[String],
   }
 }
 
-object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
+object CustomerDetails extends JsonObjectSugar {
 
   private val firstNamePath = __ \ "firstName"
   private val lastNamePath = __ \ "lastName"
@@ -73,11 +72,11 @@ object CustomerDetails extends JsonReadUtil with JsonObjectSugar {
 
   implicit val reads: Reads[CustomerDetails] = {
       for {
-        firstName <- firstNamePath.readOpt[String]
-        lastname <- lastNamePath.readOpt[String]
-        orgName <- organisationNamePath.readOpt[String]
-        tradingName <- tradingNamePath.readOpt[String]
-        welshIndicator <- welshIndicatorPath.readOpt[Boolean]
+        firstName <- firstNamePath.readNullable[String]
+        lastname <- lastNamePath.readNullable[String]
+        orgName <- organisationNamePath.readNullable[String]
+        tradingName <- tradingNamePath.readNullable[String]
+        welshIndicator <- welshIndicatorPath.readNullable[Boolean]
         hasFlatRateScheme <- hasFrsPath.read[Boolean]
         overseasIndicator <- overseasIndicatorPath.read[Boolean]
         nameIsReadOnly <- nameIsReadOnlyPath.readNullable[Boolean]
