@@ -178,10 +178,11 @@ return_frequency.March = Mawrth, Mehefin, Medi a Rhagfyr
 return_frequency.Monthly = Bob mis
 return_frequency.Annually = Blynyddol
 
-contact_preference.email = Byddwn yn anfon e-bost atoch cyn pen 2 ddiwrnod gwaith gyda diweddariad, neu gallwch wirio’ch negeseuon diogel oddi wrth CThEM.
-contact_preference.digital = Byddwn yn anfon e-bost atoch cyn pen 2 ddiwrnod gwaith i roi diweddariad, wedi’i ddilyn gan lythyr i’ch prif fan busnes. Gallwch hefyd fynd i’ch negeseuon diogel CThEM i weld a yw’ch cais wedi’i dderbyn.
+contact_preference.email = Byddwn yn anfon e-bost atoch gyda diweddariad, neu gallwch wirio’ch negeseuon diogel oddi wrth CThEM.
+contact_preference.digital = Byddwn yn anfon e-bost atoch i roi diweddariad. Dilynir hyn gan lythyr i’ch prif leoliad busnes. Gallwch hefyd fynd i’ch negeseuon diogel gan CThEM i weld a yw’ch cais wedi’i dderbyn.
 contact_preference.paper = Byddwn yn anfon llythyr i’ch prif fan busnes i roi diweddariad cyn pen 15 diwrnod gwaith.
 contact_preference.contactPrefError = Byddwn yn anfon diweddariad atoch cyn pen 15 diwrnod gwaith.
+contact_preference.updateInformation = Fel arfer, caiff diweddariadau eu gwneud cyn pen 2 ddiwrnod gwaith. Fodd bynnag, gall y broses gymryd hyd at 10 diwrnod gwaith os bydd angen i ni gynnal gwiriadau ychwanegol.
 contact_preference.contact = Sicrhewch fod eich manylion cyswllt wedi’u diweddaru.
 
 address_lookupPage.title = Beth yw cyfeiriad newydd y busnes?
