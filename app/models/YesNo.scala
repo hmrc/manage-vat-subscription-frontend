@@ -26,10 +26,6 @@ object YesNo {
 
   val id = "isYes"
 
-  implicit val writes: Writes[YesNo] = Writes {
-    isYes => Json.obj(id -> isYes.value)
-  }
-
   implicit val reads: Reads[YesNo] = for {
     status <- (__ \ id).read[Boolean].map {
       case true => Yes
@@ -37,7 +33,6 @@ object YesNo {
     }
   } yield status
 
-  implicit val format: Format[YesNo] = Format(reads, writes)
 }
 
 object Yes extends YesNo {

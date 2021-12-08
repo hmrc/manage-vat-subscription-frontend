@@ -79,6 +79,13 @@ class CircumstanceDetailsSpec extends TestUtil {
         customerInformationModelMaxOrganisation.copy(partyType = Some("99")).validPartyType shouldBe false
       }
     }
+
+    "there is no party type" should {
+
+      "return 'false'" in {
+        customerInformationModelMaxOrganisation.copy(partyType = None).validPartyType shouldBe false
+      }
+    }
   }
 
   "calling .nspItmpPartyType" when {
@@ -96,6 +103,39 @@ class CircumstanceDetailsSpec extends TestUtil {
 
       "return 'false'" in {
         customerInformationModelMaxOrganisation.nspItmpPartyType shouldBe false
+      }
+    }
+
+    "there is no party type" should {
+
+      "return 'false'" in {
+        customerInformationModelMaxOrganisation.copy(partyType = None).nspItmpPartyType shouldBe false
+      }
+    }
+  }
+
+  "calling .trustPartyType" when {
+
+    "the partyType is listed in the appConfig sequence 'partyTypesTrusts'" should {
+
+      "return true" in {
+        mockConfig.partyTypesTrusts.foreach { party =>
+          customerInformationModelMaxOrganisation.copy(partyType = Some(party)).trustPartyType shouldBe true
+        }
+      }
+    }
+
+    "the partyType is not listed in the appConfig sequence 'partyTypesTrusts'" should {
+
+      "return false" in {
+        customerInformationModelMaxOrganisation.trustPartyType shouldBe false
+      }
+    }
+
+    "there is no partyType" should {
+
+      "return false" in {
+        customerInformationModelMaxOrganisation.copy(partyType = None).trustPartyType shouldBe false
       }
     }
   }

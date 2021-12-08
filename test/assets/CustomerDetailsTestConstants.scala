@@ -105,6 +105,11 @@ object CustomerDetailsTestConstants {
   )
 
   val customerDetailsInsolvent: CustomerDetails = customerDetailsMax.copy(isInsolvent = true, continueToTrade = Some(false))
+  val customerDetailsNotInsolventNotCTT: CustomerDetails = customerDetailsMax.copy(
+    isInsolvent = true,
+    insolvencyType = None,
+    continueToTrade = None
+  )
 
   val customerDetailsMin: CustomerDetails = CustomerDetails(
     None,
@@ -117,71 +122,6 @@ object CustomerDetailsTestConstants {
     isInsolvent = false,
     continueToTrade = None,
     insolvencyType = None
-  )
-
-  ///////////////// Release 8 data -- separated for ease of removal
-
-  val organisationR8: CustomerDetails = CustomerDetails(
-    firstName = None,
-    lastName = None,
-    organisationName = Some(orgName),
-    tradingName = Some(tradingName),
-    welshIndicator = None,
-    overseasIndicator = false,
-    nameIsReadOnly = Some(false),
-    isInsolvent = false,
-    continueToTrade = None,
-    insolvencyType = None
-  )
-
-  val organisationJsonR8: JsObject = Json.obj(
-    "organisationName" -> orgName,
-    "tradingName" -> tradingName,
-    "hasFlatRateScheme" -> false,
-    "isInsolvent" -> false
-  )
-
-  val customerDetailsJsonMinR8: JsObject = Json.obj(
-    "hasFlatRateScheme" -> false,
-    "isInsolvent" -> false
-  )
-
-  val customerDetailsMaxR8: CustomerDetails = CustomerDetails(
-    Some(firstName),
-    Some(lastName),
-    Some(orgName),
-    Some(tradingName),
-    Some(false),
-    overseasIndicator = false,
-    nameIsReadOnly = Some(false),
-    isInsolvent = false,
-    continueToTrade = Some(true),
-    insolvencyType = None
-  )
-
-  val customerDetailsMinR8: CustomerDetails = CustomerDetails(
-    None,
-    None,
-    None,
-    None,
-    None,
-    overseasIndicator = false,
-    nameIsReadOnly = None,
-    isInsolvent = false,
-    continueToTrade = None,
-    insolvencyType = None
-  )
-
-  val customerDetailsJsonMaxR8: JsObject = Json.obj(
-    "organisationName" -> orgName,
-    "firstName" -> firstName,
-    "lastName" -> lastName,
-    "tradingName" -> tradingName,
-    "hasFlatRateScheme" -> false,
-    "welshIndicator" -> false,
-    "nameIsReadOnly" -> false,
-    "isInsolvent" -> false,
-    "continueToTrade" -> Some(true)
   )
 
   val customerDetailsJsonMinWithTrueOverseas: JsObject = Json.obj(

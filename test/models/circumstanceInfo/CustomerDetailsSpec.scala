@@ -114,6 +114,10 @@ class CustomerDetailsSpec extends AnyWordSpecLike with Matchers {
           customerDetailsInsolvent.copy(insolvencyType = Some("09")).isInsolventWithoutAccess shouldBe true
         }
 
+        "return false for a user with no insolvency type and no continueToTrade flag" in {
+          customerDetailsNotInsolventNotCTT.isInsolventWithoutAccess shouldBe false
+        }
+
         "return false for a user with an allowed insolvency type" in {
           customerDetailsInsolvent.copy(insolvencyType = Some("12")).isInsolventWithoutAccess shouldBe false
         }

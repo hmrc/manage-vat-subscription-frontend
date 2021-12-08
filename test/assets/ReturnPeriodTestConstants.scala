@@ -30,11 +30,13 @@ object ReturnPeriodTestConstants {
   val returnPeriodMB: String = "MB"
   val returnPeriodMC: String = "MC"
   val returnPeriodMM: String = "MM"
+  val returnPeriodAN: String = "AN"
 
   val returnPeriodMAJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMA)
   val returnPeriodMBJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMB)
   val returnPeriodMCJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMC)
   val returnPeriodMMJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMM)
+  val returnPeriodANJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodAN)
 
   val allAnnualKeysAsJson: Seq[(String, JsValue)] = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
     .map { periodKey =>

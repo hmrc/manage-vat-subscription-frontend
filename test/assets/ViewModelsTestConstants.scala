@@ -24,7 +24,11 @@ object ViewModelsTestConstants {
   val trustLinkUrl = "/gov-uk/trust-name-change"
   val linkUrl = "mock-govUk-changeBusinessDetails"
   val userP1 = "change_business_name.alternative.user1"
+  val userP2 = "change_business_name.alternative.user2"
+  val userP2Trust = "change_business_name.alternative.user.charity"
   val agentP1 = "change_business_name.alternative.agent1"
+  val agentP2 = "change_business_name.alternative.agent2"
+  val agentP2Trust = "change_business_name.alternative.agent.charity"
 
   val trustBusinessNameViewModel: AltChangeBusinessNameViewModel = AltChangeBusinessNameViewModel(
     linkUrl = trustLinkUrl,

@@ -33,8 +33,10 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
 
   lazy val userNoPendingIndividual = ViewVatSubscriptionAuditModel(user, customerInformationNoPendingIndividual)
   lazy val userPendingIndividual = ViewVatSubscriptionAuditModel(user, customerInformationModelMaxIndividual)
+  lazy val userSomePendingIndividual = ViewVatSubscriptionAuditModel(user, customerInformationSomePendingIndividual)
   lazy val userNoPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationNoPendingOrganisation)
   lazy val userPendingOrganisation = ViewVatSubscriptionAuditModel(user, customerInformationModelMaxOrganisation)
+  lazy val userSomePendingOrganisationNoContact = ViewVatSubscriptionAuditModel(user, customerInformationPendingNoInfo)
 
   lazy val userWithNoPartyType = ViewVatSubscriptionAuditModel(user, customerInformationRegisteredIndividual)
 
@@ -258,8 +260,60 @@ class ViewVatSubscriptionAuditModelSpec extends TestUtil {
               "partyType" -> partyType
             )
           }
-        }
 
+          "have the correct details for the audit event when some changes are pending but not all" in {
+            userSomePendingIndividual.detail shouldBe Json.obj(
+              "isAgent" -> false,
+              "vrn" -> vrn,
+              "businessAddress" -> Json.obj(
+                "line1" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line1,
+                "line2" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line2.get,
+                "line3" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line3.get,
+                "line4" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line4.get,
+                "line5" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line5.get,
+                "postCode" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.postCode.get,
+                "countryCode" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.countryCode
+              ),
+              "repaymentBankDetails" -> Json.obj(
+                "accountNumber" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.bankAccountNumber.get,
+                "sortCode" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.sortCode.get
+              ),
+              "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
+              "inFlightChanges" -> Json.obj(
+                "businessAddress" -> false,
+                "repaymentBankDetails" -> true,
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
+              ),
+              "partyType" -> partyType
+            )
+          }
+
+          "have the correct details for the audit event when there is a pending PPOB with no contact details" in {
+            userSomePendingOrganisationNoContact.detail shouldBe Json.obj(
+              "isAgent" -> false,
+              "vrn" -> vrn,
+              "businessAddress" -> Json.obj(
+                "line1" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.line1,
+                "countryCode" -> customerInformationModelMaxIndividual.pendingChanges.get.ppob.get.address.countryCode
+              ),
+              "repaymentBankDetails" -> Json.obj(
+                "accountNumber" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.bankAccountNumber.get,
+                "sortCode" -> customerInformationModelMaxIndividual.pendingChanges.get.bankDetails.get.sortCode.get
+              ),
+              "vatReturnFrequency" -> "March, June, September and December",
+              "email" -> "test@test.com",
+              "inFlightChanges" -> Json.obj(
+                "businessAddress" -> true,
+                "repaymentBankDetails" -> false,
+                "vatReturnDates" -> false,
+                "emailAddress" -> false
+              ),
+              "partyType" -> partyType
+            )
+          }
+        }
       }
 
       "the User is an Organisation" when {
