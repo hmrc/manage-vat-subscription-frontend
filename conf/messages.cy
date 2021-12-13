@@ -159,10 +159,8 @@ change_address.bullet2 = cyfeiriad blwch Swyddfa’r Post
 change_address.bullet3 = cyfeiriad ‘dan ofal’
 change_address.warning = Gallwch nodi hyd at 35 cymeriad ar bob llinell. Nodwch gymeriadau plaen yn unig, hyd yn oed os nad yw’r cyfeiriad yn y DU.
 
-change_address_confirmation.title = Rydych wedi gofyn am newid cyfeiriad y busnes
+change_address_confirmation.title = Rydych wedi gofyn am gael newid cyfeiriad y busnes
 change_address_confirmation.h2 = Yr hyn sy’n digwydd nesaf
-change_address_confirmation.p1 = Os derbynnir y newid hwn, byddwn yn anfon llythyr o gadarnhad i gyfeiriad newydd y busnes.
-change_address_confirmation.p2 = Byddwn fel arfer yn diweddaru cyfeiriad TAW y busnes cyn pen 2 ddiwrnod gwaith. Bydd angen i chi newid cyfeiriad y busnes ar gyfer trethi eraill ar wahân.
 change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost i
 change_address_confirmation.agent.bulkPaper.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a allwn dderbyn eich cais ai peidio.
 
