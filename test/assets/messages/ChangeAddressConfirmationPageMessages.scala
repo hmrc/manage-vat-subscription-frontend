@@ -23,10 +23,10 @@ object ChangeAddressConfirmationPageMessages extends BaseMessages {
   val h2: String = "What happens next"
   val p2: String = "We will usually update the VAT business address within 2 working days. " +
     "You will need to change the business address for other taxes separately."
-  val p1Agent =
-    "We’ll send an email to agentEmail@test.com within 2 working days telling you whether we can accept your request."
-  val p2Agent: String = "We’ll contact MyCompany Ltd with an update."
-  val p2AgentNoClientName: String = "We’ll contact your client with an update."
+  val pAgentEmail =
+    "We’ll send an email to agentEmail@test.com with an update."
+  val pAgentClientContact: String = "We’ll also contact MyCompany Ltd with an update."
+  val pAgentNoClientName: String = "We’ll also contact your client with an update."
   val oldChangeClientDetails = "You can change another client’s details."
   val newChangeClientDetails = "Change client"
   val digiPrefEmailVerified: String =

@@ -191,12 +191,16 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           elementText("h1") shouldBe viewMessages.heading
         }
 
-        s"have the correct p1 of '${viewMessages.p1Agent}'" in {
-          paragraph(1) shouldBe viewMessages.p1Agent
+        s"have the correct p1 of '${viewMessages.pAgentEmail}'" in {
+          paragraph(1) shouldBe viewMessages.pAgentEmail
         }
 
-        s"have the correct p2 of '${viewMessages.p2Agent}'" in {
-          paragraph(2) shouldBe viewMessages.p2Agent
+        s"have the correct p2 of '${viewMessages.updateInformation}'" in {
+          paragraph(2) shouldBe viewMessages.updateInformation
+        }
+
+        s"have the correct p3 of '${viewMessages.pAgentClientContact}'" in {
+          paragraph(3) shouldBe viewMessages.pAgentClientContact
         }
 
         s"have a button to finish" which {
@@ -215,8 +219,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
         lazy val view: Html = injectedView(agentEmail = Some(agentEmail))(agentUser, messages, mockConfig)
         lazy implicit val document: Document = Jsoup.parse(view.body)
 
-        s"have the correct p2 of '${viewMessages.p2AgentNoClientName}'" in {
-          paragraph(2) shouldBe viewMessages.p2AgentNoClientName
+        s"have the correct p2 of '${viewMessages.updateInformation}'" in {
+          paragraph(2) shouldBe viewMessages.updateInformation
+        }
+
+        s"have the correct p3 of '${viewMessages.pAgentNoClientName}'" in {
+          paragraph(3) shouldBe viewMessages.pAgentNoClientName
         }
       }
 
@@ -227,8 +235,12 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           lazy val view: Html = injectedView(clientName = Some("MyCompany Ltd"))(agentUser, messages, mockConfig)
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
-          s"have the correct p1 of '${viewMessages.p2Agent}'" in {
-            paragraph(1) shouldBe viewMessages.p2Agent
+          s"have the correct p1 of '${viewMessages.updateInformation}'" in {
+            paragraph(1) shouldBe viewMessages.updateInformation
+          }
+
+          s"have the correct p2 of '${viewMessages.pAgentClientContact}'" in {
+            paragraph(2) shouldBe viewMessages.pAgentClientContact
           }
         }
 
@@ -237,8 +249,11 @@ class ChangeAddressConfirmationViewSpec extends ViewBaseSpec with BaseMessages {
           lazy val view: Html = injectedView()(agentUser, messages, mockConfig)
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
-          s"have the correct p1 of '${viewMessages.p2AgentNoClientName}'" in {
-            paragraph(1) shouldBe viewMessages.p2AgentNoClientName
+          s"have the correct p1 of '${viewMessages.updateInformation}'" in {
+            paragraph(1) shouldBe viewMessages.updateInformation
+          }
+          s"have the correct p2 of '${viewMessages.pAgentNoClientName}'" in {
+            paragraph(2) shouldBe viewMessages.pAgentNoClientName
           }
         }
       }

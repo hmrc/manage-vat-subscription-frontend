@@ -33,7 +33,7 @@ common.warning = Warning
 common.error = Error:
 
 common.agent.yourClient = your client
-common.agent.updateClient1 = We’ll contact
+common.agent.updateClient1 = We’ll also contact
 common.agent.updateClient2 = with an update.
 common.agent.backToClientDetails = Back to client’s details
 
@@ -158,7 +158,7 @@ change_address.warning = You can enter up to 35 characters on each line. Only en
 change_address_confirmation.title = You have asked to change the business address
 change_address_confirmation.h2 = What happens next
 change_address_confirmation.agent.bulkPaper.p1-1 = We’ll send an email to
-change_address_confirmation.agent.bulkPaper.p1-2 = within 2 working days telling you whether we can accept your request.
+change_address_confirmation.agent.bulkPaper.p1-2 = with an update.
 
 mta_confirmation.title = You have confirmed the business address
 mta_confirmation.p1 = Thank you. We will try to deliver the letter again.
