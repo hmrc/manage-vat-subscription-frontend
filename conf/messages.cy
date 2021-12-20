@@ -32,7 +32,7 @@ common.warning = Rhybudd
 common.error = Gwall:
 
 common.agent.yourClient = eich cleient
-common.agent.updateClient1 = Byddwn yn cysylltu â
+common.agent.updateClient1 = Byddwn hefyd yn cysylltu â
 common.agent.updateClient2 = gyda diweddariad.
 common.agent.backToClientDetails = Yn ôl i fanylion y cleient
 
@@ -161,8 +161,8 @@ change_address.warning = Gallwch nodi hyd at 35 cymeriad ar bob llinell. Nodwch 
 
 change_address_confirmation.title = Rydych wedi gofyn am gael newid cyfeiriad y busnes
 change_address_confirmation.h2 = Yr hyn sy’n digwydd nesaf
-change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost i
-change_address_confirmation.agent.bulkPaper.p1-2 = cyn pen 2 ddiwrnod gwaith i roi gwybod i chi a allwn dderbyn eich cais ai peidio.
+change_address_confirmation.agent.bulkPaper.p1-1 = Byddwn yn anfon e-bost at
+change_address_confirmation.agent.bulkPaper.p1-2 = gyda diweddariad.
 
 mta_confirmation.title = Rydych wedi cadarnhau cyfeiriad y busnes
 mta_confirmation.p1 = Diolch. Byddwn yn ceisio dosbarthu’r llythyr eto.
