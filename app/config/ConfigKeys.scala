@@ -81,8 +81,7 @@ object ConfigKeys {
   val vatAgentClientLookupFrontendUrl: String = "vat-agent-client-lookup-frontend.url"
   val vatAgentClientLookupFrontendClientAccount: String = "vat-agent-client-lookup-frontend.client-vat-account"
 
-  val accessibilityReportHost: String = "accessibilityReport.host"
-  val accessibilityReportUrl: String = "accessibilityReport.url"
+  val accessibilityReportUrl: String = "accessibility-statement.service-path"
 
   val vatReturnPeriodFrontendHost: String = "vat-return-period-frontend.host"
   val vatReturnPeriodFrontendUrl: String = "vat-return-period-frontend.url"
