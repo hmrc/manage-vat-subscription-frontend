@@ -223,8 +223,7 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
 
-  private lazy val accessibilityReportHost: String = servicesConfig.getString(Keys.accessibilityReportHost)
-  override lazy val accessibilityReportUrl: String = accessibilityReportHost + servicesConfig.getString(Keys.accessibilityReportUrl)
+  override lazy val accessibilityReportUrl: String = servicesConfig.getString(Keys.accessibilityReportUrl)
 
   private lazy val vatReturnPeriodFrontendHost: String = servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendHost)
   override lazy val vatReturnPeriodFrontendUrl: String = vatReturnPeriodFrontendHost + servicesConfig.getString(ConfigKeys.vatReturnPeriodFrontendUrl)

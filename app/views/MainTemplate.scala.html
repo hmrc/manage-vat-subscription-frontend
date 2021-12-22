@@ -105,10 +105,10 @@
 }
 
 @govukLayout(
-    pageTitle = Some(messages("common.pageTitle", pageTitle, navTitle)),
-    headBlock = Some(head),
-    headerBlock = Some(header),
-    beforeContentBlock = Some(beforeContentHtml),
-    footerBlock = Some(hmrcStandardFooter(accessibilityStatementUrl = Some(appConfig.accessibilityReportUrl))),
-    scriptsBlock = Some(scripts)
+  pageTitle = Some(messages("common.pageTitle", pageTitle, navTitle)),
+  headBlock = Some(head),
+  headerBlock = Some(header),
+  beforeContentBlock = Some(beforeContentHtml),
+  footerBlock = Some(hmrcStandardFooter()),
+  scriptsBlock = Some(scripts)
 )(fullContent)
