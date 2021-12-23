@@ -22,7 +22,6 @@ import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.libs.json._
 import views.utils.ServiceNameUtil
 
-
 case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_], messagesApi: MessagesApi, config: AppConfig) {
 
   // general journey overrides
@@ -31,6 +30,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = conf.accessibilityReportUrl
+  val relativeTimeoutUrl: String = conf.unauthorisedSignOutUrl.replace("http://localhost:9553", "")
 
   object Version2 {
 
@@ -43,7 +43,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
     val timeoutConfig: JsObject = Json.obj(
       "timeoutAmount" -> config.timeoutPeriod,
-      "timeoutUrl" -> config.unauthorisedSignOutUrl
+      "timeoutUrl" -> relativeTimeoutUrl
     )
     val selectPageLabels: Messages => JsObject = message => Json.obj(
       "title" -> message("address_lookupPage.selectPage.heading"),
@@ -82,42 +82,39 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
 object AddressLookupJsonBuilder {
 
-    implicit val writes: Writes[AddressLookupJsonBuilder] = new Writes[AddressLookupJsonBuilder] {
-      def writes(data: AddressLookupJsonBuilder): JsObject =
-        {
-          Json.obj(fields =
-            "version" -> 2,
-            "options" -> Json.obj(
-              "continueUrl" -> data.continueUrl,
-              "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
-              "deskProServiceName" -> data.deskproServiceName,
-              "showPhaseBanner" -> data.showPhaseBanner,
-              "ukMode" -> data.ukMode,
-              "timeoutConfig" -> data.Version2.timeoutConfig
+    implicit val writes: Writes[AddressLookupJsonBuilder] = (data: AddressLookupJsonBuilder) => {
+      Json.obj(fields =
+        "version" -> 2,
+        "options" -> Json.obj(
+          "continueUrl" -> data.continueUrl,
+          "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
+          "deskProServiceName" -> data.deskproServiceName,
+          "showPhaseBanner" -> data.showPhaseBanner,
+          "ukMode" -> data.ukMode,
+          "timeoutConfig" -> data.Version2.timeoutConfig
+        ),
+        "labels" -> Json.obj(
+          "en" -> Json.obj(
+            "appLevelLabels" -> Json.obj(
+              "navTitle" -> data.Version2.navTitle(data.Version2.eng),
+              "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.eng)
             ),
-            "labels" -> Json.obj(
-              "en" -> Json.obj(
-                "appLevelLabels" -> Json.obj(
-                  "navTitle" -> data.Version2.navTitle(data.Version2.eng),
-                  "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.eng)
-                ),
-                "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.eng),
-                "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.eng),
-                "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.eng),
-                "editPageLabels" -> data.Version2.editPageLabels(data.Version2.eng)
-              ),
-              "cy" -> Json.obj(
-                "appLevelLabels" -> Json.obj(
-                  "navTitle" -> data.Version2.navTitle(data.Version2.wel),
-                  "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.wel)
-                ),
-                "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.wel),
-                "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.wel),
-                "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.wel),
-                "editPageLabels" -> data.Version2.editPageLabels(data.Version2.wel)
-              )
-            )
+            "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.eng),
+            "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.eng),
+            "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.eng),
+            "editPageLabels" -> data.Version2.editPageLabels(data.Version2.eng)
+          ),
+          "cy" -> Json.obj(
+            "appLevelLabels" -> Json.obj(
+              "navTitle" -> data.Version2.navTitle(data.Version2.wel),
+              "phaseBannerHtml" -> data.Version2.phaseBannerHtml(data.Version2.wel)
+            ),
+            "selectPageLabels" -> data.Version2.selectPageLabels(data.Version2.wel),
+            "lookupPageLabels" -> data.Version2.lookupPageLabels(data.Version2.wel),
+            "confirmPageLabels" -> data.Version2.confirmPageLabels(data.Version2.wel),
+            "editPageLabels" -> data.Version2.editPageLabels(data.Version2.wel)
           )
-        }
+        )
+      )
     }
   }
