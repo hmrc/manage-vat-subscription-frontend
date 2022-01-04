@@ -27,107 +27,84 @@
   @formWithCSRF(action = testOnly.controllers.routes.FeatureSwitchController.submitFeatureSwitch) {
 
     @govukCheckboxes(Checkboxes(
-        fieldset = Some(Fieldset(
-            legend = Some(Legend(
-            content = Text("Manage VAT Subscription Frontend Features"),
-            classes = "govuk-fieldset__legend--l",
-            isPageHeading = true
-        ))
-    )),
-    name = "featureSwitch",
-    items = Seq(
-        CheckboxItem(
-            id = Some(ConfigKeys.stubAgentClientLookupFeature),
-            name = Some(ConfigKeys.stubAgentClientLookupFeature),
-            content = Text("Stub Agent Client Lookup"),
-            value = "true",
-            checked = appConfig.features.stubAgentClientLookup()
-        ),
-        CheckboxItem(
-            id = Some(ConfigKeys.stubAddressLookupFeature),
-            name = Some(ConfigKeys.stubAddressLookupFeature),
-            content = Text("Stub Address Lookup"),
-            value = "true",
-            checked = appConfig.features.stubAddressLookup()
-        ),
-        CheckboxItem(
-            id= Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
-            name = Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
-            content = Text("Enable Overseas Change of PPOB"),
-            value = "true",
-            checked = appConfig.features.allowOverseasChangeOfPPOBEnabled()
-        )
-        )
-    ))
-
-    @govukCheckboxes(Checkboxes(
-        fieldset = Some(Fieldset(
-            legend = Some(Legend(
-            content = Text("Vat Subscription Backend Features"),
-            classes = "govuk-fieldset__legend--l",
-            isPageHeading = true
-        ))
-    )),
-    name = "featureSwitch",
-    items = Seq(
-        CheckboxItem(
-            id = Some("vatSubscriptionFeatures.enableAnnualAccounting"),
-            name = Some("vatSubscriptionFeatures.enableAnnualAccounting"),
-            content = Text("Enable Annual Accounting"),
-            value = "true",
-            checked = form("vatSubscriptionFeatures.enableAnnualAccounting").value.contains("true")
-        ),
-        CheckboxItem(
-            id = Some("vatSubscriptionFeatures.newStatusIndicators"),
-            name = Some("vatSubscriptionFeatures.newStatusIndicators"),
-            content = Text("Enable new status indicators"),
-            value = "true",
-            checked = form("vatSubscriptionFeatures.newStatusIndicators").value.contains("true")
-        )
-    )
-    ))
-
-@govukRadios(Radios(
-    fieldset = Some(Fieldset(
+      fieldset = Some(Fieldset(
         legend = Some(Legend(
-        content = Text("Which API1363 Version should be used?"),
-        classes = "govuk-fieldset__legend--s",
-        isPageHeading = false
-    ))
-        )),
-        name = "vatSubscriptionFeatures.Api1363Version",
-        items = Seq(
-            RadioItem(
-                id = Some("vatSubscriptionFeatures.Api1363Version"),
-                content = Text("Latest"),
-                value = Some("Latest"),
-                checked = form("vatSubscriptionFeatures.Api1363Version").value.contains("Latest")
-            )),
-        classes = "govuk-radios--inline"
+          content = Text("Manage VAT Subscription Frontend Features"),
+          classes = "govuk-fieldset__legend--l",
+          isPageHeading = true
         ))
+      )),
+      name = "featureSwitch",
+      items = Seq(
+        CheckboxItem(
+          id = Some(ConfigKeys.stubAgentClientLookupFeature),
+          name = Some(ConfigKeys.stubAgentClientLookupFeature),
+          content = Text("Stub Agent Client Lookup"),
+          value = "true",
+          checked = appConfig.features.stubAgentClientLookup()
+        ),
+        CheckboxItem(
+          id = Some(ConfigKeys.stubAddressLookupFeature),
+          name = Some(ConfigKeys.stubAddressLookupFeature),
+          content = Text("Stub Address Lookup"),
+          value = "true",
+          checked = appConfig.features.stubAddressLookup()
+        ),
+        CheckboxItem(
+          id= Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
+          name = Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
+          content = Text("Enable Overseas Change of PPOB"),
+          value = "true",
+          checked = appConfig.features.allowOverseasChangeOfPPOBEnabled()
+        )
+      )
+    ))
+
+    <h2 class="govuk-heading-l">Vat Subscription Backend Features</h2>
 
     @govukRadios(Radios(
-        fieldset = Some(Fieldset(
-            legend = Some(Legend(
-            content = Text("Which API1365 Version should be used?"),
-            classes = "govuk-fieldset__legend--s",
-            isPageHeading = false
+      fieldset = Some(Fieldset(
+        legend = Some(Legend(
+          content = Text("Which API1363 Version should be used?"),
+          classes = "govuk-fieldset__legend--s",
+          isPageHeading = false
         ))
-    )),
-    name = "vatSubscriptionFeatures.Api1365Version",
-    items = Seq(
+      )),
+      name = "vatSubscriptionFeatures.Api1363Version",
+      items = Seq(
         RadioItem(
-            id = Some("vatSubscriptionFeatures.Api1365Version"),
-            content = Text("Latest"),
-            value = Some("Latest"),
-            checked = form("vatSubscriptionFeatures.Api1365Version").value.contains("Latest")
-        )),
-    classes = "govuk-radios--inline"
+          id = Some("vatSubscriptionFeatures.Api1363Version"),
+          content = Text("Latest"),
+          value = Some("Latest"),
+          checked = form("vatSubscriptionFeatures.Api1363Version").value.contains("Latest")
+        )
+      ),
+      classes = "govuk-radios--inline"
+    ))
+
+    @govukRadios(Radios(
+      fieldset = Some(Fieldset(
+        legend = Some(Legend(
+          content = Text("Which API1365 Version should be used?"),
+          classes = "govuk-fieldset__legend--s",
+          isPageHeading = false
+        ))
+      )),
+      name = "vatSubscriptionFeatures.Api1365Version",
+      items = Seq(
+        RadioItem(
+          id = Some("vatSubscriptionFeatures.Api1365Version"),
+          content = Text("Latest"),
+          value = Some("Latest"),
+          checked = form("vatSubscriptionFeatures.Api1365Version").value.contains("Latest")
+        )
+      ),
+      classes = "govuk-radios--inline"
     ))
 
     @govukButton(Button(
-        content = Text("Submit")
+      content = Text("Submit")
     ))
 
-    }
+  }
 }

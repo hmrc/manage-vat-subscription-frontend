@@ -32,10 +32,10 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSubscriptionFeaturesConnector,
-                                        featureSwitchView: FeatureSwitchView,
-                                        implicit val mcc: MessagesControllerComponents,
-                                        implicit val ec: ExecutionContext,
-                                        implicit val appConfig: AppConfig)
+                                        featureSwitchView: FeatureSwitchView)
+                                       (implicit mcc: MessagesControllerComponents,
+                                        ec: ExecutionContext,
+                                        appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with LoggerUtil {
 
   val featureSwitch: Action[AnyContent] = Action.async { implicit request =>
