@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ package connectors
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.UpdatePPOBAddressTestConstants._
-import connectors.httpParsers.CustomerCircumstancesHttpParser
 import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
@@ -36,7 +35,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
   val errorModel: HttpResponse = HttpResponse(Status.BAD_REQUEST, "Error Message")
 
-  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp, mockConfig, inject[CustomerCircumstancesHttpParser])
+  object TestSubscriptionConnector extends SubscriptionConnector(mockHttp, mockConfig)
 
   "SubscriptionConnector" when {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,15 +17,13 @@
 package connectors.httpParsers
 
 import connectors.httpParsers.ResponseHttpParser.HttpGetResult
-import javax.inject.{Inject, Singleton}
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 import utils.LoggerUtil
 
-@Singleton
-class CustomerCircumstancesHttpParser @Inject()() extends LoggerUtil {
+object CustomerCircumstancesHttpParser extends LoggerUtil {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
 
