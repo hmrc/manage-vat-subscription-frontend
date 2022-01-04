@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class SubscriptionConnector @Inject()(val http: HttpClient,
-                                      val config: AppConfig,
-                                        customerCircumstancesHttpParser: CustomerCircumstancesHttpParser) extends LoggerUtil{
+                                      val config: AppConfig) extends LoggerUtil {
 
   private[connectors] def getCustomerDetailsUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/full-information"
 
@@ -45,7 +44,7 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
-    http.GET(url)(customerCircumstancesHttpParser.CustomerCircumstanceReads, headerCarrier, ec)
+    http.GET(url)(CustomerCircumstancesHttpParser.CustomerCircumstanceReads, headerCarrier, ec)
   }
 
   def updatePPOB(vrn: String, ppob: UpdatePPOB)

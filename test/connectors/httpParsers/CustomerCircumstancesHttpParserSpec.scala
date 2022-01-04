@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,13 @@ class CustomerCircumstancesHttpParserSpec extends TestUtil {
 
   val successBadJson: JsObject = Json.obj("firstName" -> 1)
   val errorModel: ErrorModel = ErrorModel(Status.BAD_REQUEST, "Error Message")
-  val parser: CustomerCircumstancesHttpParser = inject[CustomerCircumstancesHttpParser]
 
   "The CustomerDetailsHttpParser" when {
 
     "the http response status is OK with valid Json" should {
 
       "return a CustomerDetailsModel" in {
-        parser.CustomerCircumstanceReads.read("", "",
+        CustomerCircumstancesHttpParser.CustomerCircumstanceReads.read("", "",
           HttpResponse(Status.OK, customerInformationJsonMaxOrganisation, Map.empty[String, Seq[String]])) shouldBe
           Right(customerInformationModelMaxOrganisation)
       }
@@ -43,25 +42,25 @@ class CustomerCircumstancesHttpParserSpec extends TestUtil {
     "the http response status is OK with invalid Json" should {
 
       "return an ErrorModel" in {
-        parser.CustomerCircumstanceReads.read("", "",
+        CustomerCircumstancesHttpParser.CustomerCircumstanceReads.read("", "",
           HttpResponse(Status.OK, successBadJson, Map.empty[String, Seq[String]])) shouldBe
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR,"Invalid Json"))
       }
     }
 
-    "the http response status is BAD_REQUEST" should {
+    "the http response status is NOT_FOUND" should {
 
       "return an ErrorModel" in {
-        parser.CustomerCircumstanceReads.read("", "",
-          HttpResponse(Status.BAD_REQUEST, "")) shouldBe
-          Left(ErrorModel(Status.BAD_REQUEST,"Downstream error returned when retrieving CustomerDetails"))
+        CustomerCircumstancesHttpParser.CustomerCircumstanceReads.read("", "",
+          HttpResponse(Status.NOT_FOUND, "")) shouldBe
+          Left(ErrorModel(Status.NOT_FOUND,"Downstream error returned when retrieving CustomerDetails"))
       }
     }
 
     "the http response status unexpected" should {
 
       "return an ErrorModel" in {
-        parser.CustomerCircumstanceReads.read("", "",
+        CustomerCircumstancesHttpParser.CustomerCircumstanceReads.read("", "",
           HttpResponse(Status.SEE_OTHER, "")) shouldBe
           Left(ErrorModel(Status.SEE_OTHER,"Downstream error returned when retrieving CustomerDetails"))
       }
