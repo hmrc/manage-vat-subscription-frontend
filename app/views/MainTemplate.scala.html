@@ -22,7 +22,7 @@
 @this(govukLayout: GovukLayout,
     govukHeader: GovukHeader,
     standardBetaBanner: StandardBetaBanner,
-    hmrcReportTechnicalIssue: HmrcReportTechnicalIssue,
+    hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
     hmrcLanguageSelect: HmrcLanguageSelect,
     hmrcTimeoutDialog: HmrcTimeoutDialog,
     hmrcStandardHeader: HmrcStandardHeader,
@@ -90,18 +90,11 @@
   )
 }
 
-@getHelpHtml = @{
-  hmrcReportTechnicalIssue(ReportTechnicalIssue(
-    serviceCode = appConfig.contactFormServiceIdentifier,
-    language = if (messages.lang.code == "cy") Cy else En
-  ))
-}
-
 @fullContent = {
     <div id="content" class="govuk-!-margin-bottom-6">
         @mainContent
     </div>
-    @getHelpHtml
+    @hmrcReportTechnicalIssueHelper()
 }
 
 @govukLayout(
