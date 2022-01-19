@@ -52,8 +52,8 @@ trait AppConfig {
   val timeoutPeriod: Int
   val timeoutCountdown: Int
   val vatSubscriptionUrl: String
-  val contactFormServiceIdentifier: String
   val contactFrontendService: String
+  val contactFormServiceIdentifier: String
   val agentInvitationsFastTrack: String
   val feedbackUrl: String
   val vatCorrespondenceChangeEmailUrl: String
@@ -94,8 +94,9 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   lazy val appName: String = "manage-vat-subscription-frontend"
 
   private lazy val contactHost: String = servicesConfig.getString(Keys.contactFrontendService)
+  override lazy val contactFormServiceIdentifier: String = servicesConfig.getString(Keys.contactFrontendIdentifier)
+
   override lazy val contactFrontendService: String = servicesConfig.baseUrl("contact-frontend")
-  override lazy val contactFormServiceIdentifier: String = "VATC"
 
   override lazy val reportAProblemPartialUrl: String = s"$contactHost/contact/problem_reports_ajax?service=$contactFormServiceIdentifier"
   override lazy val reportAProblemNonJSUrl: String = s"$contactHost/contact/problem_reports_nonjs?service=$contactFormServiceIdentifier"
