@@ -68,7 +68,7 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
       case Right(address) =>
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
-            Redirect(controllers.routes.BusinessAddressController.confirmation)
+            Redirect(controllers.routes.BusinessAddressController.confirmation).addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "true")
           case Left(AddressValidationError) =>
             logger.warn("[BusinessAddressController][callback] Address validation error, rendering error page")
             BadRequest(ppobAddressFailureView(id))
