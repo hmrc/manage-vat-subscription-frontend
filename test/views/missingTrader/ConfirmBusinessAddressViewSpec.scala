@@ -35,6 +35,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val error = ".govuk-error-message"
     val address = ".govuk-inset-text"
     val additionalInfo = ".govuk-hint"
+    val form = "form"
     val formQuestion = "legend"
     val errorSummaryHeading = ".govuk-error-summary h2"
     val errorSummaryList = ".govuk-error-summary__list"
@@ -73,8 +74,19 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
       elementText(Selectors.noOption) shouldBe viewMessages.no
     }
 
-    "have the correct continue button text" in {
-      elementText(Selectors.button) shouldBe viewMessages.continue
+    "have a button" which {
+
+      "has the correct text" in {
+        elementText(Selectors.button) shouldBe viewMessages.continue
+      }
+
+      "has the prevent double click attribute" in {
+        element(Selectors.button).hasAttr("data-prevent-double-click") shouldBe true
+      }
+    }
+
+    "have the correct form action" in {
+      element(Selectors.form).attr("action") shouldBe controllers.missingTrader.routes.ConfirmAddressController.submit.url
     }
 
     "not display an error" in {

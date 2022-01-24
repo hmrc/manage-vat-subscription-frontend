@@ -74,7 +74,8 @@ govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : G
     ))
 
     @govukButton(Button(
-        content = Text(messages("common.continue"))
+        content = Text(messages("common.continue")),
+        preventDoubleClick = true
     ))
 
   }
