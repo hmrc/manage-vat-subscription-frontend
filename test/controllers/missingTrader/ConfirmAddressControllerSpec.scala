@@ -18,7 +18,7 @@ package controllers.missingTrader
 
 import assets.BaseTestConstants.vrn
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndividual, customerInformationModelMin}
-import assets.messages.{ChangeAddressPageMessages, MissingTraderAddressConfirmationPageMessages}
+import assets.messages.MissingTraderAddressConfirmationPageMessages
 import audit.models.MissingTraderAuditModel
 import common.SessionKeys
 import controllers.ControllerBaseSpec
