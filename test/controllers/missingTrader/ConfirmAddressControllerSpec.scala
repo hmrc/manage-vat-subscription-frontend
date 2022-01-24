@@ -18,7 +18,7 @@ package controllers.missingTrader
 
 import assets.BaseTestConstants.vrn
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndividual, customerInformationModelMin}
-import assets.messages.MissingTraderAddressConfirmationPageMessages
+import assets.messages.{ChangeAddressPageMessages, MissingTraderAddressConfirmationPageMessages}
 import audit.models.MissingTraderAuditModel
 import common.SessionKeys
 import controllers.ControllerBaseSpec
@@ -47,7 +47,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
 
     "the user is a missing trader" when {
 
-      "the missingTraderConfirmedAddressKey is in session" should {
+      "the missingTraderConfirmedAddressKey is true and the inFlightContactDetailsChangeKey is not in session" should {
         lazy val result = {
           setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
           controller.show(request.withSession(SessionKeys.missingTraderConfirmedAddressKey -> "true"))
@@ -67,7 +67,22 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
         }
       }
 
-      "the missingTraderConfirmedAddressKey is not in session" should {
+      "the missingTraderConfirmedAddressKey is not in session and the inFlightContactDetailsChangeKey is true" should {
+        lazy val result = {
+          setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
+          controller.show(request.withSession(SessionKeys.inFlightContactDetailsChangeKey -> "true"))
+        }
+
+        "return 303" in {
+          status(result) shouldBe Status.SEE_OTHER
+        }
+
+        "redirect to the agent overview URL" in {
+          redirectLocation(result) shouldBe Some(controllers.routes.CustomerCircumstanceDetailsController.show.url)
+        }
+      }
+
+      "the missingTraderConfirmedAddressKey and inFlightContactDetailsChangeKey are not in session" should {
         lazy val result = {
           setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
           controller.show(request)

@@ -48,8 +48,9 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
 
   def show: Action[AnyContent] = authPredicate.async { implicit user =>
 
-    user.session.get(SessionKeys.missingTraderConfirmedAddressKey) match {
-      case Some("true") => Future.successful(Ok(missingTraderAddressConfirmationView()))
+    (user.session.get(SessionKeys.missingTraderConfirmedAddressKey), user.session.get(SessionKeys.inFlightContactDetailsChangeKey)) match {
+      case (Some("true"), _) => Future.successful(Ok(missingTraderAddressConfirmationView()))
+      case (_, Some("true")) => Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show.url))
       case _ => customerDetailsService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(details) if details.missingTrader =>
           auditService.extendedAudit(MissingTraderAuditModel(user.vrn), Some(routes.ConfirmAddressController.show.url))
