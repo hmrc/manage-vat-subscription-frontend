@@ -65,7 +65,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               "display a breadcrumb trail which" in {
                 elementText(".govuk-breadcrumbs li:nth-of-type(1)") shouldBe breadcrumbBta
                 elementText(".govuk-breadcrumbs li:nth-of-type(2)") shouldBe breadcrumbVat
-                elementText(".govuk-breadcrumbs li:nth-of-type(3)") shouldBe breadcrumbBizDeets
               }
 
               "the view loads in the partial" should {
