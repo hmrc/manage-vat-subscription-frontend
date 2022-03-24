@@ -16,7 +16,7 @@
 
 package assets
 
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsString, JsValue}
 
 object ReturnPeriodTestConstants {
 
@@ -32,15 +32,14 @@ object ReturnPeriodTestConstants {
   val returnPeriodMM: String = "MM"
   val returnPeriodAN: String = "AN"
 
-  val returnPeriodMAJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMA)
-  val returnPeriodMBJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMB)
-  val returnPeriodMCJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMC)
-  val returnPeriodMMJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodMM)
-  val returnPeriodANJson: JsValue = Json.obj("stdReturnPeriod" -> returnPeriodAN)
+  val returnPeriodMAJson: JsValue = JsString(returnPeriodMA)
+  val returnPeriodMBJson: JsValue = JsString(returnPeriodMB)
+  val returnPeriodMCJson: JsValue = JsString(returnPeriodMC)
+  val returnPeriodMMJson: JsValue = JsString(returnPeriodMM)
+  val returnPeriodANJson: JsValue = JsString(returnPeriodAN)
 
-  val allAnnualKeysAsJson: Seq[(String, JsValue)] = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
-    .map { periodKey =>
-      periodKey -> Json.obj("stdReturnPeriod" -> periodKey)
+  val allAnnualKeysAsJson: Seq[(String, JsValue)] =
+    Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL").map { periodKey =>
+      periodKey -> JsString(periodKey)
     }
-
 }

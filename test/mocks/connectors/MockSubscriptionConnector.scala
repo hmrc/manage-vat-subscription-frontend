@@ -19,7 +19,6 @@ package mocks.connectors
 import connectors.SubscriptionConnector
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
-import models.returnFrequency.UpdateReturnPeriod
 import models.updatePPOB.UpdatePPOB
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.BeforeAndAfterEach
@@ -47,12 +46,6 @@ trait MockSubscriptionConnector extends AnyWordSpecLike with MockFactory with Be
 
   def setupMockUpdateBusinessAddress(response: SubscriptionUpdateResponse): Unit = {
     (mockSubscriptionConnector.updatePPOB(_: String, _: UpdatePPOB)(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *, *)
-      .returns(Future.successful(response))
-  }
-
-  def setupMockUpdateReturnFrequency(response: SubscriptionUpdateResponse): Unit = {
-    (mockSubscriptionConnector.updateReturnFrequency(_: String, _: UpdateReturnPeriod)(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *, *)
       .returns(Future.successful(response))
   }

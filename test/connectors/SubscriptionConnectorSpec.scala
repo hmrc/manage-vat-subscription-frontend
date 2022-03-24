@@ -19,11 +19,10 @@ package connectors
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.UpdatePPOBAddressTestConstants._
-import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
+import connectors.httpParsers.ResponseHttpParser.HttpGetResult
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
-import models.returnFrequency.{Jan, UpdateReturnPeriod}
 import play.api.http.Status
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
@@ -85,29 +84,6 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
         "return a Left with an ErrorModel" in {
           setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/ppob")(errorModel)
-          await(result) shouldBe errorModel
-        }
-      }
-    }
-
-    "calling .updateReturnFrequency" when {
-
-      def result: Future[HttpPostResult[SubscriptionUpdateResponseModel]] =
-        TestSubscriptionConnector.updateReturnFrequency("999999999", UpdateReturnPeriod(Jan.id, Some(agentEmail)))
-
-      "called with a Right SubscriptionUpdateResponseModel" should {
-
-        "return a SubscriptionUpdateResponseModel" in {
-          val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
-          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(response)
-          await(result) shouldBe response
-        }
-      }
-
-      "given an error" should {
-
-        "return a Left with an ErrorModel" in {
-          setupMockHttpPut(s"${mockConfig.vatSubscriptionUrl}/vat-subscription/$vrn/return-period")(errorModel)
           await(result) shouldBe errorModel
         }
       }

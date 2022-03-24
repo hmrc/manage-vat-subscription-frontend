@@ -30,7 +30,7 @@ object PendingChanges {
 
   private val ppobPath = __ \ "PPOBDetails"
   private val bankDetailsPath =  __ \ "bankDetails"
-  private val returnPeriodPath = __ \ "returnPeriod"
+  private val returnPeriodPath = __ \ "returnPeriod" \ "stdReturnPeriod"
   private val tradingNamePath = __ \ "tradingName"
   private val businessNamePath = __ \ "organisationName"
 
