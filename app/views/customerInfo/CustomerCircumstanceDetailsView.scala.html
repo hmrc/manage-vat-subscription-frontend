@@ -438,17 +438,16 @@
 
   @circumstances.returnPeriod.map { period =>
 
-    @if(circumstances.pendingReturnPeriod.isDefined) {
+    @if(circumstances.hasPendingReturnPeriod) {
         @govukInsetText(InsetText(
-            content = Text(messages("customer_details.returnFrequency.newDates")
-        )
+            content = Text(messages("customer_details.returnFrequency.newDates"))
         ))
     }
 
 <div id="return-details-section">
       <h2 class="govuk-heading-m">@messages("customer_details.returnFrequencySection.heading")</h2>
         <dl class="govuk-summary-list">
-        @customerReturnPeriod(period, pending = circumstances.pendingReturnPeriod.isDefined)
+        @customerReturnPeriod(period, pending = circumstances.hasPendingReturnPeriod)
       </dl>
 </div>
   }

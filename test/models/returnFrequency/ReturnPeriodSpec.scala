@@ -20,7 +20,6 @@ import assets.ReturnPeriodTestConstants._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.Json
 
 class ReturnPeriodSpec extends AnyWordSpecLike with Matchers {
 
@@ -97,29 +96,6 @@ class ReturnPeriodSpec extends AnyWordSpecLike with Matchers {
           json.as[ReturnPeriod] shouldBe Annual
         }
       }
-    }
-  }
-
-  "ReturnPeriod Writes" should {
-
-    "output a fully populated MA ReturnPeriod object with all fields populated" in {
-      Json.toJson(Jan) shouldBe returnPeriodMAJson
-    }
-
-    "output a fully populated MB ReturnPeriod object with all fields populated" in {
-      Json.toJson(Feb) shouldBe returnPeriodMBJson
-    }
-
-    "output a fully populated MC ReturnPeriod object with all fields populated" in {
-      Json.toJson(Mar) shouldBe returnPeriodMCJson
-    }
-
-    "output a fully populated MM ReturnPeriod object with all fields populated" in {
-      Json.toJson(Monthly) shouldBe returnPeriodMMJson
-    }
-
-    "output correct JSON for an annual return period" in {
-      Json.toJson(Annual) shouldBe returnPeriodANJson
     }
   }
 }

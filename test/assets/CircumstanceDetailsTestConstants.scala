@@ -36,7 +36,9 @@ object CircumstanceDetailsTestConstants {
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsJsonMax,
-    "returnPeriod" -> returnPeriodMCJson,
+    "returnPeriod" -> Json.obj(
+      "stdReturnPeriod" -> returnPeriodMCJson
+    ),
     "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
     "missingTrader" -> true,
@@ -71,7 +73,9 @@ object CircumstanceDetailsTestConstants {
         "bankAccountNumber" -> accNum,
         "sortCode" -> accSort
       ),
-      "returnPeriod" -> returnPeriodMCJson,
+      "returnPeriod" -> Json.obj(
+        "stdReturnPeriod" -> returnPeriodMCJson
+      ),
       "tradingName" -> "Pens'n'Dinghy's",
       "organisationName" -> "Stationery'n'Boats"
     ),
@@ -83,7 +87,9 @@ object CircumstanceDetailsTestConstants {
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsModelMax,
-    "returnPeriod" -> returnPeriodMCJson,
+    "returnPeriod" -> Json.obj(
+      "stdReturnPeriod" -> returnPeriodMCJson
+    ),
     "partyType" -> Some(partyType),
     "deregistration" -> deregModel,
     "missingTrader" -> true,
@@ -118,7 +124,9 @@ object CircumstanceDetailsTestConstants {
         "bankAccountNumber" -> accNum,
         "sortCode" -> accSort
       ),
-      "returnPeriod" -> returnPeriodMCJson
+      "returnPeriod" -> Json.obj(
+        "stdReturnPeriod" -> returnPeriodMCJson
+      )
     )
   )
 
@@ -495,6 +503,9 @@ object CircumstanceDetailsTestConstants {
   )
 
   val customerInformationPendingReturnPeriodModel: CircumstanceDetails = customerInformationRegisteredIndividual.copy(
+    changeIndicators = Some(ChangeIndicators(
+      ppob = false, bankDetails = false, returnPeriod = true, deregister = false
+    )),
     pendingChanges = Some(PendingChanges(
       None, None, Some(Monthly), None, None
     ))

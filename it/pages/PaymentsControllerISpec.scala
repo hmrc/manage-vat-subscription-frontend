@@ -21,7 +21,7 @@ import models.payments.PaymentRedirectModel
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, SEE_OTHER}
 import play.api.libs.ws.WSResponse
 import stubs.{PaymentStub, VatSubscriptionStub}
-import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMin, individual}
+import helpers.IntegrationTestConstants.{VRN, customerCircumstancesJsonMin}
 
 class PaymentsControllerISpec extends BaseIntegrationSpec {
 
@@ -34,7 +34,7 @@ class PaymentsControllerISpec extends BaseIntegrationSpec {
         given.user.isAuthenticated
 
         And("I stub a successful response from the Subscription service")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(individual))
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
         And("I stub a successful response from the Payments service")
         PaymentStub.postPaymentSuccess(PaymentRedirectModel("change-business-details"))
@@ -56,7 +56,7 @@ class PaymentsControllerISpec extends BaseIntegrationSpec {
         given.user.isAuthenticated
 
         And("I stub a successful response from the Subscription service")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(individual))
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
         And("I stub an error response from the Payments service")
         PaymentStub.postPaymentError()

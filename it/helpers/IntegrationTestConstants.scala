@@ -17,9 +17,8 @@
 package helpers
 
 import java.util.UUID
-
 import models.circumstanceInfo._
-import models.returnFrequency.Jan
+import play.api.libs.json.{JsValue, Json}
 
 object IntegrationTestConstants {
   val sessionId = s"stubbed-${UUID.randomUUID}"
@@ -147,39 +146,72 @@ object IntegrationTestConstants {
     Some("2018-10-01")
   )
 
-  def customerCircumstancesDetailsMax(customerType: CustomerDetails,
-                                      partyType: Option[String] = None): CircumstanceDetails = CircumstanceDetails(
-    customerDetails = customerType,
-    flatRateScheme = None,
-    ppob = ppobMax,
-    bankDetails = Some(bankDetails),
-    returnPeriod = Some(Jan),
-    deregistration = Some(deregModel),
-    missingTrader = true,
-    changeIndicators = Some(changeIndicators),
-    pendingChanges = Some(PendingChanges(
-      ppob = Some(ppobMax),
-      bankDetails = Some(bankDetails),
-      returnPeriod = Some(Jan),
-      tradingName = Some("Pens'n'Dinghy's"),
-      businessName = Some("Stationery'n'Boats")
-    )),
-    partyType = partyType,
-    commsPreference = Some("DIGITAL")
+  def pendingJson(isPending: Boolean): JsValue = if(isPending) {
+    Json.obj(
+      "PPOBDetails" -> ppobMax,
+      "bankDetails" -> bankDetails,
+      "returnPeriod" -> Json.obj(
+        "stdReturnPeriod" -> "MA"
+      ),
+      "tradingName" -> "Pens'n'Dinghy's",
+      "businessName" -> "Stationery'n'Boats"
+    )
+  } else {
+    Json.obj()
+  }
+
+  def customerCircumstancesJsonMax(customerType: CustomerDetails,
+                                   partyType: String = "1",
+                                   isPending: Boolean = true): JsValue = Json.obj(
+    "customerDetails" -> customerType,
+    "ppob" -> ppobMax,
+    "bankDetails" -> bankDetails,
+    "returnPeriod" -> Json.obj(
+      "stdReturnPeriod" -> "MA"
+    ),
+    "partyType" -> partyType,
+    "deregistration" -> deregModel,
+    "missingTrader" -> true,
+    "commsPreference" -> "DIGITAL",
+    "changeIndicators" -> Json.obj(
+      "PPOBDetails" -> isPending,
+      "bankDetails" -> isPending,
+      "returnPeriod" -> isPending,
+      "deregister" -> isPending
+    ),
+    "pendingChanges" -> pendingJson(isPending)
   )
 
-  def customerCircumstancesDetailsMin(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
-    customerDetails = customerType,
-    flatRateScheme = None,
-    ppob = ppobMin,
-    bankDetails = None,
-    returnPeriod = None,
-    deregistration = None,
-    missingTrader = false,
-    changeIndicators = None,
-    pendingChanges = None,
-    partyType = None,
-    commsPreference = None
+  val customerCircumstancesJsonMin: JsValue = Json.obj(
+    "customerDetails" -> Json.obj(
+      "tradingName" -> "Vatmobile Taxi",
+      "organisationName" -> "Vatmobile Taxi LTD",
+      "hasFlatRateScheme" -> false,
+      "overseasIndicator" -> false,
+      "isInsolvent" -> false
+    ),
+    "ppob" -> Json.obj(
+      "address" -> Json.obj(
+        "line1" -> "Add Line 1",
+        "countryCode" -> "GB"
+      )
+    ),
+    "missingTrader" -> false
+  )
+
+  val missingTraderJson: JsValue = Json.obj(
+    "customerDetails" -> Json.obj(
+      "hasFlatRateScheme" -> false,
+      "overseasIndicator" -> false,
+      "isInsolvent" -> false
+    ),
+    "ppob" -> Json.obj(
+      "address" -> Json.obj(
+        "line1" -> "Add Line 1",
+        "countryCode" -> "GB"
+      )
+    ),
+    "missingTrader" -> true
   )
 
   def customerCircumstancesDetailsWithPartyType(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(

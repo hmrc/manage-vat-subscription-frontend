@@ -19,7 +19,7 @@ package models.circumstanceInfo
 import config.AppConfig
 import models.returnFrequency.ReturnPeriod
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{Reads, Writes, __}
+import play.api.libs.json.{Reads, __}
 
 case class CircumstanceDetails(customerDetails: CustomerDetails,
                                flatRateScheme: Option[FlatRateScheme],
@@ -39,6 +39,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val email: Option[String] = ppob.contactDetails.flatMap(_.emailAddress)
   val emailVerified: Boolean = ppob.contactDetails.flatMap(_.emailVerified).getOrElse(false)
   val website: Option[String] = ppob.websiteAddress
+  val hasPendingReturnPeriod: Boolean = changeIndicators.exists(_.returnPeriod)
   val pendingPPOBSection: Boolean = pendingChanges.flatMap(_.ppob).isDefined
   val pendingPPOBAddress: Option[PPOBAddress] = pendingChanges.flatMap(_.ppob.map(_.address))
   val pendingBankDetails: Option[BankDetails] = pendingChanges.flatMap(_.bankDetails)
@@ -69,7 +70,6 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   def trustPartyType(implicit appConfig: AppConfig): Boolean = partyType.fold(false){
     party => appConfig.partyTypesTrusts.contains(party)
   }
-
 }
 
 object CircumstanceDetails {
@@ -78,7 +78,7 @@ object CircumstanceDetails {
   private val flatRateSchemePath = __ \ "flatRateScheme"
   private val ppobPath = __ \ "ppob"
   private val bankDetailsPath = __ \ "bankDetails"
-  private val returnPeriodPath = __ \ "returnPeriod"
+  private val returnPeriodPath = __ \ "returnPeriod" \ "stdReturnPeriod"
   private val deregistrationPath = __ \ "deregistration"
   private val changeIndicatorsPath = __ \ "changeIndicators"
   private val pendingChangesPath = __ \ "pendingChanges"
@@ -99,18 +99,4 @@ object CircumstanceDetails {
       missingTraderPath.read[Boolean] and
       commsPreferencePath.readNullable[String]
     )(CircumstanceDetails.apply _)
-
-  implicit val writes: Writes[CircumstanceDetails] = (
-      customerDetailsPath.write[CustomerDetails](CustomerDetails.writes) and
-      flatRateSchemePath.writeNullable[FlatRateScheme] and
-      ppobPath.write[PPOB] and
-      bankDetailsPath.writeNullable[BankDetails] and
-      returnPeriodPath.writeNullable[ReturnPeriod]  and
-      deregistrationPath.writeNullable[Deregistration] and
-      changeIndicatorsPath.writeNullable[ChangeIndicators] and
-      pendingChangesPath.writeNullable[PendingChanges] and
-      partyTypePath.writeNullable[String] and
-      missingTraderPath.write[Boolean] and
-      commsPreferencePath.writeNullable[String]
-    )(unlift(CircumstanceDetails.unapply))
 }

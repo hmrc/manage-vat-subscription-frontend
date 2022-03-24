@@ -17,7 +17,7 @@
 package pages.missingTrader
 
 import forms.MissingTraderForm
-import helpers.IntegrationTestConstants.{VRN, customerCircumstancesDetailsMax, individual}
+import helpers.IntegrationTestConstants.{VRN, missingTraderJson}
 import pages.BasePageISpec
 import play.api.http.Status
 import play.api.libs.ws.WSResponse
@@ -36,7 +36,7 @@ class ConfirmAddressPageSpec extends BasePageISpec {
         given.user.isAuthenticated
 
         And("a valid Customer Information model is returned which indicates the user is a missing trader")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual))
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(missingTraderJson)
 
         val res = show
 
@@ -61,7 +61,7 @@ class ConfirmAddressPageSpec extends BasePageISpec {
         And("the user submits the form with errors")
 
         And("a valid Customer Information model is returned which indicates the user is a missing trader")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual))
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(missingTraderJson)
 
         val res = submit
 

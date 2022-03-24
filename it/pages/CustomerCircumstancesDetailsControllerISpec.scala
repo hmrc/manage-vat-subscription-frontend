@@ -51,7 +51,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with minimum details returned for an Individual")
-              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(individual))
+              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
               When("I call to show the Customer Circumstances page")
               val res = show()
@@ -94,7 +94,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with all details is returned for an Individual")
-              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual, Some("1")))
+              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(individual))
 
               When("I call to show the Customer Circumstances page")
               val res = show()
@@ -147,7 +147,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               ServiceInfoStub.stubServiceInfoPartial
 
               And("A successful response with minimum details returned for an Organisation")
-              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation, partyType = Some("50")))
+              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(organisation, partyType = "50"))
 
               When("I call to show the Customer Circumstances page")
               val res = show()
@@ -199,7 +199,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               given.agent.isSignedUpToAgentServices
 
               And("A successful response with all details is returned for an Individual")
-              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(organisation, partyType = Some("50")))
+              VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(organisation, partyType = "50"))
 
               When("I call to show the Customer Circumstances page")
               val res = show(Some(VRN))
@@ -350,8 +350,8 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
         "redirect to somewhere and store session keys" in {
           given.user.isAuthenticated
 
-          And("A successful response with minimum details returned for an Individual")
-          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual).copy(pendingChanges = None))
+          And("A successful response with no pending details returned for an Individual")
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(individual, isPending = false))
 
           When("the sendEmailVerification call is made")
           val res = sendEmailVerification()

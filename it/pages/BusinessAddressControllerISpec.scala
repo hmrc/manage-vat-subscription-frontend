@@ -20,7 +20,6 @@ import assets.BusinessAddressITConstants._
 import common.SessionKeys
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
-import models.circumstanceInfo._
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.Status._
@@ -50,7 +49,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.agent.isSignedUpToAgentServices
 
           And("A successful response with minimum details is returned for an Organisation")
-          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
           When("I call the change business address page")
           val res = show()
@@ -79,7 +78,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.user.isAuthenticated
 
           And("A successful response with minimum details is returned for an Organisation")
-          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
           And("a url is returned from the Address Lookup Service")
           BusinessAddressStub.postInitV2Journey(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
@@ -122,7 +121,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           given.user.isAuthenticated
 
           And("A successful response with minimum details is returned for an Organisation")
-          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMin(organisation))
+          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMin)
 
           And("a url is returned from the Address Lookup Service")
           BusinessAddressStub.postInitV2Journey(ACCEPTED, AddressLookupOnRampModel("redirect/url"))
@@ -179,9 +178,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(
-          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
-        )
+        BusinessAddressStub.getFullInformation(OK, customerCircumstancesJsonMin)
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -214,9 +211,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         ))
 
         And("a valid CircumstanceDetails model is returned")
-        BusinessAddressStub.getFullInformation(
-          OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
-        )
+        BusinessAddressStub.getFullInformation(OK, customerCircumstancesJsonMin)
 
         And("A response model is returned from the backend")
         BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -249,9 +244,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           ))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(
-            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
-          )
+          BusinessAddressStub.getFullInformation(OK, customerCircumstancesJsonMin)
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
@@ -299,9 +292,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
           BusinessAddressStub.getAddress(INTERNAL_SERVER_ERROR, Json.toJson(ErrorModel(INTERNAL_SERVER_ERROR, "Bad times")))
 
           And("a valid CircumstanceDetails model is returned")
-          BusinessAddressStub.getFullInformation(
-            OK, Json.toJson(customerCircumstancesDetailsMin(customerDetailsMin))(CircumstanceDetails.writes)
-          )
+          BusinessAddressStub.getFullInformation(OK, customerCircumstancesJsonMin)
 
           And("A response model is returned from the backend")
           BusinessAddressStub.putSubscription(OK, Json.toJson(SubscriptionUpdateResponseModel("Good times")))
@@ -328,7 +319,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
         given.user.isAuthenticated
 
         And("A successful response is returned from VAT subscription")
-        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesDetailsMax(individual))
+        VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(individual))
 
         When("I call to show the Business Address change page")
         val res = nonAgentConfirmation()

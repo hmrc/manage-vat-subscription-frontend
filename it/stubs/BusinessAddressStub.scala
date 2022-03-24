@@ -21,8 +21,7 @@ import helpers.IntegrationTestConstants.VRN
 import helpers.WireMockMethods
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.HeaderNames.LOCATION
-import play.api.http.Status.OK
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.JsValue
 
 object BusinessAddressStub extends WireMockMethods {
 
@@ -49,7 +48,7 @@ object BusinessAddressStub extends WireMockMethods {
 
   def getFullInformation(status: Int, response: JsValue): StubMapping = {
     when(method = GET, uri = fullAddressUri(VRN))
-      .thenReturn(status = OK, body = Json.toJson(response))
+      .thenReturn(status = status, body = response)
   }
 
   def putSubscription(status: Int, response: JsValue): StubMapping = {

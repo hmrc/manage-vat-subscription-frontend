@@ -20,18 +20,17 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.PPOBAddressTestConstants.ppobAddressModelMax
 import assets.BankDetailsTestConstants.bankDetailsModelMax
 import models.returnFrequency.Mar
-import play.api.libs.json.Json
 import utils.TestUtil
 
 class CircumstanceDetailsSpec extends TestUtil {
 
-  "calling .pendingPPOBAddress" should {
+  "CircumstanceDetails" should {
 
     "return ppobAddress" in {
       customerInformationModelMaxOrganisation.ppobAddress shouldBe ppobAddressModelMax
     }
 
-    "return Some data" when {
+    "return the correct data" when {
 
       "there are pending address changes" in {
         customerInformationModelMaxOrganisation.pendingPPOBAddress shouldBe Some(ppobAddressModelMax)
@@ -42,21 +41,20 @@ class CircumstanceDetailsSpec extends TestUtil {
       }
 
       "there are pending return period changes" in {
+        customerInformationModelMaxOrganisation.hasPendingReturnPeriod shouldBe true
         customerInformationModelMaxOrganisation.pendingReturnPeriod shouldBe Some(Mar)
       }
-    }
 
-    "return None" when {
-
-      "there are pending address changes" in {
+      "there are no pending address changes" in {
         customerInformationNoPendingIndividual.pendingPPOBAddress shouldBe None
       }
 
-      "there are pending bank changes" in {
+      "there are no pending bank changes" in {
         customerInformationNoPendingIndividual.pendingBankDetails shouldBe None
       }
 
-      "there are pending return period changes" in {
+      "there are no pending return period changes" in {
+        customerInformationNoPendingIndividual.hasPendingReturnPeriod shouldBe false
         customerInformationNoPendingIndividual.pendingReturnPeriod shouldBe None
       }
     }
@@ -148,17 +146,6 @@ class CircumstanceDetailsSpec extends TestUtil {
 
     "succeeds when optional values are not supplied" in {
       customerInformationJsonMin.as[CircumstanceDetails](CircumstanceDetails.reads) shouldBe customerInformationModelMin
-    }
-  }
-
-  "Serialize to JSON" when {
-
-    "succeeds when all registration fields are populated" in {
-      Json.toJson(customerInformationModelMaxOrganisation)(CircumstanceDetails.writes) shouldBe customerInformationJsonMaxOrganisation
-    }
-
-    "succeeds when optional values are not supplied" in {
-      Json.toJson(customerInformationModelMin)(CircumstanceDetails.writes) shouldBe customerInformationJsonMin
     }
   }
 }
