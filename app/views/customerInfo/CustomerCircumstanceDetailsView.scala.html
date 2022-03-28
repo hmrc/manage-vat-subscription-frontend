@@ -44,11 +44,11 @@
   }
 }
 
-
 @emailVerficationSection = {
-    @messages("emailWarning.confirmEmail")
-    <a class="govuk-link" href="@{controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}">@messages("emailWarning.resend")</a>
-    @messages("emailWarning.confirmIt")
+    @messages("emailVerification.message.1")
+    @circumstances.email
+    @messages("emailVerification.message.2")
+    <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="@appConfig.vatCorrespondenceFixYourEmail">@messages("emailVerification.message.3")</a>
 }
 
 @changeNotListed = {

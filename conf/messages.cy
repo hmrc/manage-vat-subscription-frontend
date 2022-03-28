@@ -222,3 +222,7 @@ btaNavLinks.helpAndContact = Cymorth a chysylltu
 PPOB.addressFailure.title = Mae’n ddrwg gennym, ni allwn ychwanegu’r cyfeiriad busnes hwn
 PPOB.addressFailure.heading = Mae’n ddrwg gennym, ni allwn ychwanegu’r cyfeiriad busnes hwn
 PPOB.addressFailure.text = Gallwch ond ychwanegu hyd at 35 cymeriad plaen ar bob llinell.
+
+emailVerification.message.1 = Nid yw’ch cyfeiriad e-bost
+emailVerification.message.2 = yn gweithio.
+emailVerification.message.3 = Ewch ati i gywiro hyn nawr

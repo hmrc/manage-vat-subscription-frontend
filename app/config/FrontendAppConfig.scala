@@ -83,6 +83,7 @@ trait AppConfig {
   val btaAccountDetails: String
   val gtmContainer: String
   def addressLookUpConfirmUrl(id : String) : String
+  val vatCorrespondenceFixYourEmail : String
 }
 
 @Singleton
@@ -235,5 +236,5 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val btaAccountDetails: String =
     servicesConfig.getString(Keys.businessTaxAccountHost) + servicesConfig.getString(Keys.businessTaxAccountDetails)
   override val gtmContainer: String = servicesConfig.getString(Keys.gtmContainer)
-
+  override val vatCorrespondenceFixYourEmail: String = servicesConfig.getString(Keys.vatCorrespondenceFixYourEmail)
 }

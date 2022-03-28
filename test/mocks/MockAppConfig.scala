@@ -92,4 +92,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val gtmContainer: String = "x"
 
   override def addressLookUpConfirmUrl(id: String): String = s"lookup-address/$id/confirm"
+
+  override val vatCorrespondenceFixYourEmail: String = "fix-your-email"
 }
