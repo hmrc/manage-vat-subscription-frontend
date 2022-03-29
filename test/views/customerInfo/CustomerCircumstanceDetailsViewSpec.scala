@@ -294,7 +294,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   elementText(".govuk-warning-text__text") shouldBe s"${viewMessages.warning} ${viewMessages.unverifiedEmailNudge}"
                 }
 
-                s"the 'resend email' link redirects to ${mockConfig.vatCorrespondenceFixYourEmail}" in {
+                s"the 'email fix now' link redirects to vat-correspondence fix your email page" in {
                   element(".govuk-warning-text a").attr("href") shouldBe
                     s"${mockConfig.vatCorrespondenceFixYourEmail}"
                 }

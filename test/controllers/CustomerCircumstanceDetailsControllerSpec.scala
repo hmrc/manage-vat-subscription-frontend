@@ -18,7 +18,6 @@ package controllers
 
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
-import assets.PPOBAddressTestConstants.email
 import assets.ReturnPeriodTestConstants.{returnPeriodFeb, returnPeriodJan}
 import assets.messages.{CustomerCircumstanceDetailsPageMessages => Messages}
 import audit.models.ViewVatSubscriptionAuditModel
@@ -38,6 +37,7 @@ import scala.concurrent.ExecutionContext
 class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with MockServiceInfoService {
 
   val dummyHtml: Html = Html("""<div id="dummyHtml">Dummy html</div>""")
+
   object TestCustomerCircumstanceDetailsController extends CustomerCircumstanceDetailsController(
     mockAuthPredicate,
     mockCustomerDetailsService,
@@ -53,7 +53,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     "the user is authorised and a CustomerDetailsModel" should {
 
       lazy val result = TestCustomerCircumstanceDetailsController.show(request.withSession(
-        SessionKeys.mtdVatvcNewReturnFrequency -> returnPeriodJan ,
+        SessionKeys.mtdVatvcNewReturnFrequency -> returnPeriodJan,
         SessionKeys.mtdVatvcCurrentReturnFrequency -> returnPeriodFeb
       ))
       lazy val document = Jsoup.parse(contentAsString(result))
@@ -116,60 +116,5 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
     unauthenticatedCheck(TestCustomerCircumstanceDetailsController.show)
 
     insolvencyCheck(TestCustomerCircumstanceDetailsController.show)
-  }
-
-  "calling the sendEmailVerification action" when {
-
-    "the user has no pending ppob/contact details changes" should {
-      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
-      "return 303" in {
-        getPartial(Html(""))
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation.copy(pendingChanges = None))
-        status(result) shouldBe Status.SEE_OTHER
-      }
-
-      "add the email to session" in {
-        session(result).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
-      }
-
-      "set the inFlightContactDetailsChangeKey to false" in {
-        session(result).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe Some("false")
-      }
-    }
-
-    "the user has a pending ppob/contact details change" should {
-      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
-      "return 303" in {
-        getPartial(Html(""))
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.SEE_OTHER
-      }
-
-      "add the email to session" in {
-        session(result).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
-      }
-
-      "not set the inFlightContactDetailsChangeKey" in {
-        session(result).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe None
-      }
-    }
-
-    "an Error is returned from customer details" should {
-
-      lazy val result = TestCustomerCircumstanceDetailsController.sendEmailVerification(request)
-
-      "return 500" in {
-        mockCustomerDetailsError()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
-      }
-
-      "return HTML" in {
-        contentType(result) shouldBe Some("text/html")
-        charset(result) shouldBe Some("utf-8")
-      }
-    }
-
-    insolvencyCheck(TestCustomerCircumstanceDetailsController.sendEmailVerification)
   }
 }
