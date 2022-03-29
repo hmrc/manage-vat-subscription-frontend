@@ -73,7 +73,6 @@ object ConfigKeys {
   val vatCorrespondenceChangeLandlineNumberUrl: String = "vat-correspondence-details-frontend.changeLandlineNumberUrl"
   val vatCorrespondenceChangeMobileNumberUrl: String = "vat-correspondence-details-frontend.changeMobileNumberUrl"
   val vatCorrespondenceChangeWebsiteUrl: String = "vat-correspondence-details-frontend.changeWebsiteUrl"
-  val vatCorrespondenceVerificationEmail: String = "vat-correspondence-details-frontend.sendVerificationEmail"
   val vatCorrespondenceFixYourEmail: String = "vat-correspondence-details-frontend.fixEmail"
 
   val vatDesignatoryDetailsNewTradingNameUrl: String = "vat-designatory-details-frontend.newTradingNameUrl"
