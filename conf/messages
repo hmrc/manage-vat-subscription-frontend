@@ -219,3 +219,6 @@ PPOB.addressFailure.title = Sorry, we cannot add this business address
 PPOB.addressFailure.heading = Sorry, we cannot add this business address
 PPOB.addressFailure.text = You can only add up to 35 English alphabet characters on each line.
 
+emailVerification.message.1 = Your email address
+emailVerification.message.2 = is not working.
+emailVerification.message.3 = Fix this now

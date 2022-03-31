@@ -16,10 +16,9 @@
 
 package pages
 
-import common.SessionKeys
+
 import config.FrontendAppConfig
 import helpers.IntegrationTestConstants._
-import helpers.SessionCookieCrumbler
 import play.api.i18n.Messages
 import play.api.libs.ws.WSResponse
 import play.api.test.Helpers._
@@ -337,38 +336,5 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
     }
 
     getAuthenticationTests(path)
-  }
-
-  "Calling the sendEmailVerification action" when {
-
-    def sendEmailVerification(sessionVrn: Option[String] = None): WSResponse = get(verifyEmailPath, formatSessionVrn(sessionVrn))
-
-    "a success response is received from get customer details" when {
-
-      "the user has no pending ppob/contact details changes" should {
-
-        "redirect to somewhere and store session keys" in {
-          given.user.isAuthenticated
-
-          And("A successful response with no pending details returned for an Individual")
-          VatSubscriptionStub.getClientDetailsSuccess(VRN)(customerCircumstancesJsonMax(individual, isPending = false))
-
-          When("the sendEmailVerification call is made")
-          val res = sendEmailVerification()
-
-          Then("Status should be SEE_OTHER")
-          res should have(httpStatus(SEE_OTHER))
-
-          And("redirect location should be something")
-          redirectLocation(res) shouldBe Some(mockAppConfig.vatCorrespondenceSendVerificationEmail)
-
-          And("the email will be stored in session")
-          SessionCookieCrumbler.getSessionMap(res).get(SessionKeys.vatCorrespondencePrepopulationEmailKey) shouldBe Some(email)
-
-          And("the inFlightContactDetailsChangeKey will be stored in session")
-          SessionCookieCrumbler.getSessionMap(res).get(SessionKeys.inFlightContactDetailsChangeKey) shouldBe Some("false")
-        }
-      }
-    }
   }
 }

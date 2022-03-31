@@ -3,7 +3,6 @@
 # Pages
 
 GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.show
-GET         /send-verification                               controllers.CustomerCircumstanceDetailsController.sendEmailVerification
 
 GET         /change-business-address                         controllers.BusinessAddressController.show
 GET         /change-business-address/ppob-handoff            controllers.BusinessAddressController.initialiseJourney

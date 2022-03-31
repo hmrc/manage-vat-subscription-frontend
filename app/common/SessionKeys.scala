@@ -22,7 +22,6 @@ object SessionKeys {
   val mtdVatvcNewReturnFrequency: String = "mtdVatvcNewReturnFrequency"
   val mtdVatvcClientVrn: String = "mtdVatvcClientVrn"
   val mtdVatvcVerifiedAgentEmail: String = "mtdVatvcVerifiedAgentEmail"
-  val vatCorrespondencePrepopulationEmailKey: String = "vatCorrespondencePrepopulationEmail"
   val inFlightContactDetailsChangeKey: String = "inFlightContactDetailsChange"
   val insolventWithoutAccessKey: String = "insolventWithoutAccess"
   val missingTraderConfirmedAddressKey: String = "missingTraderConfirmedAddress"

@@ -61,7 +61,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val vatCorrespondenceChangeLandlineNumberUrl: String = "mock-change-landline-url"
   override val vatCorrespondenceChangeMobileNumberUrl: String = "mock-change-mobile-url"
   override val vatCorrespondenceChangeWebsiteUrl: String = "mock-change-website-url"
-  override val vatCorrespondenceSendVerificationEmail: String = "send-verification"
   override val vatDesignatoryDetailsTradingNameUrl: String = "change-trading-name"
   override val vatDesignatoryDetailsBusinessNameUrl: String = "change-business-name"
   override def partyTypes: Seq[String] =
@@ -92,4 +91,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val gtmContainer: String = "x"
 
   override def addressLookUpConfirmUrl(id: String): String = s"lookup-address/$id/confirm"
+
+  override val vatCorrespondenceFixYourEmail: String = "fix-your-email"
 }

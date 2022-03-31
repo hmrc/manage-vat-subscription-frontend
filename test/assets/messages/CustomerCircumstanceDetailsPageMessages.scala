@@ -42,7 +42,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val change = "Change"
   val pending = "Pending"
 
-  val unverifiedEmailNudge = "You need to confirm your email address. Resend the email to confirm it."
+  val unverifiedEmailNudge =  "Your email address test@test.com is not working. Fix this now"
   val warning = "Warning"
   val contactDetailsMovedToBTA = "You can update contact preferences and details for VAT and other taxes in your account details."
 

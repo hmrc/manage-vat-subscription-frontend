@@ -294,9 +294,9 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   elementText(".govuk-warning-text__text") shouldBe s"${viewMessages.warning} ${viewMessages.unverifiedEmailNudge}"
                 }
 
-                s"the 'resend email' link redirects to ${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}" in {
+                s"the 'email fix now' link redirects to vat-correspondence fix your email page" in {
                   element(".govuk-warning-text a").attr("href") shouldBe
-                    s"${controllers.routes.CustomerCircumstanceDetailsController.sendEmailVerification}"
+                    s"${mockConfig.vatCorrespondenceFixYourEmail}"
                 }
 
                 s"has the wording '${viewMessages.contactDetailsMovedToBTA}' " in {
