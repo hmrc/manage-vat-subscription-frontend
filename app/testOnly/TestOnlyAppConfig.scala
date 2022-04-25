@@ -26,6 +26,4 @@ class TestOnlyAppConfig @Inject()(implicit env: Environment,
                                   config: Configuration)
   extends FrontendAppConfig(){
 
-  lazy val dynamicStubUrl: String = servicesConfig.baseUrl("vat-subscription-dynamic-stub")
-
 }
