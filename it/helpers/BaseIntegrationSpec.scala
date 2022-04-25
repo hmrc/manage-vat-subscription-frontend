@@ -119,8 +119,6 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
     "microservice.services.address-lookup-frontend.port" -> mockPort,
     "microservice.services.contact-preferences.host" -> mockHost,
     "microservice.services.contact-preferences.port" -> mockPort,
-    "microservice.services.vat-subscription-dynamic-stub.host" -> mockHost,
-    "microservice.services.vat-subscription-dynamic-stub.port" -> mockPort,
     "microservice.services.business-tax-account.host" -> mockHost,
     "microservice.services.business-tax-account.port" -> mockPort
   )
