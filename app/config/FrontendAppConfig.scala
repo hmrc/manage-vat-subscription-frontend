@@ -165,20 +165,22 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
   override lazy val feedbackUrl: String = s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier" +
     s"&backUrl=${SafeRedirectUrl(host + controllers.routes.CustomerCircumstanceDetailsController.show.url).encodedUrl}"
 
-  override lazy val vatCorrespondenceChangeEmailUrl: String = servicesConfig.getString(Keys.vatCorrespondenceFrontendHost) +
+  private lazy val vatCorrespondenceHost = servicesConfig.getString(Keys.vatCorrespondenceFrontendHost)
+  override lazy val vatCorrespondenceChangeEmailUrl: String = vatCorrespondenceHost +
     servicesConfig.getString(Keys.vatCorrespondenceChangeEmailUrl)
-  override lazy val vatCorrespondenceChangeLandlineNumberUrl: String =  servicesConfig.getString(Keys.vatCorrespondenceFrontendHost) +
+  override lazy val vatCorrespondenceChangeLandlineNumberUrl: String =  vatCorrespondenceHost +
     servicesConfig.getString(Keys.vatCorrespondenceChangeLandlineNumberUrl)
-  override lazy val vatCorrespondenceChangeMobileNumberUrl: String = servicesConfig.getString(Keys.vatCorrespondenceFrontendHost) +
+  override lazy val vatCorrespondenceChangeMobileNumberUrl: String = vatCorrespondenceHost +
     servicesConfig.getString(Keys.vatCorrespondenceChangeMobileNumberUrl)
-  override lazy val vatCorrespondenceChangeWebsiteUrl: String = servicesConfig.getString(Keys.vatCorrespondenceFrontendHost) +
+  override lazy val vatCorrespondenceChangeWebsiteUrl: String = vatCorrespondenceHost +
     servicesConfig.getString(Keys.vatCorrespondenceChangeWebsiteUrl)
-  override lazy val vatCorrespondenceFixYourEmail: String = servicesConfig.getString(Keys.vatCorrespondenceFrontendHost) +
+  override lazy val vatCorrespondenceFixYourEmail: String = vatCorrespondenceHost +
     servicesConfig.getString(Keys.vatCorrespondenceFixYourEmail)
 
-  override lazy val vatDesignatoryDetailsTradingNameUrl: String = servicesConfig.getString(Keys.vatDesignatoryDetailsFrontendHost) +
+  private lazy val vatDesignatoryDetailsHost = servicesConfig.getString(Keys.vatDesignatoryDetailsFrontendHost)
+  override lazy val vatDesignatoryDetailsTradingNameUrl: String = vatDesignatoryDetailsHost +
     servicesConfig.getString(Keys.vatDesignatoryDetailsNewTradingNameUrl)
-  override lazy val vatDesignatoryDetailsBusinessNameUrl: String = servicesConfig.getString(Keys.vatDesignatoryDetailsFrontendHost) +
+  override lazy val vatDesignatoryDetailsBusinessNameUrl: String = vatDesignatoryDetailsHost +
     servicesConfig.getString(Keys.vatDesignatoryDetailsNewBusinessNameUrl)
 
   override def partyTypes: Seq[String] = getStringSeq(Keys.partyTypesOrgNameRow)
