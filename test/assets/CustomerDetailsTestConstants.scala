@@ -25,6 +25,7 @@ object CustomerDetailsTestConstants {
   val tradingName = "Dusty Relics"
   val firstName = "Fred"
   val lastName = "Flintstone"
+  val mandationStatus = "MTDfB"
 
   val individualJson: JsObject = Json.obj(
     "firstName" -> firstName,

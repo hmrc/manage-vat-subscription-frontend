@@ -30,12 +30,15 @@ object CircumstanceDetailsTestConstants {
 
   val partyType = "4"
   val commsPreference = "DIGITAL"
+  val mandationStatus = "MTDfB"
+  val mandationStatusNonMTDfB = "Non MTDfB"
 
   val customerInformationJsonMaxOrganisation: JsValue = Json.obj(
     "customerDetails" -> organisationJson,
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsJsonMax,
+    "mandationStatus" -> mandationStatus,
     "returnPeriod" -> Json.obj(
       "stdReturnPeriod" -> returnPeriodMCJson
     ),
@@ -87,6 +90,7 @@ object CircumstanceDetailsTestConstants {
     "flatRateScheme" -> frsJsonMax,
     "ppob" -> ppobJsonMax,
     "bankDetails" -> bankDetailsModelMax,
+    "mandationStatus" -> mandationStatus,
     "returnPeriod" -> Json.obj(
       "stdReturnPeriod" -> returnPeriodMCJson
     ),
@@ -134,7 +138,8 @@ object CircumstanceDetailsTestConstants {
     Json.obj(
       "customerDetails" -> customerDetailsJsonMin,
       "ppob" -> ppobJsonMin,
-      "missingTrader" -> false
+      "missingTrader" -> false,
+      "mandationStatus" -> mandationStatus,
     )
 
 
@@ -160,7 +165,8 @@ object CircumstanceDetailsTestConstants {
       businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
 
@@ -186,9 +192,9 @@ object CircumstanceDetailsTestConstants {
       businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
-
 
   val customerInformationModelOrganisationPending: CircumstanceDetails = CircumstanceDetails(
     customerDetails = organisation,
@@ -212,7 +218,8 @@ object CircumstanceDetailsTestConstants {
       businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationModelMaxIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -237,7 +244,8 @@ object CircumstanceDetailsTestConstants {
       businessName = Some("Stationery'n'Boats")
     )),
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationNoPendingIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -251,7 +259,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatusNonMTDfB
   )
 
   val customerInformationSomePendingIndividual: CircumstanceDetails = customerInformationNoPendingIndividual.copy(
@@ -285,7 +294,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationNoPendingChangeOfCert: CircumstanceDetails = CircumstanceDetails(
@@ -299,7 +309,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some(partyType),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   def customerInformationWithPartyType(partyType: Option[String]): CircumstanceDetails = CircumstanceDetails(
@@ -313,7 +324,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = partyType,
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationRegisteredIndividual: CircumstanceDetails = CircumstanceDetails(
@@ -327,7 +339,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationNoPendingOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -341,7 +354,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("other"),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationPendingPPOBOrganisation: CircumstanceDetails = CircumstanceDetails(
@@ -361,7 +375,8 @@ object CircumstanceDetailsTestConstants {
     ),
     pendingChanges = None,
     partyType = Some("other"),
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationModelFutureDereg: CircumstanceDetails = CircumstanceDetails(
@@ -375,7 +390,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationModelDeregPending: CircumstanceDetails = CircumstanceDetails(
@@ -395,7 +411,8 @@ object CircumstanceDetailsTestConstants {
     ),
     pendingChanges = None,
     partyType = None,
-    commsPreference = Some("DIGITAL")
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
   )
 
   val customerInformationModelMin: CircumstanceDetails = CircumstanceDetails(
@@ -409,7 +426,8 @@ object CircumstanceDetailsTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = None,
-    commsPreference = None
+    commsPreference = None,
+    mandationStatus = mandationStatus
   )
 
   def customerInformationModelPendingRemoved(field: String): CircumstanceDetails = {

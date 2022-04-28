@@ -17,12 +17,12 @@
 package views.customerInfo
 
 import assets.CircumstanceDetailsTestConstants._
-import assets.CustomerDetailsTestConstants.{individual, tradingName}
+import assets.CustomerDetailsTestConstants.tradingName
 import assets.PPOBAddressTestConstants
-import assets.PPOBAddressTestConstants.{addLine1, addLine2, postcode, ppobModelMax, ppobModelMaxEmailUnverified, ppobModelMaxPending}
+import assets.PPOBAddressTestConstants.{addLine1, addLine2, postcode, ppobModelMaxEmailUnverified, ppobModelMaxPending}
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
-import models.circumstanceInfo.{CircumstanceDetails, PendingChanges}
+import models.circumstanceInfo.PendingChanges
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.twirl.api.Html
@@ -74,7 +74,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "has an about header" in {
-                elementText("#content div:nth-child(2) > h2") shouldBe viewMessages.aboutHeading
+                elementText("h2.govuk-heading-m") shouldBe viewMessages.aboutHeading
               }
 
               "display the trading name row" which {
@@ -102,6 +102,10 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                     element("#trading-name-status").attr("href") shouldBe mockConfig.vatDesignatoryDetailsTradingNameUrl
                   }
                 }
+              }
+
+              "have a signup notification banner" in {
+                elementText("#govuk-notification-banner-title") shouldBe viewMessages.bannerTitle
               }
 
               "have a section for business address" which {
@@ -552,21 +556,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
         "the user has no organisation name" should {
 
-          val model: CircumstanceDetails = CircumstanceDetails(
-            customerDetails = individual,
-            flatRateScheme = None,
-            ppob = ppobModelMax,
-            bankDetails = None,
-            returnPeriod = None,
-            deregistration = None,
-            missingTrader = false,
-            changeIndicators = None,
-            pendingChanges = None,
-            partyType = Some(mockConfig.partyTypes.head),
-            commsPreference = None
-          )
-
-          lazy val view = injectedView(model, getPartialHtmlNotAgent)(user, messages, mockConfig)
+          lazy val view = injectedView(customerInformationModelMaxIndividual, getPartialHtmlNotAgent)(user, messages, mockConfig)
           lazy implicit val document: Document = Jsoup.parse(view.body)
 
           "not have a change details section for the Business Name" in {

@@ -195,6 +195,12 @@ address_lookupPage.lookupPage.submit = Dod o hyd i gyfeiriad
 address_lookupPage.overseas = Nid oes gan y cyfeiriad god post neu mae y tu allan i’r DU
 address_lookupPage.postalCode = Cod post neu god ardal (dewisol)
 
+signup_banner.title = Pwysig
+signup_banner.subheading = Newidiodd y ffordd yr ydych yn cyflwyno eich Ffurflenni TAW ar 1 Ebrill oherwydd y cynllun Troi Treth yn Ddigidol
+signup_banner.p1 = Ni allwch ddefnyddio’r gwasanaeth hwn i gyflwyno Ffurflenni TAW ar gyfer cyfnodau cyfrifyddu sy’n dechrau ar ôl 1 Ebrill 2022.
+signup_banner.p2 = Yn lle hynny, bydd angen i chi gadw cofnodion digidol a chyflwyno Ffurflenni TAW gan ddefnyddio meddalwedd sy’n cydweddu â CThEM.
+signup_banner.link = Dysgwch pryd y mae angen i chi gofrestru a dechrau defnyddio Troi Treth yn Ddigidol ar gyfer TAW
+
 breadcrumb.bta = Cyfrif Treth Busnes
 breadcrumb.yourVatAccount = Eich cyfrif TAW
 breadcrumb.yourBusinessDetails = Manylion eich busnes

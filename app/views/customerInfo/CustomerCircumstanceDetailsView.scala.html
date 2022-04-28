@@ -20,11 +20,13 @@
 @import templates.Breadcrumb
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
+@import views.html.helpers.SignupBanner
 
 @this(mainTemplate: MainTemplate,
       renderReturnFrequency: RenderReturnFrequency,
       renderAddress: RenderAddress,
       breadcrumb: Breadcrumb,
+      signupBanner: SignupBanner,
       govukBackLink : GovukBackLink,
       govukDetails : GovukDetails,
       govukInsetText : GovukInsetText,
@@ -378,6 +380,8 @@
     } else {
       <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.h1")</h1>
     }
+
+  @signupBanner(circumstances.showSignupBanner)
 
   @findDeregStatus(circumstances) match {
     case futureDate: FutureDereg => {
