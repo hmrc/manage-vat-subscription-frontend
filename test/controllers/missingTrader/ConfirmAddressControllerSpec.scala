@@ -18,11 +18,11 @@ package controllers.missingTrader
 
 import assets.BaseTestConstants.vrn
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxIndividual, customerInformationModelMin}
-import assets.messages.MissingTraderAddressConfirmationPageMessages
 import audit.models.MissingTraderAuditModel
 import common.SessionKeys
 import controllers.ControllerBaseSpec
 import forms.MissingTraderForm
+import assets.messages.MissingTraderAddressConfirmationPageMessages
 import mocks.services.MockPPOBService
 import models.core.ErrorModel
 import org.jsoup.Jsoup

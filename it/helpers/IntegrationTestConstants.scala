@@ -179,7 +179,8 @@ object IntegrationTestConstants {
       "returnPeriod" -> isPending,
       "deregister" -> isPending
     ),
-    "pendingChanges" -> pendingJson(isPending)
+    "pendingChanges" -> pendingJson(isPending),
+    "mandationStatus" -> "MTDfB"
   )
 
   val customerCircumstancesJsonMin: JsValue = Json.obj(
@@ -196,7 +197,8 @@ object IntegrationTestConstants {
         "countryCode" -> "GB"
       )
     ),
-    "missingTrader" -> false
+    "missingTrader" -> false,
+    "mandationStatus" -> "MTDfB"
   )
 
   val missingTraderJson: JsValue = Json.obj(
@@ -211,7 +213,8 @@ object IntegrationTestConstants {
         "countryCode" -> "GB"
       )
     ),
-    "missingTrader" -> true
+    "missingTrader" -> true,
+    "mandationStatus" -> "MTDfB"
   )
 
   def customerCircumstancesDetailsWithPartyType(customerType: CustomerDetails): CircumstanceDetails = CircumstanceDetails(
@@ -225,6 +228,7 @@ object IntegrationTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("7"),
-    commsPreference = None
+    commsPreference = None,
+    mandationStatus = "MTDfB"
   )
 }

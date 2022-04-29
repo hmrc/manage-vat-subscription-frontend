@@ -70,6 +70,7 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val govUkChangeToBusinessDetails: String = "mock-govUk-changeBusinessDetails"
   override val govUkChangeVatRegistrationDetails: String = "mock-gov-uk-url"
   override val govUkSoftwareGuidanceUrl: String = "software-guidance"
+  override val signupUrl: String = "signup-url"
   override val vatAgentClientLookupFrontendUrl: String = "/vaclf"
   override def agentClientLookupUrl: String = "/agent-client-lookup"
   override def agentClientUnauthorisedUrl: String = "agent-client-unauthorised"

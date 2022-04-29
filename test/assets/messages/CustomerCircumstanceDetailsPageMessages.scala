@@ -38,6 +38,8 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val mobileNumberHeading = "Mobile number"
   val websiteAddressHeading = "Website address"
 
+  val bannerTitle = "Important"
+
   val add = "Add"
   val change = "Change"
   val pending = "Pending"
