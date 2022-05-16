@@ -19,8 +19,8 @@ package messages
 object SignupBannerMessages {
 
   val important = "Important"
-  val subheading = "The way you submit your VAT returns changed on 1 April due to Making Tax Digital"
-  val p1 = "You cannot use this service to submit returns for accounting periods starting after 1 April 2022. Instead you’ll need to keep digital records and submit returns using HMRC compatible software."
+  val subheading = "The way to submit VAT returns changed on 1 April due to Making Tax Digital"
+  val p1 = "You cannot use this service to submit returns for accounting periods starting after 1 April 2022. Instead, digital records must be kept and returns must be submitted using HMRC compatible software."
   val link = "Find out when you need to sign up and start using Making Tax Digital for VAT (opens in a new tab)"
   val linkHref = "signup-url"
 }

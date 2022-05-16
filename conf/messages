@@ -192,9 +192,9 @@ address_lookupPage.overseas = The address does not have a postcode or is outside
 address_lookupPage.postalCode = Postal or ZIP code (optional)
 
 signup_banner.title = Important
-signup_banner.subheading = The way you submit your VAT returns changed on 1 April due to Making Tax Digital
+signup_banner.subheading = The way to submit VAT returns changed on 1 April due to Making Tax Digital
 signup_banner.p1 = You cannot use this service to submit returns for accounting periods starting after 1 April 2022.
-signup_banner.p2 = Instead you’ll need to keep digital records and submit returns using HMRC compatible software.
+signup_banner.p2 = Instead, digital records must be kept and returns must be submitted using HMRC compatible software.
 signup_banner.link = Find out when you need to sign up and start using Making Tax Digital for VAT
 
 breadcrumb.bta = Business tax account
