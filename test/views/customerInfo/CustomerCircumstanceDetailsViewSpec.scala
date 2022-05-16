@@ -277,6 +277,16 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
             }
 
+            "user has a different mandation status than 3" should {
+
+              lazy val view = injectedView(customerInformationNoPendingIndividualMTDfB, getPartialHtmlNotAgent)(user, messages, mockConfig)
+              lazy implicit val document: Document = Jsoup.parse(view.body)
+
+              "not display the MTD sign up banner" in {
+                elementExtinct(".govuk-notification-banner")
+              }
+            }
+
             "the page is rendered for a user without a verified email" should {
               lazy val view = injectedView(
                 customerInformationNoPendingIndividual.copy(ppob = ppobModelMaxEmailUnverified),

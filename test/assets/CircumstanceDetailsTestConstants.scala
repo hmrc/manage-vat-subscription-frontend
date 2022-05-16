@@ -263,6 +263,21 @@ object CircumstanceDetailsTestConstants {
     mandationStatus = mandationStatusNonMTDfB
   )
 
+  val customerInformationNoPendingIndividualMTDfB: CircumstanceDetails = CircumstanceDetails(
+    customerDetails = individual,
+    flatRateScheme = Some(frsModelMax),
+    ppob = ppobModelMax,
+    bankDetails = Some(bankDetailsModelMax),
+    returnPeriod = Some(Mar),
+    deregistration = None,
+    missingTrader = false,
+    changeIndicators = None,
+    pendingChanges = None,
+    partyType = Some(partyType),
+    commsPreference = Some("DIGITAL"),
+    mandationStatus = mandationStatus
+  )
+
   val customerInformationSomePendingIndividual: CircumstanceDetails = customerInformationNoPendingIndividual.copy(
     pendingChanges = Some(PendingChanges(
       ppob = None,
