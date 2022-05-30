@@ -52,7 +52,7 @@ trait TestUtil extends AnyWordSpecLike with GuiceOneAppPerSuite with BeforeAndAf
   implicit lazy val serviceErrorHandler: ServiceErrorHandler = inject[ServiceErrorHandler]
 
   implicit lazy val request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest().withSession(SessionKeys.insolventWithoutAccessKey -> "false")
+    FakeRequest("POST","/f").withSession(SessionKeys.insolventWithoutAccessKey -> "false")
   implicit lazy val fakeRequestWithClientsVRN: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest().withSession(SessionKeys.mtdVatvcClientVrn -> vrn, SessionKeys.mtdVatvcVerifiedAgentEmail -> agentEmail)
   implicit lazy val fakeRequestWithVrnAndReturnFreq: FakeRequest[AnyContentAsEmpty.type] = FakeRequest().withSession(
