@@ -51,6 +51,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   val titleSuffixOther = " - VAT - GOV.UK"
   val titleSuffixAgent = " - Your client’s VAT details - GOV.UK"
   val titleThereIsAProblem = "There is a problem with the service"
+  val authToken : String = "authToken"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this
@@ -60,6 +61,8 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   }
 
   def given: PreconditionBuilder = new PreconditionBuilder
+
+  def authSession: Map[String, String] = Map(authToken -> "mock-bearer-token")
 
   class User()(implicit builder: PreconditionBuilder) {
     def isAuthenticated: PreconditionBuilder = {
@@ -139,11 +142,11 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   }
 
   def get(path: String, additionalCookies: Map[String, String] = Map.empty): WSResponse = await(
-    buildRequest(path, additionalCookies).get()
+    buildRequest(path, additionalCookies ++ authSession).get()
   )
 
   def post(path: String, additionalCookies: Map[String, String] = Map.empty)(body: Map[String, Seq[String]]): WSResponse = await(
-    buildRequest(path, additionalCookies).post(body)
+    buildRequest(path, additionalCookies ++ authSession).post(body)
   )
 
   def postJSValueBody(path: String, additionalCookies: Map[String, String] = Map.empty)(body: JsValue): WSResponse = await(
