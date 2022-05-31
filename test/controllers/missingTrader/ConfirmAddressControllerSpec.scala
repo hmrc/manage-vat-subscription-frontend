@@ -166,7 +166,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       lazy val result = {
         setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
         mockCall(vrn)
-        controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
+        controller.submit(postRequest.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
       }
 
       "return 200" in {
@@ -183,7 +183,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
       lazy val result = {
         setupMockCustomerDetails(vrn)(Right(customerInformationModelMaxIndividual))
         mockFailedCall(vrn)
-        controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
+        controller.submit(postRequest.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.yes))
       }
 
       "return 200" in {
@@ -193,7 +193,7 @@ class ConfirmAddressControllerSpec extends ControllerBaseSpec with MockPPOBServi
 
     "the form is submitted with a 'No' option" should {
 
-      lazy val result = controller.submit(request.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.no))
+      lazy val result = controller.submit(postRequest.withFormUrlEncodedBody(MissingTraderForm.yesNo -> MissingTraderForm.no))
 
       "return 303" in {
         status(result) shouldBe Status.SEE_OTHER
