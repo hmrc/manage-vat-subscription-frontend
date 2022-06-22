@@ -26,6 +26,7 @@ common.clientService = Rheoli eich cyfrif TAW
 common.vat = TAW
 common.agentService = Manylion TAW eich cleient
 common.newTab = (yn agor tab newydd)
+common.pageTitle = {0} - {1} - GOV.UK
 common.yes = Iawn
 common.no = Na
 common.warning = Rhybudd
@@ -39,12 +40,6 @@ common.agent.backToClientDetails = Yn ôl i fanylion y cleient
 global.error.InternalServerError500.title = Mae problem gyda’r gwasanaeth
 global.error.InternalServerError500.heading = Mae’n ddrwg gennym – mae problem gyda’r gwasanaeth
 global.error.InternalServerError500.message = Rhowch gynnig arall arni yn nes ymlaen.
-global.error.badRequest400.title = Cais drwg – 400
-global.error.badRequest400.heading = Cais drwg
-global.error.badRequest400.message = Gwiriwch eich bod wedi nodi’r cyfeiriad gwe cywir.
-global.error.pageNotFound404.title = Heb ddod o hyd i’r dudalen – 404
-global.error.pageNotFound404.heading = Ni ellir dod o hyd i’r dudalen hon
-global.error.pageNotFound404.message = Gwiriwch eich bod wedi nodi’r cyfeiriad gwe cywir.
 
 # Choose return frequency dates messages
 chooseDatesForm.frequency.missing = Dewiswch y dyddiadau newydd ar gyfer Ffurflenni TAW
