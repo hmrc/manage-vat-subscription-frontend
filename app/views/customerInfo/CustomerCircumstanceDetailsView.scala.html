@@ -71,7 +71,7 @@
     <dd class="govuk-summary-list__actions">
       @if(findDeregStatus(circumstances) == Registered) {
         @if(isPending) {
-          <span id="business-name-status" class="govuk-!-font-weight-bold">
+          <span id="pending-business-name-status" class="govuk-!-font-weight-bold">
             <span aria-hidden="true">@messages("customer_details.pending")</span>
             <span class="govuk-visually-hidden">@messages("customer_details.businessName.pending.hidden")</span>
           </span>
@@ -103,7 +103,7 @@
         case _ => {
           <dd class="govuk-summary-list__actions">
           @if(pending) {
-            <span id="place-of-business-status" class="govuk-!-font-weight-bold">
+            <span id="pending-place-of-business-status" class="govuk-!-font-weight-bold">
               <span aria-hidden="true">@messages("customer_details.pending")</span>
               <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
             </span>
@@ -128,10 +128,10 @@
   <div class="govuk-summary-list__row">
     <dt id="bank-details-text" class="govuk-summary-list__key">
       @messages("customer_details.bankAccount.heading")
-      <span id="repayments-only"
-            class="govuk-hint">
+      <br>
+        <div class="govuk-hint">
         @messages("customer_details.bankAccount.repaymentsOnly")
-      </span>
+        </div>
     </dt>
     <dd id="bank-details" class="govuk-summary-list__value">
       <p class="govuk-body">
@@ -151,7 +151,7 @@
     </dd>
     <dd class="govuk-summary-list__actions">
       @if(pending){
-        <span id="bank-details-status" class="govuk-!-font-weight-bold">
+        <span id="pending-bank-details-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
           <span class="govuk-visually-hidden">@messages("customer_details.bankAccount.pending.hidden")</span>
         </span>
@@ -183,7 +183,7 @@
     <dd class="govuk-summary-list__actions">
       @if(findDeregStatus(circumstances) == Registered) {
         @if(pending){
-          <span id="vat-return-dates-status" class="govuk-!-font-weight-bold">
+          <span id="pending-vat-return-dates-status" class="govuk-!-font-weight-bold">
             <span aria-hidden="true">@messages("customer_details.pending")</span>
             <span class="govuk-visually-hidden">@messages("customer_details.returnFrequency.pending.hidden")</span>
           </span>
@@ -214,18 +214,18 @@
       <dd class="govuk-summary-list__actions">
         @(emailPending, user.isAgent) match {
           case (true, _) => {
-            <span id="vat-email-address-status" class="govuk-!-font-weight-bold">
+            <span id="pending-vat-email-address-status" class="govuk-!-font-weight-bold">
               <span aria-hidden="true">@messages("customer_details.pending")</span>
               <span class="govuk-visually-hidden">@messages("customer_details.contactDetails.emailAddress.pending.hidden")</span>
             </span>
           }
           case (false, true) => {
-            <span id="vat-email-address-status" class="govuk-visually-hidden">
+            <span id="vat-email-address-status-agent" class="govuk-visually-hidden">
               @messages("customer_details.contactDetails.emailAddress.agent.change.hidden")
             </span>
           }
           case (false, false) => {
-            <a id="vat-email-address-status" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeEmailUrl}">
+            <a id="vat-email-address-status-principal" class="govuk-link" href="@{appConfig.vatCorrespondenceChangeEmailUrl}">
               <span aria-hidden="true">
                 @emailAddress match {
                   case Some(_) => { @messages("customer_details.change") }
@@ -253,7 +253,7 @@
     </dd>
     <dd class="govuk-summary-list__actions">
       @if(pendingLandlineNumber) {
-        <span id="vat-landline-number-status" class="govuk-!-font-weight-bold">
+        <span id="pending-vat-landline-number-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
           <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.landline.pending.hidden")</span>
         </span>
@@ -285,7 +285,7 @@
     </dd>
     <dd class="govuk-summary-list__actions">
       @if(pendingMobileNumber) {
-        <span id="vat-mobile-number-status" class="govuk-!-font-weight-bold">
+        <span id="pending-vat-mobile-number-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
           <span class="govuk-visually-hidden">@messages("customer_details.phoneNumbers.mobile.pending.hidden")</span>
         </span>
@@ -317,7 +317,7 @@
     </dd>
     <dd class="govuk-summary-list__actions">
       @if(pendingWebsite) {
-        <span id="vat-website-address-status" class="govuk-!-font-weight-bold">
+        <span id="pending-vat-website-address-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
           <span class="govuk-visually-hidden">@messages("customer_details.websiteAddress.pending.hidden")</span>
         </span>
@@ -349,7 +349,7 @@
     </dd>
     <dd class="govuk-summary-list__actions">
       @if(isPending) {
-        <span id="trading-name-status" class="govuk-!-font-weight-bold">
+        <span id="pending-trading-name-status" class="govuk-!-font-weight-bold">
           <span aria-hidden="true">@messages("customer_details.pending")</span>
           <span class="govuk-visually-hidden">@messages("customer_details.tradingName.pending.hidden")</span>
         </span>
@@ -376,9 +376,9 @@
   navLinkContent = Some(navLink)) {
 
     @if(user.isAgent) {
-      <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
+      <h1 id="agent-page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
     } else {
-      <h1 id="page-heading" class="govuk-heading-xl">@messages("customer_details.h1")</h1>
+      <h1 id="principal-page-heading" class="govuk-heading-xl">@messages("customer_details.h1")</h1>
     }
 
   @signupBanner(circumstances.showSignupBanner)

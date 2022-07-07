@@ -383,11 +383,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#place-of-business-status > span:nth-of-type(1)") shouldBe viewMessages.pending
+              elementText("#pending-place-of-business-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
             "have the correct hidden text" in {
-              elementText("#place-of-business-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessAddressHidden
+              elementText("#pending-place-of-business-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessAddressHidden
             }
           }
 
@@ -397,11 +397,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
+              elementText("#pending-vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
+              elementText("#pending-vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
 
@@ -411,11 +411,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#vat-return-dates-status > span:nth-of-type(1)") shouldBe viewMessages.pending
+              elementText("#pending-vat-return-dates-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-return-dates-status > .govuk-visually-hidden") shouldBe viewMessages.pendingReturnFrequencyHidden
+              elementText("#pending-vat-return-dates-status > .govuk-visually-hidden") shouldBe viewMessages.pendingReturnFrequencyHidden
             }
 
             "display the existing approved return dates" in {
@@ -433,11 +433,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#trading-name-status > span:nth-of-type(1)") shouldBe viewMessages.pending
+              elementText("#pending-trading-name-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
             "has the correct hidden text" in {
-              elementText("#trading-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingTradingNameHidden
+              elementText("#pending-trading-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingTradingNameHidden
             }
 
             "display the inflight trading name" in {
@@ -451,11 +451,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#business-name-status > span:nth-child(1)") shouldBe viewMessages.pending
+              elementText("#pending-business-name-status > span:nth-child(1)") shouldBe viewMessages.pending
             }
 
             "have the correct hidden text" in {
-              elementText("#business-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessNameHidden
+              elementText("#pending-business-name-status > .govuk-visually-hidden") shouldBe viewMessages.pendingBusinessNameHidden
             }
 
             "display the inflight business name" in {
@@ -469,11 +469,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             lazy implicit val document: Document = Jsoup.parse(view.body)
 
             "have the correct text" in {
-              elementText("#vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
+              elementText("#pending-vat-website-address-status > span:nth-of-type(1)") shouldBe viewMessages.pending
             }
 
             "have the correct hidden text" in {
-              elementText("#vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
+              elementText("#pending-vat-website-address-status > .govuk-visually-hidden") shouldBe viewMessages.pendingWebsiteAddressHidden
             }
           }
         }
@@ -631,11 +631,11 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         "have a blank field where the 'Change' link would be for email address" which {
 
           "has the visually hidden class" in {
-            element("#vat-email-address-status").hasClass("govuk-visually-hidden") shouldBe true
+            element("#vat-email-address-status-agent").hasClass("govuk-visually-hidden") shouldBe true
           }
 
           "has the correct hidden text" in {
-            elementText("#vat-email-address-status") shouldBe viewMessages.changeEmailAddressAgentHidden
+            elementText("#vat-email-address-status-agent") shouldBe viewMessages.changeEmailAddressAgentHidden
           }
         }
 
