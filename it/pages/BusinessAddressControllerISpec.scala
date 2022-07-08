@@ -326,7 +326,7 @@ class BusinessAddressControllerISpec extends BasePageISpec {
 
         res should have(
           httpStatus(OK),
-          elementText("#preference-message")(Messages("contact_preference.email"))
+          elementText("#digital-preference-message")(Messages("contact_preference.email"))
         )
       }
     }
