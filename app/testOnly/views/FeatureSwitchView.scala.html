@@ -49,13 +49,6 @@
           content = Text("Stub Address Lookup"),
           value = "true",
           checked = appConfig.features.stubAddressLookup()
-        ),
-        CheckboxItem(
-          id= Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
-          name = Some(ConfigKeys.allowOverseasChangeOfPPOBFeature),
-          content = Text("Enable Overseas Change of PPOB"),
-          value = "true",
-          checked = appConfig.features.allowOverseasChangeOfPPOBEnabled()
         )
       )
     ))

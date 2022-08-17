@@ -47,8 +47,7 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
           FeatureSwitchModel(
             vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
-            stubAddressLookup = appConfig.features.stubAddressLookup(),
-            allowOverseasChangeOfPPOBEnabled = appConfig.features.allowOverseasChangeOfPPOBEnabled()
+            stubAddressLookup = appConfig.features.stubAddressLookup()
           )
         )
         logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
@@ -66,7 +65,6 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
   def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
-    appConfig.features.allowOverseasChangeOfPPOBEnabled(model.allowOverseasChangeOfPPOBEnabled)
     vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
       response =>
         response.status match {

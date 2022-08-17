@@ -38,8 +38,6 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def updateBusinessAddressUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/ppob"
 
-  private[connectors] def updateReturnPeriod(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/return-period"
-
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")

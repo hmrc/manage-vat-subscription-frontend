@@ -34,7 +34,6 @@ object ConfigKeys {
 
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
-  val allowOverseasChangeOfPPOBFeature: String ="features.allowOverseasChangeOfAddressR21.enabled"
 
   // GOV UK
   val changeToBusinessDetailsUrl: String = "gov-uk.guidance.change-to-business-details.url"

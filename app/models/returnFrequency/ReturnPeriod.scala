@@ -82,7 +82,4 @@ object ReturnPeriod extends LoggerUtil {
     }
   } yield value
 
-  implicit val writes: Writes[ReturnPeriod] = Writes {
-    period => Json.obj("stdReturnPeriod" -> period.internalId)
-  }
 }

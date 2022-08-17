@@ -26,7 +26,6 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
   // general journey overrides
   val showPhaseBanner: Boolean = true
-  val ukMode: Boolean = !config.features.allowOverseasChangeOfPPOBEnabled()
   val conf: AppConfig = config
   val deskproServiceName: String = conf.contactFormServiceIdentifier
   val accessibilityFooterUrl: String = conf.accessibilityReportUrl
@@ -58,7 +57,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
       "filterLabel" -> message("address_lookupPage.filter"),
       "postcodeLabel" -> message("address_lookupPage.postcode"),
       "submitLabel" -> message("address_lookupPage.lookupPage.submit"),
-      if (config.features.allowOverseasChangeOfPPOBEnabled()) "manualAddressLinkText" -> message("address_lookupPage.overseas") else {"" -> ""}
+      "manualAddressLinkText" -> message("address_lookupPage.overseas")
     )
 
     val confirmPageLabels: Messages => JsObject = message => Json.obj(
@@ -69,7 +68,7 @@ case class AddressLookupJsonBuilder(continueUrl: String)(implicit user: User[_],
 
     val editPageLabels: Messages => JsObject = message => Json.obj(
       "submitLabel" -> message("common.continue"),
-      if (config.features.allowOverseasChangeOfPPOBEnabled()) "postcodeLabel" -> message("address_lookupPage.postalCode") else {"" -> ""}
+      "postcodeLabel" -> message("address_lookupPage.postalCode")
     )
 
     val phaseBannerHtml: Messages => String = message =>
@@ -90,7 +89,7 @@ object AddressLookupJsonBuilder {
           "accessibilityFooterUrl" -> data.accessibilityFooterUrl,
           "deskProServiceName" -> data.deskproServiceName,
           "showPhaseBanner" -> data.showPhaseBanner,
-          "ukMode" -> data.ukMode,
+          "ukMode" -> false,
           "timeoutConfig" -> data.Version2.timeoutConfig
         ),
         "labels" -> Json.obj(
