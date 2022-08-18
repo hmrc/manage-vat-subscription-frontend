@@ -19,8 +19,6 @@ package models.returnFrequency
 import assets.ReturnPeriodTestConstants._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
-import play.api.libs.json.Format.GenericFormat
-import play.api.libs.json.Json
 
 class ReturnPeriodSpec extends AnyWordSpecLike with Matchers {
 
