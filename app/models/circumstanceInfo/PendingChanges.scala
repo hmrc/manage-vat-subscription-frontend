@@ -42,14 +42,6 @@ object PendingChanges {
     businessNamePath.readNullable[String]
   )(PendingChanges.apply _)
 
-  implicit val writes: Writes[PendingChanges] = (
-    ppobPath.writeNullable[PPOB] and
-    bankDetailsPath.writeNullable[BankDetails] and
-    returnPeriodPath.writeNullable[ReturnPeriod] and
-    tradingNamePath.writeNullable[String] and
-    businessNamePath.writeNullable[String]
-  )(unlift(PendingChanges.unapply))
-
   val auditWrites: Writes[Option[PendingChanges]] = Writes {
     case Some(pending) =>
       Json.obj(

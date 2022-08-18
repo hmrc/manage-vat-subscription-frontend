@@ -24,9 +24,7 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
 
   "AddressLookupJsonBuilder" should {
 
-    "serialise to new address lookup Json when using addressLookup v2 and allowOverseasChangeOfPPOB feature switch has been turned on" when {
-
-      mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
+    "serialise to new address lookup Json when using addressLookup v2" when {
 
       "the continueUrl is given and the user is not an agent" in {
 
@@ -37,16 +35,8 @@ class AddressLookupJsonBuilderSpec extends TestUtil {
       "the continueUrl is given and the user is an agent" in {
 
         Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser, messagesApi, mockConfig)) shouldBe
-          agentAddressLookupV2Json(true)
+          agentAddressLookupV2Json
       }
-    }
-
-    "serialise to JSON correctly when the feature switch is turned off" in {
-
-      mockConfig.features.allowOverseasChangeOfPPOBEnabled(false)
-
-      Json.toJson(AddressLookupJsonBuilder("/lookup-address/confirmed")(agentUser, messagesApi, mockConfig)) shouldBe
-        agentAddressLookupV2Json(false)
     }
   }
 

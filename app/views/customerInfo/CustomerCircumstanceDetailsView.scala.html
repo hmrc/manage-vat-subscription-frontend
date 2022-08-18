@@ -96,29 +96,21 @@
     <dd id="businessAddress" class="govuk-summary-list__value">
       @renderAddress(address)
     </dd>
-      @(appConfig.features.allowOverseasChangeOfPPOBEnabled(), circumstances.customerDetails.overseasIndicator) match {
-        case (false, true) => {
-          <dd class="govuk-summary-list__actions"></dd>
-        }
-        case _ => {
-          <dd class="govuk-summary-list__actions">
-          @if(pending) {
-            <span id="pending-place-of-business-status" class="govuk-!-font-weight-bold">
-              <span aria-hidden="true">@messages("customer_details.pending")</span>
-              <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
-            </span>
-          } else {
-            <a id="place-of-business-status" class="govuk-link" href="@{
-              controllers.routes.BusinessAddressController.show.url
-            }">
-              <span aria-hidden="true">@messages("customer_details.change")</span>
-              <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden", address.line1)</span>
-            </a>
-          }
-          </dd>
-        }
-
-      }
+    <dd class="govuk-summary-list__actions">
+    @if(pending) {
+      <span id="pending-place-of-business-status" class="govuk-!-font-weight-bold">
+        <span aria-hidden="true">@messages("customer_details.pending")</span>
+        <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.pending.hidden")</span>
+      </span>
+    } else {
+      <a id="place-of-business-status" class="govuk-link" href="@{
+        controllers.routes.BusinessAddressController.show.url
+      }">
+        <span aria-hidden="true">@messages("customer_details.change")</span>
+        <span class="govuk-visually-hidden">@messages("customer_details.businessAddress.change.hidden", address.line1)</span>
+      </a>
+    }
+    </dd>
   </div>
 
 }

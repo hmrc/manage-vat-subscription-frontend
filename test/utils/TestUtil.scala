@@ -38,7 +38,6 @@ trait TestUtil extends AnyWordSpecLike with GuiceOneAppPerSuite with BeforeAndAf
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    mockConfig.features.allowOverseasChangeOfPPOBEnabled(true)
     SharedMetricRegistries.clear()
   }
 
