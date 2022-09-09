@@ -52,7 +52,6 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   val titleSuffixAgent = " - Your client’s VAT details - GOV.UK"
   val titleThereIsAProblem = "There is a problem with the service"
   val authToken : String = "authToken"
-  val csrfToken : String = "csrfToken"
 
   class PreconditionBuilder {
     implicit val builder: PreconditionBuilder = this

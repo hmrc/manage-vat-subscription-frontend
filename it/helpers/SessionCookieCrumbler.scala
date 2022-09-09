@@ -30,7 +30,7 @@ object SessionCookieCrumbler {
 
   private def crumbleCookie(cookie: WSCookie) = {
     val crypted = Crypted(cookie.value)
-    val decrypted = SymmetricCryptoFactory.aesCrypto(cookieKey).decrypt(crypted).value
+    val decrypted = SymmetricCryptoFactory.aesGcmCrypto(cookieKey).decrypt(crypted).value
 
     def decode(data: String): Map[String, String] = {
       // this part is hard coded because we are not certain at this time which hash algorithm is used by default

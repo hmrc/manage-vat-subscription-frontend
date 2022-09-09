@@ -37,7 +37,7 @@ object SessionCookieBaker {
     }
 
     val encodedCookie = encode(sessionData)
-    val encrypted = SymmetricCryptoFactory.aesCrypto(cookieKey).encrypt(encodedCookie).value
+    val encrypted = SymmetricCryptoFactory.aesGcmCrypto(cookieKey).encrypt(encodedCookie).value
 
     s"""mdtp="$encrypted"; Path=/; HTTPOnly"; Path=/; HTTPOnly"""
   }
