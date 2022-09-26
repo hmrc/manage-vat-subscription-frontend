@@ -57,7 +57,7 @@ val compile: Seq[ModuleID] = Seq(
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "6.4.0"   % scope,
+  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.4.0"   % scope,
   "org.jsoup"         %  "jsoup"                       % "1.15.3"  % scope,
   "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0"   % scope,
   "org.scalatestplus" %% "mockito-3-4"                 % "3.2.9.0" % scope
