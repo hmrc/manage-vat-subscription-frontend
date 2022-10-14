@@ -51,16 +51,16 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "7.4.0",
-  "com.typesafe.play" %% "play-json-joda"             % "2.9.2",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.28.0-play-28"
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "7.8.0",
+  "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.31.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.4.0"   % scope,
+  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.8.0"   % scope,
   "org.jsoup"         %  "jsoup"                       % "1.15.3"  % scope,
   "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0"   % scope,
-  "org.scalatestplus" %% "mockito-3-4"                 % "3.2.9.0" % scope
+  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3" % scope
 )
 
 TwirlKeys.templateImports ++= Seq(
