@@ -25,7 +25,7 @@ import models.circumstanceInfo.Deregistration
 
 object DeregistrationTestConstants {
 
-  def toLongDate(d: LocalDate): String = d.getDayOfMonth + " " + d.getMonth.getDisplayName(FULL, UK) + " " + d.getYear
+  def toLongDate(d: LocalDate): String = s"${d.getDayOfMonth} ${d.getMonth.getDisplayName(FULL, UK)} ${d.getYear}"
 
   def formatDate(d: LocalDate): String = d.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 

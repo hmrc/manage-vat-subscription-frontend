@@ -53,14 +53,14 @@ val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "7.8.0",
   "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.31.0-play-28"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.32.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.8.0"   % scope,
-  "org.jsoup"         %  "jsoup"                       % "1.15.3"  % scope,
-  "org.scalamock"     %% "scalamock-scalatest-support" % "3.6.0"   % scope,
-  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3" % scope
+  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.8.0"          % scope,
+  "org.jsoup"         %  "jsoup"                       % "1.15.3"         % scope,
+  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3"  % scope,
+  "org.scalamock"     %% "scalamock"                   % "5.2.0"          % scope,
 )
 
 TwirlKeys.templateImports ++= Seq(
@@ -90,7 +90,7 @@ lazy val microservice: Project = Project(appName, file("."))
   .settings(
     Test / Keys.fork := true,
     Test / javaOptions += "-Dlogger.resource=logback-test.xml",
-    scalaVersion := "2.12.16",
+    scalaVersion := "2.13.8",
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     routesGenerator := InjectedRoutesGenerator
@@ -105,5 +105,3 @@ lazy val microservice: Project = Project(appName, file("."))
     IntegrationTest / parallelExecution := false)
   .settings(resolvers ++= Seq(
   ))
-
-
