@@ -36,7 +36,7 @@ class StubAddressLookupController @Inject()(val authenticate: AuthPredicate,
                                             implicit val appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport {
 
-  def initialiseJourney(): Action[JsValue] = Action(parse.json) { _ =>
+  def initialiseJourney: Action[JsValue] = Action(parse.json) { _ =>
     Accepted.withHeaders(HeaderNames.LOCATION -> testOnly.controllers.routes.StubAddressLookupController.show().url)
   }
 

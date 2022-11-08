@@ -36,11 +36,6 @@ class AuditingServiceSpec extends TestUtil with MockitoSugar {
 
   val testAuditingService = new AuditService(mockConfiguration, mockAuditConnector)
 
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    reset(mockAuditConnector, mockConfiguration)
-  }
-
   "AuditService" should {
 
     "when calling the referer method" should {

@@ -22,6 +22,7 @@ import assets.messages.ChangePendingMessages
 import mocks.MockAuth
 import org.jsoup.Jsoup
 import play.api.http.Status
+import play.api.mvc.Results.BadRequest
 import play.api.test.Helpers._
 
 import scala.concurrent.Future
@@ -47,7 +48,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsSuccess(customerInformationPendingEmailModel)
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
@@ -64,7 +65,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsSuccess(customerInformationPendingPPOBModel)
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
@@ -81,7 +82,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsSuccess(customerInformationPendingPhoneModel)
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
@@ -98,7 +99,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsSuccess(customerInformationPendingMobileModel)
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
@@ -115,7 +116,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsSuccess(customerInformationPendingWebsiteModel)
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 
@@ -132,7 +133,7 @@ class InFlightPPOBPredicateSpec extends MockAuth  {
 
       lazy val result = {
         mockCustomerDetailsError()
-        await(mockInFlightPPOBPredicate.refine(user)).left.get
+        await(mockInFlightPPOBPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
       lazy val document = Jsoup.parse(contentAsString(Future.successful(result)))
 

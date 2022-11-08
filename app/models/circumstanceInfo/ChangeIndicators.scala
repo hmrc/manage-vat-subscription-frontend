@@ -38,11 +38,4 @@ object ChangeIndicators {
       deregisterPath.read[Boolean]
     )(ChangeIndicators.apply _)
 
-  implicit val writes: Writes[ChangeIndicators] = (
-    ppobPath.write[Boolean] and
-      bankDetailsPath.write[Boolean] and
-      returnPeriodPath.write[Boolean] and
-      deregisterPath.write[Boolean]
-    )(unlift(ChangeIndicators.unapply))
-
 }

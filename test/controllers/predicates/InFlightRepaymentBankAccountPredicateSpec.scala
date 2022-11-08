@@ -23,6 +23,7 @@ import play.api.test.Helpers.{LOCATION, await, contentAsString, defaultAwaitTime
 import assets.BaseTestConstants._
 import play.api.http.Status
 import play.api.http.Status.INTERNAL_SERVER_ERROR
+import play.api.mvc.Results.BadRequest
 
 import scala.concurrent.Future
 
@@ -36,7 +37,7 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
         lazy val result = {
           mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-          await(mockInFlightRepaymentBankAccountPredicate.refine(user)).left.get
+          await(mockInFlightRepaymentBankAccountPredicate.refine(user)).swap.getOrElse(BadRequest)
         }
 
         "return 303" in {
@@ -77,7 +78,7 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
       lazy val result = {
         mockCustomerDetailsError()
-        await(mockInFlightRepaymentBankAccountPredicate.refine(user)).left.get
+        await(mockInFlightRepaymentBankAccountPredicate.refine(user)).swap.getOrElse(BadRequest)
       }
 
       "return 500" in {
@@ -88,7 +89,7 @@ class InFlightRepaymentBankAccountPredicateSpec extends MockAuth {
 
     "the user is an agent" should {
 
-      lazy val result = await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser)).left.get
+      lazy val result = await(mockInFlightRepaymentBankAccountPredicate.refine(agentUser)).swap.getOrElse(BadRequest)
 
       "return 303" in {
         result.header.status shouldBe Status.SEE_OTHER

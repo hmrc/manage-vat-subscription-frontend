@@ -60,7 +60,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
     def agent: Agent = new Agent()
   }
 
-  def given: PreconditionBuilder = new PreconditionBuilder
+  def `given`: PreconditionBuilder = new PreconditionBuilder
 
   def authSession: Map[String, String] = Map(authToken -> "mock-bearer-token")
 
