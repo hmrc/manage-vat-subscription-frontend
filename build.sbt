@@ -26,6 +26,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
+val bootstrapPlayVersion = "7.12.0"
 
 lazy val coverageSettings: Seq[Setting[_]] = {
   import scoverage.ScoverageKeys
@@ -51,16 +52,16 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % "7.11.0",
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % bootstrapPlayVersion,
   "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.32.0-play-28"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "3.34.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % "7.11.0"          % scope,
-  "org.jsoup"         %  "jsoup"                       % "1.15.3"         % scope,
-  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3"  % scope,
-  "org.scalamock"     %% "scalamock"                   % "5.2.0"          % scope,
+  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % bootstrapPlayVersion % scope,
+  "org.jsoup"         %  "jsoup"                       % "1.15.3"             % scope,
+  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3"      % scope,
+  "org.scalamock"     %% "scalamock"                   % "5.2.0"              % scope,
 )
 
 TwirlKeys.templateImports ++= Seq(
