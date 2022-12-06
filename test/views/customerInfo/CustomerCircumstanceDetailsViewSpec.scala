@@ -104,10 +104,6 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
               }
 
-              "have a signup notification banner" in {
-                elementText("#govuk-notification-banner-title") shouldBe viewMessages.bannerTitle
-              }
-
               "have a section for business address" which {
 
                 "has the heading" in {

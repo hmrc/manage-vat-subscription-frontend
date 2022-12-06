@@ -70,7 +70,6 @@ trait AppConfig {
   val govUkChangeVatRegistrationDetails: String
   val govUkSoftwareGuidanceUrl: String
   val govUkVat484Form: String
-  val signupUrl: String
   val vatAgentClientLookupFrontendUrl: String
   val agentClientLookupAgentAction: String
   def agentClientLookupUrl: String
@@ -196,7 +195,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
 
   override lazy val govUkSoftwareGuidanceUrl: String = servicesConfig.getString(Keys.softwareGuidanceUrl)
   override lazy val govUkVat484Form: String = servicesConfig.getString(Keys.vat484Form)
-  override lazy val signupUrl: String = servicesConfig.getString(Keys.govukSignupUrl)
 
   override lazy val vatAgentClientLookupFrontendUrl: String =
     servicesConfig.getString(Keys.vatAgentClientLookupFrontendHost) + servicesConfig.getString(Keys.vatAgentClientLookupFrontendUrl)

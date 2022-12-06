@@ -228,7 +228,6 @@ object IntegrationTestConstants {
     changeIndicators = None,
     pendingChanges = None,
     partyType = Some("7"),
-    commsPreference = None,
-    mandationStatus = "MTDfB"
+    commsPreference = None
   )
 }

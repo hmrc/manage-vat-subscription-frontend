@@ -31,8 +31,7 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
                                pendingChanges: Option[PendingChanges],
                                partyType: Option[String],
                                missingTrader: Boolean,
-                               commsPreference: Option[String],
-                               mandationStatus: String) {
+                               commsPreference: Option[String]) {
 
   val ppobAddress: PPOBAddress = ppob.address
   val landlineNumber: Option[String] = ppob.contactDetails.flatMap(_.phoneNumber)
@@ -51,7 +50,6 @@ case class CircumstanceDetails(customerDetails: CustomerDetails,
   val pendingWebsite: Option[String] = pendingChanges.flatMap(_.ppob.flatMap(_.websiteAddress))
   val pendingTradingName: Option[String] = pendingChanges.flatMap(_.tradingName)
   val pendingOrgName: Option[String] = pendingChanges.flatMap(_.businessName)
-  val showSignupBanner: Boolean = mandationStatus == "Non MTDfB"
 
   val samePPOB: Boolean = pendingPPOBAddress.contains(ppobAddress)
   val sameEmail: Boolean = pendingEmail == email
@@ -87,7 +85,6 @@ object CircumstanceDetails {
   private val partyTypePath = __ \ "partyType"
   private val missingTraderPath = __ \ "missingTrader"
   private val commsPreferencePath = __ \ "commsPreference"
-  private val mandationStatusPath = __ \ "mandationStatus"
 
   implicit val reads: Reads[CircumstanceDetails] = (
       customerDetailsPath.read[CustomerDetails](CustomerDetails.reads) and
@@ -100,7 +97,6 @@ object CircumstanceDetails {
       pendingChangesPath.readNullable[PendingChanges] and
       partyTypePath.readNullable[String] and
       missingTraderPath.read[Boolean] and
-      commsPreferencePath.readNullable[String] and
-      mandationStatusPath.read[String]
+      commsPreferencePath.readNullable[String]
     )(CircumstanceDetails.apply _)
 }
