@@ -43,7 +43,6 @@ object ConfigKeys {
   val govUkCohoNameChangeUrl: String = "gov-uk.guidance.coho-name-change.url"
   val govUkTrustNameChangeUrl: String = "gov-uk.guidance.trust-name-change.url"
   val govUkSetupAgentServices: String = "gov-uk.guidance.setupAgentServices.url"
-  val govukSignupUrl: String = "gov-uk.guidance.signup.url"
 
   val partyTypesOrgNameRow: String = "party-types-orgNameRow"
   val partyTypesNspItmpOrSAMastered: String = "party-types-nspItmpOrSAMastered"
