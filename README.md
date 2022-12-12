@@ -17,16 +17,13 @@ Stub: https://github.com/hmrc/vat-subscription-dynamic-stub
 This service is written in [Scala](http://www.scala-lang.org/) and [Play](http://playframework.com/), so needs at least a JRE to run.
 
 ### To run the application locally execute the following:
-Kill the service ```sm --stop MANAGE_VAT_SUBSCRIPTION_FRONTEND``` and run:
-`sbt "run 9150 -Dapplication.router=testOnlyDoNotUseInAppConf.Routes"`
-or alternatively navigate to the cloned frontend repo and run `./run.sh`
+
+In order to run this microservice, you must have SBT installed. You should then be able to start the application using:
+
+`./run.sh`
 
 ## Testing
 `sbt clean coverage test it:test coverageReport`
-
-## Populating Stub
-Run `populate_stub.sh` located in `vat-view-change-stub-data`. The script takes 1 argument - the name of the environment to populate the stub in. e.g. `./populate_stub.sh local`.
-`local` is the default value for this argument if it is not provided.
 
 ## License 
 
