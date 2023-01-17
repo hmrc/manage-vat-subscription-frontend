@@ -43,7 +43,7 @@ govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : G
         content = HtmlContent(renderAddress(ppob))
     ))
 
-  <span class="govuk-hint">@messages("missingTrader.addInfo")</span>
+  <span class="vatvc-grey-paragraph-text">@messages("missingTrader.addInfo")</span>
 
   @form(action = controllers.missingTrader.routes.ConfirmAddressController.submit) {
 
