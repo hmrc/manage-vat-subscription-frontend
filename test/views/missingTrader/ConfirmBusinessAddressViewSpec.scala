@@ -34,7 +34,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val button = ".govuk-button"
     val error = ".govuk-error-message"
     val address = ".govuk-inset-text"
-    val additionalInfo = ".govuk-hint"
+    val additionalInfo = ".vatvc-grey-paragraph-text"
     val form = "form"
     val formQuestion = "legend"
     val errorSummaryHeading = ".govuk-error-summary h2"
