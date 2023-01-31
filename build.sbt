@@ -17,7 +17,6 @@
 import play.sbt.routes.RoutesKeys
 import sbt.Tests.{Group, SubProcess}
 import uk.gov.hmrc.DefaultBuildSettings._
-import uk.gov.hmrc.sbtdistributables.SbtDistributablesPlugin._
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
@@ -26,7 +25,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "7.12.0"
+val bootstrapPlayVersion = "7.13.0"
 
 lazy val coverageSettings: Seq[Setting[_]] = {
   import scoverage.ScoverageKeys
@@ -54,7 +53,7 @@ val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % bootstrapPlayVersion,
   "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "5.3.0-play-28"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "6.3.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
@@ -85,7 +84,6 @@ lazy val microservice: Project = Project(appName, file("."))
   .settings(coverageSettings: _*)
   .settings(playSettings: _*)
   .settings(scalaSettings: _*)
-  .settings(publishingSettings: _*)
   .settings(defaultSettings(): _*)
   .settings(majorVersion := 0)
   .settings(
