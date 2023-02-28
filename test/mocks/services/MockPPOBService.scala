@@ -16,7 +16,7 @@
 
 package mocks.services
 
-import connectors.httpParsers.ResponseHttpParser.HttpPutResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import org.scalamock.handlers.CallHandler3
 import org.scalamock.scalatest.MockFactory
@@ -32,13 +32,13 @@ trait MockPPOBService extends AnyWordSpecLike with MockFactory with BeforeAndAft
 
   val mockPPOBService: PPOBService = mock[PPOBService]
 
-  def mockCall(vrn: String): CallHandler3[String, HeaderCarrier, ExecutionContext, Future[HttpPutResult[SubscriptionUpdateResponseModel]]] = {
+  def mockCall(vrn: String): CallHandler3[String, HeaderCarrier, ExecutionContext, Future[HttpResult[SubscriptionUpdateResponseModel]]] = {
     (mockPPOBService.validateBusinessAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(vrn, *, *)
       .returning(Future.successful(Right(SubscriptionUpdateResponseModel(""))))
   }
 
-  def mockFailedCall(vrn: String): CallHandler3[String, HeaderCarrier, ExecutionContext, Future[HttpPutResult[SubscriptionUpdateResponseModel]]] = {
+  def mockFailedCall(vrn: String): CallHandler3[String, HeaderCarrier, ExecutionContext, Future[HttpResult[SubscriptionUpdateResponseModel]]] = {
     (mockPPOBService.validateBusinessAddress(_: String)(_: HeaderCarrier, _: ExecutionContext))
       .expects(vrn, *, *)
       .returning(Future.successful(Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Oops"))))

@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpPostResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.ErrorModel
 import models.payments.PaymentRedirectModel
 import play.api.http.Status
@@ -25,9 +25,9 @@ import utils.LoggerUtil
 
 object PaymentsHttpParser extends LoggerUtil {
 
-  implicit object PaymentsReads extends HttpReads[HttpPostResult[PaymentRedirectModel]]{
+  implicit object PaymentsReads extends HttpReads[HttpResult[PaymentRedirectModel]]{
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[PaymentRedirectModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpResult[PaymentRedirectModel] = {
 
       response.status match {
         case Status.CREATED => {

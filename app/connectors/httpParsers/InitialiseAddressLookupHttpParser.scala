@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpPostResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.ErrorModel
 import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.HeaderNames.LOCATION
@@ -27,9 +27,9 @@ import utils.LoggerUtil
 
 object InitialiseAddressLookupHttpParser extends LoggerUtil {
 
-  implicit object InitialiseAddressLookupReads extends HttpReads[HttpPostResult[AddressLookupOnRampModel]] {
+  implicit object InitialiseAddressLookupReads extends HttpReads[HttpResult[AddressLookupOnRampModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPostResult[AddressLookupOnRampModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpResult[AddressLookupOnRampModel] = {
 
       response.status match {
         case Status.ACCEPTED =>

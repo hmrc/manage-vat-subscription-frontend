@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.ErrorModel
 import models.customerAddress.AddressModel
 import play.api.http.Status
@@ -26,9 +26,9 @@ import utils.LoggerUtil
 
 object AddressLookupHttpParser extends LoggerUtil {
 
-  implicit object AddressLookupReads extends HttpReads[HttpGetResult[AddressModel]] {
+  implicit object AddressLookupReads extends HttpReads[HttpResult[AddressModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[AddressModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpResult[AddressModel] = {
 
       response.status match {
         case Status.OK => {

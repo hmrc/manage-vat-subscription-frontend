@@ -20,7 +20,7 @@ import audit.AuditService
 import audit.models.ChangeAddressAuditModel
 import common.SessionKeys
 import connectors.SubscriptionConnector
-import connectors.httpParsers.ResponseHttpParser.HttpPutResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import javax.inject.{Inject, Singleton}
 import models.User
 import models.circumstanceInfo.CircumstanceDetails
@@ -82,7 +82,7 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
   }
 
   def validateBusinessAddress(vrn: String)
-                             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+                             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[SubscriptionUpdateResponseModel]] = {
     subscriptionConnector.validateBusinessAddress(vrn)
   }
 

@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import play.api.http.Status
@@ -25,11 +25,11 @@ import utils.LoggerUtil
 
 object CustomerCircumstancesHttpParser extends LoggerUtil {
 
-  implicit object CustomerCircumstanceReads extends HttpReads[HttpGetResult[CircumstanceDetails]] {
+  implicit object CustomerCircumstanceReads extends HttpReads[HttpResult[CircumstanceDetails]] {
 
     val expectedErrorStatuses: Seq[Int] = Seq(Status.NOT_FOUND)
 
-    override def read(method: String, url: String, response: HttpResponse): HttpGetResult[CircumstanceDetails] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpResult[CircumstanceDetails] = {
 
       response.status match {
         case Status.OK =>

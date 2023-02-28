@@ -16,7 +16,7 @@
 
 package connectors
 
-import connectors.httpParsers.ResponseHttpParser.HttpPostResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import mocks.MockHttp
 import models.core.ErrorModel
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
@@ -36,7 +36,7 @@ class PaymentsConnectorSpec extends TestUtil with MockHttp {
   "PaymentsConnector" when {
 
     val continueUrl = "continue-url"
-    def postPaymentsDetailsResult: Future[HttpPostResult[PaymentRedirectModel]] =
+    def postPaymentsDetailsResult: Future[HttpResult[PaymentRedirectModel]] =
       TestPaymentsConnector.postPaymentsDetails(PaymentStartModel("someVrn", isAgent = true, "returnUrl", "backUrl", "convenienceUrl", None, None))
 
     "for postPaymentsDetails method" when {

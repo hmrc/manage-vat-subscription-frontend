@@ -19,7 +19,7 @@ package connectors
 import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.UpdatePPOBAddressTestConstants._
-import connectors.httpParsers.ResponseHttpParser.HttpGetResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
 import models.core.SubscriptionUpdateResponseModel
@@ -48,7 +48,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .getCustomerDetails" when {
 
-      def result: Future[HttpGetResult[CircumstanceDetails]] = TestSubscriptionConnector.getCustomerCircumstanceDetails(vrn)
+      def result: Future[HttpResult[CircumstanceDetails]] = TestSubscriptionConnector.getCustomerCircumstanceDetails(vrn)
 
       "called for a Right with CustomerDetails" should {
 
@@ -69,7 +69,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .updatePPOB" when {
 
-      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
+      def result: Future[HttpResult[SubscriptionUpdateResponseModel]] =
         TestSubscriptionConnector.updatePPOB(vrn, updatePPOBModelMax)
 
       "called with a Right SubscriptionUpdateResponseModel" should {
@@ -91,7 +91,7 @@ class SubscriptionConnectorSpec extends TestUtil with MockHttp{
 
     "calling .validateBusinessAddress" when {
 
-      def result: Future[HttpGetResult[SubscriptionUpdateResponseModel]] =
+      def result: Future[HttpResult[SubscriptionUpdateResponseModel]] =
         TestSubscriptionConnector.validateBusinessAddress(vrn)
 
       "called with a Right SubscriptionUpdateResponseModel" should {

@@ -19,12 +19,11 @@ package connectors
 import config.AppConfig
 import connectors.httpParsers.AddressLookupHttpParser._
 import connectors.httpParsers.InitialiseAddressLookupHttpParser._
-import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
-import javax.inject.{Inject, Singleton}
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import utils.LoggerUtil
-
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
@@ -32,21 +31,21 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
                                        implicit val config: AppConfig) extends LoggerUtil{
 
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
-                      (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpPostResult[AddressLookupOnRampModel]] = {
+                      (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpResult[AddressLookupOnRampModel]] = {
 
     val url = {
       s"${config.addressLookupService}/api/v2/init"
     }
 
-    http.POST[AddressLookupJsonBuilder, HttpPostResult[AddressLookupOnRampModel]](
+    http.POST[AddressLookupJsonBuilder, HttpResult[AddressLookupOnRampModel]](
       url,addressLookupJsonBuilder
     )(implicitly, InitialiseAddressLookupReads, hc, ec)
   }
 
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupService}/api/confirmed?id=$id"
 
-  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[AddressModel]] ={
+  def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[AddressModel]] ={
     logger.debug(s"[AddressLookupConnector][getAddress]: Calling getAddress with URL - ${getAddressUrl(id)}")
-    http.GET[HttpGetResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
+    http.GET[HttpResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
   }
 }
