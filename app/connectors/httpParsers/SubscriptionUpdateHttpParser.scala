@@ -16,7 +16,7 @@
 
 package connectors.httpParsers
 
-import connectors.httpParsers.ResponseHttpParser.HttpPutResult
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
@@ -24,9 +24,9 @@ import utils.LoggerUtil
 
 object SubscriptionUpdateHttpParser extends LoggerUtil {
 
-  implicit object SubscriptionUpdateReads extends HttpReads[HttpPutResult[SubscriptionUpdateResponseModel]] {
+  implicit object SubscriptionUpdateReads extends HttpReads[HttpResult[SubscriptionUpdateResponseModel]] {
 
-    override def read(method: String, url: String, response: HttpResponse): HttpPutResult[SubscriptionUpdateResponseModel] = {
+    override def read(method: String, url: String, response: HttpResponse): HttpResult[SubscriptionUpdateResponseModel] = {
 
       response.status match {
         case Status.OK =>

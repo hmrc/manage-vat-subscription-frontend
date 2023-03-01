@@ -32,11 +32,11 @@ class PaymentsConnector @Inject()(val http: HttpClient,
                                   val config: AppConfig) extends LoggerUtil {
 
   def postPaymentsDetails(paymentStart: PaymentStartModel)
-                         (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpPostResult[PaymentRedirectModel]] = {
+                         (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[PaymentRedirectModel]] = {
 
     val url = s"${config.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account"
     logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with URL - $url")
     logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with Data - $paymentStart")
-    http.POST[PaymentStartModel,HttpPostResult[PaymentRedirectModel]](url, paymentStart)
+    http.POST[PaymentStartModel,HttpResult[PaymentRedirectModel]](url, paymentStart)
   }
 }

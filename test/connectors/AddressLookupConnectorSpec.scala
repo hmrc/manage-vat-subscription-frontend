@@ -18,13 +18,13 @@ package connectors
 
 import assets.BaseTestConstants._
 import assets.CustomerAddressTestConstants._
-import connectors.httpParsers.ResponseHttpParser.{HttpGetResult, HttpPostResult}
+import connectors.httpParsers.ResponseHttpParser.HttpResult
 import mocks.MockHttp
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import play.api.http.Status
+import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import uk.gov.hmrc.http.HttpResponse
 import utils.TestUtil
-import play.api.test.Helpers.{await, defaultAwaitTimeout}
 
 import scala.concurrent.Future
 
@@ -36,7 +36,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
 
   "AddressLookupConnector" should {
 
-    def getAddressResult: Future[HttpGetResult[AddressModel]] = TestAddressLookupConnector.getAddress(vrn)
+    def getAddressResult: Future[HttpResult[AddressModel]] = TestAddressLookupConnector.getAddress(vrn)
 
     "format the getAddressUrl correctly for" when {
       "calling getCustomerDetailsUrl" in {
@@ -65,7 +65,7 @@ class AddressLookupConnectorSpec extends TestUtil with MockHttp{
     }
 
     val continueUrl = "continue-url"
-    def initaliseJourneyResult: Future[HttpPostResult[AddressLookupOnRampModel]] =
+    def initaliseJourneyResult: Future[HttpResult[AddressLookupOnRampModel]] =
       TestAddressLookupConnector.initialiseJourney(AddressLookupJsonBuilder(continueUrl)(user, messagesApi, mockConfig))
 
     "for initialiseJourney method" when {

@@ -38,18 +38,18 @@ class SubscriptionConnector @Inject()(val http: HttpClient,
 
   private[connectors] def updateBusinessAddressUrl(vrn: String) = s"${config.vatSubscriptionUrl}/vat-subscription/$vrn/ppob"
 
-  def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpGetResult[CircumstanceDetails]] = {
+  def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
     http.GET(url)(CustomerCircumstancesHttpParser.CustomerCircumstanceReads, headerCarrier, ec)
   }
 
   def updatePPOB(vrn: String, ppob: UpdatePPOB)
-                (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
-    http.PUT[UpdatePPOB, HttpPostResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
+                (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[SubscriptionUpdateResponseModel]] = {
+    http.PUT[UpdatePPOB, HttpResult[SubscriptionUpdateResponseModel]](updateBusinessAddressUrl(vrn), ppob)
   }
 
-  def validateBusinessAddress(vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpPutResult[SubscriptionUpdateResponseModel]] = {
+  def validateBusinessAddress(vrn: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[SubscriptionUpdateResponseModel]] = {
     updatePPOB(vrn, UpdatePPOB(UpdatePPOBAddress(None, None, None, None, None, None), None, None, None))
   }
 }
