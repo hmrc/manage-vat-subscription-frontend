@@ -30,7 +30,7 @@ trait ImplicitDateFormatter {
   }
 
   implicit class longDate(d: LocalDate) {
-    def toLongDate: String = d.getDayOfMonth + " " + d.getMonth.getDisplayName(FULL, UK) + " " + d.getYear
+    def toLongDate: String = s"${d.getDayOfMonth} ${d.getMonth.getDisplayName(FULL, UK)} ${d.getYear}"
   }
 
   implicit def toLocalDate(s: String): LocalDate = localDate(s).toLocalDate

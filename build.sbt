@@ -102,5 +102,8 @@ lazy val microservice: Project = Project(appName, file("."))
     addTestReportOption(IntegrationTest, "int-test-reports"),
     IntegrationTest / testGrouping := oneForkedJvmPerTest((IntegrationTest / definedTests).value),
     IntegrationTest / parallelExecution := false)
+  .settings(scalacOptions ++= Seq(
+    "-Wconf:cat=unused-imports&site=.*views.html.*:s", "-deprecation", "-feature", "-language:implicitConversions"
+  ))
   .settings(resolvers ++= Seq(
   ))

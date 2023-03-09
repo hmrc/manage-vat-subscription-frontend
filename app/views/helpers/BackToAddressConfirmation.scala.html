@@ -16,9 +16,9 @@
 
 @this(govukBackLink : GovukBackLink)
 
-@(id : String)(implicit messages: Messages, user : User[_], appConfig: config.AppConfig)
+@(id : String)(implicit messages: Messages, appConfig: config.AppConfig)
 
 @govukBackLink(BackLink(
-href = appConfig.addressLookUpConfirmUrl(id),
-content = Text(messages("base.back"))
+ href = appConfig.addressLookUpConfirmUrl(id),
+ content = Text(messages("base.back"))
 ))
