@@ -25,7 +25,7 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "7.14.0"
+val bootstrapPlayVersion = "7.15.0"
 
 lazy val coverageSettings: Seq[Setting[_]] = {
   import scoverage.ScoverageKeys
@@ -53,7 +53,7 @@ val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % bootstrapPlayVersion,
   "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "6.7.0-play-28"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "7.3.0-play-28"
 )
 
 def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
