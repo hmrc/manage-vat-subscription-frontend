@@ -29,7 +29,7 @@ trait MockAuditingService extends MockitoSugar {
 
   val mockAuditingService: AuditService = mock[AuditService]
 
-  def verifyExtendedAudit(model: ExtendedAuditModel, path: Option[String] = None): Unit =
+  def verifyExtendedAudit(model: ExtendedAuditModel, path: Option[String] = None): Unit = {
     verify(mockAuditingService).extendedAudit(
       ArgumentMatchers.eq(model),
       AdditionalMatchers.or(ArgumentMatchers.eq(path), ArgumentMatchers.isNull)
@@ -37,4 +37,6 @@ trait MockAuditingService extends MockitoSugar {
       ArgumentMatchers.any[HeaderCarrier],
       ArgumentMatchers.any[ExecutionContext]
     )
+    reset(mockAuditingService)
+  }
 }

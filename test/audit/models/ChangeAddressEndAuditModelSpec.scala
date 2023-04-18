@@ -23,15 +23,17 @@ import assets.CircumstanceDetailsTestConstants.partyType
 import play.api.libs.json.Json
 import utils.TestUtil
 
-class ChangeAddressAuditModelSpec extends TestUtil {
+class ChangeAddressEndAuditModelSpec extends TestUtil {
 
   val transactionName = "change-vat-business-address"
-  val auditType = "ChangeVatSubscriptionDetails"
+  val auditType = "ChangePpobEnd"
 
-  lazy val changeAddressMaxModel = ChangeAddressAuditModel(agentUser, ppobAddressModelMax, customerAddressMax, Some(partyType))
-  lazy val changeAddressMinModel = ChangeAddressAuditModel(user, ppobAddressModelMin, customerAddressMin, None)
+  lazy val changeAddressMaxModel: ChangeAddressEndAuditModel =
+    ChangeAddressEndAuditModel(agentUser, ppobAddressModelMax, customerAddressMax, Some(partyType))
+  lazy val changeAddressMinModel: ChangeAddressEndAuditModel =
+    ChangeAddressEndAuditModel(user, ppobAddressModelMin, customerAddressMin, None)
 
-  "The ChangeAddressAuditModel" should {
+  "The ChangeAddressEndAuditModel" should {
 
     "have the correct transactionName" in {
       changeAddressMaxModel.transactionName shouldBe transactionName
@@ -41,7 +43,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
       changeAddressMaxModel.auditType shouldBe auditType
     }
 
-    "For an individual" when {
+    "have the correct detail for an individual" when {
 
       "the individual only has the required fields" in {
         changeAddressMinModel.detail shouldBe Json.obj(
@@ -56,7 +58,7 @@ class ChangeAddressAuditModelSpec extends TestUtil {
       }
     }
 
-    "For an agent" when {
+    "have the correct detail for an agent" when {
 
       "all fields are filled" in {
         changeAddressMaxModel.detail shouldBe Json.obj(
@@ -84,7 +86,5 @@ class ChangeAddressAuditModelSpec extends TestUtil {
         )
       }
     }
-
   }
-
 }

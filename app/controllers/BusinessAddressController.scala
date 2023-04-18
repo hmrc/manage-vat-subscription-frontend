@@ -16,11 +16,12 @@
 
 package controllers
 
-import audit.models.ContactPreferenceAuditModel
+import audit.models.{ChangeAddressStartAuditModel, ContactPreferenceAuditModel}
 import audit.{AuditService, ContactPreferenceAuditKeys}
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.{AuthPredicate, InFlightPPOBPredicate}
+
 import javax.inject.{Inject, Singleton}
 import models.User
 import models.core.AddressValidationError
@@ -50,15 +51,18 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
                                           ec: ExecutionContext) extends
   FrontendController(mcc) with I18nSupport with LoggerUtil {
 
-  val show: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
-    Future.successful(Ok(changeAddressView()))
+  val show: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck) { implicit user =>
+    auditService.extendedAudit(ChangeAddressStartAuditModel(user), Some(routes.BusinessAddressController.show.url))
+    Ok(changeAddressView())
   }
 
   val initialiseJourney: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
     addressLookupService.initialiseJourney map {
       case Right(response) =>
         Redirect(response.redirectUrl)
-      case Left(_) => logger.warn(s"[BusinessAddressController][initialiseJourney] Error Returned from Address Lookup Service, Rendering ISE.")
+      case Left(_) =>
+        logger.warn("[BusinessAddressController][initialiseJourney] " +
+          "Error Returned from Address Lookup Service, Rendering ISE.")
         serviceErrorHandler.showInternalServerError
     }
   }
@@ -68,7 +72,8 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
       case Right(address) =>
         ppobService.updatePPOB(user, address, id) map {
           case Right(_) =>
-            Redirect(controllers.routes.BusinessAddressController.confirmation).addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "true")
+            Redirect(routes.BusinessAddressController.confirmation)
+              .addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "true")
           case Left(AddressValidationError) =>
             BadRequest(ppobAddressFailureView(id))
           case Left(_) =>
@@ -96,15 +101,14 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
     }
   }
 
-  private def contactPrefRenderView(implicit user: User[AnyContent]): Future[Result] = {
-
+  private def contactPrefRenderView(implicit user: User[AnyContent]): Future[Result] =
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
       case Right(details) =>
         details.commsPreference match {
           case Some(contactPreference) =>
             auditService.extendedAudit(
               ContactPreferenceAuditModel(user.vrn, contactPreference, ContactPreferenceAuditKeys.changeBusinessAddressAction),
-              Some(controllers.routes.ChangeBusinessNameController.show.url)
+              Some(routes.ChangeBusinessNameController.show.url)
             )
             Ok(changeAddressConfirmationView(
               contactPref = Some(contactPreference),
@@ -114,5 +118,4 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
         }
       case Left (_) => Ok(changeAddressConfirmationView())
     }
-  }
 }
