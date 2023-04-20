@@ -20,26 +20,23 @@ import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerAddressTestConstants._
 import assets.messages.{ChangeAddressConfirmationPageMessages, ChangeAddressPageMessages, ChangePendingMessages}
-import audit.models.ContactPreferenceAuditModel
+import audit.ContactPreferenceAuditKeys
+import audit.mocks.MockAuditingService
+import audit.models.{ChangeAddressStartAuditModel, ContactPreferenceAuditModel}
 import mocks.services.{MockAddressLookupService, MockBusinessAddressService}
 import models.core.{AddressValidationError, SubscriptionUpdateResponseModel}
 import models.customerAddress.AddressLookupOnRampModel
 import org.jsoup.Jsoup
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.{reset, verify}
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers.{redirectLocation, _}
-import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessAddress.{ChangeAddressConfirmationView, ChangeAddressView}
 import views.html.errors.PPOBAddressFailureView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressLookupService with
-  MockBusinessAddressService {
-
-  override def afterEach(): Unit = reset(mockAuditingService)
+  MockBusinessAddressService with MockAuditingService {
 
   "Calling the .show action" when {
 
@@ -75,6 +72,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
 
       s"have the heading '${ChangeAddressPageMessages.heading}'" in {
         Jsoup.parse(contentAsString(result)).select("h1").text shouldBe ChangeAddressPageMessages.heading
+      }
+
+      "audit the start journey event" in {
+        verifyExtendedAudit(ChangeAddressStartAuditModel(user), Some(routes.BusinessAddressController.show.url))
       }
     }
 
@@ -422,15 +423,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
               "return 200" in {
                 status(result) shouldBe Status.OK
 
-                verify(mockAuditingService)
-                  .extendedAudit(
-                    ArgumentMatchers.any[ContactPreferenceAuditModel],
-                    ArgumentMatchers.any[Option[String]]
-
-                  )(
-                    ArgumentMatchers.any[HeaderCarrier],
-                    ArgumentMatchers.any[ExecutionContext]
-                  )
+                verifyExtendedAudit(
+                  ContactPreferenceAuditModel(user.vrn, "DIGITAL", ContactPreferenceAuditKeys.changeBusinessAddressAction),
+                  Some(routes.ChangeBusinessNameController.show.url)
+                )
               }
 
               "return HTML" in {
@@ -477,15 +473,10 @@ class BusinessAddressControllerSpec extends ControllerBaseSpec with MockAddressL
             "return 200" in {
               status(result) shouldBe Status.OK
 
-              verify(mockAuditingService)
-                .extendedAudit(
-                  ArgumentMatchers.any[ContactPreferenceAuditModel],
-                  ArgumentMatchers.any[Option[String]]
-
-                )(
-                  ArgumentMatchers.any[HeaderCarrier],
-                  ArgumentMatchers.any[ExecutionContext]
-                )
+              verifyExtendedAudit(
+                ContactPreferenceAuditModel(user.vrn, "DIGITAL", ContactPreferenceAuditKeys.changeBusinessAddressAction),
+                Some(routes.ChangeBusinessNameController.show.url)
+              )
             }
 
             "return HTML" in {

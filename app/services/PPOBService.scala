@@ -17,7 +17,7 @@
 package services
 
 import audit.AuditService
-import audit.models.ChangeAddressAuditModel
+import audit.models.ChangeAddressEndAuditModel
 import common.SessionKeys
 import connectors.SubscriptionConnector
 import connectors.httpParsers.ResponseHttpParser.HttpResult
@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
-                            val auditService: AuditService) {
+                            auditService: AuditService) {
 
 
   private def buildPPOBUpdateModel(addressModel: AddressModel,
@@ -58,14 +58,15 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
   }
 
   def updatePPOB(user: User[_], address: AddressModel, id: String)
-                (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[Either[models.core.Error, SubscriptionUpdateResponseModel]] = {
+                (implicit headerCarrier: HeaderCarrier,
+                 ec: ExecutionContext): Future[Either[models.core.Error, SubscriptionUpdateResponseModel]] =
 
     if(validateChars(address)) {
       subscriptionConnector.getCustomerCircumstanceDetails(user.vrn) flatMap {
         case Right(customerDetails) =>
           auditService.extendedAudit(
-            ChangeAddressAuditModel(user, customerDetails.ppobAddress, address, customerDetails.partyType),
-            Some(controllers.routes.BusinessAddressController.callback(id).url)
+            ChangeAddressEndAuditModel(user, customerDetails.ppobAddress, address, customerDetails.partyType),
+            Some(controllers.routes.BusinessAddressController.confirmation.url)
           )
           subscriptionConnector.updatePPOB(
             user.vrn,
@@ -79,12 +80,11 @@ class PPOBService @Inject()(subscriptionConnector: SubscriptionConnector,
     } else {
       Future.successful(Left(AddressValidationError))
     }
-  }
 
   def validateBusinessAddress(vrn: String)
-                             (implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[SubscriptionUpdateResponseModel]] = {
+                             (implicit hc: HeaderCarrier,
+                              ec: ExecutionContext): Future[HttpResult[SubscriptionUpdateResponseModel]] =
     subscriptionConnector.validateBusinessAddress(vrn)
-  }
 
   def validateChars(address: AddressModel): Boolean = {
     val addressRegex = "^[A-Za-z0-9 \\-,.&'\\/()!]{1,35}$"

@@ -23,20 +23,14 @@ import assets.BaseTestConstants.{formBundle, vrn}
 import assets.PPOBAddressTestConstants._
 import assets.CircumstanceDetailsTestConstants.{customerInformationModelMaxOrganisation, partyType}
 import audit.mocks.MockAuditingService
-import audit.models.ChangeAddressAuditModel
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.verify
+import audit.models.ChangeAddressEndAuditModel
 import play.api.http.Status
-import uk.gov.hmrc.http.HeaderCarrier
 import utils.TestUtil
 import play.api.test.Helpers._
-
-import scala.concurrent.ExecutionContext
 
 class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockAuditingService {
 
   def setup(subscriptionResponse: SubscriptionUpdateResponse): PPOBService = {
-
     setupMockUpdateBusinessAddress(subscriptionResponse)
     setupMockUserDetails(vrn)(Right(customerInformationModelMaxOrganisation))
     new PPOBService(mockSubscriptionConnector, mockAuditingService)
@@ -54,14 +48,10 @@ class PPOBServiceSpec extends TestUtil with MockSubscriptionConnector with MockA
       "return successful SubscriptionUpdateResponseModel" in {
         await(result) shouldBe Right(subscriptionResult)
 
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.eq(ChangeAddressAuditModel(user, ppobAddressModelMax, customerAddressMax, Some(partyType))),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.BusinessAddressController.callback("").url))
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
+        verifyExtendedAudit(
+          ChangeAddressEndAuditModel(user, ppobAddressModelMax, customerAddressMax, Some(partyType)),
+          Some(controllers.routes.BusinessAddressController.confirmation.url)
+        )
       }
     }
 
