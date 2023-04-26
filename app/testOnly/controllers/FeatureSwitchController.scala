@@ -17,35 +17,25 @@
 package testOnly.controllers
 
 import config.AppConfig
+
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import testOnly.connectors.VatSubscriptionFeaturesConnector
 import testOnly.forms.FeatureSwitchForm
 import testOnly.models.FeatureSwitchModel
 import testOnly.views.html.FeatureSwitchView
-import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import utils.LoggerUtil
 
-import scala.concurrent.{ExecutionContext, Future}
-
 @Singleton
-class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSubscriptionFeaturesConnector,
-                                        featureSwitchView: FeatureSwitchView)
+class FeatureSwitchController @Inject()(featureSwitchView: FeatureSwitchView)
                                        (implicit mcc: MessagesControllerComponents,
-                                        ec: ExecutionContext,
                                         appConfig: AppConfig)
   extends FrontendController(mcc) with I18nSupport with LoggerUtil {
 
-  val featureSwitch: Action[AnyContent] = Action.async { implicit request =>
-
-    vatSubscriptionFeaturesConnector.getFeatures.map {
-      vatSubFeatures =>
-        logger.debug(s"[FeatureSwitchController][featureSwitch] vatSubFeatures: $vatSubFeatures")
-        val form = FeatureSwitchForm.form.fill(
+  val featureSwitch: Action[AnyContent] = Action { implicit request =>
+      val form = FeatureSwitchForm.form.fill(
           FeatureSwitchModel(
-            vatSubFeatures,
             stubAgentClientLookup = appConfig.features.stubAgentClientLookup(),
             stubAddressLookup = appConfig.features.stubAddressLookup()
           )
@@ -53,24 +43,17 @@ class FeatureSwitchController @Inject()(vatSubscriptionFeaturesConnector: VatSub
         logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
         Ok(featureSwitchView(form))
     }
-  }
 
-  val submitFeatureSwitch: Action[AnyContent] = Action.async { implicit request =>
+  val submitFeatureSwitch: Action[AnyContent] = Action { implicit request =>
     FeatureSwitchForm.form.bindFromRequest().fold(
-      _ => Future.successful(Redirect(routes.FeatureSwitchController.featureSwitch)),
+      _ => Redirect(routes.FeatureSwitchController.featureSwitch),
       success = handleSuccess
     )
   }
 
-  def handleSuccess(model: FeatureSwitchModel)(implicit hc: HeaderCarrier): Future[Result] = {
+  def handleSuccess(model: FeatureSwitchModel): Result = {
     appConfig.features.stubAgentClientLookup(model.stubAgentClientLookup)
     appConfig.features.stubAddressLookup(model.stubAddressLookup)
-    vatSubscriptionFeaturesConnector.postFeatures(model.vatSubscriptionFeatures).map {
-      response =>
-        response.status match {
-          case OK => Redirect(routes.FeatureSwitchController.featureSwitch)
-          case _ => InternalServerError("Failed to update feature switches in VAT Subscription")
-        }
-    }
+    Redirect(routes.FeatureSwitchController.featureSwitch)
   }
 }

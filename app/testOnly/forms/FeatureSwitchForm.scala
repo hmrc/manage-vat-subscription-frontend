@@ -19,19 +19,12 @@ package testOnly.forms
 import config.ConfigKeys
 import play.api.data.Form
 import play.api.data.Forms._
-import testOnly.models.{Api1363Version, Api1365Version, FeatureSwitchModel, VatSubscriptionFeatureSwitchModel}
+import testOnly.models.FeatureSwitchModel
 
 object FeatureSwitchForm {
 
-  val api1365Version: String = "Api1365Version"
-  val api1363Version: String = "Api1363Version"
-
   val form: Form[FeatureSwitchModel] = Form(
     mapping(
-      "vatSubscriptionFeatures" -> mapping(
-        api1363Version -> text.transform[Api1363Version](x => Api1363Version(x), _.id),
-        api1365Version -> text.transform[Api1365Version](x => Api1365Version(x), _.id)
-      )(VatSubscriptionFeatureSwitchModel.apply)(VatSubscriptionFeatureSwitchModel.unapply),
       ConfigKeys.stubAgentClientLookupFeature -> boolean,
       ConfigKeys.stubAddressLookupFeature -> boolean
     )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
