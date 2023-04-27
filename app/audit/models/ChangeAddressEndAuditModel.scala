@@ -29,7 +29,7 @@ case class ChangeAddressEndAuditModel(user: User[_],
 
   override val transactionName: String = "change-vat-business-address"
   override val detail: JsValue = Json.toJson(this)
-  override val auditType: String = "ChangePpobEnd"
+  override val auditType: String = "ChangePrincipalPlaceOfBusinessEnd"
 }
 
 object ChangeAddressEndAuditModel extends JsonObjectSugar {

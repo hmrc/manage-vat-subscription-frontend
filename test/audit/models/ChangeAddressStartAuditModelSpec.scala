@@ -23,7 +23,7 @@ import utils.TestUtil
 class ChangeAddressStartAuditModelSpec extends TestUtil {
 
   val transactionName = "change-vat-business-address"
-  val auditType = "ChangePpobStart"
+  val auditType = "ChangePrincipalPlaceOfBusinessStart"
   val model: ChangeAddressStartAuditModel = ChangeAddressStartAuditModel(user)
 
   "The ChangeAddressStartAuditModel" should {
