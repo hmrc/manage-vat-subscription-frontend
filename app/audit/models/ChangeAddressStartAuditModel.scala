@@ -24,7 +24,7 @@ case class ChangeAddressStartAuditModel(user: User[_]) extends ExtendedAuditMode
 
   override val transactionName: String = "change-vat-business-address"
   override val detail: JsValue = Json.toJson(this)
-  override val auditType: String = "ChangePpobStart"
+  override val auditType: String = "ChangePrincipalPlaceOfBusinessStart"
 }
 
 object ChangeAddressStartAuditModel extends JsonObjectSugar {

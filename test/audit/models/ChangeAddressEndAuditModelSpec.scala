@@ -26,7 +26,7 @@ import utils.TestUtil
 class ChangeAddressEndAuditModelSpec extends TestUtil {
 
   val transactionName = "change-vat-business-address"
-  val auditType = "ChangePpobEnd"
+  val auditType = "ChangePrincipalPlaceOfBusinessEnd"
 
   lazy val changeAddressMaxModel: ChangeAddressEndAuditModel =
     ChangeAddressEndAuditModel(agentUser, ppobAddressModelMax, customerAddressMax, Some(partyType))
