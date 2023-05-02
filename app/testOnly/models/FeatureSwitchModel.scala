@@ -16,6 +16,5 @@
 
 package testOnly.models
 
-case class FeatureSwitchModel(vatSubscriptionFeatures: VatSubscriptionFeatureSwitchModel,
-                              stubAgentClientLookup: Boolean,
+case class FeatureSwitchModel(stubAgentClientLookup: Boolean,
                               stubAddressLookup: Boolean)

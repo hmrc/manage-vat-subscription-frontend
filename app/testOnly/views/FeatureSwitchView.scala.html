@@ -53,48 +53,6 @@
       )
     ))
 
-    <h2 class="govuk-heading-l">Vat Subscription Backend Features</h2>
-
-    @govukRadios(Radios(
-      fieldset = Some(Fieldset(
-        legend = Some(Legend(
-          content = Text("Which API1363 Version should be used?"),
-          classes = "govuk-fieldset__legend--s",
-          isPageHeading = false
-        ))
-      )),
-      name = "vatSubscriptionFeatures.Api1363Version",
-      items = Seq(
-        RadioItem(
-          id = Some("vatSubscriptionFeatures.Api1363Version"),
-          content = Text("Latest"),
-          value = Some("Latest"),
-          checked = form("vatSubscriptionFeatures.Api1363Version").value.contains("Latest")
-        )
-      ),
-      classes = "govuk-radios--inline"
-    ))
-
-    @govukRadios(Radios(
-      fieldset = Some(Fieldset(
-        legend = Some(Legend(
-          content = Text("Which API1365 Version should be used?"),
-          classes = "govuk-fieldset__legend--s",
-          isPageHeading = false
-        ))
-      )),
-      name = "vatSubscriptionFeatures.Api1365Version",
-      items = Seq(
-        RadioItem(
-          id = Some("vatSubscriptionFeatures.Api1365Version"),
-          content = Text("Latest"),
-          value = Some("Latest"),
-          checked = form("vatSubscriptionFeatures.Api1365Version").value.contains("Latest")
-        )
-      ),
-      classes = "govuk-radios--inline"
-    ))
-
     @govukButton(Button(
       content = Text("Submit")
     ))
