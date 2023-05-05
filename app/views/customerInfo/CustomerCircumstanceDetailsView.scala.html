@@ -451,7 +451,7 @@
     @if(!user.isAgent) {
       @if(circumstances.email.isDefined && !circumstances.emailVerified && !circumstances.pendingPPOBSection) {
             @govukWarningText(WarningText(
-                iconFallbackText = messages("common.warning"),
+                iconFallbackText = Some(messages("common.warning")),
                 content = HtmlContent(emailVerficationSection)
             ))
       }
