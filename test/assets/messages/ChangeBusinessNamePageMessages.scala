@@ -27,7 +27,7 @@ object ChangeBusinessNamePageMessages extends BaseMessages {
   val p2 = "Changing the business name costs:"
   val bullet1 = "£8 to update within 2 working days"
   val bullet2 = "£30 to update on the same day"
-  val bullet3 = "print out this form (opens in a new tab)"
+  val bullet3 = "print out form VAT484 (opens in a new tab)"
   val bullet4 = "add your new business name in section 1"
   val bullet5 = "return the form to us with your new Certificate of Incorporation"
   val p3 = "Companies House will send a new Certificate of Incorporation when the details have changed."
