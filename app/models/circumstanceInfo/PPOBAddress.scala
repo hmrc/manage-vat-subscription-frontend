@@ -16,6 +16,7 @@
 
 package models.circumstanceInfo
 
+import play.api.Logging
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
@@ -27,7 +28,7 @@ case class PPOBAddress(line1: String,
                        postCode: Option[String],
                        countryCode: String)
 
-object PPOBAddress {
+object PPOBAddress extends Logging {
 
   private val line1Path = JsPath \ "line1"
   private val line2Path =  JsPath \ "line2"
@@ -37,8 +38,13 @@ object PPOBAddress {
   private val postCodePath = JsPath \ "postCode"
   private val countryCodePath = JsPath \ "countryCode"
 
+  private val line1Reads: Reads[String] = line1Path.readWithDefault[String] {
+    logger.info("[PPOBAddress][reads] Address line 1 is empty")
+    ""
+  }
+
   implicit val reads: Reads[PPOBAddress] = (
-    line1Path.read[String] and
+    line1Reads and
       line2Path.readNullable[String] and
       line3Path.readNullable[String] and
       line4Path.readNullable[String] and
