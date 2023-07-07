@@ -17,7 +17,7 @@
 package models.returnFrequency
 
 import play.api.libs.json._
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 sealed trait ReturnPeriod {
   def id: String
@@ -55,7 +55,7 @@ case object Annual extends ReturnPeriod {
   override val auditValue: String = "Annually"
 }
 
-object ReturnPeriod extends LoggerUtil {
+object ReturnPeriod extends LoggingUtil {
 
   val validAnnualPeriodKeys = Seq("YA", "YB", "YC", "YD", "YE", "YF", "YG", "YH", "YI", "YJ", "YK", "YL")
 

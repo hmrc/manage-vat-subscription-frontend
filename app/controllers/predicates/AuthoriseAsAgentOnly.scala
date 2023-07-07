@@ -26,7 +26,7 @@ import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
-import utils.LoggerUtil
+import utils.LoggingUtil
 import views.html.errors.agent.UnauthorisedView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -38,7 +38,7 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
                                      override val mcc: MessagesControllerComponents,
                                      implicit val appConfig: AppConfig,
                                      implicit val executionContext: ExecutionContext)
-  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[AgentUser, AnyContent] with ActionFunction[Request, AgentUser] with LoggerUtil {
+  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[AgentUser, AnyContent] with ActionFunction[Request, AgentUser] with LoggingUtil {
 
   override val parser: BodyParser[AnyContent] = mcc.parsers.defaultBodyParser
   override def invokeBlock[A](request: Request[A], f: AgentUser[A] => Future[Result]): Future[Result] = {
@@ -48,34 +48,34 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
     enrolmentsAuthService.authorised().retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
       case Some(affinityGroup) ~ allEnrolments => (isAgent(affinityGroup), allEnrolments) match {
         case (true, _) =>
-          logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
+          debug("[AuthoriseAsAgentOnly][invokeBlock] - Is an Agent, checking HMRC-AS-AGENT enrolment")
           checkAgentEnrolment(allEnrolments, f)
         case (_, _) =>
-          logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
+          debug("[AuthoriseAsAgentOnly][invokeBlock] - Is NOT an Agent, redirecting to Customer Details page")
           Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
         }
 
       case _ =>
-        logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
+        warnLog("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
         Future.successful(serviceErrorHandler.showInternalServerError)
     } recover {
       case _: NoActiveSession =>
-        logger.debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, redirect to GG Sign In")
+        debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, redirect to GG Sign In")
         Redirect(appConfig.signInUrl)
       case _: AuthorisationException =>
-        logger.warn("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Internal Server Error view")
+        warnLog("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Internal Server Error view")
         serviceErrorHandler.showInternalServerError
     }
   }
 
   private def checkAgentEnrolment[A](enrolments: Enrolments, f: AgentUser[A] => Future[Result])(implicit request: Request[A]) =
     if (enrolments.enrolments.exists(_.key == EnrolmentKeys.agentEnrolmentId)) {
-      logger.debug("[AuthoriseAsAgentOnly][checkAgentEnrolment] - Authenticated as agent")
+      debug("[AuthoriseAsAgentOnly][checkAgentEnrolment] - Authenticated as agent")
       f(AgentUser(enrolments))
     }
     else {
-      logger.debug(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
-      logger.warn(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment")
+      debug(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment. Enrolments: $enrolments")
+      warnLog(s"[AuthoriseAsAgentOnly][checkAgentEnrolment] - Agent without HMRC-AS-AGENT enrolment")
       Future.successful(Forbidden(unauthorisedView()))
     }
 }

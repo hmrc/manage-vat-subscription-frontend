@@ -24,14 +24,14 @@ import play.api.mvc.{ActionRefiner, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesService: CustomerCircumstanceDetailsService,
                                                       serviceErrorHandler: ServiceErrorHandler)
                                                      (implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[User, User] with LoggerUtil {
+  extends ActionRefiner[User, User] with LoggingUtil {
 
   override def refine[A](request: User[A]): Future[Either[Result, User[A]]] = {
 
@@ -44,7 +44,7 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
           Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
         case Right(_) => Right(user)
         case Left(error) =>
-          logger.warn(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
+          warnLog(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
           Left(serviceErrorHandler.showInternalServerError)
       }
     }

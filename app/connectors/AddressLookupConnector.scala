@@ -22,13 +22,14 @@ import connectors.httpParsers.InitialiseAddressLookupHttpParser._
 import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.customerAddress.{AddressLookupJsonBuilder, AddressLookupOnRampModel, AddressModel}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
-import utils.LoggerUtil
+import utils.LoggingUtil
+
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class AddressLookupConnector @Inject()(val http: HttpClient,
-                                       implicit val config: AppConfig) extends LoggerUtil{
+                                       implicit val config: AppConfig) extends LoggingUtil{
 
   def initialiseJourney(addressLookupJsonBuilder: AddressLookupJsonBuilder)
                       (implicit hc: HeaderCarrier,ec: ExecutionContext): Future[HttpResult[AddressLookupOnRampModel]] = {
@@ -45,7 +46,7 @@ class AddressLookupConnector @Inject()(val http: HttpClient,
   private[connectors] def getAddressUrl(id: String) = s"${config.addressLookupService}/api/confirmed?id=$id"
 
   def getAddress(id: String)(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[AddressModel]] ={
-    logger.debug(s"[AddressLookupConnector][getAddress]: Calling getAddress with URL - ${getAddressUrl(id)}")
+    debug(s"[AddressLookupConnector][getAddress]: Calling getAddress with URL - ${getAddressUrl(id)}")
     http.GET[HttpResult[AddressModel]](getAddressUrl(id))(AddressLookupReads,hc,ec)
   }
 }

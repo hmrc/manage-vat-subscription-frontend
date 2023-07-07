@@ -28,7 +28,7 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Configuration
 import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
-import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
+import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents, Request}
 import play.api.test.{FakeRequest, Injecting}
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -70,4 +70,5 @@ trait TestUtil extends AnyWordSpecLike with GuiceOneAppPerSuite with BeforeAndAf
   implicit lazy val agentTrustUser: User[AnyContentAsEmpty.type] = User[AnyContentAsEmpty.type](trustVrn,active = true, Some(arn))(fakeRequestWithClientsVRN)
   implicit lazy val hc: HeaderCarrier = HeaderCarrier()
   implicit lazy val ec: ExecutionContext = inject[ExecutionContext]
+  implicit lazy val req: Request[_] = FakeRequest()
 }

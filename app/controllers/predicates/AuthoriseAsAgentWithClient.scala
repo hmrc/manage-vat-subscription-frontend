@@ -25,7 +25,7 @@ import services.EnrolmentsAuthService
 import uk.gov.hmrc.auth.core._
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.~
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +36,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
                                            mcc: MessagesControllerComponents)
                                           (implicit appConfig: AppConfig,
                                            val executionContext: ExecutionContext)
-  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] with LoggerUtil {
+  extends AuthBasePredicate(mcc) with I18nSupport with ActionBuilder[User, AnyContent] with ActionFunction[Request, User] with LoggingUtil {
 
   private def delegatedAuthRule(vrn: String): Enrolment =
     Enrolment(EnrolmentKeys.vatEnrolmentId)
@@ -48,7 +48,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
     implicit val req: Request[A] = request
     request.session.get(SessionKeys.mtdVatvcClientVrn) match {
       case Some(vrn) =>
-        logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
+        debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
         enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
           case None ~ _ =>
             Future.successful(serviceErrorHandler.showInternalServerError)
@@ -58,14 +58,14 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
             block(user)
         } recover {
           case _: NoActiveSession =>
-            logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, redirect to GG Sign In")
+            debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have an active session, redirect to GG Sign In")
             Redirect(appConfig.signInUrl)
           case _: AuthorisationException =>
-            logger.warn(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
+            warnLog(s"[AuthoriseAsAgentWithClient][invokeBlock] - Agent does not have delegated authority for Client")
             Redirect(appConfig.agentClientUnauthorisedUrl)
         }
       case _ =>
-        logger.debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
+        debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - No Client VRN in session, redirecting to Select Client page")
         Future.successful(Redirect(appConfig.agentClientLookupUrl))
     }
   }

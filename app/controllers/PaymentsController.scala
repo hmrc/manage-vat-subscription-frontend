@@ -25,7 +25,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{CustomerCircumstanceDetailsService, PaymentsService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -38,7 +38,7 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
                                    val inFlightRepaymentBankAccountPredicate: InFlightRepaymentBankAccountPredicate,
                                    val mcc: MessagesControllerComponents,
                                    implicit val config: AppConfig,
-                                   implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggerUtil {
+                                   implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val sendToPayments: Action[AnyContent] = (authenticate andThen inFlightRepaymentBankAccountPredicate).async { implicit user =>
     subscriptionService.getCustomerCircumstanceDetails(user.vrn).flatMap {
@@ -51,10 +51,12 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
             )
             Redirect(response.nextUrl)
           case _ =>
-            logger.debug("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
+            errorLog("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
-      case Left(_) => Future.successful(serviceErrorHandler.showInternalServerError)
+      case Left(_) =>
+        errorLog("[PaymentsController][sendToPayments] - unable to retrieve customer circumstances details")
+        Future.successful(serviceErrorHandler.showInternalServerError)
     }
   }
 }

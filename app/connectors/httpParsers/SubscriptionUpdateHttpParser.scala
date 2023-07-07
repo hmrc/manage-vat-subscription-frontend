@@ -20,26 +20,26 @@ import connectors.httpParsers.ResponseHttpParser.HttpResult
 import models.core.{ErrorModel, SubscriptionUpdateResponseModel}
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import utils.LoggerUtil
+import utils.LoggingUtil
 
-object SubscriptionUpdateHttpParser extends LoggerUtil {
+object SubscriptionUpdateHttpParser extends LoggingUtil {
 
   implicit object SubscriptionUpdateReads extends HttpReads[HttpResult[SubscriptionUpdateResponseModel]] {
 
     override def read(method: String, url: String, response: HttpResponse): HttpResult[SubscriptionUpdateResponseModel] = {
-
+      implicit val res: HttpResponse = response
       response.status match {
         case Status.OK =>
-          logger.debug("[SubscriptionUpdateHttpParser][read]: Status OK")
+          debug("[SubscriptionUpdateHttpParser][read]: Status OK")
           response.json.validate[SubscriptionUpdateResponseModel].fold(
             invalid => {
-              logger.warn(s"[SubscriptionUpdateHttpParser][read]: Invalid Json - $invalid")
+              warnLogRes(s"[SubscriptionUpdateHttpParser][read]: Invalid Json - $invalid")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
           )
         case status =>
-          logger.warn(s"[SubscriptionUpdateHttpParser][read]: Unexpected Response, Status $status returned")
+          warnLogRes(s"[SubscriptionUpdateHttpParser][read]: Unexpected Response, Status $status returned")
           Left(ErrorModel(status, "Downstream error returned when updating Subscription Details"))
       }
     }

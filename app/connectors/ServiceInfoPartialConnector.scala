@@ -18,24 +18,25 @@ package connectors
 
 import config.AppConfig
 import models.NavContent
+import play.api.mvc.Request
 import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
 import uk.gov.hmrc.http.HttpReads.Implicits._
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ServiceInfoPartialConnector @Inject()(http: HttpClient)
-                                           (implicit config: AppConfig) extends LoggerUtil {
+                                           (implicit config: AppConfig) extends LoggingUtil {
 
   lazy val btaUrl: String = config.btaBaseUrl + "/business-account/partial/nav-links"
 
-  def getNavLinks()(implicit hc: HeaderCarrier, ec: ExecutionContext): Future[Option[NavContent]] = {
+  def getNavLinks()(implicit hc: HeaderCarrier, ec: ExecutionContext, request: Request[_]): Future[Option[NavContent]] = {
     http.GET[Option[NavContent]](btaUrl)
       .recover {
         case e =>
-          logger.warn(s"[ServiceInfoPartialConnector][getNavLinks] - Unexpected error: ${e.getMessage}")
+          warnLog(s"[ServiceInfoPartialConnector][getNavLinks] - Unexpected error: ${e.getMessage}")
           None
       }
   }

@@ -36,7 +36,7 @@ trait MockServiceInfoService extends AnyWordSpecLike with MockitoSugar with Befo
   }
 
   def getPartial(response: Html): Unit = {
-    when(mockServiceInfoService.getPartial(any(), any(), any(), any()))
+    when(mockServiceInfoService.getPartial(any(), any(), any(), any(), any()))
       .thenReturn(Future.successful(response))
   }
 }

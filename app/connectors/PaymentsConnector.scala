@@ -23,20 +23,20 @@ import javax.inject.{Inject, Singleton}
 import models.payments.{PaymentRedirectModel, PaymentStartModel}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpClient
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class PaymentsConnector @Inject()(val http: HttpClient,
-                                  val config: AppConfig) extends LoggerUtil {
+                                  val config: AppConfig) extends LoggingUtil {
 
   def postPaymentsDetails(paymentStart: PaymentStartModel)
                          (implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[PaymentRedirectModel]] = {
 
     val url = s"${config.bankAccountCoc}/bank-account-coc/start-journey-of-change-bank-account"
-    logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with URL - $url")
-    logger.debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with Data - $paymentStart")
+    debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with URL - $url")
+    debug(s"[PaymentsConnector][postPaymentsDetails]: Calling postPaymentsDetails with Data - $paymentStart")
     http.POST[PaymentStartModel,HttpResult[PaymentRedirectModel]](url, paymentStart)
   }
 }

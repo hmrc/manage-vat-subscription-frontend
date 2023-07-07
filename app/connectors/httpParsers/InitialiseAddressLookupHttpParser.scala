@@ -22,25 +22,25 @@ import models.customerAddress.AddressLookupOnRampModel
 import play.api.http.HeaderNames.LOCATION
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 
-object InitialiseAddressLookupHttpParser extends LoggerUtil {
+object InitialiseAddressLookupHttpParser extends LoggingUtil {
 
   implicit object InitialiseAddressLookupReads extends HttpReads[HttpResult[AddressLookupOnRampModel]] {
 
     override def read(method: String, url: String, response: HttpResponse): HttpResult[AddressLookupOnRampModel] = {
-
+      implicit val res: HttpResponse = response
       response.status match {
         case Status.ACCEPTED =>
           response.header(LOCATION) match {
             case Some(redirectUrl) => Right(AddressLookupOnRampModel(redirectUrl))
             case _ =>
-              logger.warn(s"[AddressLookupConnector][initialiseJourney]: Response Header did not contain location redirect")
+              warnLogRes(s"[AddressLookupConnector][initialiseJourney]: Response Header did not contain location redirect")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Response Header did not contain location redirect"))
           }
         case status =>
-          logger.warn(s"[AddressLookupConnector][initialiseJourney]: Unexpected Response, Status $status returned")
+          warnLogRes(s"[AddressLookupConnector][initialiseJourney]: Unexpected Response, Status $status returned")
           Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Downstream error returned from Address Lookup"))
       }
     }

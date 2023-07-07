@@ -18,15 +18,19 @@ package models
 
 import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments, InternalError}
+import utils.LoggingUtil
 
 case class User[A](vrn: String, active: Boolean = true, arn: Option[String] = None)
                   (implicit request: Request[A]) extends WrappedRequest[A](request) {
   val isAgent: Boolean = arn.isDefined
 }
 
-object User {
+object User extends LoggingUtil{
   def apply[A](enrolments: Enrolments)(implicit request: Request[A]): User[A] =
     enrolments.enrolments.collectFirst {
       case Enrolment("HMRC-MTD-VAT", Seq(EnrolmentIdentifier(_, vatId)), _, _) => User(vatId)
-    }.getOrElse(throw InternalError("VRN Missing"))
+    }.getOrElse{
+      errorLog("[User][apply] - VRN Missing")
+      throw InternalError("VRN Missing")
+    }
 }
