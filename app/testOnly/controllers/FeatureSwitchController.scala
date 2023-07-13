@@ -25,13 +25,13 @@ import testOnly.forms.FeatureSwitchForm
 import testOnly.models.FeatureSwitchModel
 import testOnly.views.html.FeatureSwitchView
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import utils.LoggerUtil
+import utils.LoggingUtil
 
 @Singleton
 class FeatureSwitchController @Inject()(featureSwitchView: FeatureSwitchView)
                                        (implicit mcc: MessagesControllerComponents,
                                         appConfig: AppConfig)
-  extends FrontendController(mcc) with I18nSupport with LoggerUtil {
+  extends FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val featureSwitch: Action[AnyContent] = Action { implicit request =>
       val form = FeatureSwitchForm.form.fill(
@@ -40,7 +40,7 @@ class FeatureSwitchController @Inject()(featureSwitchView: FeatureSwitchView)
             stubAddressLookup = appConfig.features.stubAddressLookup()
           )
         )
-        logger.debug(s"[FeatureSwitchController][featureSwitch] form: $form")
+        debug(s"[FeatureSwitchController][featureSwitch] form: $form")
         Ok(featureSwitchView(form))
     }
 

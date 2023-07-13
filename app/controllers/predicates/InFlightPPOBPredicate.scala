@@ -25,7 +25,7 @@ import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
-import utils.LoggerUtil
+import utils.LoggingUtil
 import views.html.errors.ChangePendingView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -36,7 +36,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
                                       val mcc: MessagesControllerComponents,
                                       implicit val appConfig: AppConfig,
                                       implicit val executionContext: ExecutionContext)
-  extends ActionRefiner[User, User] with I18nSupport with LoggerUtil {
+  extends ActionRefiner[User, User] with I18nSupport with LoggingUtil {
 
   override def messagesApi: MessagesApi = mcc.messagesApi
 
@@ -53,7 +53,7 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
           case _ => Right(user)
         }
 
-      case Left(error) => logger.warn(s"[InflightPPOBPredicate][refine] - " +
+      case Left(error) => warnLog(s"[InflightPPOBPredicate][refine] - " +
         s"The call to the GetCustomerInfo API failed. Error: ${error.message}")
         Left(serviceErrorHandler.showInternalServerError)
     }

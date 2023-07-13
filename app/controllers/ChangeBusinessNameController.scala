@@ -20,6 +20,7 @@ import audit.AuditService
 import audit.models.HandOffToCOHOAuditModel
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
+
 import javax.inject.{Inject, Singleton}
 import models.User
 import models.circumstanceInfo.CircumstanceDetails
@@ -28,6 +29,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import utils.LoggingUtil
 import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
 import scala.concurrent.ExecutionContext
@@ -41,7 +43,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              altChangeBusinessNameView: AltChangeBusinessNameView,
                                              val mcc: MessagesControllerComponents,
                                              implicit val appConfig: AppConfig,
-                                             implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+                                             implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
     customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
@@ -60,7 +62,9 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
           case _ =>
             Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)
         }
-      case _ => serviceErrorHandler.showInternalServerError
+      case _ =>
+        errorLog("[ChangeBusinessNameController][show] - failed to retrieve customer circumstances details")
+        serviceErrorHandler.showInternalServerError
     }
   }
 
@@ -81,7 +85,9 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
           Some(controllers.routes.ChangeBusinessNameController.show.url)
         )
         Redirect(appConfig.govUkCohoNameChangeUrl)
-      case _ => serviceErrorHandler.showInternalServerError
+      case _ =>
+        errorLog("[ChangeBusinessNameController][handOffToCOHO] - failed to retrieve customer circumstances details")
+        serviceErrorHandler.showInternalServerError
     }
   }
 }

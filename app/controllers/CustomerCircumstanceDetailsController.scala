@@ -26,7 +26,7 @@ import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.{CustomerCircumstanceDetailsService, ServiceInfoService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import utils.LoggerUtil
+import utils.LoggingUtil
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,11 +41,11 @@ class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicat
                                                       mcc: MessagesControllerComponents)
                                                      (implicit appConfig: AppConfig,
                                                       executionContext: ExecutionContext) extends
-  FrontendController(mcc) with I18nSupport with LoggerUtil {
+  FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val show: Action[AnyContent] = authenticate.async {
     implicit user =>
-      logger.debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
+      debug(s"[CustomerCircumstanceDetailsController][show] User: ${user.vrn}")
       customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
         case Right(circumstances) =>
           auditService.extendedAudit(
@@ -57,7 +57,7 @@ class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicat
               .removingFromSession(SessionKeys.mtdVatvcNewReturnFrequency,SessionKeys.mtdVatvcCurrentReturnFrequency)
           }
         case _ =>
-          logger.debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
+          debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
           Future.successful(serviceErrorHandler.showInternalServerError)
       }
   }

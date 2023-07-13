@@ -21,23 +21,23 @@ import models.circumstanceInfo.CircumstanceDetails
 import models.core.ErrorModel
 import play.api.http.Status
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
-import utils.LoggerUtil
+import utils.LoggingUtil
 
-object CustomerCircumstancesHttpParser extends LoggerUtil {
+object CustomerCircumstancesHttpParser extends LoggingUtil {
 
   implicit object CustomerCircumstanceReads extends HttpReads[HttpResult[CircumstanceDetails]] {
 
     val expectedErrorStatuses: Seq[Int] = Seq(Status.NOT_FOUND)
 
     override def read(method: String, url: String, response: HttpResponse): HttpResult[CircumstanceDetails] = {
-
+      implicit val res: HttpResponse = response
       response.status match {
         case Status.OK =>
-          logger.debug("[CustomerCircumstancesHttpParser][read]: Status OK")
+          debug("[CustomerCircumstancesHttpParser][read]: Status OK")
           response.json.validate[CircumstanceDetails](CircumstanceDetails.reads).fold(
             invalid => {
-              logger.debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
-              logger.warn(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
+              debug(s"[CustomerCircumstancesHttpParser][read]: Invalid Json - $invalid")
+              warnLogRes(s"[CustomerCircumstancesHttpParser][read]: Invalid Json returned")
               Left(ErrorModel(Status.INTERNAL_SERVER_ERROR, "Invalid Json"))
             },
             valid => Right(valid)
@@ -45,7 +45,7 @@ object CustomerCircumstancesHttpParser extends LoggerUtil {
 
         case status =>
           if(!expectedErrorStatuses.contains(status)) {
-            logger.warn(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
+            warnLogRes(s"[CustomerCircumstancesHttpParser][read]: Unexpected Response, Status $status returned")
           }
           Left(ErrorModel(status,"Downstream error returned when retrieving CustomerDetails"))
       }

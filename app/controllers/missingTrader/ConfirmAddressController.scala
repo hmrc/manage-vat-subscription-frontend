@@ -22,15 +22,16 @@ import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 import forms.MissingTraderForm
-import javax.inject.Inject
 import models.{No, Yes, YesNo}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{CustomerCircumstanceDetailsService, PPOBService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import utils.LoggingUtil
 import views.html.missingTrader.{ConfirmBusinessAddressView, MissingTraderAddressConfirmationView}
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
@@ -42,7 +43,7 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
                                          missingTraderAddressConfirmationView: MissingTraderAddressConfirmationView,
                                          ppobService: PPOBService)
                                         (implicit appConfig: AppConfig,
-                                         ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport {
+                                         ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val form: Form[YesNo] = MissingTraderForm.missingTraderForm
 
@@ -57,7 +58,9 @@ class ConfirmAddressController @Inject()(mcc: MessagesControllerComponents,
           Ok(confirmBusinessAddressView(details.ppobAddress, form))
         case Right(_) if user.isAgent => Redirect(appConfig.agentClientLookupAgentAction)
         case Right(_) => Redirect(appConfig.vatSummaryUrl)
-        case Left(_) => errorHandler.showInternalServerError
+        case Left(_) =>
+          errorLog("[ConfirmAddressController][show] - could not get customer circumstance details")
+          errorHandler.showInternalServerError
       }
     }
   }

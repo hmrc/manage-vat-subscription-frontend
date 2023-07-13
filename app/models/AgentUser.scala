@@ -18,12 +18,16 @@ package models
 
 import play.api.mvc.{Request, WrappedRequest}
 import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments, InternalError}
+import utils.LoggingUtil
 
 case class AgentUser[A](arn: String) (implicit request: Request[A]) extends WrappedRequest[A](request)
 
-object AgentUser {
+object AgentUser extends LoggingUtil{
   def apply[A](enrolments: Enrolments)(implicit request: Request[A]): AgentUser[A] =
     enrolments.enrolments.collectFirst {
       case Enrolment("HMRC-AS-AGENT", Seq(EnrolmentIdentifier(_, arn)), _, _) => AgentUser(arn)
-    }.getOrElse(throw InternalError("Agent Service Enrolment Missing"))
+    }.getOrElse{
+      errorLog("[AgentUser][apply] - Agent Service Enrolment Missing")
+      throw InternalError("Agent Service Enrolment Missing")
+    }
 }

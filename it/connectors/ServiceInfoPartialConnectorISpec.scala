@@ -19,6 +19,8 @@ package connectors
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import helpers.BaseIntegrationSpec
 import models.{NavContent, NavLinks}
+import play.api.mvc.Request
+import play.api.test.FakeRequest
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
 import stubs.ServiceInfoStub
 import uk.gov.hmrc.http.HeaderCarrier
@@ -31,6 +33,7 @@ class ServiceInfoPartialConnectorISpec extends BaseIntegrationSpec {
     def setupStubs(): StubMapping
     implicit val hc: HeaderCarrier = HeaderCarrier()
     implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+    implicit val req: Request[_] = FakeRequest()
     val connector: ServiceInfoPartialConnector = app.injector.instanceOf[ServiceInfoPartialConnector]
   }
 
@@ -45,7 +48,7 @@ class ServiceInfoPartialConnectorISpec extends BaseIntegrationSpec {
         NavLinks("Help", "Cymorth", "http://localhost:9999/help")
       )
       setupStubs()
-      val result: Option[NavContent] = await(connector.getNavLinks())
+      val result: Option[NavContent] = await(connector.getNavLinks()(hc, ec, req))
 
       result shouldBe Some(navContent)
     }
@@ -53,7 +56,7 @@ class ServiceInfoPartialConnectorISpec extends BaseIntegrationSpec {
     "return None when invalid JSON has been received from the API" in new Test {
       override def setupStubs(): StubMapping = ServiceInfoStub.stubInvalidJson
       setupStubs()
-      val result: Option[NavContent] = await(connector.getNavLinks())
+      val result: Option[NavContent] = await(connector.getNavLinks()(hc, ec, req))
 
       result shouldBe None
     }

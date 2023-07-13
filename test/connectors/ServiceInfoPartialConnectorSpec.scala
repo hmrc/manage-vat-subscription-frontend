@@ -20,8 +20,8 @@ import controllers.ControllerBaseSpec
 import models.{NavContent, NavLinks}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import uk.gov.hmrc.http.HttpClient
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
+import uk.gov.hmrc.http.HttpClient
 
 import scala.concurrent.{Future, TimeoutException}
 
@@ -52,7 +52,7 @@ class ServiceInfoPartialConnectorSpec extends ControllerBaseSpec {
 
       "return the NavLinks model" in {
         mockNavLinksCall(Future.successful(Some(navLinks)))
-        await(connector.getNavLinks()) shouldBe Some(navLinks)
+        await(connector.getNavLinks()(hc, ec, req)) shouldBe Some(navLinks)
       }
     }
 
@@ -60,7 +60,7 @@ class ServiceInfoPartialConnectorSpec extends ControllerBaseSpec {
 
       "return None" in {
         mockNavLinksCall(Future.failed(new TimeoutException("FAILURE")))
-        await(connector.getNavLinks()) shouldBe None
+        await(connector.getNavLinks()(hc, ec, req)) shouldBe None
       }
     }
 
