@@ -21,7 +21,6 @@ import audit.models.ViewVatSubscriptionAuditModel
 import common.SessionKeys
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
-import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
 import play.api.mvc._
 import services.{CustomerCircumstanceDetailsService, ServiceInfoService}
@@ -29,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import utils.LoggingUtil
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton

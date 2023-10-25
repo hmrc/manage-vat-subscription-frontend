@@ -64,6 +64,11 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
                 elementText("#bank-details-status > span:nth-of-type(1)")(expectedValue = "Add")
               )
 
+              And("The ni trader status should be there")
+              res should have(
+                elementText("#ni-trader-status")(expectedValue = "Find out your Northern Ireland trading status (opens in new tab). If your Northern Ireland trading status has changed you need to tell HMRC."),
+              )
+
               And("There is no business name row")
               res should have(
                 isElementVisible("#business-name")(isVisible = false)
@@ -221,6 +226,11 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
               And("Bank details is displayed")
               res should have(
                 isElementVisible("#bank-details")(isVisible = false)
+              )
+
+              And("ni trader status is displayed")
+              res should have(
+                isElementVisible("#ni-trader-status")(isVisible = true)
               )
 
               And("Return frequency is displayed")

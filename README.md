@@ -18,9 +18,18 @@ This service is written in [Scala](http://www.scala-lang.org/) and [Play](http:/
 
 ### To run the application locally execute the following:
 
-In order to run this microservice, you must have SBT installed. You should then be able to start the application using:
+In order to run this microservice, you must have SBT installed.
 
-`./run.sh`
+You need to run `sm2 --start CHANGE_VAT_DETAILS_ALL VAT_AGENT_CLIENT_LOOKUP_FRONTEND`
+
+You should then be able to start the application using:`./run.sh`
+
+### Populating all stubs
+
+To populate all stubs with data and schemas, run the following:
+
+`./populate_stub.sh` from: https://github.com/hmrc/vat-view-change-stub-data
+
 
 ## Testing
 `sbt clean coverage test it:test coverageReport`

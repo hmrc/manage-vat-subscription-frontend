@@ -169,6 +169,23 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                   }
                 }
               }
+              "have a section for trading under northern ireland protocol" which {
+
+                "has the heading" in {
+                  elementText("#ni-trader-status-text") shouldBe viewMessages.niTraderStatusHeading
+                }
+
+                "has the correct text" in {
+                  elementText("#ni-trader-status-answer-bodyText") shouldBe viewMessages.niTraderStatusBodytext
+                }
+
+                "has the correct links" in {
+                  element("#ni-trader-status-answer-link").text() shouldBe viewMessages.niTraderStatusLink
+                  element("#ni-trader-status-answer-link").attr("href") shouldBe "https://ec.europa.eu/taxation_customs/vies/#/vat-validation"
+                  element("#ni-trader-status-answer-bodyText-link").text() shouldBe "tell HMRC"
+                  element("#ni-trader-status-answer-bodyText-link").attr("href") shouldBe controllers.routes.NiTraderController.changeNiTradingStatus().url
+                }
+              }
 
               "have a section for return frequency" which {
 
@@ -634,6 +651,24 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
             elementText("#vat-email-address-status-agent") shouldBe viewMessages.changeEmailAddressAgentHidden
           }
         }
+
+      "have a section for trading under northern ireland protocol" which {
+
+        "has the heading" in {
+          elementText("#ni-trader-status-text") shouldBe viewMessages.niTraderStatusHeading
+        }
+
+        "has the correct text" in {
+          elementText("#ni-trader-status-answer-bodyText") shouldBe viewMessages.niTraderStatusBodytextAgent
+        }
+
+        "has the correct links" in {
+          element("#ni-trader-status-answer-link").text() shouldBe viewMessages.niTraderStatusLinkAgent
+          element("#ni-trader-status-answer-link").attr("href") shouldBe "https://ec.europa.eu/taxation_customs/vies/#/vat-validation"
+          element("#ni-trader-status-answer-bodyText-link").text() shouldBe "tell HMRC"
+          element("#ni-trader-status-answer-bodyText-link").attr("href") shouldBe controllers.routes.NiTraderController.changeNiTradingStatus().url
+        }
+      }
 
     }
   }
