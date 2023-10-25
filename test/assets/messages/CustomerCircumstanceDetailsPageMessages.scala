@@ -21,7 +21,7 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
   val title: String = "Your business details" + titleSuffixUser
   val heading = "Your business details"
   val agentTitle: String = "Your client’s VAT details" + titleSuffixAgent
-  val agentHeading= "Your client’s VAT details"
+  val agentHeading= "Your client's business details"
 
   val individualNameHeading = "Individual name"
   val organisationNameHeading = "Business name"
@@ -82,4 +82,10 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
 
   val newReturnDatesApplied: String = "You have asked to change the VAT Return dates. " +
     "The new dates will be shown when the change has been applied to this account."
+
+  val niTraderStatusHeading = "Trading under Northern Ireland Protocol"
+  val niTraderStatusLink = "Find out your Northern Ireland trading status (opens in new tab)"
+  val niTraderStatusLinkAgent = "Find out your client's Northern Ireland trading status (opens in new tab)"
+  val niTraderStatusBodytext = "If your Northern Ireland trading status has changed you need to tell HMRC."
+  val niTraderStatusBodytextAgent = "If your client's Northern Ireland trading status has changed you need to tell HMRC."
 }

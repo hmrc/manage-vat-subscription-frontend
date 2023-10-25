@@ -4,6 +4,8 @@
 
 GET         /change-business-details                         controllers.CustomerCircumstanceDetailsController.show
 
+GET         /change-ni-trading-status                        controllers.NiTraderController.changeNiTradingStatus()
+
 GET         /change-business-address                         controllers.BusinessAddressController.show
 GET         /change-business-address/ppob-handoff            controllers.BusinessAddressController.initialiseJourney
 
