@@ -20,7 +20,7 @@ This service is written in [Scala](http://www.scala-lang.org/) and [Play](http:/
 
 In order to run this microservice, you must have SBT installed.
 
-You need to run `sm2 --start CHANGE_VAT_DETAILS_ALL VAT_AGENT_CLIENT_LOOKUP_FRONTEND`
+You need to run `sm2 --start CHANGE_VAT_ALL`
 
 You should then be able to start the application using:`./run.sh`
 
