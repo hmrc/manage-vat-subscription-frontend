@@ -61,11 +61,11 @@ class ChangeTradingUnderNiProtocolSpec extends ViewBaseSpec with BaseMessages wi
     lazy implicit val document: Document = Jsoup.parse(injectedView.apply()(agentUser, messages, mockConfig).body)
 
     "have the correct document title" in {
-      document.title should include("Change your client's Northern Ireland trading status")
+      document.title should include("Change your client’s Northern Ireland trading status")
     }
 
     "have the correct heading" in {
-      document.select("#page-heading").text() shouldBe "Change your client's Northern Ireland trading status"
+      document.select("#page-heading").text() shouldBe "Change your client’s Northern Ireland trading status"
     }
 
     "have the correct paragraph" in {
@@ -80,7 +80,7 @@ class ChangeTradingUnderNiProtocolSpec extends ViewBaseSpec with BaseMessages wi
     }
 
     "have the correct links" in {
-      document.select("#change_trading_under_ni_protocol_link").text() shouldBe "Tell HMRC that your client's Northern Ireland trading status has changed"
+      document.select("#change_trading_under_ni_protocol_link").text() shouldBe "Tell HMRC that your client’s Northern Ireland trading status has changed"
       document.select("#change_trading_under_ni_protocol_link").attr("href") shouldBe "https://www.tax.service.gov.uk/submissions/new-form/withdraw-from-northern-ireland-protocol-vat"
     }
 

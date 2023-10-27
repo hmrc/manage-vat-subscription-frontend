@@ -94,7 +94,7 @@ class NiTraderControllerISpec extends BasePageISpec {
 
         And("There should be the correct title")
         res should have(
-          elementText("#page-heading")(expectedValue = "Change your client's Northern Ireland trading status")
+          elementText("#page-heading")(expectedValue = "Change your client’s Northern Ireland trading status")
         )
 
       }
