@@ -93,4 +93,5 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override def addressLookUpConfirmUrl(id: String): String = s"lookup-address/$id/confirm"
 
   override val vatCorrespondenceFixYourEmail: String = "fix-your-email"
+  override val webChatUrl: String = "/ask-hmrc/chat/vat-online?ds"
 }

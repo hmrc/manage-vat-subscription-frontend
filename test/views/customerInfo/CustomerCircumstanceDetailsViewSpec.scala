@@ -696,4 +696,12 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
   }
 
+  "webChat link" should {
+    lazy val view = injectedView(overseasCompany, getPartialHtmlNotAgent)(user, messages, mockConfig)
+    lazy implicit val document: Document = Jsoup.parse(view.body)
+    "display webChat link" in {
+      elementText("#webChatLink-id") shouldBe viewMessages.webChatLinkText
+    }
+  }
+
 }
