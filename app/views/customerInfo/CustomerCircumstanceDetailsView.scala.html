@@ -207,6 +207,17 @@
 
 }
 
+@webChatLink = {
+  <br>
+  <br>
+  <p class="govuk-body">
+    <a class="govuk-link" href="@appConfig.webChatUrl" target="_blank" id="webChatLink-id">@messages("customer_details.webChat")</a>
+  </p>
+  <br>
+  <br>
+  <br>
+}
+
 @customerEmailAddress(emailAddress: Option[String], emailPending: Boolean) = {
 
   <div class="govuk-summary-list__row">
@@ -462,6 +473,8 @@
   </dl>
   </div>
   }
+
+  @if(appConfig.features.webChatEnabled()){ @webChatLink }
 
   <div id="contact-details-section">
     <h2 class="govuk-heading-m">@messages("customer_details.contactDetails.heading")</h2>

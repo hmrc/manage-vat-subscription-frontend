@@ -80,6 +80,8 @@ object CustomerCircumstanceDetailsPageMessages extends BaseMessages {
     "You must print and complete this form before posting it to HMRC."
   val backText: String = "Back"
 
+  val webChatLinkText: String = "Ask HMRC (opens in a new tab)"
+
   val newReturnDatesApplied: String = "You have asked to change the VAT Return dates. " +
     "The new dates will be shown when the change has been applied to this account."
 

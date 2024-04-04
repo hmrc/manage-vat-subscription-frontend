@@ -145,6 +145,7 @@ customer_details.websiteAddress.change.hidden = Change the website address from 
 customer_details.websiteAddress.pending.hidden = Change to website address is pending
 customer_details.movedToBTAMessage.pt1 = You can update contact preferences and details for VAT and other taxes in your
 customer_details.movedToBTAMessage.pt2 = account details
+customer_details.webChat = Ask HMRC (opens in a new tab)
 
 change_business_name.title = Change the business name
 change_business_name.h1 = Change the business name

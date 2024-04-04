@@ -83,6 +83,7 @@ trait AppConfig {
   val btaAccountDetails: String
   val gtmContainer: String
   def addressLookUpConfirmUrl(id : String) : String
+  val webChatUrl: String
 }
 
 @Singleton
@@ -92,6 +93,8 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     configuration.getOptional[Seq[String]](key).getOrElse(throw new Exception(s"Missing configuration key: $key"))
 
   lazy val appName: String = "manage-vat-subscription-frontend"
+
+  override val webChatUrl: String = servicesConfig.getString("webChat.baseUrl") + servicesConfig.getString("webChat.url")
 
   private lazy val contactHost: String = servicesConfig.getString(Keys.contactFrontendService)
   override lazy val contactFormServiceIdentifier: String = servicesConfig.getString(Keys.contactFrontendIdentifier)
