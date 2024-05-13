@@ -64,7 +64,7 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
     }
 
     "has a warning message providing character guidance" in {
-      elementText(".govuk-warning-text__assistive") shouldBe viewMessages.warning
+      elementText(".govuk-warning-text__text .govuk-visually-hidden") shouldBe viewMessages.warning
     }
 
     s"has the wording '${viewMessages.warningText}' " in {
