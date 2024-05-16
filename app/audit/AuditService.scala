@@ -18,8 +18,8 @@ package audit
 
 import audit.models.ExtendedAuditModel
 import config.FrontendAppConfig
+
 import javax.inject.{Inject, Singleton}
-import org.joda.time.DateTime
 import play.api.http.HeaderNames
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
@@ -29,13 +29,22 @@ import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.ExtendedDataEvent
 import utils.LoggingUtil
 
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
+
 
 @Singleton
 class AuditService @Inject()(appConfig: FrontendAppConfig, auditConnector: AuditConnector) extends LoggingUtil {
 
-  implicit val dateTimeJsReader: Reads[DateTime] = JodaReads.jodaDateReads("yyyyMMddHHmmss")
-  implicit val dateTimeWriter: Writes[DateTime] = JodaWrites.jodaDateWrites("dd/MM/yyyy HH:mm:ss")
+  private val dateTimePatternReads = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+  private val dateTimePatternWrites = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+
+  implicit val dateTimeJsReader: Reads[OffsetDateTime] = (json: JsValue) =>
+    Try(JsSuccess(OffsetDateTime.parse(json.as[String], dateTimePatternReads), JsPath)).getOrElse(JsError())
+
+  implicit val dateTimeWriter: Writes[OffsetDateTime] = (localDateTime: OffsetDateTime) => JsString(localDateTime.format(dateTimePatternWrites))
 
   val referrer: HeaderCarrier => String = _.extraHeaders.find(_._1 == HeaderNames.REFERER).map(_._2).getOrElse("-")
 
@@ -61,9 +70,9 @@ class AuditService @Inject()(appConfig: FrontendAppConfig, auditConnector: Audit
 
   private def handleAuditResult(auditResult: Future[AuditResult])(implicit ec: ExecutionContext): Unit = auditResult.map {
     //$COVERAGE-OFF$ Disabling scoverage as returns Unit, only used for Debug messages
-    case Success =>
+    case AuditResult.Success =>
       debug("Splunk Audit Successful")
-    case Failure(err, _) =>
+    case AuditResult.Failure(err, _) =>
       debug(s"Splunk Audit Error, message: $err")
     case Disabled =>
       debug(s"Auditing Disabled")

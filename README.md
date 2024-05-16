@@ -32,7 +32,7 @@ To populate all stubs with data and schemas, run the following:
 
 
 ## Testing
-`sbt clean coverage test it:test coverageReport`
+`sbt clean coverage test it/test coverageReport`
 
 ## License 
 

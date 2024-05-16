@@ -41,7 +41,7 @@ class RenderAddressSpec extends ViewBaseSpec {
       lazy val document = Jsoup.parse(view.body)
 
       "render address lines 1, 2 and the postcode with line breaks in between" in {
-        document.select("p").html() shouldBe "Line 1 <br> Line 2 <br> P05T C0D3"
+        document.select("p").html() shouldBe "Line 1 <br>\n Line 2 <br>\n P05T C0D3"
       }
     }
 
@@ -59,7 +59,7 @@ class RenderAddressSpec extends ViewBaseSpec {
       lazy val document = Jsoup.parse(view.body)
 
       "render the first address line and postcode, with a line break in between" in {
-        document.select("p").html() shouldBe "Line 1 <br> P05T C0D3"
+        document.select("p").html() shouldBe "Line 1 <br>\n P05T C0D3"
       }
     }
 
@@ -68,7 +68,7 @@ class RenderAddressSpec extends ViewBaseSpec {
       lazy val document = Jsoup.parse(view.body)
 
       "render the first and second address lines, with a line break in between" in {
-        document.select("p").html() shouldBe "Line 1 <br> Line 2"
+        document.select("p").html() shouldBe "Line 1 <br>\n Line 2"
       }
     }
   }

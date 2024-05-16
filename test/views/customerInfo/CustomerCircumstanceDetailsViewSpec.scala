@@ -55,7 +55,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct service name" in {
-                elementText(".hmrc-header__service-name") shouldBe clientServiceName
+                elementText(".govuk-header__service-name") shouldBe clientServiceName
               }
 
               s"have a the correct page heading '${viewMessages.heading}'" in {
@@ -314,7 +314,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
                 }
 
                 "has hidden text supporting the nudge icon" in {
-                  elementText(".govuk-warning-text__assistive") shouldBe viewMessages.warning
+                  elementText(".govuk-warning-text__text .govuk-visually-hidden") shouldBe viewMessages.warning
                 }
 
                 s"has the wording '${viewMessages.unverifiedEmailNudge}' " in {
@@ -634,7 +634,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
 
         "have the correct service name" in {
-          elementText(".hmrc-header__service-name") shouldBe agentServiceName
+          elementText(".govuk-header__service-name") shouldBe agentServiceName
         }
 
         s"have a the correct page heading '${viewMessages.agentHeading}'" in {

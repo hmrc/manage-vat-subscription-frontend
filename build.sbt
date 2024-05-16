@@ -21,11 +21,14 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
 
+ThisBuild / majorVersion := 0
+ThisBuild / scalaVersion := "2.13.14"
+
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "7.15.0"
+val bootstrapPlayVersion = "8.5.0"
 
 lazy val coverageSettings: Seq[Setting[_]] = {
   import scoverage.ScoverageKeys
@@ -51,15 +54,13 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 
 val compile: Seq[ModuleID] = Seq(
   ws,
-  "uk.gov.hmrc"       %% "bootstrap-frontend-play-28" % bootstrapPlayVersion,
-  "com.typesafe.play" %% "play-json-joda"             % "2.10.0-RC7",
-  "uk.gov.hmrc"       %% "play-frontend-hmrc"         % "7.7.0-play-28"
+  "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapPlayVersion,
+  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30"         % "9.10.0"
 )
 
-def test(scope: String = "test, it"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-28"      % bootstrapPlayVersion % scope,
-  "org.scalatestplus" %% "mockito-3-4"                 % "3.3.0.0-SNAP3"      % scope,
-  "org.scalamock"     %% "scalamock"                   % "5.2.0"              % scope,
+def test(scope: String = "test"): Seq[ModuleID] = Seq(
+  "uk.gov.hmrc"       %% "bootstrap-test-play-30"      % bootstrapPlayVersion % scope,
+  "org.scalamock"     %% "scalamock"                   % "6.0.0"              % scope,
 )
 
 TwirlKeys.templateImports ++= Seq(
@@ -80,29 +81,29 @@ lazy val microservice: Project = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
   .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins: _*)
   .settings(PlayKeys.playDefaultPort := 9150)
-  .settings(coverageSettings: _*)
-  .settings(playSettings: _*)
-  .settings(scalaSettings: _*)
-  .settings(defaultSettings(): _*)
-  .settings(majorVersion := 0)
+  .settings(coverageSettings *)
+  .settings(playSettings *)
+  .settings(scalaSettings *)
+  .settings(defaultSettings() *)
   .settings(
     Test / Keys.fork := true,
     Test / javaOptions += "-Dlogger.resource=logback-test.xml",
-    scalaVersion := "2.13.8",
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     routesGenerator := InjectedRoutesGenerator
   )
-  .configs(IntegrationTest)
-  .settings(inConfig(IntegrationTest)(Defaults.itSettings): _*)
-  .settings(
-    IntegrationTest / Keys.fork := false,
-    IntegrationTest / unmanagedSourceDirectories := (IntegrationTest / baseDirectory) (base => Seq(base / "it")).value,
-    addTestReportOption(IntegrationTest, "int-test-reports"),
-    IntegrationTest / testGrouping := oneForkedJvmPerTest((IntegrationTest / definedTests).value),
-    IntegrationTest / parallelExecution := false)
   .settings(scalacOptions ++= Seq(
     "-Wconf:cat=unused-imports&site=.*views.html.*:s", "-deprecation", "-feature", "-language:implicitConversions"
   ))
-  .settings(resolvers ++= Seq(
-  ))
+
+lazy val it = project
+  .enablePlugins(PlayScala)
+  .dependsOn(microservice % "test->test") // the "test->test" allows reusing test code and test dependencies
+  .settings(itSettings())
+  .settings(
+    fork := false,
+    addTestReportOption(Test, "int-test-reports"),
+    Test / testGrouping := oneForkedJvmPerTest((Test / definedTests).value)
+  )
+
+
