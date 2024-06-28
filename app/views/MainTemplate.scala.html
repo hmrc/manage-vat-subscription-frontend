@@ -17,6 +17,7 @@
 @import config.AppConfig
 @import views.utils.ServiceNameUtil
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
+@import views.html.helper.CSPNonce
 
 @this(govukLayout: GovukLayout,
     govukHeader: GovukHeader,
@@ -56,11 +57,15 @@
 }
 
 @scripts = {
-    <script src='@routes.Assets.at("lib/govuk-frontend/govuk/all.js")'></script>
-    <script src='@routes.Assets.at("lib/hmrc-frontend/hmrc/all.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("javascript/btalinks.js")'></script>
-    <script>window.GOVUKFrontend.initAll();</script>
-    <script>window.HMRCFrontend.initAll();</script>
+
+    <script @CSPNonce.attr type="module" src='@routes.Assets.at("lib/hmrc-frontend/hmrc/all.js")'></script>
+    <script @CSPNonce.attr type="text/javascript" src='@routes.Assets.at("javascript/btalinks.js")'></script>
+
+    <script @CSPNonce.attr type="module">
+            import { initAll } from '@routes.Assets.at("lib/govuk-frontend/dist/govuk/govuk-frontend.min.js")'
+            initAll()
+    </script>
+    <script @CSPNonce.attr type="module">window.HMRCFrontend.initAll();</script>
 }
 
 @head = {
