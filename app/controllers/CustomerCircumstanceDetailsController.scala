@@ -58,7 +58,7 @@ class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicat
           }
         case _ =>
           debug(s"[CustomerCircumstanceDetailsController][show] Error Returned from Customer Details Service. Rendering ISE.")
-          Future.successful(serviceErrorHandler.showInternalServerError)
+          serviceErrorHandler.showInternalServerError
       }
   }
 }

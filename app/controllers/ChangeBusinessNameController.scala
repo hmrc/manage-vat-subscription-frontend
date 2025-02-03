@@ -32,7 +32,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import utils.LoggingUtil
 import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
@@ -46,7 +46,7 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              implicit val ec: ExecutionContext) extends FrontendController(mcc) with I18nSupport with LoggingUtil {
 
   val show: Action[AnyContent] = authenticate.async { implicit user =>
-    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(circumstances) =>
         val baseAccess: Boolean = circumstances.customerDetails.organisationName.isDefined &&
                                   !circumstances.customerDetails.overseasIndicator &&
@@ -54,13 +54,13 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
 
         (baseAccess, circumstances.customerDetails.nameIsReadOnly) match {
           case (true, Some(false)) =>
-            Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl)
+            Future.successful(Redirect(appConfig.vatDesignatoryDetailsBusinessNameUrl))
           case (true, Some(true)) if circumstances.nspItmpPartyType||circumstances.trustPartyType =>
-            renderAltChangeBusinessView(circumstances)
+            Future.successful(renderAltChangeBusinessView(circumstances))
           case (true, _) =>
-            Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get))
+            Future.successful(Ok(changeBusinessNameView(circumstances.customerDetails.organisationName.get)))
           case _ =>
-            Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)
+            Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
         }
       case _ =>
         errorLog("[ChangeBusinessNameController][show] - failed to retrieve customer circumstances details")
@@ -78,13 +78,13 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
   }
 
   val handOffToCOHO: Action[AnyContent] = authenticate.async { implicit user =>
-    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) map {
+    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
       case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
         auditService.extendedAudit(
           HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
           Some(controllers.routes.ChangeBusinessNameController.show.url)
         )
-        Redirect(appConfig.govUkCohoNameChangeUrl)
+        Future.successful(Redirect(appConfig.govUkCohoNameChangeUrl))
       case _ =>
         errorLog("[ChangeBusinessNameController][handOffToCOHO] - failed to retrieve customer circumstances details")
         serviceErrorHandler.showInternalServerError

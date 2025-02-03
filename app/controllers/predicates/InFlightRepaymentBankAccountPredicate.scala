@@ -17,6 +17,7 @@
 package controllers.predicates
 
 import config.ServiceErrorHandler
+
 import javax.inject.Inject
 import models.User
 import play.api.mvc.Results.Redirect
@@ -24,6 +25,7 @@ import play.api.mvc.{ActionRefiner, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.Converter.toFutureOfEither
 import utils.LoggingUtil
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -41,12 +43,12 @@ class InFlightRepaymentBankAccountPredicate @Inject()(customerCircumstancesServi
     if (!user.isAgent) {
       customerCircumstancesService.getCustomerCircumstanceDetails(user.vrn).map {
         case Right(circumstanceDetails) if circumstanceDetails.changeIndicators.fold(false)(_.bankDetails) =>
-          Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show))
-        case Right(_) => Right(user)
+          Left(Future.successful(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)))
+        case Right(_) => Right(Future.successful(user))
         case Left(error) =>
           warnLog(s"[InFlightRepaymentBankAccountPredicate][refine] - The call to the GetCustomerInfo API failed. Error: ${error.message}")
           Left(serviceErrorHandler.showInternalServerError)
-      }
+      }.flatMap(toFutureOfEither)
     }
     else {
       Future(Left(Redirect(controllers.routes.CustomerCircumstanceDetailsController.show)))

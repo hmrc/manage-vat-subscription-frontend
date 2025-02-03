@@ -57,9 +57,9 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
   }
 
   val initialiseJourney: Action[AnyContent] = (authenticate andThen inFlightPPOBCheck).async { implicit user =>
-    addressLookupService.initialiseJourney map {
+    addressLookupService.initialiseJourney flatMap  {
       case Right(response) =>
-        Redirect(response.redirectUrl)
+        Future.successful(Redirect(response.redirectUrl))
       case Left(_) =>
         errorLog("[BusinessAddressController][initialiseJourney] " +
           "Error Returned from Address Lookup Service, Rendering ISE.")
@@ -70,20 +70,20 @@ class BusinessAddressController @Inject()(authenticate: AuthPredicate,
   val callback: String => Action[AnyContent] = id => (authenticate andThen inFlightPPOBCheck).async { implicit user =>
     addressLookupService.retrieveAddress(id) flatMap {
       case Right(address) =>
-        ppobService.updatePPOB(user, address, id) map {
+        ppobService.updatePPOB(user, address, id) flatMap {
           case Right(_) =>
-            Redirect(routes.BusinessAddressController.confirmation)
-              .addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "true")
+            Future.successful(Redirect(routes.BusinessAddressController.confirmation)
+              .addingToSession(SessionKeys.inFlightContactDetailsChangeKey -> "true"))
           case Left(AddressValidationError) =>
             errorLog("[BusinessAddressController][callback] - failed to validate the address")
-            BadRequest(ppobAddressFailureView(id))
+            Future.successful(BadRequest(ppobAddressFailureView(id)))
           case Left(_) =>
             errorLog("[BusinessAddressController][callback] Error Returned from PPOB Service, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) =>
         errorLog("[BusinessAddressController][callback] Error Returned from Address Lookup Service, Rendering ISE.")
-        Future.successful(serviceErrorHandler.showInternalServerError)
+        serviceErrorHandler.showInternalServerError
     }
   }
 

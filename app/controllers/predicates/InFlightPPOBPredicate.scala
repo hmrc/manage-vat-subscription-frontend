@@ -17,6 +17,7 @@
 package controllers.predicates
 
 import config.{AppConfig, ServiceErrorHandler}
+
 import javax.inject.Inject
 import models.User
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -25,6 +26,7 @@ import play.api.mvc.{ActionRefiner, MessagesControllerComponents, Result}
 import services.CustomerCircumstanceDetailsService
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
+import utils.Converter.toFutureOfEither
 import utils.LoggingUtil
 import views.html.errors.ChangePendingView
 
@@ -49,13 +51,14 @@ class InFlightPPOBPredicate @Inject()(customerCircumstancesService: CustomerCirc
       case Right(circumstanceDetails) =>
 
         circumstanceDetails.pendingChanges match {
-          case Some(changes) if changes.ppob.isDefined => Left(Conflict(changePendingView()))
-          case _ => Right(user)
+          case Some(changes) if changes.ppob.isDefined => Left(Future.successful(Conflict(changePendingView())))
+          case _ => Right(Future.successful(user))
         }
 
       case Left(error) => warnLog(s"[InflightPPOBPredicate][refine] - " +
         s"The call to the GetCustomerInfo API failed. Error: ${error.message}")
         Left(serviceErrorHandler.showInternalServerError)
-    }
+    }.flatMap(toFutureOfEither)
+
   }
 }

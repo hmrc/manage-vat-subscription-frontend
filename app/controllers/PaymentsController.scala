@@ -43,20 +43,20 @@ class PaymentsController @Inject()(val authenticate: AuthPredicate,
   val sendToPayments: Action[AnyContent] = (authenticate andThen inFlightRepaymentBankAccountPredicate).async { implicit user =>
     subscriptionService.getCustomerCircumstanceDetails(user.vrn).flatMap {
       case Right(circumstanceDetails) =>
-        paymentsService.postPaymentDetails(user, circumstanceDetails.partyType, circumstanceDetails.customerDetails.welshIndicator) map {
+        paymentsService.postPaymentDetails(user, circumstanceDetails.partyType, circumstanceDetails.customerDetails.welshIndicator) flatMap {
           case Right(response) =>
             auditService.extendedAudit(
               BankAccountHandOffAuditModel(user, response.nextUrl),
               Some(routes.PaymentsController.sendToPayments.url)
             )
-            Redirect(response.nextUrl)
+            Future.successful(Redirect(response.nextUrl))
           case _ =>
             errorLog("[PaymentsController][callback] Error returned from PaymentsService, Rendering ISE.")
             serviceErrorHandler.showInternalServerError
         }
       case Left(_) =>
         errorLog("[PaymentsController][sendToPayments] - unable to retrieve customer circumstances details")
-        Future.successful(serviceErrorHandler.showInternalServerError)
+        serviceErrorHandler.showInternalServerError
     }
   }
 }

@@ -18,21 +18,20 @@ package audit
 
 import audit.models.ExtendedAuditModel
 import config.FrontendAppConfig
-
-import javax.inject.{Inject, Singleton}
 import play.api.http.HeaderNames
 import play.api.libs.json._
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.AuditExtensions
-import uk.gov.hmrc.play.audit.http.connector.AuditResult.{Disabled, Failure, Success}
+import uk.gov.hmrc.play.audit.http.connector.AuditResult.Disabled
 import uk.gov.hmrc.play.audit.http.connector.{AuditConnector, AuditResult}
 import uk.gov.hmrc.play.audit.model.ExtendedDataEvent
 import utils.LoggingUtil
 
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 
 @Singleton
