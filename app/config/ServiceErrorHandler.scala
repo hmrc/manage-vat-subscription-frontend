@@ -31,12 +31,10 @@ class ServiceErrorHandler @Inject()(standardError: StandardError,
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)
                                     (implicit request: RequestHeader): Future[Html] = {
-    implicit val req : Request[AnyContent] = Request(request, AnyContentAsEmpty)
     Future.successful(standardError(pageTitle, heading, message))
   }
 
   def showInternalServerError(implicit request: RequestHeader): Future[Result] = {
-    implicit val req : Request[AnyContent] = Request(request, AnyContentAsEmpty)
     internalServerErrorTemplate.map(InternalServerError(_))
   }
 

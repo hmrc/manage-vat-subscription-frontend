@@ -257,7 +257,7 @@ class CustomerCircumstancesDetailsControllerISpec extends BasePageISpec {
 
               res should have(
                 httpStatus(INTERNAL_SERVER_ERROR),
-                pageTitle(titleThereIsAProblem + titleSuffixUser)
+                pageTitle(titleThereIsAProblem + titleSuffixAgent)
               )
             }
           }

@@ -47,7 +47,7 @@ trait BaseIntegrationSpec extends TestSuite with CustomMatchers
   lazy val messagesApi: MessagesApi = app.injector.instanceOf[MessagesApi]
   implicit lazy val messages: Messages = MessagesImpl(Lang("en-GB"), messagesApi)
 
-  val titleSuffixUser = " - VAT - GOV.UK"
+  val titleSuffixUser = " - Manage your VAT account - GOV.UK"
   val titleSuffixOther = " - VAT - GOV.UK"
   val titleSuffixAgent = " - Your client’s VAT details - GOV.UK"
   val titleThereIsAProblem = "There is a problem with the service"
