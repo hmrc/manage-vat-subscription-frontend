@@ -35,7 +35,7 @@
   feedbackOnSignOut: Boolean = true,
   navLinkContent: Option[Html] = None,
   btaLinks: Option[Html] = None,
-)(mainContent: Html)(implicit request : Request[_], messages: Messages, appConfig: AppConfig)
+)(mainContent: Html)(implicit request : RequestHeader, messages: Messages, appConfig: AppConfig)
 
 @navTitle = @{
     serviceName.fold{

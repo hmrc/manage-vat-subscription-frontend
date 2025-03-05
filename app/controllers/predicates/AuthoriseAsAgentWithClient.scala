@@ -51,7 +51,7 @@ class AuthoriseAsAgentWithClient @Inject()(enrolmentsAuthService: EnrolmentsAuth
         debug(s"[AuthoriseAsAgentWithClient][invokeBlock] - Client VRN from Session: $vrn")
         enrolmentsAuthService.authorised(delegatedAuthRule(vrn)).retrieve(Retrievals.affinityGroup and Retrievals.allEnrolments) {
           case None ~ _ =>
-            Future.successful(serviceErrorHandler.showInternalServerError)
+            serviceErrorHandler.showInternalServerError
           case _ ~ allEnrolments =>
             val agent = AgentUser(allEnrolments)
             val user = User(vrn, active = true, Some(agent.arn))

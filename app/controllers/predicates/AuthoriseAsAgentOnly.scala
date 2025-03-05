@@ -57,11 +57,11 @@ class AuthoriseAsAgentOnly @Inject()(enrolmentsAuthService: EnrolmentsAuthServic
 
       case _ =>
         warnLog("[AuthoriseAsAgentOnly][invokeBlock] - Missing affinity group")
-        Future.successful(serviceErrorHandler.showInternalServerError)
-    } recover {
+        serviceErrorHandler.showInternalServerError
+    } recoverWith {
       case _: NoActiveSession =>
         debug("[AuthoriseAsAgentOnly][invokeBlock] - No Active Session, redirect to GG Sign In")
-        Redirect(appConfig.signInUrl)
+        Future.successful(Redirect(appConfig.signInUrl))
       case _: AuthorisationException =>
         warnLog("[AuthoriseAsAgentOnly][invokeBlock] - Authorisation Exception, rendering Internal Server Error view")
         serviceErrorHandler.showInternalServerError

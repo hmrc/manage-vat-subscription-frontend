@@ -1,5 +1,5 @@
-@*
- * Copyright 2024 HM Revenue & Customs
+/*
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,16 +12,18 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(mainTemplate: MainTemplate)
+package utils
 
-@(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader, messages: Messages, appConfig: config.AppConfig)
+import models.User
+import play.api.mvc.Result
 
-@mainTemplate(pageTitle) {
+import scala.concurrent.{ExecutionContext, Future}
 
- <h1 class="govuk-heading-xl">@heading</h1>
+object Converter {
 
- <p class="govuk-body">@message</p>
-
+  def toFutureOfEither[A](either: Either[Future[Result], Future[User[A]]])(implicit executionContext: ExecutionContext) : Future[Either[Result, User[A]]] = {
+    either.fold(f => f.map(Left(_)) , f => f.map(Right(_)))
+  }
 }
