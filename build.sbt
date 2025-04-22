@@ -22,13 +22,13 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 val appName: String = "manage-vat-subscription-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.14"
+ThisBuild / scalaVersion := "2.13.16"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[_]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "9.7.0"
+val bootstrapPlayVersion = "9.11.0"
 
 lazy val coverageSettings: Seq[Setting[_]] = {
   import scoverage.ScoverageKeys
@@ -55,7 +55,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapPlayVersion,
-  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30"         % "11.11.0"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30"         % "11.13.0"
 )
 
 def test(scope: String = "test"): Seq[ModuleID] = Seq(
@@ -67,15 +67,6 @@ TwirlKeys.templateImports ++= Seq(
   "uk.gov.hmrc.govukfrontend.views.html.components._",
   "uk.gov.hmrc.hmrcfrontend.views.html.components._"
 )
-
-def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {
-  test =>
-    Group(
-      test.name,
-      Seq(test),
-      SubProcess(ForkOptions().withRunJVMOptions(Vector("-Dtest.name=" + test.name, "-Dlogger.resource=logback-test.xml")))
-    )
-}
 
 lazy val microservice: Project = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
@@ -103,7 +94,6 @@ lazy val it = project
   .settings(
     fork := false,
     addTestReportOption(Test, "int-test-reports"),
-    Test / testGrouping := oneForkedJvmPerTest((Test / definedTests).value)
   )
 
 

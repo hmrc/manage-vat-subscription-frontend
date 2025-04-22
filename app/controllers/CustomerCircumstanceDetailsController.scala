@@ -29,7 +29,7 @@ import utils.LoggingUtil
 import views.html.customerInfo.CustomerCircumstanceDetailsView
 
 import javax.inject.{Inject, Singleton}
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class CustomerCircumstanceDetailsController @Inject()(authenticate: AuthPredicate,
