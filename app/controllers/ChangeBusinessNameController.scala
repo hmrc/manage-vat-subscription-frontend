@@ -16,8 +16,7 @@
 
 package controllers
 
-import audit.AuditService
-import audit.models.HandOffToCOHOAuditModel
+
 import config.{AppConfig, ServiceErrorHandler}
 import controllers.predicates.AuthPredicate
 
@@ -38,7 +37,6 @@ import scala.concurrent.{ExecutionContext, Future}
 class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
                                              val customerCircumstanceDetailsService: CustomerCircumstanceDetailsService,
                                              val serviceErrorHandler: ServiceErrorHandler,
-                                             val auditService: AuditService,
                                              changeBusinessNameView: ChangeBusinessNameView,
                                              altChangeBusinessNameView: AltChangeBusinessNameView,
                                              val mcc: MessagesControllerComponents,
@@ -74,20 +72,6 @@ class ChangeBusinessNameController @Inject()(val authenticate: AuthPredicate,
       Ok(altChangeBusinessNameView(trustBusinessNameViewModel(circumstances)))
     } else {
       Ok(altChangeBusinessNameView(businessNameViewModel(circumstances)))
-    }
-  }
-
-  val handOffToCOHO: Action[AnyContent] = authenticate.async { implicit user =>
-    customerCircumstanceDetailsService.getCustomerCircumstanceDetails(user.vrn) flatMap {
-      case Right(circumstances) if circumstances.customerDetails.organisationName.isDefined =>
-        auditService.extendedAudit(
-          HandOffToCOHOAuditModel(user, circumstances.customerDetails.organisationName.get),
-          Some(controllers.routes.ChangeBusinessNameController.show.url)
-        )
-        Future.successful(Redirect(appConfig.govUkCohoNameChangeUrl))
-      case _ =>
-        errorLog("[ChangeBusinessNameController][handOffToCOHO] - failed to retrieve customer circumstances details")
-        serviceErrorHandler.showInternalServerError
     }
   }
 }

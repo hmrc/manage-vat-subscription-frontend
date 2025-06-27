@@ -31,31 +31,26 @@
     @headings(messages("change_business_name.h1"))
 
     <p class="govuk-body">
-        @messages("change_business_name.p1") <span class="govuk-!-font-weight-bold">@organisationName</span>.
-        @messages("change_business_name.p2")
+        @messages("change_business_name.p1")
     </p>
 
-    <p class="govuk-body">@messages("change_business_name.p3")</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@Html(messages("change_business_name.bullet1"))</li>
-        <li>@Html(messages("change_business_name.bullet2"))</li>
-    </ul>
+    <details class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+                @messages("change_business_name.noCRN")
+            </span>
+        </summary>
+        <div class="govuk-details__text">
+            @messages("change_business_name.toChangeName")
+            <a href="https://www.gov.uk/government/organisations/hm-revenue-customs/contact/vat-enquiries" class="govuk-link govuk-link--no-visited-state">@messages("change_business_name.contactHMRC")</a>
+        </div>
+    </details>
+
+    <p class="govuk-body">@messages("change_business_name.p2")</p>
+
+    <p class="govuk-body">@messages("change_business_name.your") <strong>@messages("change_business_name.bold1")</strong> @messages("change_business_name.p3")</p>
 
     <p class="govuk-body">@messages("change_business_name.p4")</p>
 
-    <p class="govuk-body">@messages("change_business_name.p5")</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>
-            <a class="govuk-link" href="@appConfig.govUkVat484Form"
-               target="_blank" rel="noreferrer noopener">@messages("change_business_name.p5.bullet1")</a>
-        </li>
-        <li>@messages("change_business_name.p5.bullet2")</li>
-        <li>@messages("change_business_name.p5.bullet3")</li>
-    </ul>
-
-    <p class="govuk-body">
-        <a href="@controllers.routes.ChangeBusinessNameController.handOffToCOHO.url"
-       class="govuk-link" rel="noreferrer noopener"
-       target="_blank">@messages("change_business_name.link")</a></p>
-
+    <p class="govuk-body"><a href="https://www.gov.uk/government/publications/change-a-company-name-nm01" class="govuk-link govuk-link--no-visited-state">@messages("change_business_name.p5")</a></p>
 }

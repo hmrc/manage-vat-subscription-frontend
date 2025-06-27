@@ -20,7 +20,6 @@ import assets.BaseTestConstants._
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.organisation
 import assets.messages.ChangeBusinessNamePageMessages
-import audit.models.HandOffToCOHOAuditModel
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.verify
@@ -42,7 +41,6 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
     mockAuthPredicate,
     mockCustomerDetailsService,
     serviceErrorHandler,
-    mockAuditingService,
     inject[ChangeBusinessNameView],
     inject[AltChangeBusinessNameView],
     mcc,
@@ -168,8 +166,8 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
             body.select("h1").text shouldBe ChangeBusinessNamePageMessages.heading
           }
 
-          "have a link to Companies House" in {
-            body.select(".govuk-body > a").attr("href") shouldBe routes.ChangeBusinessNameController.handOffToCOHO.url
+          "have a link to Companies House 'change a company name' guidance page" in {
+            body.select(".govuk-body > a").attr("href") shouldBe "https://www.gov.uk/government/publications/change-a-company-name-nm01"
           }
         }
       }
@@ -237,58 +235,5 @@ class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
     unauthenticatedCheck(TestChangeBusinessNameController.show)
 
     insolvencyCheck(TestChangeBusinessNameController.show)
-  }
-
-
-  "Calling the .handOffToCOHO action" when {
-
-    "the user is authorised and an Organisation Name exists" should {
-
-      lazy val result: Future[Result] = TestChangeBusinessNameController.handOffToCOHO(request)
-
-      "return OK (200)" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
-        status(result) shouldBe Status.SEE_OTHER
-
-        verify(mockAuditingService)
-          .extendedAudit(
-            ArgumentMatchers.eq(HandOffToCOHOAuditModel(user, customerInformationModelMaxOrganisation.customerDetails.organisationName.get)),
-            ArgumentMatchers.eq[Option[String]](Some(controllers.routes.ChangeBusinessNameController.show.url))
-          )(
-            ArgumentMatchers.any[HeaderCarrier],
-            ArgumentMatchers.any[ExecutionContext]
-          )
-      }
-
-      s"redirect to COHO '${mockConfig.govUkCohoNameChangeUrl}'" in {
-        redirectLocation(result) shouldBe Some(mockConfig.govUkCohoNameChangeUrl)
-      }
-    }
-
-    "the user is authorised and an Individual Name exists" should {
-
-      lazy val result = TestChangeBusinessNameController.handOffToCOHO(request)
-
-      "return ISE (500)" in {
-        mockCustomerDetailsSuccess(customerInformationModelMaxIndividual)
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
-      }
-    }
-
-    "the user is authorised and an Error is returned from Customer Details" should {
-
-      lazy val result = TestChangeBusinessNameController.handOffToCOHO(request)
-
-      "return ISE (500)" in {
-        mockCustomerDetailsError()
-        status(result) shouldBe Status.INTERNAL_SERVER_ERROR
-        messages(Jsoup.parse(contentAsString(result)).title) shouldBe internalServerErrorTitleUser
-      }
-    }
-
-    unauthenticatedCheck(TestChangeBusinessNameController.handOffToCOHO)
-
-    insolvencyCheck(TestChangeBusinessNameController.handOffToCOHO)
   }
 }

@@ -32,17 +32,16 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
     object Selectors {
       val wrapper = "#content"
       val pageHeading = s"$wrapper h1"
+      val noCrn = s"$wrapper details summary"
+      val contactHMRC = s"$wrapper details div"
       val p1 = s"$wrapper p:nth-of-type(1)"
       val p2 = s"$wrapper p:nth-of-type(2)"
       val p3 = s"$wrapper p:nth-of-type(3)"
-      val bullet1 = s"$wrapper li:nth-of-type(1)"
-      val bullet2 = s"$wrapper li:nth-of-type(2)"
       val p4 = s"$wrapper p:nth-of-type(4)"
-      val bullet3 = s"$wrapper ul:nth-child(7) > li:nth-child(1)"
-      val formLink = s"$wrapper ul:nth-child(7) > li:nth-child(1) > a"
-      val bullet4 = s"$wrapper ul:nth-child(7) > li:nth-child(2)"
-      val bullet5 = s"$wrapper ul:nth-child(7) > li:nth-child(3)"
+      val p5 = s"$wrapper p:nth-of-type(5)"
       val link = ".govuk-body > a"
+
+      val detailsLink = s"$wrapper details div a"
       val backLink = ".govuk-back-link"
     }
 
@@ -62,67 +61,47 @@ class ChangeBusinessNameViewSpec extends ViewBaseSpec with BaseMessages {
       elementText(Selectors.pageHeading) shouldBe viewMessages.heading
     }
 
-    s"have a the correct p1 of '${viewMessages.p1(orgName)}'" in {
-      elementText(Selectors.p1) shouldBe viewMessages.p1(orgName)
+    s"have a the correct p1 of '${viewMessages.p1}'" in {
+      elementText(Selectors.p1) shouldBe viewMessages.p1
+    }
+
+    s"have a the correct details summary of '${viewMessages.noCRN}'" in {
+      elementText(Selectors.noCrn) shouldBe viewMessages.noCRN
+    }
+
+    s"have a the correct details text of '${viewMessages.toChangeName} ${viewMessages.contactHMRC}'" in {
+      elementText(Selectors.contactHMRC) shouldBe viewMessages.toChangeName + viewMessages.contactHMRC
+    }
+
+    s"have a the correct details url of '${viewMessages.toChangeName} ${viewMessages.contactHMRC}'" in {
+
+      element(Selectors.detailsLink).attr("href") shouldBe "https://www.gov.uk/government/organisations/hm-revenue-customs/contact/vat-enquiries"
     }
 
     s"have a the correct p2 of '${viewMessages.p2}'" in {
       elementText(Selectors.p2) shouldBe viewMessages.p2
     }
 
-    s"have a the correct p3 of '${viewMessages.p3}'" in {
-      elementText(Selectors.p3) shouldBe viewMessages.p3
+    s"have a the correct p3 of '${viewMessages.your}${viewMessages.bold1}${viewMessages.p3}'" in {
+      elementText(Selectors.p3) shouldBe viewMessages.your + viewMessages.bold1 + viewMessages.p3
     }
 
-    s"have a the correct bullet1 of '${viewMessages.bullet1}'" in {
-      elementText(Selectors.bullet1) shouldBe viewMessages.bullet1
-    }
 
-    s"have a the correct bullet2 of '${viewMessages.bullet2}'" in {
-      elementText(Selectors.bullet2) shouldBe viewMessages.bullet2
-    }
+
+
 
     s"have a the correct p4 of '${viewMessages.p4}'" in {
       elementText(Selectors.p4) shouldBe viewMessages.p4
     }
 
-    "have a secondary bullet point section" which {
+    "have a link to information on changing business link" which {
 
-      "has the first bullet point" which {
-
-        s"have a the correct text of '${viewMessages.bullet3}'" in {
-          elementText(Selectors.bullet3) shouldBe viewMessages.bullet3
-        }
-
-        "has a link" which {
-
-          s"has the correct URL to '${mockConfig.govUkVat484Form}'" in {
-            element(Selectors.formLink).attr("href") shouldBe mockConfig.govUkVat484Form
-          }
-
-          "opens in a new tab" in {
-            element(Selectors.formLink).attr("target") shouldBe "_blank"
-          }
-        }
+      s"has the text '${viewMessages.p5}'" in {
+        elementText(Selectors.link) shouldBe viewMessages.p5
       }
 
-      s"has a the correct bullet of '${viewMessages.bullet4}'" in {
-        elementText(Selectors.bullet4) shouldBe viewMessages.bullet4
-      }
-
-      s"has a the correct bullet of '${viewMessages.bullet5}'" in {
-        elementText(Selectors.bullet5) shouldBe viewMessages.bullet5
-      }
-    }
-
-    "have a continue link" which {
-
-      s"has the text '${viewMessages.continueLink}'" in {
-        elementText(Selectors.link) shouldBe viewMessages.continueLink
-      }
-
-      "has a URL to the Gov.UK guidance page for changing name via COHO" in {
-        element(Selectors.link).attr("href") shouldBe controllers.routes.ChangeBusinessNameController.handOffToCOHO.url
+      "has a URL to the Gov.UK guidance page for changing name" in {
+        element(Selectors.link).attr("href") shouldBe "https://www.gov.uk/government/publications/change-a-company-name-nm01"
       }
     }
   }
