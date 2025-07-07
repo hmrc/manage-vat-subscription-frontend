@@ -147,8 +147,8 @@ customer_details.movedToBTAMessage.pt1 = Gallwch ddiweddaru dulliau cysylltu dew
 customer_details.movedToBTAMessage.pt2 = manylion cyfrif
 customer_details.webChat = Gofyn i CThEF (yn agor tab newydd)
 
-change_business_name.title = Newid enw’r busnes
-change_business_name.h1 = Newid enw’r busnes
+change_business_name.title = Newid enw’ch busnes
+change_business_name.h1 = Newid enw’ch busnes
 change_business_name.p1 = Os oes gennych Rif Cofrestru’r Cwmni (CRN) yna gwneir hyn drwy Dy’r Cwmnïau.
 change_business_name.noCRN = Os nad oes cyfeirnod CRN gennych neu os nad ydych wedi’ch cofrestru ar gyfer Hunanasesiad
 change_business_name.toChangeName = I newid enw’ch busnes bydd angen i chi

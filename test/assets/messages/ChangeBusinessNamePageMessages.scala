@@ -18,9 +18,9 @@ package assets.messages
 
 object ChangeBusinessNamePageMessages extends BaseMessages {
 
-  val title: String = "Change the business name" + titleSuffixUser
-  val titleAgent: String = "Change the business name" + titleSuffixAgent
-  val heading = "Change the business name"
+  val title: String = "Change your business name" + titleSuffixUser
+  val titleAgent: String = "Change your business name" + titleSuffixAgent
+  val heading = "Change your business name"
 
 
   val p1 = "If you have a Company Registration Number (CRN) then this is done through Companies House."

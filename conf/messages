@@ -147,8 +147,8 @@ customer_details.movedToBTAMessage.pt1 = You can update contact preferences and 
 customer_details.movedToBTAMessage.pt2 = account details
 customer_details.webChat = Ask HMRC (opens in a new tab)
 
-change_business_name.title = Change the business name
-change_business_name.h1 = Change the business name
+change_business_name.title = Change your business name
+change_business_name.h1 = Change your business name
 change_business_name.nameIs = The business name is currently
 change_business_name.p1 = If you have a Company Registration Number (CRN) then this is done through Companies House.
 change_business_name.noCRN = If you do not have a CRN or are not registered for Self Assessment
