@@ -21,15 +21,12 @@ import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.organisation
 import assets.messages.ChangeBusinessNamePageMessages
 import org.jsoup.Jsoup
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.verify
 import play.api.http.Status
 import play.api.mvc.Result
 import play.api.test.Helpers._
-import uk.gov.hmrc.http.HeaderCarrier
 import views.html.businessName.{AltChangeBusinessNameView, ChangeBusinessNameView}
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class ChangeBusinessNameControllerSpec extends ControllerBaseSpec {
 
