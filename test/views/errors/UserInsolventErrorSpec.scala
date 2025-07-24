@@ -51,7 +51,7 @@ class UserInsolventErrorSpec extends ViewBaseSpec {
     }
 
     "have a sign out link" in {
-      element(Selectors.signOutLink).attr("href") shouldBe "/vat-through-software/account/sign-out?authorised=false"
+      element(Selectors.signOutLink).attr("href") shouldBe "/sign-out?authorised=false"
     }
 
     "have the correct text for sign out link" in {

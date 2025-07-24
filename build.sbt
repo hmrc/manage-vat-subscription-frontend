@@ -15,8 +15,7 @@
  */
 
 import play.sbt.routes.RoutesKeys
-import sbt.Tests.{Group, SubProcess}
-import uk.gov.hmrc.DefaultBuildSettings._
+import uk.gov.hmrc.DefaultBuildSettings.*
 import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 
 val appName: String = "manage-vat-subscription-frontend"
@@ -26,11 +25,11 @@ ThisBuild / scalaVersion := "2.13.16"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
-lazy val playSettings: Seq[Setting[_]] = Seq.empty
+lazy val playSettings: Seq[Setting[?]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "9.11.0"
+val bootstrapPlayVersion = "9.17.0"
 
-lazy val coverageSettings: Seq[Setting[_]] = {
+lazy val coverageSettings: Seq[Setting[?]] = {
   import scoverage.ScoverageKeys
 
   val excludedPackages = Seq(
@@ -55,12 +54,12 @@ lazy val coverageSettings: Seq[Setting[_]] = {
 val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapPlayVersion,
-  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30"         % "11.13.0"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30" % "11.13.0"
 )
 
 def test(scope: String = "test"): Seq[ModuleID] = Seq(
-  "uk.gov.hmrc"       %% "bootstrap-test-play-30"      % bootstrapPlayVersion % scope,
-  "org.scalamock"     %% "scalamock"                   % "6.1.1"              % scope,
+  "uk.gov.hmrc"       %% "bootstrap-test-play-30"     % bootstrapPlayVersion % scope,
+  "org.scalamock"     %% "scalamock"                  % "6.1.1"              % scope,
 )
 
 TwirlKeys.templateImports ++= Seq(
@@ -70,7 +69,7 @@ TwirlKeys.templateImports ++= Seq(
 
 lazy val microservice: Project = Project(appName, file("."))
   .disablePlugins(JUnitXmlReportPlugin)
-  .enablePlugins(Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins: _*)
+  .enablePlugins((Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins) *)
   .settings(PlayKeys.playDefaultPort := 9150)
   .settings(coverageSettings *)
   .settings(playSettings *)
