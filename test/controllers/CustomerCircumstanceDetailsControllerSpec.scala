@@ -109,7 +109,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
 
       "be the expected route" in {
         controllers.routes.CustomerCircumstanceDetailsController.show.url shouldBe
-          "/change-business-details"
+          "/vat-through-software/account/change-business-details"
       }
     }
 

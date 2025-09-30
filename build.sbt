@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,8 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[?]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "9.17.0"
+val bootstrapPlayVersion = "9.19.0"
+val playFrontendHmrcVersion = "12.15.0"
 
 lazy val coverageSettings: Seq[Setting[?]] = {
   import scoverage.ScoverageKeys
@@ -54,7 +55,7 @@ lazy val coverageSettings: Seq[Setting[?]] = {
 val compile: Seq[ModuleID] = Seq(
   ws,
   "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapPlayVersion,
-  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30" % "11.13.0"
+  "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30" % playFrontendHmrcVersion
 )
 
 def test(scope: String = "test"): Seq[ModuleID] = Seq(
@@ -94,5 +95,3 @@ lazy val it = project
     fork := false,
     addTestReportOption(Test, "int-test-reports"),
   )
-
-
