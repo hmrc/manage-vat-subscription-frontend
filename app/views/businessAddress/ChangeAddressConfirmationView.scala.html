@@ -27,7 +27,7 @@
     if(user.isAgent) "common.agent.backToClientDetails" else "common.finish"
 }
 
-@mainTemplate(pageTitle = messages("change_address_confirmation.title")) {
+@mainTemplate(pageTitle = messages("change_address_confirmation.title"), urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true))) {
 
     @govukPanel(Panel(title = Text(messages("change_address_confirmation.title"))))
 

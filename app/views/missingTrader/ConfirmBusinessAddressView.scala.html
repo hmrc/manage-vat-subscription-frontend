@@ -24,7 +24,8 @@ govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : G
 
 @mainTemplate(
   pageTitle = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
-          else messages("missingTrader.title")) {
+          else messages("missingTrader.title"),
+  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl))) {
 
 @if(missingTraderForm.hasErrors) {
     @govukErrorSummary(ErrorSummary(

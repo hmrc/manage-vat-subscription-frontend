@@ -28,7 +28,8 @@
 }
 
 @mainTemplate(
-    pageTitle = messages("mta_confirmation.title")){
+    pageTitle = messages("mta_confirmation.title"),
+    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true))){
 
     @govukPanel(Panel(title = Text(messages("mta_confirmation.title"))))
 

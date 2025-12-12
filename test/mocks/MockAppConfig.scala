@@ -94,4 +94,5 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
 
   override val vatCorrespondenceFixYourEmail: String = "fix-your-email"
   override val webChatUrl: String = "/ask-hmrc/chat/vat-online?ds"
+  override val urBannerUrl: String = "ur-banner-url"
 }

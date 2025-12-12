@@ -27,7 +27,9 @@
 }
 
 @mainTemplate(
-  pageTitle = messages("change_business_name.title"), navLinkContent = Some(backLink)) {
+  pageTitle = messages("change_business_name.title"),
+    navLinkContent = Some(backLink),
+    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl))) {
 
     @headings(messages("change_business_name.h1"))
 

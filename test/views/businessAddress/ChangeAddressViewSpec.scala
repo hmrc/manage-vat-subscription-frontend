@@ -74,11 +74,11 @@ class ChangeAddressViewSpec extends ViewBaseSpec with BaseMessages {
     s"have a button to continue" which {
 
       s"has the correct text of '$continue" in {
-        elementText(".govuk-button") shouldBe continue
+        elementText("#main-content .govuk-button") shouldBe continue
       }
 
       s"has the correct link to '${controllers.routes.BusinessAddressController.initialiseJourney.url}'" in {
-        element(".govuk-button").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney.url
+        element("#main-content .govuk-button").attr("href") shouldBe controllers.routes.BusinessAddressController.initialiseJourney.url
       }
     }
   }

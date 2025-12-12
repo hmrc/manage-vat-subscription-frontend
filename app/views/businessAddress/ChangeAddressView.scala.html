@@ -41,7 +41,9 @@
     @backToBusinessDetails()
 }
 
-@mainTemplate(pageTitle = messages("change_address.title"), navLinkContent = Some(backLink)) {
+@mainTemplate(pageTitle = messages("change_address.title"),
+    navLinkContent = Some(backLink),
+    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl))) {
 
   @headings(messages("change_address.title"))
 
