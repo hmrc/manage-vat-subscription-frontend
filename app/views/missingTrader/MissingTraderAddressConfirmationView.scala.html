@@ -29,7 +29,7 @@
 
 @mainTemplate(
     pageTitle = messages("mta_confirmation.title"),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true))){
+    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true, language = if(messages.lang.code == "en") En else Cy))){
 
     @govukPanel(Panel(title = Text(messages("mta_confirmation.title"))))
 

@@ -21,14 +21,14 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 val appName: String = "manage-vat-subscription-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / scalaVersion := "2.13.17"
 
 lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[?]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
 val bootstrapPlayVersion = "9.19.0"
-val playFrontendHmrcVersion = "12.15.0"
+val playFrontendHmrcVersion = "12.22.0"
 
 lazy val coverageSettings: Seq[Setting[?]] = {
   import scoverage.ScoverageKeys

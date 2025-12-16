@@ -43,7 +43,7 @@
 
 @mainTemplate(pageTitle = messages("change_address.title"),
     navLinkContent = Some(backLink),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl))) {
+    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
 
   @headings(messages("change_address.title"))
 

@@ -393,7 +393,7 @@
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   btaLinks = Some(serviceInfoContent),
   navLinkContent = Some(navLink),
-  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl))) {
+  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
 
   @if(user.isAgent) {
     <h1 id="agent-page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
