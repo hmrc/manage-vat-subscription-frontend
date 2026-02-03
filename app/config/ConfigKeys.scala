@@ -35,6 +35,7 @@ object ConfigKeys {
   val stubAgentClientLookupFeature: String = "features.stubAgentClientLookup"
   val stubAddressLookupFeature: String = "features.stubAddressLookup.enabled"
   val webChatEnabled: String = "features.webChat.enabled"
+  val showUserResearchBannerEnabled: String = "features.showUserResearchBanner.enabled"
 
   // GOV UK
   val changeToBusinessDetailsUrl: String = "gov-uk.guidance.change-to-business-details.url"
