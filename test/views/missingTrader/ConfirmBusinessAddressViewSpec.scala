@@ -31,7 +31,7 @@ class ConfirmBusinessAddressViewSpec extends ViewBaseSpec {
     val pageHeading = "h1"
     val yesOption = "div.govuk-radios__item:nth-child(1) > label:nth-child(2)"
     val noOption = "div.govuk-radios__item:nth-child(2) > label:nth-child(2)"
-    val button = ".govuk-button"
+    val button = "#main-content .govuk-button"
     val error = ".govuk-error-message"
     val address = ".govuk-inset-text"
     val additionalInfo = ".vatvc-grey-paragraph-text"

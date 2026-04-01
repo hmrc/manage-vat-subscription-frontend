@@ -23,7 +23,8 @@
   navLinkContent = Some(govukBackLink(BackLink(
    href = "javascript:window.history.go(-1)",
    content = Text("Back")
-  )))
+  ))),
+  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))
  ){
   @headings(messages(if(user.isAgent) "customer_details.change_trading_under_ni_protocol.title.agent" else "customer_details.change_trading_under_ni_protocol.title"))
 
