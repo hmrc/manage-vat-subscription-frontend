@@ -55,7 +55,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
               }
 
               "have the correct service name" in {
-                elementText(".govuk-header__service-name") shouldBe clientServiceName
+                elementText(".govuk-service-navigation__link") shouldBe clientServiceName
               }
 
               s"have a the correct page heading '${viewMessages.heading}'" in {
@@ -634,7 +634,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
         }
 
         "have the correct service name" in {
-          elementText(".govuk-header__service-name") shouldBe agentServiceName
+          elementText(".govuk-service-navigation__link") shouldBe agentServiceName
         }
 
         s"have a the correct page heading '${viewMessages.agentHeading}'" in {
