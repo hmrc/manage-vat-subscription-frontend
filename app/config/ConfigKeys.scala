@@ -59,8 +59,6 @@ object ConfigKeys {
   val surveyHost: String = "feedback-frontend.host"
   val surveyUrl: String = "feedback-frontend.url"
 
-  val agentAuthoriseForClient: String = "agent-subscription-frontend.host"
-
   val bankAccountCoc: String = "bank-account-coc"
 
   val host: String = "host"
