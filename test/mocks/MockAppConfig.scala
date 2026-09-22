@@ -38,7 +38,6 @@ class MockAppConfig(implicit runModeConfiguration: Configuration) extends AppCon
   override val addressLookupService: String = ""
   override val addressLookupUrlHost: String = ""
   override val agentServicesGovUkGuidance: String = "guidance/get-an-hmrc-agent-services-account"
-  override val agentAuthoriseForClient: String = "agent-subscription/start"
   override val btaUrl = "ye olde bta url"
   override val vatSummaryUrl = "/vat-summary"
   override val countryCodeJson: JsValue = Json.arr(

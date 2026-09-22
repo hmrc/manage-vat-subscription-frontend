@@ -42,7 +42,6 @@ trait AppConfig {
   def addressLookupService: String
   val addressLookupUrlHost: String
   val agentServicesGovUkGuidance: String
-  val agentAuthoriseForClient: String
   val btaUrl: String
   val vatSummaryUrl: String
   val countryCodeJson: JsValue
@@ -147,8 +146,6 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     signInContinueBaseUrl + servicesConfig.getString(Keys.addressLookupCallback)
 
   override lazy val agentServicesGovUkGuidance: String = servicesConfig.getString(Keys.govUkSetupAgentServices)
-
-  override lazy val agentAuthoriseForClient: String = servicesConfig.getString(Keys.agentAuthoriseForClient) + "/agent-subscription/start"
 
   override lazy val bankAccountCoc: String = servicesConfig.baseUrl(Keys.bankAccountCoc)
 
