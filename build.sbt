@@ -27,8 +27,8 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test()
 lazy val plugins: Seq[Plugins] = Seq.empty
 lazy val playSettings: Seq[Setting[?]] = Seq.empty
 RoutesKeys.routesImport := Seq.empty
-val bootstrapPlayVersion = "10.4.0"
-val playFrontendHmrcVersion = "12.32.0"
+val bootstrapPlayVersion = "10.7.1"
+val playFrontendHmrcVersion = "13.13.0"
 
 lazy val coverageSettings: Seq[Setting[?]] = {
   import scoverage.ScoverageKeys
@@ -60,7 +60,7 @@ val compile: Seq[ModuleID] = Seq(
 
 def test(scope: String = "test"): Seq[ModuleID] = Seq(
   "uk.gov.hmrc"       %% "bootstrap-test-play-30"     % bootstrapPlayVersion % scope,
-  "org.scalamock"     %% "scalamock"                  % "7.5.2"              % scope,
+  "org.scalamock"     %% "scalamock"                  % "7.5.5"              % scope,
 )
 
 TwirlKeys.templateImports ++= Seq(

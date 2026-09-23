@@ -16,12 +16,12 @@
 
 package mocks.services
 
+import models.ListLinks
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{reset, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.mockito.MockitoSugar
-import play.twirl.api.Html
 import services.ServiceInfoService
 
 import scala.concurrent.Future
@@ -35,7 +35,7 @@ trait MockServiceInfoService extends AnyWordSpecLike with MockitoSugar with Befo
     reset(mockServiceInfoService)
   }
 
-  def getPartial(response: Html): Unit = {
+  def getPartial(response: Seq[ListLinks]): Unit = {
     when(mockServiceInfoService.getPartial(any(), any(), any(), any(), any()))
       .thenReturn(Future.successful(response))
   }

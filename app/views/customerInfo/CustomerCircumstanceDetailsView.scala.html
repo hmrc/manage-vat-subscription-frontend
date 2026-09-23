@@ -16,6 +16,7 @@
 
 @import models.circumstanceInfo.{CircumstanceDetails,BankDetails,PPOBAddress}
 @import models.returnFrequency.ReturnPeriod
+@import models.ListLinks
 @import helpers.{RenderReturnFrequency, RenderAddress}
 @import templates.Breadcrumb
 @import views.utils.DeregUtil._
@@ -31,7 +32,7 @@
         govukWarningText : GovukWarningText)
 
 @(circumstances: CircumstanceDetails,
-        serviceInfoContent: Html)(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
+                      navLinks: Seq[ListLinks] = Seq())(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @navLink = {
 @if(user.isAgent){
@@ -391,7 +392,7 @@
 
 @mainTemplate(
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
-  btaLinks = Some(serviceInfoContent),
+  navLinks = navLinks,
   navLinkContent = Some(navLink),
   urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
 
