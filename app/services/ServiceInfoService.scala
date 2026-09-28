@@ -17,29 +17,26 @@
 package services
 
 import connectors.ServiceInfoPartialConnector
-
-import javax.inject.{Inject, Singleton}
 import models.{ListLinks, NavContent, User}
 import play.api.http.HeaderNames
 import play.api.i18n.{Lang, Messages}
 import play.api.mvc.Request
-import play.twirl.api.{Html, HtmlFormat}
 import uk.gov.hmrc.http.HeaderCarrier
-import views.html.templates.BTALinks
 
+import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ServiceInfoService @Inject()(serviceInfoPartialConnector: ServiceInfoPartialConnector, btaLinks: BTALinks) {
+class ServiceInfoService @Inject()(serviceInfoPartialConnector: ServiceInfoPartialConnector) {
 
-  def getPartial(implicit user: User[_], hc: HeaderCarrier, ec: ExecutionContext, messages: Messages, request: Request[_]): Future[Html] =
-    if(user.isAgent){
-      Future.successful(HtmlFormat.empty)
+  def getPartial(implicit user: User[_], hc: HeaderCarrier, ec: ExecutionContext, messages: Messages,
+                 request: Request[_]): Future[Seq[ListLinks]] =
+    if (user.isAgent) {
+      Future.successful(Seq())
     } else {
       val hcWithCookie = hc.copy(extraHeaders = hc.headers(Seq(HeaderNames.COOKIE)))
       serviceInfoPartialConnector.getNavLinks()(hcWithCookie, ec, request).map { links =>
-        val listLinks = partialList(links)
-        btaLinks(listLinks)
+        partialList(links)
       }
     }
 

@@ -19,20 +19,20 @@ package views.customerInfo
 import assets.CircumstanceDetailsTestConstants._
 import assets.CustomerDetailsTestConstants.tradingName
 import assets.PPOBAddressTestConstants
-import assets.PPOBAddressTestConstants.{addLine1, addLine2, postcode, ppobModelMaxEmailUnverified, ppobModelMaxPending}
+import assets.PPOBAddressTestConstants._
 import assets.messages.{BaseMessages, ReturnFrequencyMessages, CustomerCircumstanceDetailsPageMessages => viewMessages}
 import mocks.services.MockServiceInfoService
+import models.ListLinks
 import models.circumstanceInfo.PendingChanges
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.twirl.api.Html
+import utils.TestUtil
 import views.ViewBaseSpec
 import views.html.customerInfo.CustomerCircumstanceDetailsView
-import utils.TestUtil
 
 class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages with MockServiceInfoService with TestUtil {
-  val getPartialHtmlAgent: Html = Html("")
-  val getPartialHtmlNotAgent: Html = Html("""<div id="getPartialTest">dummyHtml</div>""")
+  val getPartialHtmlAgent: Seq[ListLinks] = Seq()
+  val getPartialHtmlNotAgent: Seq[ListLinks] = Seq(ListLinks("navLinkMessage","navLinkUrl"))
   val injectedView: CustomerCircumstanceDetailsView = inject[CustomerCircumstanceDetailsView]
 
   "Rendering the Customer Details page" when {
@@ -69,7 +69,7 @@ class CustomerCircumstanceDetailsViewSpec extends ViewBaseSpec with BaseMessages
 
               "the view loads in the partial" should {
                 "display the dummyHtml" in {
-                  elementText("#getPartialTest") shouldBe "dummyHtml"
+                  elementText(".govuk-service-navigation__list > li > a") shouldBe "navLinkMessage"
                 }
               }
 

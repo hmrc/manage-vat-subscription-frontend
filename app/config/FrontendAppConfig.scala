@@ -84,7 +84,6 @@ trait AppConfig {
   def addressLookUpConfirmUrl(id : String) : String
   val webChatUrl: String
   val urBannerUrl: String
-  val isServiceNavigationEnabled: Boolean
 }
 
 @Singleton
@@ -245,6 +244,4 @@ class FrontendAppConfig @Inject()(implicit configuration: Configuration, service
     servicesConfig.getString(Keys.businessTaxAccountHost) + servicesConfig.getString(Keys.businessTaxAccountDetails)
   override val gtmContainer: String = servicesConfig.getString(Keys.gtmContainer)
   override val urBannerUrl: String = servicesConfig.getString("urBanner.url")
-
-  override lazy val isServiceNavigationEnabled: Boolean = servicesConfig.getBoolean("play-frontend-hmrc.forceServiceNavigation")
 }

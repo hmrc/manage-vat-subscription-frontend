@@ -24,16 +24,13 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import play.api.i18n.{Lang, Messages, MessagesImpl}
 import play.api.test.Helpers.{await, defaultAwaitTimeout}
-import play.twirl.api.{Html, HtmlFormat}
-import views.html.templates.BTALinks
 
 import scala.concurrent.Future
 
 class ServiceInfoServiceSpec extends ControllerBaseSpec {
 
   val mockConnector: ServiceInfoPartialConnector = mock[ServiceInfoPartialConnector]
-  val btaLinks: BTALinks = inject[BTALinks]
-  val service: ServiceInfoService = new ServiceInfoService(mockConnector, btaLinks)
+  val service: ServiceInfoService = new ServiceInfoService(mockConnector)
 
   ".getPartial" should {
 
@@ -45,17 +42,16 @@ class ServiceInfoServiceSpec extends ControllerBaseSpec {
         ListLinks(navContent.messages.en, navContent.messages.url, navContent.messages.alerts.map(_.toString)),
         ListLinks(navContent.help.en, navContent.help.url)
       )
-      val result: Html = await(service.getPartial(user, hc, ec, messages, req))
-      val expectedResult: Html = btaLinks(listLinks)
+      val result: Seq[ListLinks] = await(service.getPartial(user, hc, ec, messages, req))
+      val expectedResult: Seq[ListLinks] = listLinks
 
-      result.body shouldBe expectedResult.body
+      result shouldBe expectedResult
     }
 
     "return empty HTML for agents" in {
-      val result: Html = await(service.getPartial(agentUser, hc, ec, messages, req))
-      val expectedResult: Html = HtmlFormat.empty
+      val result: Seq[ListLinks] = await(service.getPartial(agentUser, hc, ec, messages, req))
 
-      result shouldBe expectedResult
+      result shouldBe Seq()
     }
   }
 

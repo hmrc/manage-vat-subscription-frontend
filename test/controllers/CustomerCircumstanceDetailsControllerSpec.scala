@@ -59,7 +59,7 @@ class CustomerCircumstanceDetailsControllerSpec extends ControllerBaseSpec with 
       lazy val document = Jsoup.parse(contentAsString(result))
 
       "return 200" in {
-        getPartial(Html(""))
+        getPartial(Seq())
         mockCustomerDetailsSuccess(customerInformationModelMaxOrganisation)
         status(result) shouldBe Status.OK
 
