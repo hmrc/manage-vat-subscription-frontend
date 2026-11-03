@@ -15,6 +15,7 @@
  *@
 
 @import views.html.templates.Headings
+@import views.helpers.UrBannerUtil
 
 @this(mainTemplate: MainTemplate, headings: Headings, govukBackLink : GovukBackLink)
 @()(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
@@ -24,7 +25,7 @@
    href = "javascript:window.history.go(-1)",
    content = Text("Back")
   ))),
-  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))
+  urBanner = Some(UrBannerUtil.getUrBanner(hideCloseButton = false))
  ){
   @headings(messages(if(user.isAgent) "customer_details.change_trading_under_ni_protocol.title.agent" else "customer_details.change_trading_under_ni_protocol.title"))
 

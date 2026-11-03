@@ -17,6 +17,7 @@
 @import templates.Headings
 @import helpers.BackToBusinessDetails
 @import models.viewModels.AltChangeBusinessNameViewModel
+@import views.helpers.UrBannerUtil
 
 @this(mainTemplate: MainTemplate, headings: Headings, backToBusinessDetails: BackToBusinessDetails)
 
@@ -29,7 +30,7 @@
 @mainTemplate(
   pageTitle = messages("change_business_name.title"),
     navLinkContent = Some(backLink),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+    urBanner = Some(UrBannerUtil.getUrBanner(hideCloseButton = false))) {
 
     @headings(messages("change_business_name.h1"))
 

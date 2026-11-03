@@ -16,6 +16,7 @@
 
 @import helpers.RenderAddress
 @import models.circumstanceInfo.PPOBAddress
+@import views.helpers.UrBannerUtil
 
 @this(mainTemplate: MainTemplate, renderAddress: RenderAddress, form: FormWithCSRF,
 govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : GovukRadios, govukInsetText : GovukInsetText)
@@ -25,7 +26,7 @@ govukErrorSummary : GovukErrorSummary, govukButton: GovukButton, govukRadios : G
 @mainTemplate(
   pageTitle = if(missingTraderForm.errors.nonEmpty) messages("common.error.prefixTitle", messages("missingTrader.title"))
           else messages("missingTrader.title"),
-  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+  urBanner = Some(UrBannerUtil.getUrBanner(hideCloseButton = false))) {
 
 @if(missingTraderForm.hasErrors) {
     @govukErrorSummary(ErrorSummary(

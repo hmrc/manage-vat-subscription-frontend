@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import views.helpers.UrBannerUtil
+
 @this(mainTemplate: MainTemplate, govukPanel : GovukPanel, govukButton: GovukButton)
 
 @()(implicit user : User[_], messages: Messages, appConfig: config.AppConfig)
@@ -29,7 +31,7 @@
 
 @mainTemplate(
     pageTitle = messages("mta_confirmation.title"),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true, language = if(messages.lang.code == "en") En else Cy))){
+    urBanner = Some(UrBannerUtil.getUrBanner())){
 
     @govukPanel(Panel(title = Text(messages("mta_confirmation.title"))))
 

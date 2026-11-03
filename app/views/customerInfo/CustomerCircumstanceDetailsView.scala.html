@@ -21,6 +21,7 @@
 @import templates.Breadcrumb
 @import views.utils.DeregUtil._
 @import utils.ImplicitDateFormatter._
+@import views.helpers.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
         renderReturnFrequency: RenderReturnFrequency,
@@ -394,7 +395,7 @@
   pageTitle = if(user.isAgent){messages("customer_details.agentTitle")}else{messages("customer_details.title")},
   navLinks = navLinks,
   navLinkContent = Some(navLink),
-  urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+  urBanner = Some(UrBannerUtil.getUrBanner(hideCloseButton = false))) {
 
   @if(user.isAgent) {
     <h1 id="agent-page-heading" class="govuk-heading-xl">@messages("customer_details.agentH1")</h1>
