@@ -15,6 +15,7 @@
  *@
 
 @import templates.UpdateClient
+@import views.helpers.UrBannerUtil
 
 @this(mainTemplate: MainTemplate, updateClient: UpdateClient, govukPanel : GovukPanel, govukButton: GovukButton)
 
@@ -28,7 +29,7 @@
 }
 
 @mainTemplate(pageTitle = messages("change_address_confirmation.title"),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, hideCloseButton = true, language = if(messages.lang.code == "en") En else Cy))) {
+    urBanner = Some(UrBannerUtil.getUrBanner())) {
 
     @govukPanel(Panel(title = Text(messages("change_address_confirmation.title"))))
 
