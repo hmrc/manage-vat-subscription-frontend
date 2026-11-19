@@ -39,7 +39,8 @@
   feedbackOnSignOut: Boolean = true,
   navLinkContent: Option[Html] = None,
   navLinks: Seq[ListLinks] = Seq(),
-  urBanner: Option[UserResearchBanner] = None
+  urBanner: Option[UserResearchBanner] = None,
+  activeTab: String = "home"
 )(mainContent: Html)(implicit request : RequestHeader, messages: Messages, appConfig: AppConfig)
 
 @navTitle = @{
@@ -60,11 +61,13 @@
                 }
 
             val requestUrl = menuItem.url.toLowerCase()
+            val isActiveTab = (requestUrl.contains(activeTab.toLowerCase()) ||
+                                (activeTab.toLowerCase().equals("home") && requestUrl.endsWith("business-account")))
+
             ServiceNavigationItem(
                 content = HtmlContent(menuText),
                 href = menuItem.url,
-                active = false
-            )
+                active = isActiveTab)
         }
 }
 
